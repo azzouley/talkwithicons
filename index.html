@@ -563,19 +563,18 @@
     .fade-up.visible { opacity: 1; transform: translateY(0); }
 
     /* ── Hero character circles ── */
-    .hero-circles-row {
-      display: flex; gap: 18px; align-items: center; justify-content: center;
-      grid-column: span 2; padding: 8px 0;
+    .hero-circles-col {
+      display: flex; flex-direction: column; gap: 12px; flex-shrink: 0;
     }
     .hero-icon-circle {
-      width: 90px; height: 90px; border-radius: 50%;
+      width: 140px; height: 140px; border-radius: 50%;
       display: flex; align-items: center; justify-content: center; flex-direction: column;
       background: linear-gradient(135deg, rgba(212,168,67,.18), rgba(212,168,67,.06));
       border: 1.5px solid var(--border);
-      gap: 4px;
+      gap: 5px;
     }
-    .hero-icon-emoji { font-size: 2.2rem; line-height: 1; }
-    .hero-icon-name { font-family: 'Courier New', monospace; font-size: .55rem; color: var(--muted); letter-spacing: .08em; text-align: center; }
+    .hero-icon-emoji { font-size: 3.2rem; line-height: 1; }
+    .hero-icon-name { font-family: 'Courier New', monospace; font-size: .6rem; color: var(--muted); letter-spacing: .08em; text-align: center; }
 
     /* ── Hero rescue strip ── */
     .hero-rescue-strip {
@@ -747,9 +746,25 @@
         <span class="hero-badge-dot"></span>
         Live now &mdash; 3 minutes free, no card required
       </div>
-      <h1 class="hero-title">
-        Talk to the<br><em>Greatest Minds</em><br>in History
-      </h1>
+      <div style="display:flex;align-items:flex-start;gap:24px;margin-bottom:20px;">
+        <h1 class="hero-title" style="margin-bottom:0;">
+          Talk with the<br><em>Greatest Minds</em><br>in History
+        </h1>
+        <div class="hero-circles-col">
+          <div class="hero-icon-circle">
+            <span class="hero-icon-emoji">🧪</span>
+            <span class="hero-icon-name">Einstein</span>
+          </div>
+          <div class="hero-icon-circle">
+            <span class="hero-icon-emoji">🔍</span>
+            <span class="hero-icon-name">Holmes</span>
+          </div>
+          <div class="hero-icon-circle">
+            <span class="hero-icon-emoji">🪶</span>
+            <span class="hero-icon-name">Bennet</span>
+          </div>
+        </div>
+      </div>
       <p class="hero-desc">
         Real-time voice conversations with AI versions of Einstein, Twain, Holmes, Tesla, Nostradamus, Bennet, Curie, and the mysterious Aela. Ask anything. Hear everything.
       </p>
@@ -768,7 +783,7 @@
           <div class="hero-stat-label">Iconic voices</div>
         </div>
         <div class="hero-stat">
-          <div class="hero-stat-num">🐾</div>
+          <div class="hero-stat-num">🥣</div>
           <div class="hero-stat-label">Every paid call feeds a dog</div>
         </div>
       </div>
@@ -784,21 +799,6 @@
       </div>
     </div>
     <div class="hero-visual">
-      <!-- Character circles -->
-      <div class="hero-circles-row">
-        <div class="hero-icon-circle">
-          <span class="hero-icon-emoji">🧪</span>
-          <span class="hero-icon-name">Einstein</span>
-        </div>
-        <div class="hero-icon-circle">
-          <span class="hero-icon-emoji">🔍</span>
-          <span class="hero-icon-name">Holmes</span>
-        </div>
-        <div class="hero-icon-circle">
-          <span class="hero-icon-emoji">🪶</span>
-          <span class="hero-icon-name">Bennet</span>
-        </div>
-      </div>
       <!-- Phone UI card -->
       <div class="hero-card" style="grid-column:span 2;">
         <div class="hero-phone-ui">

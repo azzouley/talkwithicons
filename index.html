@@ -562,6 +562,21 @@
     }
     .fade-up.visible { opacity: 1; transform: translateY(0); }
 
+    /* ── Hero character circles ── */
+    .hero-circles-row {
+      display: flex; gap: 18px; align-items: center; justify-content: center;
+      grid-column: span 2; padding: 8px 0;
+    }
+    .hero-icon-circle {
+      width: 90px; height: 90px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center; flex-direction: column;
+      background: linear-gradient(135deg, rgba(212,168,67,.18), rgba(212,168,67,.06));
+      border: 1.5px solid var(--border);
+      gap: 4px;
+    }
+    .hero-icon-emoji { font-size: 2.2rem; line-height: 1; }
+    .hero-icon-name { font-family: 'Courier New', monospace; font-size: .55rem; color: var(--muted); letter-spacing: .08em; text-align: center; }
+
     /* ── Hero rescue strip ── */
     .hero-rescue-strip {
       display: flex; align-items: center; gap: 18px;
@@ -778,6 +793,21 @@
         </div>
         <div class="hero-card-live">LIVE</div>
       </div>
+      <!-- Character circles -->
+      <div class="hero-circles-row">
+        <div class="hero-icon-circle">
+          <span class="hero-icon-emoji">🧪</span>
+          <span class="hero-icon-name">Einstein</span>
+        </div>
+        <div class="hero-icon-circle">
+          <span class="hero-icon-emoji">🔍</span>
+          <span class="hero-icon-name">Holmes</span>
+        </div>
+        <div class="hero-icon-circle">
+          <span class="hero-icon-emoji">🪶</span>
+          <span class="hero-icon-name">Bennet</span>
+        </div>
+      </div>
       <!-- Phone UI card -->
       <div class="hero-card" style="grid-column:span 2;">
         <div class="hero-phone-ui">
@@ -800,7 +830,7 @@
             <div class="phone-bar" style="height:65%"></div>
           </div>
           <div class="phone-timer">Einstein is speaking…</div>
-          <div class="phone-footer">🐾 This call has donated $0.20 to shelter dogs</div>
+          <div class="phone-footer">🐾 This call has already fed 1 rescue dog</div>
         </div>
       </div>
       <div class="hero-card">

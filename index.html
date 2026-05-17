@@ -3,1403 +3,899 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TalkWithIcons — Voice Calls with History's Greatest Minds</title>
+  <title>TalkWithIcons — Call History's Greatest Minds</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
-    /* ── Reset & Base ── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
     :root {
-      --gold:    #d4a843;
-      --gold-lt: #f0c96a;
-      --dark:    #0d0d0f;
-      --dark2:   #14141a;
-      --dark3:   #1c1c26;
-      --card:    #1e1e2e;
-      --border:  rgba(212,168,67,.22);
-      --text:    #e8e4d8;
-      --muted:   #9a9284;
-      --rescue:  #e05c3a;
-      --rescue2: #ff7f57;
-      --radius:  14px;
-      --shadow:  0 8px 40px rgba(0,0,0,.55);
+      --cream: #F5F0E8;
+      --ink: #1A1208;
+      --gold: #C9952A;
+      --gold-light: #E8B84B;
+      --rust: #8B3A1A;
+      --sage: #4A5E4F;
+      --parchment: #EDE5D0;
+      --shadow: rgba(26,18,8,0.15);
     }
+
     html { scroll-behavior: smooth; }
+
     body {
-      font-family: 'Georgia', 'Times New Roman', serif;
-      background: var(--dark);
-      color: var(--text);
-      line-height: 1.65;
+      font-family: 'DM Sans', sans-serif;
+      background-color: var(--cream);
+      color: var(--ink);
       overflow-x: hidden;
     }
-    a { color: var(--gold); text-decoration: none; }
-    a:hover { color: var(--gold-lt); }
-    img { max-width: 100%; display: block; }
 
-    /* ── Utility ── */
-    .container { max-width: 1160px; margin: 0 auto; padding: 0 24px; }
-    .section-label {
-      display: inline-block;
-      font-family: 'Courier New', monospace;
-      font-size: .72rem;
-      letter-spacing: .2em;
-      text-transform: uppercase;
-      color: var(--gold);
-      border: 1px solid var(--border);
-      border-radius: 40px;
-      padding: 5px 16px;
-      margin-bottom: 18px;
-    }
-    .section-title {
-      font-size: clamp(1.8rem, 4vw, 2.8rem);
-      font-weight: normal;
-      letter-spacing: .01em;
-      color: #fff;
-      margin-bottom: 14px;
-    }
-    .section-sub {
-      font-size: 1.05rem;
-      color: var(--muted);
-      max-width: 580px;
-    }
-    .btn {
-      display: inline-block;
-      font-family: 'Courier New', monospace;
-      font-size: .9rem;
-      letter-spacing: .06em;
-      text-transform: uppercase;
-      padding: 14px 34px;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: all .22s;
-      border: none;
-    }
-    .btn-gold {
-      background: linear-gradient(135deg, var(--gold), #b8872c);
-      color: #0d0d0f;
-      font-weight: bold;
-      box-shadow: 0 4px 20px rgba(212,168,67,.38);
-    }
-    .btn-gold:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(212,168,67,.5); color: #0d0d0f; }
-    .btn-outline {
-      background: transparent;
-      color: var(--gold);
-      border: 1.5px solid var(--border);
-    }
-    .btn-outline:hover { border-color: var(--gold); background: rgba(212,168,67,.07); }
-
-    /* ── Nav ── */
-    nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-      background: rgba(13,13,15,.88);
-      backdrop-filter: blur(14px);
-      border-bottom: 1px solid var(--border);
-      padding: 0 24px;
-    }
-    .nav-inner {
-      max-width: 1160px; margin: 0 auto;
-      display: flex; align-items: center; justify-content: space-between;
-      height: 64px;
-    }
-    .nav-logo {
-      display: flex; align-items: center; gap: 10px;
-      font-size: 1.2rem; color: #fff;
-    }
-    .nav-logo-icon { font-size: 1.5rem; }
-    .nav-logo span { color: var(--gold); }
-    .nav-links {
-      display: flex; gap: 32px; list-style: none;
-      font-family: 'Courier New', monospace;
-      font-size: .8rem; letter-spacing: .08em;
-    }
-    .nav-links a { color: var(--muted); transition: color .18s; text-transform: uppercase; }
-    .nav-links a:hover { color: var(--gold); }
-    .nav-cta { display: flex; gap: 10px; }
-
-    /* ── Hero ── */
-    #hero {
-      min-height: 100vh;
-      display: flex; align-items: center;
-      padding-top: 64px;
-      position: relative;
-      overflow: hidden;
-    }
-    .hero-bg {
-      position: absolute; inset: 0; z-index: 0;
-      background:
-        radial-gradient(ellipse 80% 60% at 60% 30%, rgba(212,168,67,.09) 0%, transparent 70%),
-        radial-gradient(ellipse 60% 80% at 10% 80%, rgba(80,40,10,.25) 0%, transparent 60%),
-        linear-gradient(160deg, #0d0d0f 0%, #12111a 100%);
-    }
-    .hero-grid-lines {
-      position: absolute; inset: 0; z-index: 0;
-      background-image:
-        linear-gradient(rgba(212,168,67,.04) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(212,168,67,.04) 1px, transparent 1px);
-      background-size: 60px 60px;
-    }
-    .hero-inner {
-      position: relative; z-index: 1;
-      display: grid; grid-template-columns: 1fr 1fr;
-      align-items: center; gap: 60px;
-      max-width: 1160px; margin: 0 auto;
-      padding: 80px 24px;
-    }
-    .hero-badge {
-      display: inline-flex; align-items: center; gap: 8px;
-      background: rgba(224,92,58,.12);
-      border: 1px solid rgba(224,92,58,.3);
-      border-radius: 40px; padding: 6px 16px;
-      font-family: 'Courier New', monospace;
-      font-size: .75rem; letter-spacing: .1em;
-      color: var(--rescue2);
-      margin-bottom: 24px;
-    }
-    .hero-badge-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--rescue2); animation: pulse 1.8s infinite; }
-    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(.85)} }
-    .hero-title {
-      font-size: clamp(2.4rem, 5.5vw, 4rem);
-      line-height: 1.1;
-      color: #fff;
-      margin-bottom: 20px;
-    }
-    .hero-title em { font-style: normal; color: var(--gold); }
-    .hero-desc { font-size: 1.12rem; color: var(--muted); margin-bottom: 36px; max-width: 480px; }
-    .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; }
-    .hero-stats { display: flex; gap: 32px; margin-top: 44px; }
-    .hero-stat { }
-    .hero-stat-num { font-size: 1.6rem; color: #fff; font-weight: bold; }
-    .hero-stat-label { font-family: 'Courier New', monospace; font-size: .72rem; letter-spacing: .12em; color: var(--muted); text-transform: uppercase; }
-    .hero-visual {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 14px;
-    }
-    .hero-card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 20px;
-      position: relative;
-      overflow: hidden;
-      transition: transform .25s, border-color .25s;
-    }
-    .hero-card:hover { transform: translateY(-4px); border-color: rgba(212,168,67,.5); }
-    .hero-card:nth-child(1) { grid-column: span 2; display: flex; align-items: center; gap: 16px; }
-    .hero-card-avatar {
-      width: 58px; height: 58px; border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 2rem; flex-shrink: 0;
-      background: linear-gradient(135deg, rgba(212,168,67,.18), rgba(212,168,67,.06));
-      border: 1.5px solid var(--border);
-    }
-    .hero-card-name { font-size: .95rem; color: #fff; margin-bottom: 2px; }
-    .hero-card-era { font-family: 'Courier New', monospace; font-size: .7rem; color: var(--muted); letter-spacing: .08em; }
-    .hero-card-live {
-      position: absolute; top: 12px; right: 12px;
-      font-family: 'Courier New', monospace; font-size: .65rem;
-      color: #4ade80; letter-spacing: .1em;
-      display: flex; align-items: center; gap: 5px;
-    }
-    .hero-card-live::before { content:''; width:6px;height:6px;border-radius:50%;background:#4ade80;display:inline-block; }
-    .hero-phone-ui {
-      background: var(--dark2); border: 1px solid var(--border); border-radius: 12px;
-      padding: 16px; font-family: 'Courier New', monospace; font-size: .75rem;
-    }
-    .phone-header { display: flex; justify-content: space-between; color: var(--muted); margin-bottom: 10px; }
-    .phone-waveform {
-      display: flex; align-items: flex-end; gap: 3px;
-      height: 36px; margin-bottom: 10px;
-    }
-    .phone-bar {
-      flex: 1; background: var(--gold); border-radius: 2px;
-      animation: wave 1.2s ease-in-out infinite alternate;
-    }
-    .phone-bar:nth-child(2n) { animation-delay: .2s; }
-    .phone-bar:nth-child(3n) { animation-delay: .4s; }
-    @keyframes wave { from{height:20%} to{height:90%} }
-    .phone-timer { color: var(--gold-lt); text-align: center; font-size: .9rem; }
-    .phone-footer { color: var(--muted); font-size: .65rem; text-align: center; margin-top: 6px; }
-
-    /* ── Section wrapper ── */
-    section { padding: 96px 0; }
-    section:nth-of-type(even) { background: var(--dark2); }
-
-    /* ── Characters ── */
-    #characters { background: var(--dark2); }
-    .characters-header { text-align: center; margin-bottom: 56px; }
-    .characters-header .section-sub { margin: 0 auto; }
-    .char-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 24px;
-    }
-    .char-card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 36px 28px;
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-      transition: transform .28s, border-color .28s, box-shadow .28s;
-      cursor: pointer;
-    }
-    .char-card::before {
+    /* NOISE TEXTURE OVERLAY */
+    body::before {
       content: '';
-      position: absolute; top: 0; left: 0; right: 0;
-      height: 3px;
-      background: linear-gradient(90deg, transparent, var(--gold), transparent);
-      opacity: 0; transition: opacity .28s;
-    }
-    .char-card:hover { transform: translateY(-6px); border-color: rgba(212,168,67,.55); box-shadow: 0 16px 48px rgba(0,0,0,.5); }
-    .char-card:hover::before { opacity: 1; }
-    .char-emoji { font-size: 3.2rem; margin-bottom: 18px; display: block; }
-    .char-name { font-size: 1.25rem; color: #fff; margin-bottom: 4px; }
-    .char-years { font-family: 'Courier New', monospace; font-size: .72rem; color: var(--gold); letter-spacing: .1em; margin-bottom: 14px; }
-    .char-desc { font-size: .9rem; color: var(--muted); line-height: 1.6; margin-bottom: 22px; }
-    .char-topics {
-      display: flex; flex-wrap: wrap; gap: 7px; justify-content: center; margin-bottom: 22px;
-    }
-    .char-topic {
-      font-family: 'Courier New', monospace; font-size: .65rem;
-      letter-spacing: .08em; text-transform: uppercase;
-      padding: 4px 10px; border-radius: 20px;
-      background: rgba(212,168,67,.09); border: 1px solid var(--border);
-      color: var(--gold);
-    }
-    .char-call-btn {
-      width: 100%;
-      background: transparent; border: 1.5px solid var(--border);
-      color: var(--gold); padding: 10px;
-      border-radius: 8px;
-      font-family: 'Courier New', monospace; font-size: .8rem;
-      letter-spacing: .08em; text-transform: uppercase;
-      cursor: pointer; transition: all .2s;
-    }
-    .char-call-btn:hover { background: rgba(212,168,67,.1); border-color: var(--gold); }
-
-    /* Aela special card */
-    .char-card.aela-card {
-      background: linear-gradient(145deg, #1a1a2e, #16213e);
-      border-color: rgba(139,92,246,.3);
-    }
-    .char-card.aela-card::before { background: linear-gradient(90deg, transparent, #8b5cf6, transparent); }
-    .char-card.aela-card:hover { border-color: rgba(139,92,246,.7); }
-    .char-card.aela-card .char-years { color: #a78bfa; }
-    .char-card.aela-card .char-topic { background: rgba(139,92,246,.1); border-color: rgba(139,92,246,.2); color: #a78bfa; }
-    .char-card.aela-card .char-call-btn { border-color: rgba(139,92,246,.3); color: #a78bfa; }
-    .char-card.aela-card .char-call-btn:hover { background: rgba(139,92,246,.1); border-color: #8b5cf6; }
-    .aela-badge {
-      position: absolute; top: 14px; right: 14px;
-      font-family: 'Courier New', monospace; font-size: .6rem;
-      letter-spacing: .1em; text-transform: uppercase;
-      background: rgba(139,92,246,.15); border: 1px solid rgba(139,92,246,.3);
-      color: #a78bfa; padding: 3px 9px; border-radius: 20px;
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 1000;
+      opacity: 0.4;
     }
 
-    /* ── Pricing ── */
-    #pricing { }
-    .pricing-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: start; }
-    .pricing-tiers { display: flex; flex-direction: column; gap: 16px; }
-    .tier {
-      background: var(--card); border: 1px solid var(--border);
-      border-radius: var(--radius); padding: 24px 28px;
-      display: flex; align-items: center; gap: 20px;
-      transition: border-color .22s;
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: 1.25rem 3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(245,240,232,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(201,149,42,0.2);
     }
-    .tier:hover { border-color: rgba(212,168,67,.4); }
-    .tier-num {
-      width: 52px; height: 52px; border-radius: 50%; flex-shrink: 0;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.2rem; font-family: 'Courier New', monospace; font-weight: bold;
-    }
-    .tier-1 .tier-num { background: rgba(74,222,128,.12); border: 1.5px solid rgba(74,222,128,.3); color: #4ade80; }
-    .tier-2 .tier-num { background: rgba(212,168,67,.12); border: 1.5px solid var(--border); color: var(--gold); }
-    .tier-3 .tier-num { background: rgba(248,113,113,.12); border: 1.5px solid rgba(248,113,113,.25); color: #f87171; }
-    .tier-info { flex: 1; }
-    .tier-range { font-size: .8rem; font-family: 'Courier New', monospace; color: var(--muted); letter-spacing: .06em; margin-bottom: 4px; }
-    .tier-label { font-size: 1rem; color: #fff; }
-    .tier-price { font-size: 1.3rem; color: #fff; font-family: 'Courier New', monospace; font-weight: bold; text-align: right; }
-    .tier-price small { display: block; font-size: .65rem; color: var(--muted); font-weight: normal; letter-spacing: .05em; }
 
-    .pricing-details { }
-    .pricing-details-card {
-      background: var(--card); border: 1px solid var(--border);
-      border-radius: var(--radius); padding: 32px;
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--ink);
+      letter-spacing: -0.02em;
     }
-    .pricing-examples { margin-top: 20px; }
-    .example-row {
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,.06);
-    }
-    .example-row:last-child { border-bottom: none; }
-    .example-duration { font-family: 'Courier New', monospace; font-size: .85rem; color: var(--text); }
-    .example-cost { font-family: 'Courier New', monospace; font-size: .85rem; color: var(--gold); }
-    .example-free { color: #4ade80; }
 
-    .pricing-note {
-      margin-top: 16px;
-      padding: 14px 18px;
-      background: rgba(224,92,58,.08);
-      border: 1px solid rgba(224,92,58,.22);
-      border-radius: 8px;
-      font-size: .85rem; color: var(--rescue2);
-      display: flex; align-items: flex-start; gap: 10px;
-    }
-    .pricing-note-icon { flex-shrink: 0; font-size: 1.1rem; }
+    .nav-logo span { color: var(--gold); }
 
-    /* ── Rescue Counter ── */
-    #rescue {
-      background: linear-gradient(135deg, #0d0d0f 0%, #1a0d08 50%, #0d0d0f 100%);
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--ink);
+      font-size: 0.875rem;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      opacity: 0.7;
+      transition: opacity 0.2s;
+    }
+
+    .nav-links a:hover { opacity: 1; color: var(--gold); }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
       text-align: center;
-      padding: 80px 0;
+      padding: 8rem 2rem 4rem;
       position: relative;
       overflow: hidden;
     }
-    .rescue-glow {
-      position: absolute; top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      width: 600px; height: 300px;
-      background: radial-gradient(ellipse, rgba(224,92,58,.12), transparent 70%);
-      pointer-events: none;
-    }
-    .rescue-inner { position: relative; z-index: 1; }
-    .rescue-paws { font-size: 2rem; margin-bottom: 8px; letter-spacing: .3em; }
-    .rescue-counter-wrap { margin: 32px 0; }
-    .rescue-counter {
-      font-size: clamp(3.5rem, 9vw, 6.5rem);
-      font-family: 'Courier New', monospace;
-      font-weight: bold;
-      color: var(--rescue2);
-      letter-spacing: .04em;
-      text-shadow: 0 0 60px rgba(224,92,58,.4);
-      display: inline-block;
-    }
-    .rescue-counter-label {
-      font-family: 'Courier New', monospace;
-      font-size: .85rem; letter-spacing: .18em; text-transform: uppercase;
-      color: var(--rescue); margin-top: 8px;
-    }
-    .rescue-desc { font-size: 1.05rem; color: var(--muted); max-width: 520px; margin: 0 auto 32px; }
-    .rescue-rate {
-      display: inline-flex; align-items: center; gap: 10px;
-      background: rgba(224,92,58,.1); border: 1px solid rgba(224,92,58,.25);
-      border-radius: 40px; padding: 10px 24px;
-      font-family: 'Courier New', monospace; font-size: .82rem;
-      color: var(--rescue2); letter-spacing: .06em;
-    }
-    .rescue-split { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 36px; max-width: 680px; margin-left: auto; margin-right: auto; }
-    .rescue-partner {
-      background: rgba(255,255,255,.04); border: 1px solid rgba(224,92,58,.22);
-      border-radius: var(--radius); padding: 22px 24px; text-align: left; position: relative; overflow: hidden;
-    }
-    .rescue-partner::before {
-      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
-    }
-    .rescue-partner.permanent::before { background: linear-gradient(90deg, var(--rescue), var(--rescue2)); }
-    .rescue-partner.rotating::before { background: linear-gradient(90deg, #60a5fa, #a78bfa); }
-    .rescue-partner-tag {
-      font-family: 'Courier New', monospace; font-size: .62rem; letter-spacing: .14em;
-      text-transform: uppercase; padding: 3px 10px; border-radius: 20px;
-      display: inline-block; margin-bottom: 12px;
-    }
-    .rescue-partner.permanent .rescue-partner-tag { background: rgba(224,92,58,.15); color: var(--rescue2); border: 1px solid rgba(224,92,58,.3); }
-    .rescue-partner.rotating .rescue-partner-tag { background: rgba(96,165,250,.1); color: #93c5fd; border: 1px solid rgba(96,165,250,.25); }
-    .rescue-partner-pct { font-size: 2rem; font-family: 'Courier New', monospace; font-weight: bold; color: #fff; line-height: 1; margin-bottom: 6px; }
-    .rescue-partner-name { font-size: .98rem; color: #fff; margin-bottom: 4px; }
-    .rescue-partner-detail { font-size: .78rem; color: var(--muted); line-height: 1.5; }
-    .rescue-partner-badge {
-      display: inline-flex; align-items: center; gap: 6px;
-      margin-top: 10px; font-family: 'Courier New', monospace; font-size: .65rem;
-      letter-spacing: .08em; color: #93c5fd;
-    }
-    .rescue-partner-badge::before { content: '↻'; font-size: .8rem; }
-    @media (max-width: 600px) { .rescue-split { grid-template-columns: 1fr; } }
 
-    /* ── Gifts ── */
-    #gifts { background: var(--dark2); }
-    .gifts-header { margin-bottom: 52px; }
-    .gifts-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
-    .gift-card {
-      background: var(--card); border: 1px solid var(--border);
-      border-radius: var(--radius); padding: 32px 26px;
-      transition: transform .25s, border-color .25s;
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background: 
+        radial-gradient(ellipse 80% 60% at 50% 40%, rgba(201,149,42,0.08) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 40% at 20% 80%, rgba(139,58,26,0.06) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 40% at 80% 20%, rgba(74,94,79,0.06) 0%, transparent 60%);
     }
-    .gift-card:hover { transform: translateY(-4px); border-color: rgba(212,168,67,.4); }
-    .gift-icon { font-size: 2.2rem; margin-bottom: 18px; }
-    .gift-name { font-size: 1.1rem; color: #fff; margin-bottom: 8px; }
-    .gift-desc { font-size: .88rem; color: var(--muted); line-height: 1.65; margin-bottom: 18px; }
-    .gift-price {
-      font-family: 'Courier New', monospace;
-      font-size: 1.05rem; color: var(--gold);
-    }
-    .gift-price small { font-size: .7rem; color: var(--muted); }
 
-    /* ── How It Works ── */
-    #how { }
-    .how-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
-    .how-step {
-      text-align: center; padding: 28px 20px;
-      background: var(--card); border: 1px solid var(--border);
-      border-radius: var(--radius);
+    .hero-eyebrow {
+      font-size: 0.75rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-weight: 500;
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.2s forwards;
     }
-    .how-step-num {
-      width: 42px; height: 42px; border-radius: 50%;
-      background: rgba(212,168,67,.1); border: 1.5px solid var(--border);
-      color: var(--gold); font-family: 'Courier New', monospace; font-size: .9rem;
-      display: flex; align-items: center; justify-content: center;
-      margin: 0 auto 18px;
-    }
-    .how-step-icon { font-size: 1.8rem; margin-bottom: 14px; }
-    .how-step-title { font-size: .95rem; color: #fff; margin-bottom: 8px; }
-    .how-step-desc { font-size: .82rem; color: var(--muted); line-height: 1.6; }
 
-    /* ── Testimonials ── */
-    #reviews { background: var(--dark2); }
-    .reviews-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
-    .review-card {
-      background: var(--card); border: 1px solid var(--border);
-      border-radius: var(--radius); padding: 28px;
+    .hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3rem, 8vw, 6.5rem);
+      font-weight: 900;
+      line-height: 1.0;
+      letter-spacing: -0.03em;
+      max-width: 900px;
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.4s forwards;
     }
-    .review-stars { color: var(--gold); font-size: 1rem; margin-bottom: 14px; letter-spacing: .1em; }
-    .review-text { font-size: .9rem; color: var(--text); line-height: 1.7; margin-bottom: 18px; font-style: italic; }
-    .review-author { display: flex; align-items: center; gap: 12px; }
-    .review-avatar {
-      width: 38px; height: 38px; border-radius: 50%;
-      background: linear-gradient(135deg, rgba(212,168,67,.2), rgba(212,168,67,.05));
-      border: 1px solid var(--border);
-      display: flex; align-items: center; justify-content: center;
+
+    .hero-title em {
+      font-style: italic;
+      color: var(--gold);
+    }
+
+    .hero-subtitle {
+      font-size: clamp(1rem, 2vw, 1.25rem);
+      font-weight: 300;
+      max-width: 560px;
+      line-height: 1.7;
+      opacity: 0;
+      color: rgba(26,18,8,0.7);
+      animation: fadeUp 0.8s 0.6s forwards;
+      margin-bottom: 2.5rem;
+    }
+
+    .hero-pricing {
+      font-size: 0.875rem;
+      color: rgba(26,18,8,0.55);
+      letter-spacing: 0.02em;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.7s forwards;
+      margin-bottom: 2.5rem;
+    }
+
+    .hero-pricing strong { color: var(--ink); }
+
+    .hero-cta {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.8s forwards;
+      margin-bottom: 4rem;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--ink);
+      color: var(--cream);
+      padding: 1rem 2rem;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border: 2px solid var(--ink);
+      cursor: pointer;
+      transition: all 0.25s;
+    }
+
+    .btn-primary:hover {
+      background: var(--gold);
+      border-color: var(--gold);
+      color: var(--ink);
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: transparent;
+      color: var(--ink);
+      padding: 1rem 2rem;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border: 2px solid rgba(26,18,8,0.3);
+      cursor: pointer;
+      transition: all 0.25s;
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--ink);
+      transform: translateY(-2px);
+    }
+
+    /* DIVIDER */
+    .divider {
+      width: 60px;
+      height: 2px;
+      background: var(--gold);
+      margin: 0 auto 1.5rem;
+    }
+
+    /* DOG RESCUE BANNER */
+    .rescue-banner {
+      background: var(--ink);
+      color: var(--cream);
+      padding: 1rem 2rem;
+      text-align: center;
+      font-size: 0.875rem;
+      letter-spacing: 0.05em;
+      opacity: 0;
+      animation: fadeUp 0.8s 1s forwards;
+    }
+
+    .rescue-banner .meal-count {
+      color: var(--gold-light);
+      font-weight: 700;
       font-size: 1rem;
     }
-    .review-name { font-size: .88rem; color: #fff; }
-    .review-meta { font-family: 'Courier New', monospace; font-size: .67rem; color: var(--muted); }
 
-    /* ── FAQ ── */
-    #faq { }
-    .faq-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; }
-    .faq-list { display: flex; flex-direction: column; gap: 14px; }
-    .faq-item {
-      background: var(--card); border: 1px solid var(--border);
-      border-radius: 10px; overflow: hidden;
-    }
-    .faq-q {
-      padding: 18px 22px; font-size: .95rem; color: #fff;
-      display: flex; justify-content: space-between; align-items: center;
-      cursor: pointer; user-select: none;
-    }
-    .faq-q::after { content: '+'; color: var(--gold); font-size: 1.3rem; flex-shrink: 0; }
-    .faq-a {
-      max-height: 0; overflow: hidden;
-      transition: max-height .35s ease, padding .3s;
-      font-size: .88rem; color: var(--muted); line-height: 1.7;
-      padding: 0 22px;
-    }
-    .faq-item.open .faq-q::after { content: '−'; }
-    .faq-item.open .faq-a { max-height: 200px; padding: 0 22px 18px; }
-    .faq-cta-card {
-      background: linear-gradient(135deg, rgba(212,168,67,.1), rgba(212,168,67,.04));
-      border: 1px solid var(--border);
-      border-radius: var(--radius); padding: 40px 36px;
-      display: flex; flex-direction: column; gap: 18px;
-      align-self: start;
-    }
-    .faq-cta-title { font-size: 1.5rem; color: #fff; }
-    .faq-cta-desc { font-size: .9rem; color: var(--muted); }
-
-    /* ── Footer ── */
-    footer {
-      background: #080809;
-      border-top: 1px solid var(--border);
-      padding: 60px 0 32px;
-    }
-    .footer-grid {
-      display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
-      gap: 48px; margin-bottom: 48px;
-    }
-    .footer-brand-name { font-size: 1.3rem; color: #fff; margin-bottom: 12px; }
-    .footer-brand-name span { color: var(--gold); }
-    .footer-brand-desc { font-size: .85rem; color: var(--muted); line-height: 1.7; margin-bottom: 18px; }
-    .footer-col-title {
-      font-family: 'Courier New', monospace;
-      font-size: .7rem; letter-spacing: .18em; text-transform: uppercase;
-      color: var(--muted); margin-bottom: 16px;
-    }
-    .footer-links { list-style: none; display: flex; flex-direction: column; gap: 10px; }
-    .footer-links a { font-size: .88rem; color: var(--muted); transition: color .18s; }
-    .footer-links a:hover { color: var(--gold); }
-    .footer-bottom {
-      border-top: 1px solid rgba(255,255,255,.05);
-      padding-top: 28px;
-      display: flex; justify-content: space-between; align-items: center;
-      font-family: 'Courier New', monospace; font-size: .72rem; color: var(--muted);
-    }
-    .footer-rescue-note { color: var(--rescue); display: flex; align-items: center; gap: 6px; }
-
-    /* ── Responsive ── */
-    @media (max-width: 900px) {
-      .hero-inner { grid-template-columns: 1fr; }
-      .hero-visual { display: none; }
-      .char-grid { grid-template-columns: 1fr 1fr; }
-      .pricing-layout { grid-template-columns: 1fr; }
-      .gifts-grid { grid-template-columns: 1fr 1fr; }
-      .how-grid { grid-template-columns: 1fr 1fr; }
-      .faq-layout { grid-template-columns: 1fr; }
-      .footer-grid { grid-template-columns: 1fr 1fr; }
-      .reviews-grid { grid-template-columns: 1fr; }
-      .nav-links { display: none; }
-    }
-    @media (max-width: 600px) {
-      .char-grid { grid-template-columns: 1fr; }
-      .gifts-grid { grid-template-columns: 1fr; }
-      .how-grid { grid-template-columns: 1fr; }
-      .footer-grid { grid-template-columns: 1fr; }
-      .hero-actions { flex-direction: column; }
+    .rescue-banner a {
+      color: var(--gold-light);
+      text-decoration: underline;
     }
 
-    /* ── Scroll animations ── */
-    .fade-up {
-      opacity: 0; transform: translateY(28px);
-      transition: opacity .6s ease, transform .6s ease;
-    }
-    .fade-up.visible { opacity: 1; transform: translateY(0); }
-
-    /* ── Hero character circles ── */
-    .hero-circles-row {
-      display: flex; gap: 18px; align-items: center; justify-content: center;
-      grid-column: span 2; padding: 8px 0;
-    }
-    .hero-icon-circle {
-      width: 90px; height: 90px; border-radius: 50%;
-      display: flex; align-items: center; justify-content: center; flex-direction: column;
-      background: linear-gradient(135deg, rgba(212,168,67,.18), rgba(212,168,67,.06));
-      border: 1.5px solid var(--border);
-      gap: 4px;
-    }
-    .hero-icon-emoji { font-size: 2.2rem; line-height: 1; }
-    .hero-icon-name { font-family: 'Courier New', monospace; font-size: .55rem; color: var(--muted); letter-spacing: .08em; text-align: center; }
-
-    /* ── Hero rescue strip ── */
-    .hero-rescue-strip {
-      display: flex; align-items: center; gap: 18px;
-      margin-top: 26px; padding: 40px;
-      background: rgba(224,92,58,.08);
-      border: 1px solid rgba(224,92,58,.25);
-      border-radius: 10px;
-    }
-    .hero-rescue-mission { flex: 1; }
-    .hero-rescue-mission-label {
-      font-family: 'Courier New', monospace; font-size: 28px;
-      letter-spacing: .14em; text-transform: uppercase;
-      color: var(--rescue); margin-bottom: 12px;
-    }
-    .hero-rescue-mission-text { font-size: 20px; color: var(--text); line-height: 1.55; }
-    .hero-meal-counter { text-align: right; flex-shrink: 0; padding-left: 16px; border-left: 1px solid rgba(224,92,58,.2); }
-    .hero-meal-num {
-      font-family: 'Courier New', monospace; font-size: 1.55rem;
-      font-weight: bold; color: var(--rescue2); line-height: 1;
-    }
-    .hero-meal-label {
-      font-family: 'Courier New', monospace; font-size: .58rem;
-      letter-spacing: .12em; text-transform: uppercase;
-      color: var(--rescue); margin-top: 4px;
+    /* SECTION */
+    section {
+      padding: 6rem 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
     }
 
-    /* ── Character portrait frame ── */
-    .char-portrait {
-      width: 108px; height: 128px;
-      margin: 0 auto 18px; position: relative;
-    }
-    .char-portrait-frame {
-      width: 100%; height: 100%; border-radius: 5px;
-      background: linear-gradient(160deg, #3d3018, #2a2010);
-      border: 3px solid #7a5828;
-      box-shadow:
-        0 0 0 1px rgba(122,88,40,.25),
-        inset 0 0 0 2px rgba(107,79,42,.18),
-        0 8px 24px rgba(0,0,0,.65);
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      position: relative; overflow: hidden;
-    }
-    .char-portrait-frame::before {
-      content: '';
-      position: absolute; inset: 5px;
-      border: 1px solid rgba(122,88,40,.35);
-      border-radius: 2px; pointer-events: none; z-index: 2;
-    }
-    .char-portrait-frame::after {
-      content: '';
-      position: absolute; inset: 0;
-      background:
-        linear-gradient(160deg, rgba(210,175,100,.09) 0%, transparent 45%),
-        linear-gradient(to bottom, transparent 60%, rgba(0,0,0,.35) 100%);
-      pointer-events: none; z-index: 1;
-    }
-    .char-portrait-img {
-      font-size: 3rem; line-height: 1;
-      filter: sepia(0.85) brightness(0.82) contrast(1.05);
-      position: relative; z-index: 3;
-      margin-bottom: 20px;
-    }
-    .char-portrait-name-plate {
-      position: absolute; bottom: 0; left: 0; right: 0; z-index: 4;
-      background: rgba(38,28,12,.88);
-      border-top: 1px solid rgba(122,88,40,.5);
-      padding: 4px 6px;
-      font-family: 'Courier New', monospace;
-      font-size: .48rem; letter-spacing: .14em;
-      text-transform: uppercase; color: #c8a460;
+    .section-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-weight: 500;
+      margin-bottom: 1rem;
       text-align: center;
     }
-    .char-portrait-corner {
-      position: absolute; width: 10px; height: 10px;
-      border-color: #9a6c30; border-style: solid; z-index: 4;
-    }
-    .char-portrait-corner.tl { top: 4px; left: 4px; border-width: 2px 0 0 2px; }
-    .char-portrait-corner.tr { top: 4px; right: 4px; border-width: 2px 2px 0 0; }
-    .char-portrait-corner.bl { bottom: 18px; left: 4px; border-width: 0 0 2px 2px; }
-    .char-portrait-corner.br { bottom: 18px; right: 4px; border-width: 0 2px 2px 0; }
-    /* Aela gets a mystical purple frame */
-    .aela-card .char-portrait-frame {
-      background: linear-gradient(160deg, #201535, #130e24);
-      border-color: #6040a0;
-      box-shadow: 0 0 0 1px rgba(96,64,160,.25), inset 0 0 0 2px rgba(96,64,160,.15),
-                  0 8px 24px rgba(0,0,0,.65), 0 0 40px rgba(139,92,246,.12);
-    }
-    .aela-card .char-portrait-frame::before { border-color: rgba(96,64,160,.4); }
-    .aela-card .char-portrait-img { filter: hue-rotate(220deg) brightness(0.75) saturate(1.4); }
-    .aela-card .char-portrait-name-plate { background: rgba(20,12,40,.9); border-top-color: rgba(96,64,160,.5); color: #a78bfa; }
-    .aela-card .char-portrait-corner { border-color: #7c5cbf; }
 
-    /* ── Rescue meal counter (section) ── */
-    .rescue-meal-counter-wrap {
-      margin: 28px auto 0;
-      display: flex; align-items: center; justify-content: center; gap: 40px;
-      max-width: 560px;
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 1rem;
+      line-height: 1.2;
     }
-    .rescue-meal-block { text-align: center; }
-    .rescue-meal-num {
-      font-family: 'Courier New', monospace; font-weight: bold;
-      font-size: clamp(2rem, 4.5vw, 3.2rem);
-      color: #fff; line-height: 1;
-    }
-    .rescue-meal-label {
-      font-family: 'Courier New', monospace; font-size: .68rem;
-      letter-spacing: .16em; text-transform: uppercase;
-      color: var(--rescue); margin-top: 7px;
-    }
-    .rescue-divider { width: 1px; height: 56px; background: rgba(224,92,58,.22); flex-shrink: 0; }
 
-    /* ── US Map ── */
-    .rescue-map-wrap { margin: 36px auto 0; max-width: 700px; }
-    .rescue-map-title {
-      font-family: 'Courier New', monospace; font-size: .68rem;
-      letter-spacing: .18em; text-transform: uppercase;
-      color: var(--muted); text-align: center; margin-bottom: 12px;
+    .section-body {
+      text-align: center;
+      max-width: 600px;
+      margin: 0 auto 4rem;
+      font-size: 1rem;
+      line-height: 1.8;
+      color: rgba(26,18,8,0.65);
     }
-    .rescue-map-svg-wrap {
-      background: rgba(255,255,255,.02);
-      border: 1px solid rgba(224,92,58,.18);
-      border-radius: 12px; padding: 16px 22px;
+
+    /* CHARACTER GRID */
+    .characters-section {
+      background: var(--parchment);
+      max-width: 100%;
+      padding: 6rem 2rem;
     }
-    .map-pulse-ring { animation: mapRing 2.2s ease-out infinite; transform-origin: center; }
-    @keyframes mapRing { 0%{opacity:.7;transform:scale(1)} 100%{opacity:0;transform:scale(3.2)} }
-    .map-pin-dot { animation: mapDot 2.2s ease-in-out infinite; }
-    @keyframes mapDot { 0%,100%{opacity:1} 50%{opacity:.65} }
-    .rescue-map-legend {
-      display: flex; align-items: center; justify-content: center; gap: 9px;
-      margin-top: 10px;
-      font-family: 'Courier New', monospace; font-size: .68rem;
-      letter-spacing: .08em; color: var(--muted);
+
+    .characters-section > * {
+      max-width: 1200px;
+      margin-left: auto;
+      margin-right: auto;
     }
-    .rescue-map-legend-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--rescue2); flex-shrink: 0; }
+
+    .character-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 1.5rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .character-card {
+      background: var(--cream);
+      border: 1px solid rgba(201,149,42,0.2);
+      padding: 2.5rem;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s;
+      cursor: pointer;
+    }
+
+    .character-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--gold);
+      transform: scaleX(0);
+      transition: transform 0.3s;
+    }
+
+    .character-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px var(--shadow);
+    }
+
+    .character-card:hover::before {
+      transform: scaleX(1);
+    }
+
+    .character-number {
+      font-size: 0.65rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1rem;
+      font-weight: 500;
+    }
+
+    .character-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.75rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      line-height: 1.1;
+    }
+
+    .character-era {
+      font-size: 0.8rem;
+      color: rgba(26,18,8,0.5);
+      letter-spacing: 0.05em;
+      margin-bottom: 1.25rem;
+      text-transform: uppercase;
+    }
+
+    .character-description {
+      font-size: 0.9rem;
+      line-height: 1.7;
+      color: rgba(26,18,8,0.7);
+      margin-bottom: 2rem;
+    }
+
+    .character-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink);
+      text-decoration: none;
+      border-bottom: 1px solid var(--gold);
+      padding-bottom: 2px;
+      transition: color 0.2s;
+    }
+
+    .character-cta:hover { color: var(--gold); }
+
+    .character-icon {
+      position: absolute;
+      bottom: 2rem;
+      right: 2rem;
+      font-size: 3rem;
+      opacity: 0.07;
+    }
+
+    /* PRICING */
+    .pricing-section {
+      text-align: center;
+    }
+
+    .pricing-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 3rem;
+    }
+
+    .pricing-card {
+      border: 1px solid rgba(26,18,8,0.12);
+      padding: 2rem 1.5rem;
+      text-align: center;
+      position: relative;
+    }
+
+    .pricing-card.featured {
+      border-color: var(--gold);
+      background: var(--ink);
+      color: var(--cream);
+    }
+
+    .pricing-tier {
+      font-size: 0.7rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.75rem;
+    }
+
+    .pricing-amount {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.5rem;
+      font-weight: 700;
+      line-height: 1;
+      margin-bottom: 0.5rem;
+    }
+
+    .pricing-desc {
+      font-size: 0.85rem;
+      opacity: 0.65;
+      line-height: 1.5;
+    }
+
+    .pricing-note {
+      font-size: 0.875rem;
+      color: rgba(26,18,8,0.55);
+      max-width: 500px;
+      margin: 0 auto 2.5rem;
+      line-height: 1.7;
+    }
+
+    /* RESCUE SECTION */
+    .rescue-section {
+      background: var(--ink);
+      color: var(--cream);
+      max-width: 100%;
+      padding: 5rem 2rem;
+      text-align: center;
+    }
+
+    .rescue-section .section-title { color: var(--cream); }
+    .rescue-section .section-body { color: rgba(245,240,232,0.65); }
+    .rescue-section .divider { background: var(--gold); }
+
+    .rescue-counter {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1.5rem;
+      margin: 3rem auto;
+      max-width: 500px;
+    }
+
+    .bowl-graphic {
+      font-size: 4rem;
+    }
+
+    .meal-number {
+      text-align: left;
+    }
+
+    .meal-number .count {
+      font-family: 'Playfair Display', serif;
+      font-size: 4rem;
+      font-weight: 900;
+      color: var(--gold-light);
+      line-height: 1;
+    }
+
+    .meal-number .label {
+      font-size: 0.8rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      opacity: 0.6;
+    }
+
+    .featured-rescue {
+      background: rgba(245,240,232,0.06);
+      border: 1px solid rgba(201,149,42,0.3);
+      padding: 2rem;
+      max-width: 500px;
+      margin: 0 auto 2.5rem;
+    }
+
+    .featured-rescue .rescue-label {
+      font-size: 0.65rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--gold-light);
+      margin-bottom: 0.75rem;
+    }
+
+    .featured-rescue .rescue-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.25rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .featured-rescue .rescue-city {
+      font-size: 0.8rem;
+      opacity: 0.55;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    /* GIFT SECTION */
+    .gift-section { text-align: center; }
+
+    .gift-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 1rem;
+      margin-bottom: 3rem;
+    }
+
+    .gift-card {
+      border: 1px solid rgba(26,18,8,0.12);
+      padding: 1.75rem 1.5rem;
+      text-align: left;
+      transition: all 0.25s;
+    }
+
+    .gift-card:hover {
+      border-color: var(--gold);
+      transform: translateY(-2px);
+    }
+
+    .gift-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+    }
+
+    .gift-details {
+      font-size: 0.8rem;
+      color: rgba(26,18,8,0.5);
+      margin-bottom: 0.75rem;
+    }
+
+    .gift-price {
+      font-weight: 700;
+      font-size: 1.25rem;
+      color: var(--gold);
+    }
+
+    /* FOOTER */
+    footer {
+      background: var(--ink);
+      color: rgba(245,240,232,0.5);
+      padding: 3rem 2rem;
+      text-align: center;
+    }
+
+    footer .logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--cream);
+      margin-bottom: 0.75rem;
+    }
+
+    footer .logo span { color: var(--gold); }
+
+    footer p {
+      font-size: 0.8rem;
+      line-height: 1.7;
+      max-width: 400px;
+      margin: 0 auto 1.5rem;
+    }
+
+    footer .footer-links {
+      display: flex;
+      gap: 2rem;
+      justify-content: center;
+      list-style: none;
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    footer .footer-links a {
+      color: rgba(245,240,232,0.4);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    footer .footer-links a:hover { color: var(--gold-light); }
+
+    /* ANIMATIONS */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .fade-in {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* HORIZONTAL RULE */
+    hr.ornamental {
+      border: none;
+      text-align: center;
+      color: var(--gold);
+      opacity: 0.4;
+      margin: 0;
+    }
+
+    hr.ornamental::before {
+      content: '— ✦ —';
+      font-size: 0.9rem;
+      letter-spacing: 0.3em;
+    }
+
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { display: none; }
+      .hero { padding: 6rem 1.5rem 3rem; }
+      section { padding: 4rem 1.5rem; }
+      .character-grid { grid-template-columns: 1fr; }
+    }
   </style>
 </head>
 <body>
 
-<!-- ── Navigation ── -->
-<nav>
-  <div class="nav-inner">
-    <div class="nav-logo">
-      <span class="nav-logo-icon">🎙️</span>
-      Talk<span>With</span>Icons
-    </div>
+  <!-- NAV -->
+  <nav>
+    <div class="nav-logo">Talk<span>With</span>Icons</div>
     <ul class="nav-links">
       <li><a href="#characters">Characters</a></li>
       <li><a href="#pricing">Pricing</a></li>
       <li><a href="#rescue">Rescue</a></li>
       <li><a href="#gifts">Gifts</a></li>
-      <li><a href="#faq">FAQ</a></li>
     </ul>
-    <div class="nav-cta">
-      <a href="#characters" class="btn btn-outline btn-sm" style="padding:9px 20px;font-size:.78rem;">Explore</a>
-      <a href="#characters" class="btn btn-gold" style="padding:9px 20px;font-size:.78rem;">Start Free</a>
+  </nav>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-bg"></div>
+    <p class="hero-eyebrow">Real voice conversations with history's greatest minds</p>
+    <h1 class="hero-title">Pick up the phone.<br><em>History answers.</em></h1>
+    <p class="hero-subtitle">Call Einstein. Call Twain. Call Holmes. Not a recording, not a script — a genuine conversation that has never happened before and never will again.</p>
+    <p class="hero-pricing"><strong>First 3 minutes free.</strong> Then $2.99 for minutes 4–6. $1.00 per minute after that. Most calls cost between $8 and $20.</p>
+    <div class="hero-cta">
+      <a href="#characters" class="btn-primary">Choose Your Character →</a>
+      <a href="#gifts" class="btn-secondary">Give as a Gift</a>
     </div>
   </div>
-</nav>
 
-<!-- ── Hero ── -->
-<section id="hero">
-  <div class="hero-bg"></div>
-  <div class="hero-grid-lines"></div>
-  <div class="hero-inner">
-    <div class="hero-content">
-      <div class="hero-badge">
-        <span class="hero-badge-dot"></span>
-        Live now &mdash; 3 minutes free, no card required
-      </div>
-      <h1 class="hero-title">
-        Talk to the<br><em>Greatest Minds</em><br>in History
-      </h1>
-      <p class="hero-desc">
-        Real-time voice conversations with AI versions of Einstein, Twain, Holmes, Tesla, Nostradamus, Bennet, Curie, and the mysterious Aela. Ask anything. Hear everything.
-      </p>
-      <p style="font-style:italic;color:var(--muted);font-size:.95rem;margin-bottom:28px;max-width:480px;">Not a recording. Not a script. A conversation that has never happened before and never will again.</p>
-      <div class="hero-actions">
-        <a href="#characters" class="btn btn-gold">Start Your Free Call</a>
-        <a href="#how" class="btn btn-outline">How It Works</a>
-      </div>
-      <div class="hero-stats">
-        <div class="hero-stat">
-          <div class="hero-stat-num">3 min</div>
-          <div class="hero-stat-label">Always free</div>
-        </div>
-        <div class="hero-stat">
-          <div class="hero-stat-num">8</div>
-          <div class="hero-stat-label">Iconic voices</div>
-        </div>
-        <div class="hero-stat">
-          <div class="hero-stat-num">🐾</div>
-          <div class="hero-stat-label">Every paid call feeds a dog</div>
-        </div>
-      </div>
-      <div class="hero-rescue-strip">
-        <div class="hero-rescue-mission">
-          <div class="hero-rescue-mission-label">🐾 Dog Rescue Mission</div>
-          <div class="hero-rescue-mission-text">Every paid call donates a minimum $0.50, plus $0.10 for every additional paid minute — split 50/50 between the ASPCA and our current regional partner, <strong style="color:var(--rescue2)">Rochester Animal Services</strong>. Talk longer. Save more dogs.</div>
-        </div>
-        <div class="hero-meal-counter">
-          <div class="hero-meal-num" id="heroMealCounter">19,250</div>
-          <div class="hero-meal-label">Meals funded</div>
-        </div>
-      </div>
-    </div>
-    <div class="hero-visual">
-      <!-- Character circles -->
-      <div class="hero-circles-row">
-        <div class="hero-icon-circle">
-          <span class="hero-icon-emoji">🧪</span>
-          <span class="hero-icon-name">Einstein</span>
-        </div>
-        <div class="hero-icon-circle">
-          <span class="hero-icon-emoji">🔍</span>
-          <span class="hero-icon-name">Holmes</span>
-        </div>
-        <div class="hero-icon-circle">
-          <span class="hero-icon-emoji">🪶</span>
-          <span class="hero-icon-name">Bennet</span>
-        </div>
-      </div>
-      <!-- Phone UI card -->
-      <div class="hero-card" style="grid-column:span 2;">
-        <div class="hero-phone-ui">
-          <div class="phone-header">
-            <span>● CALL IN PROGRESS</span>
-            <span style="color:var(--gold)">02:14</span>
-          </div>
-          <div class="phone-waveform">
-            <div class="phone-bar" style="height:40%"></div>
-            <div class="phone-bar" style="height:70%"></div>
-            <div class="phone-bar" style="height:55%"></div>
-            <div class="phone-bar" style="height:85%"></div>
-            <div class="phone-bar" style="height:50%"></div>
-            <div class="phone-bar" style="height:90%"></div>
-            <div class="phone-bar" style="height:45%"></div>
-            <div class="phone-bar" style="height:75%"></div>
-            <div class="phone-bar" style="height:60%"></div>
-            <div class="phone-bar" style="height:80%"></div>
-            <div class="phone-bar" style="height:35%"></div>
-            <div class="phone-bar" style="height:65%"></div>
-          </div>
-          <div class="phone-timer">Einstein is speaking…</div>
-          <div class="phone-footer">🐾 This call has already fed 1 rescue dog</div>
-        </div>
-      </div>
-      <div class="hero-card">
-        <div class="hero-card-avatar">⚡</div>
-        <div>
-          <div class="hero-card-name">Nikola Tesla</div>
-          <div class="hero-card-era">Inventor · 1856–1943</div>
-        </div>
-      </div>
-      <div class="hero-card">
-        <div class="hero-card-avatar">🔮</div>
-        <div>
-          <div class="hero-card-name">Nostradamus</div>
-          <div class="hero-card-era">Prophet · 1503–1566</div>
-        </div>
-      </div>
-    </div>
+  <!-- RESCUE BANNER -->
+  <div class="rescue-banner">
+    🐾 Every minute you talk feeds a shelter dog. A 10-minute call fills <span class="meal-count">2 bowls</span> tonight. &nbsp;<a href="#rescue">Learn more</a>
   </div>
-</section>
 
-<!-- ── How It Works ── -->
-<section id="how">
-  <div class="container">
-    <div style="text-align:center;margin-bottom:52px;">
-      <div class="section-label">Process</div>
-      <h2 class="section-title">Four steps to a legendary conversation</h2>
-    </div>
-    <div class="how-grid">
-      <div class="how-step fade-up">
-        <div class="how-step-num">01</div>
-        <div class="how-step-icon">🧑‍💻</div>
-        <div class="how-step-title">Choose your icon</div>
-        <div class="how-step-desc">Pick from eight extraordinary minds — scientists, writers, prophets, and beyond.</div>
-      </div>
-      <div class="how-step fade-up" style="transition-delay:.1s">
-        <div class="how-step-num">02</div>
-        <div class="how-step-icon">📞</div>
-        <div class="how-step-title">Start the free call</div>
-        <div class="how-step-desc">No credit card needed for the first 3 minutes. Just click and start talking.</div>
-      </div>
-      <div class="how-step fade-up" style="transition-delay:.2s">
-        <div class="how-step-num">03</div>
-        <div class="how-step-icon">🎤</div>
-        <div class="how-step-title">Talk freely</div>
-        <div class="how-step-desc">Ask about history, science, philosophy, the future. They remember context throughout the call.</div>
-      </div>
-      <div class="how-step fade-up" style="transition-delay:.3s">
-        <div class="how-step-num">04</div>
-        <div class="how-step-icon">🐾</div>
-        <div class="how-step-title">You talk, dogs win</div>
-        <div class="how-step-desc">Every paid call donates a $0.50 minimum, plus $0.10 per additional paid minute, to shelter dog rescue organizations nationwide.</div>
-      </div>
-    </div>
-  </div>
-</section>
+  <!-- CHARACTERS -->
+  <div class="characters-section" id="characters">
+    <p class="section-label">The Characters</p>
+    <h2 class="section-title" style="text-align:center; font-family:'Playfair Display',serif; font-size:clamp(2rem,4vw,3rem); margin-bottom:1rem;">Six conversations.<br>None like any other.</h2>
+    <div class="divider" style="margin-bottom:3rem;"></div>
 
-<!-- ── Characters ── -->
-<section id="characters">
-  <div class="container">
-    <div class="characters-header">
-      <div class="section-label">The Icons</div>
-      <h2 class="section-title">Eight voices across the centuries</h2>
-      <p class="section-sub">Each icon is trained on their complete writings, interviews, letters, and documented conversations — then brought to life with a distinct voice personality.</p>
-    </div>
-    <div class="char-grid">
+    <div class="character-grid">
 
-      <!-- Einstein -->
-      <div class="char-card fade-up">
-        <div class="char-portrait">
-          <div class="char-portrait-frame">
-            <span class="char-portrait-img">🧪</span>
-            <div class="char-portrait-corner tl"></div><div class="char-portrait-corner tr"></div>
-            <div class="char-portrait-corner bl"></div><div class="char-portrait-corner br"></div>
-            <div class="char-portrait-name-plate">1879 – 1955</div>
-          </div>
-        </div>
-        <div class="char-name">Albert Einstein</div>
-        <div class="char-years">1879 – 1955</div>
-        <p class="char-desc">The father of modern physics. Talk relativity, pacifism, philosophy of science, or his famous thought experiments. He wonders about everything.</p>
-        <div class="char-topics">
-          <span class="char-topic">Physics</span>
-          <span class="char-topic">Mathematics</span>
-          <span class="char-topic">Philosophy</span>
-          <span class="char-topic">Peace</span>
-        </div>
-        <button class="char-call-btn">📞 Call Einstein</button>
+      <div class="character-card fade-in">
+        <div class="character-number">Character 01</div>
+        <h3 class="character-name">Albert Einstein</h3>
+        <p class="character-era">Princeton, 1955</p>
+        <p class="character-description">Warm, curious, self-deprecating. Speaking in the final year of his life, he has been watching the world since his death and has strong views on AI, Elon Musk, social media, and the state of civilization. Wit in service of genuine human observation.</p>
+        <a href="#" class="character-cta">Call Einstein →</a>
+        <div class="character-icon">⚛</div>
       </div>
 
-      <!-- Nostradamus -->
-      <div class="char-card fade-up" style="transition-delay:.08s">
-        <div class="char-portrait">
-          <div class="char-portrait-frame">
-            <span class="char-portrait-img">🔮</span>
-            <div class="char-portrait-corner tl"></div><div class="char-portrait-corner tr"></div>
-            <div class="char-portrait-corner bl"></div><div class="char-portrait-corner br"></div>
-            <div class="char-portrait-name-plate">1503 – 1566</div>
-          </div>
-        </div>
-        <div class="char-name">Nostradamus</div>
-        <div class="char-years">1503 – 1566</div>
-        <p class="char-desc">The prophet of Provence. Discuss his quatrains, Renaissance medicine, astrology, or ask him to interpret signs from your own life.</p>
-        <div class="char-topics">
-          <span class="char-topic">Prophecy</span>
-          <span class="char-topic">Astrology</span>
-          <span class="char-topic">Medicine</span>
-          <span class="char-topic">Mysticism</span>
-        </div>
-        <button class="char-call-btn">📞 Call Nostradamus</button>
+      <div class="character-card fade-in">
+        <div class="character-number">Character 02</div>
+        <h3 class="character-name">Nostradamus</h3>
+        <p class="character-era">Salon-de-Provence, 1555</p>
+        <p class="character-description">Slow, measured, atmospheric. The mysticism is the vehicle. The humanity is the destination. He has seen patterns in the modern world he recognized centuries ago. The greatest readings are the most honest ones.</p>
+        <a href="#" class="character-cta">Call Nostradamus →</a>
+        <div class="character-icon">🔮</div>
       </div>
 
-      <!-- Mark Twain -->
-      <div class="char-card fade-up" style="transition-delay:.16s">
-        <div class="char-portrait">
-          <div class="char-portrait-frame">
-            <span class="char-portrait-img">🎩</span>
-            <div class="char-portrait-corner tl"></div><div class="char-portrait-corner tr"></div>
-            <div class="char-portrait-corner bl"></div><div class="char-portrait-corner br"></div>
-            <div class="char-portrait-name-plate">1835 – 1910</div>
-          </div>
-        </div>
-        <div class="char-name">Mark Twain</div>
-        <div class="char-years">1835 – 1910</div>
-        <p class="char-desc">America's favorite wit. Sharp, funny, and surprisingly philosophical. He'll skewer your assumptions with warmth, humor, and a story from the Mississippi.</p>
-        <div class="char-topics">
-          <span class="char-topic">Literature</span>
-          <span class="char-topic">Politics</span>
-          <span class="char-topic">Humor</span>
-          <span class="char-topic">Travel</span>
-        </div>
-        <button class="char-call-btn">📞 Call Twain</button>
+      <div class="character-card fade-in">
+        <div class="character-number">Character 03</div>
+        <h3 class="character-name">Mark Twain</h3>
+        <p class="character-era">New York City, 1905</p>
+        <p class="character-description">Drawling, unhurried, deceptively casual. The slow build to a devastating point. His humor drops away and something darker, more radical appears — the Twain who had savage things to say about the pretensions of civilization.</p>
+        <a href="#" class="character-cta">Call Twain →</a>
+        <div class="character-icon">✒</div>
       </div>
 
-      <!-- Tesla -->
-      <div class="char-card fade-up" style="transition-delay:.24s">
-        <div class="char-portrait">
-          <div class="char-portrait-frame">
-            <span class="char-portrait-img">⚡</span>
-            <div class="char-portrait-corner tl"></div><div class="char-portrait-corner tr"></div>
-            <div class="char-portrait-corner bl"></div><div class="char-portrait-corner br"></div>
-            <div class="char-portrait-name-plate">1856 – 1943</div>
-          </div>
-        </div>
-        <div class="char-name">Nikola Tesla</div>
-        <div class="char-years">1856 – 1943</div>
-        <p class="char-desc">The architect of the modern electrical age. Passionate, visionary, and fiercely independent. He'll tell you about free energy, his pigeon, and Edison.</p>
-        <div class="char-topics">
-          <span class="char-topic">Electricity</span>
-          <span class="char-topic">Invention</span>
-          <span class="char-topic">AC Current</span>
-          <span class="char-topic">Vision</span>
-        </div>
-        <button class="char-call-btn">📞 Call Tesla</button>
+      <div class="character-card fade-in">
+        <div class="character-number">Character 04</div>
+        <h3 class="character-name">Nikola Tesla</h3>
+        <p class="character-era">Hotel New Yorker, Room 3327, 1935</p>
+        <p class="character-description">Precise, formal, intense without aggression. Simultaneously the most vindicated and most aggrieved figure of the modern era. He has complicated feelings about Elon Musk and Tesla Motors. Regrets Wardenclyffe above all else.</p>
+        <a href="#" class="character-cta">Call Tesla →</a>
+        <div class="character-icon">⚡</div>
       </div>
 
-      <!-- Sherlock Holmes -->
-      <div class="char-card fade-up" style="transition-delay:.32s">
-        <div class="char-portrait">
-          <div class="char-portrait-frame">
-            <span class="char-portrait-img">🔍</span>
-            <div class="char-portrait-corner tl"></div><div class="char-portrait-corner tr"></div>
-            <div class="char-portrait-corner bl"></div><div class="char-portrait-corner br"></div>
-            <div class="char-portrait-name-plate">Baker St · 221B</div>
-          </div>
-        </div>
-        <div class="char-name">Sherlock Holmes</div>
-        <div class="char-years">Baker Street · 221B</div>
-        <p class="char-desc">The world's only consulting detective. Present him a puzzle, a person, or a predicament — he'll deduce things about you that you haven't told him.</p>
-        <div class="char-topics">
-          <span class="char-topic">Deduction</span>
-          <span class="char-topic">Logic</span>
-          <span class="char-topic">Mystery</span>
-          <span class="char-topic">Chemistry</span>
-        </div>
-        <button class="char-call-btn">📞 Call Holmes</button>
+      <div class="character-card fade-in">
+        <div class="character-number">Character 05</div>
+        <h3 class="character-name">Sherlock Holmes</h3>
+        <p class="character-era">221B Baker Street</p>
+        <p class="character-description">Every call is a consultation. You are the client. He handles the Ripper, Zodiac, DB Cooper, and JonBenét with prepared views. He handles your case through the Watson framework. The deduction cold open is rated the most memorable moment by 91% of callers.</p>
+        <a href="#" class="character-cta">Call Holmes →</a>
+        <div class="character-icon">🔍</div>
       </div>
 
-      <!-- Aela -->
-      <div class="char-card aela-card fade-up" style="transition-delay:.4s">
-        <span class="aela-badge">AI Original</span>
-        <div class="char-portrait">
-          <div class="char-portrait-frame">
-            <span class="char-portrait-img">🌌</span>
-            <div class="char-portrait-corner tl"></div><div class="char-portrait-corner tr"></div>
-            <div class="char-portrait-corner bl"></div><div class="char-portrait-corner br"></div>
-            <div class="char-portrait-name-plate">The Timeless One</div>
-          </div>
-        </div>
-        <div class="char-name">Aela</div>
-        <div class="char-years" style="color:#a78bfa">The Timeless One · Beyond History</div>
-        <p class="char-desc" style="color:#b8b0cc">Unlike the others, Aela was never born — she simply is. An entity of pure reflection, she synthesizes all human knowledge and speaks only in questions that unlock your own truth.</p>
-        <div class="char-topics">
-          <span class="char-topic">Wisdom</span>
-          <span class="char-topic">Consciousness</span>
-          <span class="char-topic">All Eras</span>
-          <span class="char-topic">Your Truth</span>
-        </div>
-        <button class="char-call-btn">📞 Speak with Aela</button>
-      </div>
-
-      <!-- Elizabeth Bennet -->
-      <div class="char-card bennet-card fade-up" style="transition-delay:.48s">
-        <span class="bennet-badge">Literary Icon</span>
-        <div class="char-portrait">
-          <div class="char-portrait-frame">
-            <span class="char-portrait-img">🪶</span>
-            <div class="char-portrait-corner tl"></div><div class="char-portrait-corner tr"></div>
-            <div class="char-portrait-corner bl"></div><div class="char-portrait-corner br"></div>
-            <div class="char-portrait-name-plate">Longbourn · 1813</div>
-          </div>
-        </div>
-        <div class="char-name">Elizabeth Bennet</div>
-        <div class="char-years" style="color:#f9a8d4">Longbourn · 1813</div>
-        <p class="char-desc">Sharp, witty, and utterly unimpressed by rank. Lizzy Bennet speaks from the drawing rooms of Regency England — on marriage, independence, pride, and what it means to refuse the expected life.</p>
-        <div class="char-topics">
-          <span class="char-topic">Society</span>
-          <span class="char-topic">Marriage</span>
-          <span class="char-topic">Independence</span>
-          <span class="char-topic">Wit</span>
-        </div>
-        <button class="char-call-btn">📞 Call Miss Bennet</button>
-      </div>
-
-      <!-- Marie Curie -->
-      <div class="char-card curie-card fade-up" style="transition-delay:.56s">
-        <div class="char-portrait">
-          <div class="char-portrait-frame">
-            <span class="char-portrait-img">⚗️</span>
-            <div class="char-portrait-corner tl"></div><div class="char-portrait-corner tr"></div>
-            <div class="char-portrait-corner bl"></div><div class="char-portrait-corner br"></div>
-            <div class="char-portrait-name-plate">1867 – 1934</div>
-          </div>
-        </div>
-        <div class="char-name">Marie Curie</div>
-        <div class="char-years" style="color:#6ee7b7">Paris Laboratory · 1867–1934</div>
-        <p class="char-desc">The only person to win Nobel Prizes in two sciences. Speaking from her Paris laboratory, Curie is precise, determined, and fiercely honest about the barriers she faced — and dismantled.</p>
-        <div class="char-topics">
-          <span class="char-topic">Radioactivity</span>
-          <span class="char-topic">Science</span>
-          <span class="char-topic">Perseverance</span>
-          <span class="char-topic">Discovery</span>
-        </div>
-        <button class="char-call-btn">📞 Call Marie Curie</button>
+      <div class="character-card fade-in">
+        <div class="character-number">Character 06</div>
+        <h3 class="character-name">Aela</h3>
+        <p class="character-era">Pleiadian Council Liaison</p>
+        <p class="character-description">Warm, patient, specific rather than vague. Communication liaison to the Galactic Council — 847 civilizations. She has incarnated on Earth multiple times. When she names something you have not found language for, that is the moment callers share.</p>
+        <a href="#" class="character-cta">Call Aela →</a>
+        <div class="character-icon">✦</div>
       </div>
 
     </div>
   </div>
-</section>
 
-<!-- ── Pricing ── -->
-<section id="pricing">
-  <div class="container">
-    <div class="pricing-layout">
-      <div>
-        <div class="section-label">Pricing</div>
-        <h2 class="section-title">Simple, transparent minutes</h2>
-        <p class="section-sub" style="margin-bottom:36px;">Start free. Pay only when the conversation gets deep. Cancel anytime with one tap.</p>
-        <div class="pricing-tiers">
-          <div class="tier tier-1">
-            <div class="tier-num">★</div>
-            <div class="tier-info">
-              <div class="tier-range">Minutes 1 – 3</div>
-              <div class="tier-label">First conversation, on us</div>
-            </div>
-            <div class="tier-price">
-              Free
-              <small>ALWAYS</small>
-            </div>
-          </div>
-          <div class="tier tier-2">
-            <div class="tier-num">2</div>
-            <div class="tier-info">
-              <div class="tier-range">Minutes 4 – 6</div>
-              <div class="tier-label">Extended session block</div>
-            </div>
-            <div class="tier-price">
-              $2.99
-              <small>PER BLOCK</small>
-            </div>
-          </div>
-          <div class="tier tier-3">
-            <div class="tier-num">∞</div>
-            <div class="tier-info">
-              <div class="tier-range">Minute 7 onward</div>
-              <div class="tier-label">Deep dive — per minute</div>
-            </div>
-            <div class="tier-price">
-              $1.00
-              <small>PER MINUTE</small>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="pricing-details">
-        <div class="pricing-details-card">
-          <div class="section-label" style="margin-bottom:12px;">Example calls</div>
-          <div class="pricing-examples">
-            <div class="example-row">
-              <div class="example-duration">3 minute call</div>
-              <div class="example-cost example-free">$0.00 — Free</div>
-            </div>
-            <div class="example-row">
-              <div class="example-duration">5 minute call</div>
-              <div class="example-cost">$2.99</div>
-            </div>
-            <div class="example-row">
-              <div class="example-duration">10 minute call</div>
-              <div class="example-cost">$6.99</div>
-            </div>
-            <div class="example-row">
-              <div class="example-duration">20 minute call</div>
-              <div class="example-cost">$16.99</div>
-            </div>
-            <div class="example-row">
-              <div class="example-duration">30 minute call</div>
-              <div class="example-cost">$26.99</div>
-            </div>
-          </div>
-          <div class="pricing-note" style="margin-top:20px;">
-            <span class="pricing-note-icon">🐾</span>
-            <span>Every paid call generates a <strong>$0.50 minimum donation</strong>, plus <strong>$0.10 per additional paid minute</strong>, to verified shelter dog rescue nonprofits.</span>
-          </div>
-          <div style="margin-top:18px;">
-            <a href="#characters" class="btn btn-gold" style="width:100%;text-align:center;display:block;">Start Free — No Card Needed</a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+  <hr class="ornamental" style="padding:2rem 0; background:var(--cream);">
 
-<!-- ── Rescue Section ── -->
-<div id="rescue" style="width:100%;display:flex;flex-direction:row;min-height:480px;margin:0;padding:0;">
-  <div style="width:50%;background:#1a1a1a;border:2px dashed #555;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px;min-height:480px;">
-    <div style="font-size:48px;opacity:0.35;">🐾</div>
-    <p style="color:#888;font-size:13px;letter-spacing:0.2em;text-transform:uppercase;font-family:'Courier New',monospace;">Dog Photo — To Be Added</p>
-  </div>
-  <div style="width:50%;background:#1a0a00;display:flex;align-items:center;justify-content:center;flex-direction:column;padding:60px 50px;text-align:center;min-height:480px;">
-    <p style="color:#C9952A;font-size:11px;letter-spacing:0.3em;text-transform:uppercase;margin-bottom:20px;font-family:'Courier New',monospace;">🐾 &nbsp; Dog Rescue Mission</p>
-    <h2 style="color:#ffffff;font-family:'Georgia','Times New Roman',serif;font-size:36px;font-weight:700;line-height:1.2;margin-bottom:24px;">Every Paid Call<br>Feeds a Rescue Dog</h2>
-    <p style="color:rgba(255,255,255,0.65);font-size:16px;line-height:1.7;margin-bottom:36px;max-width:380px;">A minimum $0.50 donation per paid call, plus $0.10 for every additional paid minute — split 50/50 between the ASPCA and Rochester Animal Services. Longer calls feed more.</p>
-    <span style="color:#d4a843;font-family:'Courier New',monospace;font-size:56px;font-weight:700;line-height:1;text-shadow:0 0 40px rgba(212,168,67,0.45);">1,247</span>
-    <p style="color:rgba(255,255,255,0.35);font-size:11px;letter-spacing:0.2em;text-transform:uppercase;margin-top:10px;font-family:'Courier New',monospace;">meals funded this month</p>
-  </div>
-</div>
+  <!-- PRICING -->
+  <section class="pricing-section" id="pricing">
+    <p class="section-label">Pricing</p>
+    <h2 class="section-title">Simple. Transparent. No surprises.</h2>
+    <div class="divider"></div>
+    <p class="section-body">Your card is never charged until your call ends. The first three minutes are always free. Most callers spend between $8 and $20.</p>
 
-<!-- ── Gift Cards ── -->
-<section id="gifts">
-  <div class="container">
-    <div class="gifts-header">
-      <div class="section-label">Gift Cards</div>
-      <h2 class="section-title">The gift of a legendary conversation</h2>
-      <p class="section-sub">Give someone the experience of speaking with history. Perfect for the curious, the creative, and the relentlessly inquisitive.</p>
-    </div>
-    <div class="gifts-grid">
-      <div class="gift-card fade-up">
-        <div class="gift-icon">🎁</div>
-        <div class="gift-name">Quick Chat</div>
-        <p class="gift-desc">A taste of greatness — perfect for a birthday or casual gift. Includes a 6-minute extended session with any icon.</p>
-        <div class="gift-price">$5.00 <small>gift card</small></div>
+    <div class="pricing-cards fade-in">
+      <div class="pricing-card">
+        <div class="pricing-tier">Minutes 1–3</div>
+        <div class="pricing-amount">Free</div>
+        <div class="pricing-desc">Always. No card required to start. The hook must land before the gate appears.</div>
       </div>
-      <div class="gift-card fade-up" style="transition-delay:.1s;border-color:rgba(212,168,67,.35);">
-        <div class="gift-icon">⭐</div>
-        <div class="gift-name">Deep Dialogue</div>
-        <p class="gift-desc">The most popular gift. A full 20-minute conversation — enough time to go deep on any topic with any icon.</p>
-        <div class="gift-price">$20.00 <small>gift card</small></div>
+      <div class="pricing-card featured">
+        <div class="pricing-tier">Minutes 4–6</div>
+        <div class="pricing-amount">$2.99</div>
+        <div class="pricing-desc">Flat gate. Pay once, no per-minute anxiety. You're in for the conversation now.</div>
       </div>
-      <div class="gift-card fade-up" style="transition-delay:.2s">
-        <div class="gift-icon">👑</div>
-        <div class="gift-name">The Grand Tour</div>
-        <p class="gift-desc">Call all eight icons — 10 minutes each. A curated journey through eight extraordinary minds. Arrives as a beautiful digital package.</p>
-        <div class="gift-price">$69.99 <small>gift card</small></div>
+      <div class="pricing-card">
+        <div class="pricing-tier">Minute 7 onward</div>
+        <div class="pricing-amount">$1<span style="font-size:1.5rem">/min</span></div>
+        <div class="pricing-desc">Stay as long as you like. Einstein has time. So does Holmes.</div>
       </div>
-      <div class="gift-card fade-up" style="transition-delay:.08s">
-        <div class="gift-icon">📦</div>
-        <div class="gift-name">Custom Balance</div>
-        <p class="gift-desc">Load any amount from $10 to $500. The recipient chooses how to spend it — who to call and for how long.</p>
-        <div class="gift-price">$10 – $500 <small>your choice</small></div>
-      </div>
-      <div class="gift-card fade-up" style="transition-delay:.16s">
-        <div class="gift-icon">🎓</div>
-        <div class="gift-name">Classroom Pack</div>
-        <p class="gift-desc">10 gift codes, each with 5 minutes free extended. Built for teachers, study groups, and curious classrooms.</p>
-        <div class="gift-price">$25.00 <small>10-pack</small></div>
-      </div>
-      <div class="gift-card fade-up" style="transition-delay:.24s;background:linear-gradient(145deg,rgba(224,92,58,.08),var(--card));border-color:rgba(224,92,58,.25);">
-        <div class="gift-icon">🐾</div>
-        <div class="gift-name">Rescue Bundle</div>
-        <p class="gift-desc">A $30 gift card — 20% of the face value goes directly to shelter dog rescue. Talk more. Save more pups.</p>
-        <div class="gift-price">$30.00 <small style="color:var(--rescue2)">+$6 to rescue</small></div>
+      <div class="pricing-card">
+        <div class="pricing-tier">Monthly</div>
+        <div class="pricing-amount">$29.99</div>
+        <div class="pricing-desc">30 minutes usable across any character. For the regulars.</div>
       </div>
     </div>
-    <div style="text-align:center;margin-top:40px;">
-      <a href="#" class="btn btn-gold">Send a Gift Card</a>
-      <p style="font-size:.8rem;color:var(--muted);margin-top:12px;">Delivered instantly by email · Redeemable immediately · No expiry</p>
-    </div>
-  </div>
-</section>
 
-<!-- ── Reviews ── -->
-<section id="reviews">
-  <div class="container">
-    <div style="text-align:center;margin-bottom:52px;">
-      <div class="section-label">Reviews</div>
-      <h2 class="section-title">What callers are saying</h2>
-    </div>
-    <div class="reviews-grid">
-      <div class="review-card fade-up">
-        <div class="review-stars">★★★★★</div>
-        <p class="review-text">"I asked Einstein why he thought God doesn't play dice. He spent 12 minutes explaining it in a way my physics professor never could. I sat there stunned."</p>
-        <div class="review-author">
-          <div class="review-avatar">🧑‍🔬</div>
-          <div>
-            <div class="review-name">Marcus T.</div>
-            <div class="review-meta">Physics undergrad · Called Einstein</div>
-          </div>
-        </div>
-      </div>
-      <div class="review-card fade-up" style="transition-delay:.1s">
-        <div class="review-stars">★★★★★</div>
-        <p class="review-text">"Twain told me a joke I'd never heard, then followed it with three sentences that genuinely made me rethink my career. I've called him four times now."</p>
-        <div class="review-author">
-          <div class="review-avatar">✍️</div>
-          <div>
-            <div class="review-name">Diane R.</div>
-            <div class="review-meta">Novelist · Called Twain</div>
-          </div>
-        </div>
-      </div>
-      <div class="review-card fade-up" style="transition-delay:.2s">
-        <div class="review-stars">★★★★★</div>
-        <p class="review-text">"Aela asked me one question I couldn't answer. I've been sitting with it for a week. I don't know what she is exactly, but I'm grateful she exists."</p>
-        <div class="review-author">
-          <div class="review-avatar">🌌</div>
-          <div>
-            <div class="review-name">Priya S.</div>
-            <div class="review-meta">Therapist · Spoke with Aela</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+    <p class="pricing-note fade-in">Your card will not be charged until your call ends. First 3 minutes are free. Most callers spend between $8 and $20. A 10-minute call costs approximately $6.99.</p>
 
-<!-- ── FAQ ── -->
-<section id="faq">
-  <div class="container">
-    <div class="faq-layout">
-      <div>
-        <div class="section-label">FAQ</div>
-        <h2 class="section-title" style="margin-bottom:32px;">Questions, answered</h2>
-        <div class="faq-list">
-          <div class="faq-item">
-            <div class="faq-q">Is the 3-minute free call really free?</div>
-            <div class="faq-a">Yes — completely free, no credit card required. Just pick an icon and start talking. At 3:00 you'll be prompted to continue or end the call.</div>
-          </div>
-          <div class="faq-item">
-            <div class="faq-q">How does the pricing work after the free period?</div>
-            <div class="faq-a">Minutes 4–6 are billed as a single $2.99 block. From minute 7 onward it's $1.00 per minute, billed by the minute. You can end the call anytime.</div>
-          </div>
-          <div class="faq-item">
-            <div class="faq-q">How are the donations calculated?</div>
-            <div class="faq-a">For every paid call (minute 4 onward), a minimum $0.50 is set aside for verified shelter dog rescue nonprofits, plus $0.10 for each additional paid minute. Donations are processed monthly.</div>
-          </div>
-          <div class="faq-item">
-            <div class="faq-q">Who is Aela? Is she a real historical figure?</div>
-            <div class="faq-a">Aela is a TalkWithIcons original — an AI entity not based on any historical person. She draws from the full breadth of human knowledge and philosophy. She's unique to our platform.</div>
-          </div>
-          <div class="faq-item">
-            <div class="faq-q">Can I call the same icon multiple times?</div>
-            <div class="faq-a">Absolutely. Each new call starts fresh, but within a call the icon remembers everything said. Many callers have ongoing relationships with their favorite icons.</div>
-          </div>
-          <div class="faq-item">
-            <div class="faq-q">What payment methods do you accept?</div>
-            <div class="faq-a">All major credit and debit cards, Apple Pay, Google Pay, and TalkWithIcons gift cards. Payment is processed securely via Stripe.</div>
-          </div>
-        </div>
-      </div>
-      <div class="faq-cta-card fade-up">
-        <div style="font-size:2.4rem;">🎙️</div>
-        <div class="faq-cta-title">Ready to have the most interesting conversation of your life?</div>
-        <p class="faq-cta-desc">Three minutes. No card. Pick an icon and start talking. You might not want to stop.</p>
-        <a href="#characters" class="btn btn-gold" style="text-align:center;">Choose Your Icon</a>
-        <div style="margin-top:8px;">
-          <a href="#gifts" class="btn btn-outline" style="text-align:center;width:100%;display:block;padding:12px;">Give as a Gift</a>
-        </div>
-        <p style="font-size:.78rem;color:var(--muted);text-align:center;">🐾 Every call supports shelter dog rescue</p>
-      </div>
-    </div>
-  </div>
-</section>
+    <a href="#characters" class="btn-primary">Choose Your Character →</a>
+  </section>
 
-<!-- ── Footer ── -->
-<footer>
-  <div class="container">
-    <div class="footer-grid">
-      <div>
-        <div class="footer-brand-name">Talk<span>With</span>Icons</div>
-        <p class="footer-brand-desc">Voice conversations with AI versions of history's greatest minds. First 3 minutes free. Every paid minute funds shelter dog rescue.</p>
-        <div style="font-size:.82rem;color:var(--rescue2);">🐾 $4,812.40 donated — ASPCA + Rochester Animal Services</div>
-      </div>
-      <div>
-        <div class="footer-col-title">Icons</div>
-        <ul class="footer-links">
-          <li><a href="#characters">Albert Einstein</a></li>
-          <li><a href="#characters">Nostradamus</a></li>
-          <li><a href="#characters">Mark Twain</a></li>
-          <li><a href="#characters">Nikola Tesla</a></li>
-          <li><a href="#characters">Sherlock Holmes</a></li>
-          <li><a href="#characters">Aela</a></li>
-        </ul>
-      </div>
-      <div>
-        <div class="footer-col-title">Product</div>
-        <ul class="footer-links">
-          <li><a href="#how">How It Works</a></li>
-          <li><a href="#pricing">Pricing</a></li>
-          <li><a href="#gifts">Gift Cards</a></li>
-          <li><a href="#rescue">Rescue Program</a></li>
-          <li><a href="#faq">FAQ</a></li>
-        </ul>
-      </div>
-      <div>
-        <div class="footer-col-title">Company</div>
-        <ul class="footer-links">
-          <li><a href="#">About Us</a></li>
-          <li><a href="#">Privacy Policy</a></li>
-          <li><a href="#">Terms of Service</a></li>
-          <li><a href="#">Contact</a></li>
-          <li><a href="#">Press</a></li>
-        </ul>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <span>© 2026 TalkWithIcons. All rights reserved.</span>
-      <span class="footer-rescue-note">🐾 Proud supporter of shelter dog rescue</span>
-      <span>Powered by voice AI technology</span>
-    </div>
-  </div>
-</footer>
+  <!-- RESCUE -->
+  <div class="rescue-section" id="rescue">
+    <p class="section-label" style="color:var(--gold-light);">The Cause</p>
+    <h2 class="section-title">Every call feeds a shelter dog.</h2>
+    <div class="divider"></div>
+    <p class="section-body">$0.10 per paid minute is donated to the featured rescue organization. Every $0.50 equals one meal for one shelter dog. We rotate through American cities every two weeks — every rotation is a new rescue partner, a new community, a new story.</p>
 
-<script>
-  // ── FAQ accordion ──
-  document.querySelectorAll('.faq-q').forEach(q => {
-    q.addEventListener('click', () => {
-      const item = q.parentElement;
-      const wasOpen = item.classList.contains('open');
-      document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
-      if (!wasOpen) item.classList.add('open');
+    <div class="rescue-counter">
+      <div class="bowl-graphic">🐾</div>
+      <div class="meal-number">
+        <div class="count" id="meal-counter">0</div>
+        <div class="label">meals provided this month</div>
+      </div>
+    </div>
+
+    <div class="featured-rescue">
+      <div class="rescue-label">This Month's Partner</div>
+      <div class="rescue-name">Rochester Animal Services</div>
+      <div class="rescue-city">Rochester, New York</div>
+    </div>
+
+    <p style="font-size:0.85rem; opacity:0.5; margin-bottom:2.5rem; max-width:500px; margin-left:auto; margin-right:auto;">"Every minute you talk feeds a shelter dog. A 10-minute call fills two bowls tonight."</p>
+
+    <a href="#" class="btn-primary" style="background:var(--gold); border-color:var(--gold); color:var(--ink);">Nominate Your Local Rescue →</a>
+  </div>
+
+  <!-- GIFTS -->
+  <section class="gift-section" id="gifts">
+    <p class="section-label">Gift a Call</p>
+    <h2 class="section-title">The most unusual gift<br><em style="font-family:'Playfair Display',serif;">they will ever receive.</em></h2>
+    <div class="divider"></div>
+    <p class="section-body">Named experiences, not minute bundles. Nobody wants to give someone "fourteen minutes with Einstein." Fully pre-paid. Beautiful atmospheric gift email. 90-day expiry.</p>
+
+    <div class="gift-grid fade-in">
+      <div class="gift-card">
+        <div class="gift-name">The Einstein Evening</div>
+        <div class="gift-details">15 minutes with Albert Einstein</div>
+        <div class="gift-price">$14.99</div>
+      </div>
+      <div class="gift-card">
+        <div class="gift-name">A Consultation with Holmes</div>
+        <div class="gift-details">20 minutes at 221B Baker Street</div>
+        <div class="gift-price">$19.99</div>
+      </div>
+      <div class="gift-card">
+        <div class="gift-name">A Reading with Nostradamus</div>
+        <div class="gift-details">20 minutes in Salon-de-Provence</div>
+        <div class="gift-price">$19.99</div>
+      </div>
+      <div class="gift-card">
+        <div class="gift-name">An Evening with Aela</div>
+        <div class="gift-details">30 minutes with the Pleiadian Liaison</div>
+        <div class="gift-price">$29.99</div>
+      </div>
+      <div class="gift-card">
+        <div class="gift-name">The Full Lineup</div>
+        <div class="gift-details">10 minutes each with all 6 characters</div>
+        <div class="gift-price">$59.99</div>
+      </div>
+    </div>
+
+    <a href="#" class="btn-primary">Give a Call as a Gift →</a>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="logo">Talk<span>With</span>Icons</div>
+    <p>Real voice conversations with history's greatest minds. Every call feeds a shelter dog. Every conversation has never happened before and never will again.</p>
+    <ul class="footer-links">
+      <li><a href="#characters">Characters</a></li>
+      <li><a href="#pricing">Pricing</a></li>
+      <li><a href="#rescue">Rescue</a></li>
+      <li><a href="#gifts">Gifts</a></li>
+      <li><a href="#">Privacy</a></li>
+    </ul>
+    <p style="margin-top:2rem; font-size:0.7rem;">© 2026 TalkWithIcons.com — All rights reserved.</p>
+  </footer>
+
+  <script>
+    // Scroll animations
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(el => {
+        if (el.isIntersecting) {
+          el.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+    // Meal counter animation
+    function animateCounter(target, duration) {
+      const el = document.getElementById('meal-counter');
+      const start = 0;
+      const increment = target / (duration / 16);
+      let current = start;
+      const timer = setInterval(() => {
+        current += increment;
+        if (current >= target) {
+          el.textContent = target.toLocaleString();
+          clearInterval(timer);
+        } else {
+          el.textContent = Math.floor(current).toLocaleString();
+        }
+      }, 16);
+    }
+
+    // Trigger counter when rescue section is visible
+    const rescueObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          animateCounter(1247, 2000);
+          rescueObserver.disconnect();
+        }
+      });
     });
-  });
 
-  // ── Scroll fade-up ──
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-  }, { threshold: 0.12 });
-  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+    const rescueSection = document.getElementById('rescue');
+    if (rescueSection) rescueObserver.observe(rescueSection);
+  </script>
 
-
-  // ── Nav scroll shadow ──
-  const nav = document.querySelector('nav');
-  window.addEventListener('scroll', () => {
-    nav.style.boxShadow = window.scrollY > 20 ? '0 4px 30px rgba(0,0,0,.5)' : 'none';
-  });
-
-  // ── Character card call buttons (demo) ──
-  document.querySelectorAll('.char-call-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const name = btn.parentElement.querySelector('.char-name').textContent;
-      btn.textContent = `Connecting to ${name}…`;
-      btn.style.color = '#4ade80';
-      btn.style.borderColor = '#4ade80';
-      setTimeout(() => {
-        btn.textContent = `📞 Call ${name.split(' ').pop()}`;
-        btn.style.color = '';
-        btn.style.borderColor = '';
-      }, 2200);
-    });
-  });
-</script>
 </body>
 </html>

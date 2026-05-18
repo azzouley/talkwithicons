@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>TalkWithIcons — Call History's Greatest Minds</title>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500&family=Space+Mono&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
@@ -129,6 +129,7 @@
     .wf-bar:nth-child(13){height:75%;animation-delay:.15s}.wf-bar:nth-child(14){height:42%;animation-delay:.25s}
     .wf-bar:nth-child(15){height:88%;animation-delay:.35s}
     @keyframes pulse { 0%,100%{opacity:.35;transform:scaleY(.55)} 50%{opacity:1;transform:scaleY(1)} }
+    @keyframes dot-pulse { 0%,100%{box-shadow:0 0 0 0 rgba(201,168,76,0.7)} 50%{box-shadow:0 0 0 8px rgba(201,168,76,0)} }
     .wf-speaking { font-size: 0.78rem; color: rgba(240,235,224,0.55); text-align: center; font-style: italic; margin-bottom: 0.4rem; }
     .wf-rescue { font-size: 0.68rem; color: rgba(201,149,42,0.65); text-align: center; }
 
@@ -556,14 +557,17 @@
     </div>
   </div>
 
-  <!-- US MAP PLACEHOLDER -->
-  <div style="max-width:800px; margin:0 auto 3rem; border:1px solid rgba(201,149,42,0.15); background:#111; height:320px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:1rem;">
-    <div style="font-size:0.65rem; letter-spacing:0.25em; text-transform:uppercase; color:#444;">Interactive US Map — Coming Soon</div>
-    <div style="display:inline-flex; align-items:center; gap:0.75rem; background:#1a0f02; border:1px solid rgba(201,149,42,0.25); padding:0.75rem 1.5rem;">
-      <span style="width:10px; height:10px; border-radius:50%; background:#C9952A; display:inline-block;"></span>
-      <span style="font-size:0.75rem; letter-spacing:0.1em; text-transform:uppercase; color:#f0ebe0;">Rochester, NY — Current Regional Partner</span>
+  <!-- RESCUE PARTNERS MAP -->
+  <div style="max-width:900px;margin:80px auto;padding:0 32px;text-align:center;">
+    <p style="font-family:'Space Mono',monospace;font-size:0.68rem;letter-spacing:0.2em;text-transform:uppercase;color:#c9a84c;margin-bottom:16px;">Rescue Partners</p>
+    <h2 style="font-family:'Playfair Display',serif;font-size:2.5rem;font-weight:700;color:#f5f0e8;margin-bottom:40px;">Where Every Call Makes a Difference</h2>
+    <div style="position:relative;display:inline-block;width:100%;">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Blank_US_Map_%28states_only%29.svg/1200px-Blank_US_Map_%28states_only%29.svg.png" style="width:100%;opacity:0.3;filter:sepia(1) hue-rotate(10deg);">
+      <div style="position:absolute;top:28%;left:72%;transform:translate(-50%,-50%);">
+        <div style="width:16px;height:16px;background:#c9a84c;border-radius:50%;border:2px solid #f5f0e8;animation:dot-pulse 2s infinite;"></div>
+        <div style="background:rgba(13,11,8,0.9);border:1px solid #c9a84c;color:#f5f0e8;padding:6px 12px;margin-top:6px;font-family:Space Mono,monospace;font-size:0.65rem;white-space:nowrap;">Rochester Animal Services</div>
+      </div>
     </div>
-    <p style="font-size:0.62rem; letter-spacing:0.15em; text-transform:uppercase; color:rgba(240,235,224,0.2);">A new pin drops every two weeks as we add regional partners</p>
   </div>
 
   <div class="partner-grid">

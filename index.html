@@ -561,13 +561,16 @@
   <div style="max-width:900px;margin:80px auto;padding:0 32px;text-align:center;">
     <p style="font-family:'Space Mono',monospace;font-size:0.68rem;letter-spacing:0.2em;text-transform:uppercase;color:#c9a84c;margin-bottom:16px;">Rescue Partners</p>
     <h2 style="font-family:'Playfair Display',serif;font-size:2.5rem;font-weight:700;color:#f5f0e8;margin-bottom:40px;">Where Every Call Makes a Difference</h2>
-    <div id="mapdiv" style="width:100%;height:400px;max-width:860px;margin:0 auto;"></div>
-    <script src="https://www.amcharts.com/lib/3/ammap.js"></script>
-    <script src="https://www.amcharts.com/lib/3/maps/js/usaLow.js"></script>
-    <script src="https://www.amcharts.com/lib/3/themes/dark.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+    <div id="mapdiv" style="width:100%;height:420px;max-width:860px;margin:0 auto;border-radius:4px;overflow:hidden;"></div>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
-    AmCharts.makeChart("mapdiv",{type:"map",theme:"dark",dataProvider:{map:"usaLow",images:[{type:"circle",width:14,height:14,color:"#c9a84c",title:"Rochester Animal Services",latitude:43.16,longitude:-77.61,scale:1.5}]},areasSettings:{color:"#1c1710",outlineColor:"#3a3020"},imagesSettings:{color:"#c9a84c",rollOverColor:"#e8c96b",labelColor:"#f5f0e8",labelFontSize:12,labelPosition:"right"},zoomControl:{zoomControlEnabled:false},panEventsEnabled:false});
+    var map=L.map('mapdiv',{center:[39.5,-98.35],zoom:4,zoomControl:false,scrollWheelZoom:false,dragging:false,attributionControl:false});
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png').addTo(map);
+    var icon=L.divIcon({className:'',html:'<div style="width:16px;height:16px;background:#c9a84c;border-radius:50%;border:2px solid #fff;box-shadow:0 0 8px #c9a84c;"></div>',iconSize:[16,16],iconAnchor:[8,8]});
+    L.marker([43.1566,-77.6088],{icon:icon}).addTo(map).bindTooltip('Rochester Animal Services',{permanent:true,direction:'right',className:'map-tooltip'});
     </script>
+    <style>.map-tooltip{background:rgba(13,11,8,0.9);border:1px solid #c9a84c;color:#f5f0e8;font-family:monospace;font-size:11px;padding:4px 10px;border-radius:0;box-shadow:none;}.map-tooltip::before{border-right-color:#c9a84c;}</style>
   </div>
 
   <div class="partner-grid">

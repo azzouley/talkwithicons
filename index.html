@@ -561,16 +561,33 @@
   <div style="max-width:900px;margin:80px auto;padding:0 32px;text-align:center;">
     <p style="font-family:'Space Mono',monospace;font-size:0.68rem;letter-spacing:0.2em;text-transform:uppercase;color:#c9a84c;margin-bottom:16px;">Rescue Partners</p>
     <h2 style="font-family:'Playfair Display',serif;font-size:2.5rem;font-weight:700;color:#f5f0e8;margin-bottom:40px;">Where Every Call Makes a Difference</h2>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
-    <div id="mapdiv" style="width:100%;height:420px;max-width:860px;margin:0 auto;border-radius:4px;overflow:hidden;"></div>
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <div id="mapdiv" style="width:100%;height:420px;max-width:860px;margin:0 auto;"></div>
+    <script src="https://cdn.amcharts.com/lib/4/core.js"></script>
+    <script src="https://cdn.amcharts.com/lib/4/maps.js"></script>
+    <script src="https://cdn.amcharts.com/lib/4/geodata/usaLow.js"></script>
     <script>
-    var map=L.map('mapdiv',{center:[39.5,-98.35],zoom:4,zoomControl:false,scrollWheelZoom:false,dragging:false,attributionControl:false});
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png').addTo(map);
-    var icon=L.divIcon({className:'',html:'<div style="width:16px;height:16px;background:#c9a84c;border-radius:50%;border:2px solid #fff;box-shadow:0 0 8px #c9a84c;"></div>',iconSize:[16,16],iconAnchor:[8,8]});
-    L.marker([43.1566,-77.6088],{icon:icon}).addTo(map).bindTooltip('Rochester Animal Services',{permanent:true,direction:'right',className:'map-tooltip'});
+    var chart=am4core.create("mapdiv",am4maps.MapChart);
+    chart.geodata=am4geodata_usaLow;
+    chart.projection=new am4maps.projections.AlbersUsa();
+    chart.background.fill=am4core.color("#131009");
+    chart.background.fillOpacity=1;
+    var ps=chart.series.push(new am4maps.MapPolygonSeries());
+    ps.useGeodata=true;
+    ps.mapPolygons.template.fill=am4core.color("#1c1710");
+    ps.mapPolygons.template.stroke=am4core.color("#c9a84c");
+    ps.mapPolygons.template.strokeWidth=0.5;
+    var is=chart.series.push(new am4maps.MapImageSeries());
+    var it=is.mapImages.template;
+    it.nonScaling=true;
+    var circle=it.createChild(am4core.Circle);
+    circle.radius=8;
+    circle.fill=am4core.color("#c9a84c");
+    circle.stroke=am4core.color("#ffffff");
+    circle.strokeWidth=2;
+    it.propertyFields.latitude="latitude";
+    it.propertyFields.longitude="longitude";
+    is.data=[{latitude:43.1566,longitude:-77.6088,title:"Rochester Animal Services"}];
     </script>
-    <style>.map-tooltip{background:rgba(13,11,8,0.9);border:1px solid #c9a84c;color:#f5f0e8;font-family:monospace;font-size:11px;padding:4px 10px;border-radius:0;box-shadow:none;}.map-tooltip::before{border-right-color:#c9a84c;}</style>
   </div>
 
   <div class="partner-grid">

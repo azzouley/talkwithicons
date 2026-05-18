@@ -566,16 +566,7 @@
     <script src="https://www.amcharts.com/lib/3/maps/js/usaLow.js"></script>
     <script src="https://www.amcharts.com/lib/3/themes/dark.js"></script>
     <script>
-    AmCharts.makeChart("mapdiv",{
-      type:"map",
-      theme:"dark",
-      dataProvider:{
-        map:"usaLow",
-        images:[{type:"circle",width:14,height:14,color:"#c9a84c",title:"Rochester Animal Services",latitude:43.1566,longitude:-77.6088}]
-      },
-      areasSettings:{color:"#1c1710",outlineColor:"#3a3020",outlineThickness:0.5},
-      imagesSettings:{color:"#c9a84c",rollOverColor:"#e8c96b",labelColor:"#f5f0e8",labelFontSize:12}
-    });
+    AmCharts.makeChart("mapdiv",{type:"map",theme:"dark",dataProvider:{map:"usaLow",images:[{type:"circle",width:14,height:14,color:"#c9a84c",title:"Rochester Animal Services",latitude:43.16,longitude:-77.61,scale:1.5}]},areasSettings:{color:"#1c1710",outlineColor:"#3a3020"},imagesSettings:{color:"#c9a84c",rollOverColor:"#e8c96b",labelColor:"#f5f0e8",labelFontSize:12,labelPosition:"right"},zoomControl:{zoomControlEnabled:false},panEventsEnabled:false});
     </script>
   </div>
 

@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Call Elizabeth Bennet — TalkWithIcons</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --gold: #c9a84c; --gold-light: #e8c96b; --gold-dim: #8a6e30;
+      --dark: #0d0b08; --dark2: #131009; --dark3: #1c1710;
+      --warm-white: #f5f0e8; --muted: #9a8f7a;
+    }
+    html { scroll-behavior: smooth; }
+    body { background: var(--dark); color: var(--warm-white); font-family: 'Crimson Pro', Georgia, serif; font-size: 18px; line-height: 1.6; overflow-x: hidden; }
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 18px 48px; background: linear-gradient(180deg, rgba(13,11,8,0.98) 0%, rgba(13,11,8,0) 100%); border-bottom: 1px solid rgba(201,168,76,0.15); }
+    .nav-logo { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 900; letter-spacing: 0.04em; color: var(--gold); text-decoration: none; }
+    .nav-back { font-family: 'Space Mono', monospace; font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+    .nav-back:hover { color: var(--gold); }
+    .nav-cta { font-family: 'Space Mono', monospace; font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--dark); background: var(--gold); padding: 10px 24px; text-decoration: none; transition: background 0.2s; }
+    .nav-cta:hover { background: var(--gold-light); }
+    .hero { min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr; align-items: center; padding-top: 80px; position: relative; overflow: hidden; }
+    .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 60% 80% at 70% 50%, rgba(201,168,76,0.05) 0%, transparent 70%); pointer-events: none; }
+    .hero-left { padding: 80px 60px 80px 80px; position: relative; z-index: 2; }
+    .hero-eyebrow { font-family: 'Space Mono', monospace; font-size: 0.65rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold); margin-bottom: 24px; display: flex; align-items: center; gap: 12px; }
+    .hero-eyebrow::before { content: ''; display: block; width: 32px; height: 1px; background: var(--gold-dim); }
+    .hero-name { font-family: 'Playfair Display', serif; font-size: clamp(3rem, 5vw, 4.8rem); font-weight: 900; line-height: 0.95; letter-spacing: -0.02em; margin-bottom: 8px; color: var(--warm-white); }
+    .hero-dates { font-family: 'Space Mono', monospace; font-size: 0.7rem; letter-spacing: 0.15em; color: var(--gold-dim); margin-bottom: 32px; }
+    .hero-tagline { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-style: italic; font-weight: 400; color: var(--gold-light); line-height: 1.4; margin-bottom: 28px; max-width: 480px; }
+    .hero-desc { font-size: 1rem; color: var(--muted); line-height: 1.75; max-width: 460px; margin-bottom: 48px; }
+    .call-box { border: 1px solid rgba(201,168,76,0.4); background: rgba(201,168,76,0.04); padding: 28px 32px; max-width: 420px; }
+    .call-box-label { font-family: 'Space Mono', monospace; font-size: 0.62rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-dim); margin-bottom: 12px; }
+    .call-price-title { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 700; color: var(--warm-white); margin-bottom: 16px; }
+    .call-details { font-size: 0.88rem; color: var(--muted); margin-bottom: 20px; line-height: 1.6; }
+    .btn-call { display: block; width: 100%; font-family: 'Space Mono', monospace; font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 700; background: var(--gold); color: var(--dark); border: none; padding: 18px; cursor: pointer; text-align: center; text-decoration: none; transition: background 0.2s, transform 0.15s; margin-bottom: 12px; }
+    .btn-call:hover { background: var(--gold-light); transform: translateY(-1px); }
+    .call-rescue { font-family: 'Space Mono', monospace; font-size: 0.58rem; letter-spacing: 0.1em; text-transform: uppercase; color: #6dbf8a; text-align: center; }
+    .hero-right { position: relative; height: 100vh; overflow: hidden; }
+    .hero-portrait { width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; filter: grayscale(20%) contrast(1.05); }
+    .portrait-overlay { position: absolute; inset: 0; background: linear-gradient(90deg, var(--dark) 0%, rgba(13,11,8,0.3) 30%, transparent 60%), linear-gradient(0deg, var(--dark) 0%, transparent 25%); }
+    .portrait-caption { position: absolute; bottom: 40px; right: 32px; font-family: 'Space Mono', monospace; font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(201,168,76,0.5); }
+    .quote-section { padding: 100px 80px; background: var(--dark2); text-align: center; }
+    .quote-mark { font-family: 'Playfair Display', serif; font-size: 8rem; color: rgba(201,168,76,0.1); line-height: 0.5; margin-bottom: 32px; display: block; }
+    .quote-text { font-family: 'Playfair Display', serif; font-size: clamp(1.4rem, 3vw, 2.2rem); font-style: italic; font-weight: 400; line-height: 1.5; max-width: 760px; margin: 0 auto 24px; color: var(--warm-white); }
+    .quote-attr { font-family: 'Space Mono', monospace; font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-dim); }
+    .starters-section { padding: 100px 80px; max-width: 1100px; margin: 0 auto; }
+    .section-label { font-family: 'Space Mono', monospace; font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; }
+    .starters-intro { font-family: 'Crimson Pro', serif; font-size: 1.4rem; font-weight: 400; font-style: normal; border: 2px solid #c9a84c; padding: 20px 28px; display: block; margin: 0 auto 48px; text-align: center; }
+    .starters-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 2px; }
+    .starter-card { background: var(--dark3); border: 1px solid rgba(201,168,76,0.12); padding: 28px 28px 32px; transition: border-color 0.25s; }
+    .starter-card:hover { border-color: rgba(201,168,76,0.35); }
+    .starter-num { font-family: 'Playfair Display', serif; font-size: 2.2rem; font-weight: 900; color: rgba(201,168,76,0.15); line-height: 1; margin-bottom: 12px; }
+    .starter-q { font-family: 'Playfair Display', serif; font-size: 1.05rem; font-style: italic; color: var(--warm-white); line-height: 1.5; margin-bottom: 10px; }
+    .starter-note { font-size: 0.85rem; color: var(--muted); line-height: 1.55; }
+    .bio-section { padding: 100px 80px; background: var(--dark2); display: grid; grid-template-columns: 1fr 2fr; gap: 80px; align-items: start; }
+    .bio-sidebar { position: sticky; top: 120px; }
+    .bio-fact { margin-bottom: 32px; padding-bottom: 32px; border-bottom: 1px solid rgba(201,168,76,0.1); }
+    .bio-fact:last-child { border-bottom: none; margin-bottom: 0; }
+    .bio-fact-label { font-family: 'Space Mono', monospace; font-size: 0.6rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold-dim); margin-bottom: 6px; }
+    .bio-fact-value { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; color: var(--warm-white); }
+    .bio-content p { font-size: 1.05rem; color: var(--muted); line-height: 1.8; margin-bottom: 24px; }
+    .bio-content p:last-child { margin-bottom: 0; }
+    .bio-content strong { color: var(--warm-white); font-weight: 600; }
+    .bottom-cta { padding: 100px 80px; text-align: center; background: linear-gradient(180deg, var(--dark) 0%, #0a0800 100%); position: relative; }
+    .bottom-cta::before { content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 1px; height: 80px; background: linear-gradient(180deg, transparent, var(--gold-dim)); }
+    .bottom-cta h2 { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 900; margin-bottom: 16px; line-height: 1.1; }
+    .bottom-cta p { font-size: 1rem; color: var(--muted); max-width: 480px; margin: 0 auto 40px; }
+    .btn-large { font-family: 'Space Mono', monospace; font-size: 0.85rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 700; background: var(--gold); color: var(--dark); border: none; padding: 20px 56px; cursor: pointer; text-decoration: none; display: inline-block; transition: background 0.2s, transform 0.15s; margin-bottom: 16px; }
+    .btn-large:hover { background: var(--gold-light); transform: translateY(-2px); }
+    .bottom-rescue { font-family: 'Space Mono', monospace; font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase; color: #6dbf8a; }
+    .others-section { padding: 80px; border-top: 1px solid rgba(201,168,76,0.1); }
+    .others-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; margin-top: 40px; }
+    .other-card { background: var(--dark3); border: 1px solid rgba(201,168,76,0.1); padding: 20px 16px; text-align: center; text-decoration: none; transition: border-color 0.2s; }
+    .other-card:hover { border-color: rgba(201,168,76,0.4); }
+    .other-portrait { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; object-position: top; display: block; margin: 0 auto 10px; border: 1px solid rgba(201,168,76,0.2); }
+    .other-name { font-family: 'Playfair Display', serif; font-size: 0.9rem; font-weight: 700; color: var(--warm-white); }
+    footer { border-top: 1px solid rgba(201,168,76,0.15); padding: 40px 80px; display: flex; justify-content: space-between; align-items: center; }
+    .footer-logo { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 900; color: var(--gold); }
+    .footer-copy { font-size: 0.78rem; color: rgba(154,143,122,0.45); max-width: 500px; text-align: center; }
+    .footer-links { display: flex; gap: 24px; }
+    .footer-links a { font-family: 'Space Mono', monospace; font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); text-decoration: none; }
+    .footer-links a:hover { color: var(--gold); }
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: 1fr; } .hero-right { height: 50vh; } .hero-left { padding: 100px 32px 60px; }
+      .bio-section { grid-template-columns: 1fr; padding: 60px 32px; } .bio-sidebar { position: static; }
+      .starters-section, .others-section, .bottom-cta { padding: 60px 32px; }
+      .others-grid { grid-template-columns: repeat(4, 1fr); } nav { padding: 16px 24px; }
+      footer { flex-direction: column; gap: 16px; text-align: center; padding: 32px; } .quote-section { padding: 60px 32px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a class="nav-logo" href="index.html">TalkWithIcons</a>
+    <a class="nav-back" href="index.html">← All Icons</a>
+    <a class="nav-cta" href="#call">Start the Call</a>
+  </nav>
+
+  <div class="hero">
+    <div class="hero-left">
+      <p class="hero-eyebrow">Heroine · Wit · Longbourn, 1813</p>
+      <h1 class="hero-name">Elizabeth<br>Bennet</h1>
+      <p class="hero-dates">Created 1813 · Jane Austen · Pride and Prejudice</p>
+      <p class="hero-tagline">"I could easily forgive his pride, if he had not mortified mine."</p>
+      <p class="hero-desc">
+        She is the most beloved heroine in the English language. Sharp, funny, fiercely
+        independent, and entirely unimpressed by wealth or rank alone. She chose love over
+        security at a time when that choice could ruin a woman. Talk to her about what
+        that cost — and what she gained.
+      </p>
+      <div class="call-box" id="call">
+        <p class="call-box-label">How It Works</p>
+        <p class="call-price-title">First 3 minutes free.</p>
+        <p class="call-details">Then $2.99 for the next 3 minutes.<br>$1.00 per minute after that.<br>No subscription. No commitment.</p>
+        <a class="btn-call" href="payment.html?icon=bennet">Start Your Free Call →</a>
+        <p class="call-rescue">🐾 every paid call triggers at minimum a meal donation for a rescue dog</p>
+      </div>
+    </div>
+    <div class="hero-right">
+      <img class="hero-portrait" src="images/bennet.jpeg" alt="Elizabeth Bennet" />
+      <div class="portrait-overlay"></div>
+      <p class="portrait-caption">Elizabeth Bennet · Longbourn, Hertfordshire</p>
+    </div>
+  </div>
+
+  <div class="quote-section">
+    <span class="quote-mark">"</span>
+    <p class="quote-text">There is a stubbornness about me that never can bear to be frightened at the will of others. My courage always rises at every attempt to intimidate me.</p>
+    <p class="quote-attr">— Elizabeth Bennet, Pride and Prejudice, Jane Austen, 1813</p>
+  </div>
+
+  <section class="starters-section">
+    <p class="section-label">What to Ask</p>
+    <p class="starters-intro">To jog your imagination, here are 6 conversation starters. But you are encouraged to ask absolutely anything you want including questions or unsolved mysteries of our present age. Your time with Elizabeth Bennet is your own!</p>
+    <div class="starters-grid">
+      <div class="starter-card">
+        <div class="starter-num">01</div>
+        <p class="starter-q">"What did you actually think of Darcy when you first met him?"</p>
+        <p class="starter-note">Before the letter. Before Pemberley. What she thought in that first room, and whether she'll admit it.</p>
+      </div>
+      <div class="starter-card">
+        <div class="starter-num">02</div>
+        <p class="starter-q">"Was refusing Collins the hardest thing you ever did?"</p>
+        <p class="starter-note">He was her family's financial salvation. She said no anyway. Ask her what that moment felt like.</p>
+      </div>
+      <div class="starter-card">
+        <div class="starter-num">03</div>
+        <p class="starter-q">"What do you make of women today?"</p>
+        <p class="starter-note">She fought for independence in a world that gave women almost none. She has opinions about 2026.</p>
+      </div>
+      <div class="starter-card">
+        <div class="starter-num">04</div>
+        <p class="starter-q">"Was your mother really as impossible as she seemed?"</p>
+        <p class="starter-note">Mrs. Bennet is one of literature's great comic embarrassments. But she was also trying to protect her daughters. Elizabeth knows this.</p>
+      </div>
+      <div class="starter-card">
+        <div class="starter-num">05</div>
+        <p class="starter-q">"Did you ever doubt your judgment — about Wickham, about Darcy?"</p>
+        <p class="starter-note">She was badly wrong about both men before she was right. She is honest enough to say so.</p>
+      </div>
+      <div class="starter-card">
+        <div class="starter-num">06</div>
+        <p class="starter-q">"What advice would you give a woman choosing between security and love?"</p>
+        <p class="starter-note">She lived that choice. Her answer is not simple, and she will not pretend it is.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="bio-section">
+    <div class="bio-sidebar">
+      <div class="bio-fact">
+        <p class="bio-fact-label">Home</p>
+        <p class="bio-fact-value">Longbourn House<br>Hertfordshire, England</p>
+      </div>
+      <div class="bio-fact">
+        <p class="bio-fact-label">Created By</p>
+        <p class="bio-fact-value">Jane Austen, 1813</p>
+      </div>
+      <div class="bio-fact">
+        <p class="bio-fact-label">Family</p>
+        <p class="bio-fact-value">Mr. and Mrs. Bennet, four sisters including Jane</p>
+      </div>
+      <div class="bio-fact">
+        <p class="bio-fact-label">Known For</p>
+        <p class="bio-fact-value">Wit, independence, refusing to marry for money alone</p>
+      </div>
+      <div class="bio-fact">
+        <p class="bio-fact-label">Married</p>
+        <p class="bio-fact-value">Mr. Fitzwilliam Darcy<br>Pemberley, Derbyshire</p>
+      </div>
+    </div>
+    <div class="bio-content">
+      <p>
+        Jane Austen called Elizabeth Bennet her favorite character — <strong>"as delightful a creature
+        as ever appeared in print."</strong> Two centuries of readers have agreed. Elizabeth is not
+        simply charming. She is a woman who thinks, argues, makes mistakes, and refuses to
+        be diminished by a world that has very little use for thinking women.
+      </p>
+      <p>
+        The England of 1813 offered women of Elizabeth's class a narrow set of choices.
+        Marry well or face genteel poverty. Defer to fathers, brothers, husbands.
+        Accept the limits of your situation with grace. <strong>Elizabeth does none of these things
+        gracefully.</strong> She laughs at pomposity. She argues with men who expect agreement.
+        She turns down two marriage proposals — one from a man who would have saved her
+        family, one from the man she will eventually love — because the terms are wrong.
+      </p>
+      <p>
+        Her misjudgment of Wickham and Darcy is the engine of the novel and the thing
+        that makes her human. She is perceptive about everyone except the men she has
+        decided to feel strongly about. <em>When Darcy's letter forces her to see clearly,
+        she does not flinch from what it reveals about herself.</em> That willingness to be
+        wrong, and to admit it, is rarer than wit.
+      </p>
+      <p>
+        Austen based Elizabeth partly on herself — the second daughter, the sharp one,
+        the one who never quite fit the mold expected of her. <strong>Austen never married.</strong>
+        Elizabeth did, on her own terms, to a man who had to become worthy of her.
+        That is the wish Austen gave her character that life did not give herself.
+      </p>
+    </div>
+  </div>
+
+  <div class="bottom-cta">
+    <h2>She chose truth<br>over comfort.<br><em style="color:var(--gold-light)">Every time.</em></h2>
+    <p>No script. No recordings. A live AI voice trained on Pride and Prejudice and Austen's letters — speaking only to you, only now.</p>
+    <a class="btn-large" href="payment.html?icon=bennet">Start Your Free Call →</a>
+    <br>
+    <p class="bottom-rescue">🐾 every paid call triggers at minimum a meal donation for a rescue dog</p>
+  </div>
+
+  <div class="others-section">
+    <p class="section-label">Other Icons</p>
+    <div class="others-grid">
+      <a class="other-card" href="einstein.html">
+        <img class="other-portrait" src="images/einstein.webp" alt="Albert Einstein" />
+        <p class="other-name">Einstein</p>
+      </a>
+      <a class="other-card" href="nostradamus.html">
+        <img class="other-portrait" src="images/nostradamus.jpeg" alt="Nostradamus" />
+        <p class="other-name">Nostradamus</p>
+      </a>
+      <a class="other-card" href="twain.html">
+        <img class="other-portrait" src="images/twain.png" alt="Mark Twain" />
+        <p class="other-name">Twain</p>
+      </a>
+      <a class="other-card" href="holmes.html">
+        <img class="other-portrait" src="images/holmes.jpeg" alt="Sherlock Holmes" />
+        <p class="other-name">Holmes</p>
+      </a>
+      <a class="other-card" href="tesla.html">
+        <img class="other-portrait" src="images/tesla.jpeg" alt="Nikola Tesla" />
+        <p class="other-name">Tesla</p>
+      </a>
+      <a class="other-card" href="curie.html">
+        <img class="other-portrait" src="images/curie.jpeg" alt="Marie Curie" />
+        <p class="other-name">Curie</p>
+      </a>
+      <a class="other-card" href="aela.html">
+        <img class="other-portrait" src="images/aela.jpeg" alt="Aela" />
+        <p class="other-name">Aela</p>
+      </a>
+    </div>
+  </div>
+
+  <footer>
+    <p class="footer-logo">TalkWithIcons</p>
+    <p class="footer-copy">© 2026 TalkWithIcons. AI-generated conversations for entertainment and educational purposes only. Responses do not represent the actual views or words of any historical person or their estate.</p>
+    <div class="footer-links">
+      <a href="index.html">Home</a>
+      <a href="#">Privacy</a>
+      <a href="#">Terms</a>
+    </div>
+  </footer>
+
+</body>
+</html>

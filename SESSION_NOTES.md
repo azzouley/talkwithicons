@@ -20,3 +20,4 @@ einstein.webp, nostradamus.jpeg, twain.png, tesla.jpeg, holmes.jpeg, aela.jpeg, 
 5. External image URLs break on Vercel. Always use local files from the images/ folder.
 6. amCharts v3 ignores real coordinates. Use Leaflet.js for maps.
 7. Present download link first, then Claude Code prompt — separately, never combined.
+8. Never send user to Claude Code for something that can be done directly here.

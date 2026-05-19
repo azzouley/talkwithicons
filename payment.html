@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Start Your Call — TalkWithIcons</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --gold: #c9a84c; --gold-light: #e8c96b; --gold-dim: #8a6e30;
+      --dark: #0d0b08; --dark2: #131009; --dark3: #1c1710;
+      --warm-white: #f5f0e8; --muted: #9a8f7a;
+    }
+    html { scroll-behavior: smooth; }
+    body { background: var(--dark); color: var(--warm-white); font-family: 'Crimson Pro', Georgia, serif; font-size: 18px; line-height: 1.6; min-height: 100vh; display: flex; flex-direction: column; }
+
+    nav { display: flex; align-items: center; justify-content: space-between; padding: 18px 48px; border-bottom: 1px solid rgba(201,168,76,0.15); }
+    .nav-logo { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 900; color: var(--gold); text-decoration: none; }
+    .nav-back { font-family: 'Space Mono', monospace; font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+    .nav-back:hover { color: var(--gold); }
+
+    .main { flex: 1; display: grid; grid-template-columns: 1fr 1fr; max-width: 1100px; margin: 0 auto; width: 100%; padding: 60px 32px; gap: 80px; align-items: start; }
+
+    /* LEFT — icon summary */
+    .icon-panel { position: sticky; top: 60px; }
+    .icon-portrait { width: 100%; max-width: 340px; height: 380px; object-fit: cover; object-position: top; display: block; margin-bottom: 28px; border: 1px solid rgba(201,168,76,0.2); filter: grayscale(15%); }
+    .icon-name { font-family: 'Playfair Display', serif; font-size: 2.4rem; font-weight: 900; line-height: 1; margin-bottom: 6px; }
+    .icon-era { font-family: 'Space Mono', monospace; font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold-dim); margin-bottom: 20px; }
+    .icon-desc { font-size: 0.95rem; color: var(--muted); line-height: 1.7; margin-bottom: 28px; }
+    .pricing-breakdown { border: 1px solid rgba(201,168,76,0.2); padding: 20px 24px; }
+    .pricing-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 0.9rem; }
+    .pricing-row:last-child { border-bottom: none; }
+    .pricing-row-label { color: var(--muted); }
+    .pricing-row-value { font-family: 'Space Mono', monospace; font-size: 0.78rem; color: var(--warm-white); }
+    .pricing-row-value.free { color: #6dbf8a; }
+    .rescue-note { margin-top: 16px; font-family: 'Space Mono', monospace; font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; color: #6dbf8a; }
+
+    /* RIGHT — call form */
+    .form-panel {}
+    .form-eyebrow { font-family: 'Space Mono', monospace; font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; }
+    .form-title { font-family: 'Playfair Display', serif; font-size: 2.2rem; font-weight: 900; line-height: 1.1; margin-bottom: 8px; }
+    .form-subtitle { font-size: 0.95rem; color: var(--muted); margin-bottom: 40px; line-height: 1.6; }
+
+    .step { margin-bottom: 40px; }
+    .step-header { display: flex; align-items: center; gap: 16px; margin-bottom: 20px; }
+    .step-num { font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 900; color: rgba(201,168,76,0.3); line-height: 1; min-width: 32px; }
+    .step-title { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; color: var(--warm-white); }
+
+    .field { margin-bottom: 20px; }
+    .field label { display: block; font-family: 'Space Mono', monospace; font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+    .field input { width: 100%; background: var(--dark3); border: 1px solid rgba(201,168,76,0.2); color: var(--warm-white); font-family: 'Crimson Pro', serif; font-size: 1rem; padding: 14px 16px; outline: none; transition: border-color 0.2s; }
+    .field input:focus { border-color: var(--gold); }
+    .field input::placeholder { color: rgba(154,143,122,0.4); }
+
+    .phone-row { display: grid; grid-template-columns: 100px 1fr; gap: 8px; }
+
+    /* Stripe placeholder */
+    .stripe-placeholder { background: var(--dark3); border: 1px solid rgba(201,168,76,0.2); padding: 14px 16px; min-height: 48px; display: flex; align-items: center; }
+    .stripe-placeholder-text { font-family: 'Space Mono', monospace; font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(154,143,122,0.4); }
+    .stripe-note { font-size: 0.78rem; color: var(--muted); margin-top: 8px; }
+
+    .divider { border: none; border-top: 1px solid rgba(201,168,76,0.1); margin: 32px 0; }
+
+    .free-call-notice { background: rgba(61,107,79,0.12); border: 1px solid rgba(109,191,138,0.3); padding: 16px 20px; margin-bottom: 28px; }
+    .free-call-notice p { font-size: 0.88rem; color: #6dbf8a; line-height: 1.6; }
+    .free-call-notice strong { color: #8de0a8; }
+
+    .btn-start { display: block; width: 100%; font-family: 'Space Mono', monospace; font-size: 0.85rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 700; background: var(--gold); color: var(--dark); border: none; padding: 20px; cursor: pointer; text-align: center; text-decoration: none; transition: background 0.2s, transform 0.15s; margin-bottom: 16px; }
+    .btn-start:hover { background: var(--gold-light); transform: translateY(-1px); }
+    .btn-start:disabled { background: var(--gold-dim); cursor: not-allowed; transform: none; opacity: 0.6; }
+
+    .legal { font-size: 0.78rem; color: rgba(154,143,122,0.5); line-height: 1.6; text-align: center; }
+    .legal a { color: var(--muted); }
+
+    /* Confirmation state — hidden by default */
+    .confirmation { display: none; text-align: center; padding: 60px 32px; max-width: 600px; margin: 0 auto; }
+    .confirmation.active { display: block; }
+    .confirmation-icon { font-size: 3rem; margin-bottom: 24px; }
+    .confirmation h2 { font-family: 'Playfair Display', serif; font-size: 2.2rem; font-weight: 900; margin-bottom: 16px; }
+    .confirmation p { color: var(--muted); margin-bottom: 32px; line-height: 1.7; }
+    .confirmation .rescue-confirm { font-family: 'Space Mono', monospace; font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; color: #6dbf8a; margin-top: 24px; }
+
+    footer { border-top: 1px solid rgba(201,168,76,0.1); padding: 24px 48px; display: flex; justify-content: space-between; align-items: center; }
+    .footer-copy { font-size: 0.75rem; color: rgba(154,143,122,0.4); }
+    .footer-links { display: flex; gap: 24px; }
+    .footer-links a { font-family: 'Space Mono', monospace; font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); text-decoration: none; }
+
+    @media (max-width: 800px) {
+      .main { grid-template-columns: 1fr; padding: 40px 24px; gap: 48px; }
+      .icon-panel { position: static; }
+      .icon-portrait { max-width: 100%; height: 260px; }
+      nav { padding: 16px 24px; }
+      footer { flex-direction: column; gap: 12px; padding: 20px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a class="nav-logo" href="index.html">TalkWithIcons</a>
+    <a class="nav-back" id="backLink" href="index.html">← Back</a>
+  </nav>
+
+  <div class="main" id="mainContent">
+
+    <!-- LEFT: Icon summary -->
+    <div class="icon-panel">
+      <img class="icon-portrait" id="iconPortrait" src="images/einstein.webp" alt="" />
+      <h2 class="icon-name" id="iconName">Albert Einstein</h2>
+      <p class="icon-era" id="iconEra">Physicist · 1879–1955</p>
+      <p class="icon-desc" id="iconDesc">Warm, curious, self-deprecating. He has been watching the world since his death and has strong views on AI, Elon Musk, social media, and the state of civilization.</p>
+
+      <div class="pricing-breakdown">
+        <div class="pricing-row">
+          <span class="pricing-row-label">First 3 minutes</span>
+          <span class="pricing-row-value free">Free</span>
+        </div>
+        <div class="pricing-row">
+          <span class="pricing-row-label">Next 3 minutes</span>
+          <span class="pricing-row-value">$2.99</span>
+        </div>
+        <div class="pricing-row">
+          <span class="pricing-row-label">Each minute after</span>
+          <span class="pricing-row-value">$1.00 / min</span>
+        </div>
+      </div>
+      <p class="rescue-note">🐾 every paid call triggers at minimum a meal donation for a rescue dog</p>
+    </div>
+
+    <!-- RIGHT: Form -->
+    <div class="form-panel">
+      <p class="form-eyebrow">Begin Your Call</p>
+      <h1 class="form-title">Your first 3 minutes are free.</h1>
+      <p class="form-subtitle">Enter your phone number and we'll connect you. No payment required to start. If you choose to continue past 3 minutes, billing begins then.</p>
+
+      <div class="free-call-notice">
+        <p><strong>No card required to start.</strong> You'll only be charged if you choose to continue the call past the free 3 minutes. You can end at any time.</p>
+      </div>
+
+      <div class="step">
+        <div class="step-header">
+          <span class="step-num">01</span>
+          <span class="step-title">Your phone number</span>
+        </div>
+        <div class="field">
+          <label for="phone">Mobile number</label>
+          <div class="phone-row">
+            <input type="text" id="countryCode" value="+1" placeholder="+1" maxlength="4" />
+            <input type="tel" id="phone" placeholder="555 000 0000" maxlength="14" />
+          </div>
+        </div>
+        <div class="field">
+          <label for="email">Email — for your receipt and donation confirmation</label>
+          <input type="email" id="email" placeholder="you@email.com" />
+        </div>
+      </div>
+
+      <hr class="divider" />
+
+      <div class="step">
+        <div class="step-header">
+          <span class="step-num">02</span>
+          <span class="step-title">Payment — charged only if you continue</span>
+        </div>
+        <div class="field">
+          <label>Card number</label>
+          <!-- STRIPE ELEMENT GOES HERE -->
+          <div class="stripe-placeholder" id="stripeCardElement">
+            <span class="stripe-placeholder-text">Stripe card element — insert publishable key to activate</span>
+          </div>
+          <p class="stripe-note">Your card is saved securely by Stripe. You will not be charged unless you continue past 3 minutes.</p>
+        </div>
+      </div>
+
+      <hr class="divider" />
+
+      <button class="btn-start" id="startBtn" onclick="handleStart()">Begin Free Call →</button>
+
+      <p class="legal">
+        By starting a call you agree to our <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>. 
+        AI-generated conversations for entertainment and educational purposes only. 
+        Responses do not represent the actual views or words of any historical person or their estate.
+      </p>
+    </div>
+
+  </div>
+
+  <!-- Confirmation (shown after call starts) -->
+  <div class="confirmation" id="confirmation">
+    <div class="confirmation-icon">📞</div>
+    <h2>Your call is connecting.</h2>
+    <p>You'll receive a call on your phone within the next 30 seconds. Pick up — <span id="confirmIconName">Einstein</span> is waiting.</p>
+    <p>Your first 3 minutes are free. If you choose to continue, you'll hear a prompt and billing will begin only after you confirm.</p>
+    <p class="rescue-note confirmation" style="display:block;">🐾 every paid call triggers at minimum a meal donation for a rescue dog</p>
+  </div>
+
+  <footer>
+    <p class="footer-copy">© 2026 TalkWithIcons</p>
+    <div class="footer-links">
+      <a href="index.html">Home</a>
+      <a href="#">Privacy</a>
+      <a href="#">Terms</a>
+    </div>
+  </footer>
+
+  <script>
+    // Icon data
+    const icons = {
+      einstein: {
+        name: 'Albert Einstein',
+        era: 'Physicist · 1879–1955',
+        desc: 'Warm, curious, self-deprecating. He has been watching the world since his death and has strong views on AI, Elon Musk, social media, and the state of civilization.',
+        portrait: 'images/einstein.webp',
+        page: 'einstein.html'
+      },
+      nostradamus: {
+        name: 'Nostradamus',
+        era: 'Prophet · Physician · 1503–1566',
+        desc: 'Slow, measured, atmospheric. The mysticism is the vehicle. The humanity is the destination. He has seen patterns in the modern world he recognized centuries ago.',
+        portrait: 'images/nostradamus.jpeg',
+        page: 'nostradamus.html'
+      },
+      twain: {
+        name: 'Mark Twain',
+        era: 'Author · Humorist · 1835–1910',
+        desc: 'Drawling, unhurried, deceptively casual. The slow build to a devastating point. The Twain who had savage things to say about the pretensions of civilization.',
+        portrait: 'images/twain.png',
+        page: 'twain.html'
+      },
+      tesla: {
+        name: 'Nikola Tesla',
+        era: 'Inventor · Visionary · 1856–1943',
+        desc: 'Precise, formal, intense without aggression. The most vindicated and most aggrieved figure of the modern era. Regrets Wardenclyffe above all else.',
+        portrait: 'images/tesla.jpeg',
+        page: 'tesla.html'
+      },
+      holmes: {
+        name: 'Sherlock Holmes',
+        era: 'Detective · Logician · 221B Baker Street',
+        desc: 'He will deduce your profession before you finish your first sentence. Arrogant, brilliant, and bored without a problem. Bring him one.',
+        portrait: 'images/holmes.jpeg',
+        page: 'holmes.html'
+      },
+      aela: {
+        name: 'Aela',
+        era: 'Origin Unknown · The Enigma',
+        desc: 'She knows things she should not. She speaks in truths that unsettle. No one knows exactly who she is. Or was.',
+        portrait: 'images/aela.jpeg',
+        page: 'aela.html'
+      },
+      bennet: {
+        name: 'Elizabeth Bennet',
+        era: 'Heroine · Wit · Longbourn, 1813',
+        desc: 'Sharp, funny, fiercely independent. She chose love over security at a time when that choice could ruin a woman.',
+        portrait: 'images/bennet.jpeg',
+        page: 'bennet.html'
+      },
+      curie: {
+        name: 'Marie Curie',
+        era: 'Physicist · Chemist · 1867–1934',
+        desc: 'Two Nobel Prizes. The lab notebooks that are still radioactive. And what it cost to be brilliant in a man\'s world.',
+        portrait: 'images/curie.jpeg',
+        page: 'curie.html'
+      }
+    };
+
+    // Read icon from URL param
+    const params = new URLSearchParams(window.location.search);
+    const iconKey = params.get('icon') || 'einstein';
+    const icon = icons[iconKey] || icons.einstein;
+
+    // Populate page
+    document.getElementById('iconPortrait').src = icon.portrait;
+    document.getElementById('iconPortrait').alt = icon.name;
+    document.getElementById('iconName').textContent = icon.name;
+    document.getElementById('iconEra').textContent = icon.era;
+    document.getElementById('iconDesc').textContent = icon.desc;
+    document.getElementById('backLink').href = icon.page;
+    document.getElementById('confirmIconName').textContent = icon.name.split(' ')[0];
+    document.title = 'Call ' + icon.name + ' — TalkWithIcons';
+
+    // Aela gets purple accent
+    if (iconKey === 'aela') {
+      document.documentElement.style.setProperty('--gold', '#9060c0');
+      document.documentElement.style.setProperty('--gold-light', '#b080e0');
+      document.documentElement.style.setProperty('--gold-dim', '#5a3880');
+    }
+
+    function handleStart() {
+      const phone = document.getElementById('phone').value.trim();
+      const email = document.getElementById('email').value.trim();
+
+      if (!phone) {
+        document.getElementById('phone').focus();
+        return;
+      }
+      if (!email) {
+        document.getElementById('email').focus();
+        return;
+      }
+
+      // TODO: Stripe tokenization goes here
+      // TODO: Vapi call initiation goes here
+
+      // Show confirmation
+      document.getElementById('mainContent').style.display = 'none';
+      document.getElementById('confirmation').classList.add('active');
+      window.scrollTo(0, 0);
+    }
+
+    // Phone number formatting
+    document.getElementById('phone').addEventListener('input', function() {
+      let v = this.value.replace(/\D/g, '');
+      if (v.length >= 6) v = v.slice(0,3) + ' ' + v.slice(3,6) + ' ' + v.slice(6,10);
+      else if (v.length >= 3) v = v.slice(0,3) + ' ' + v.slice(3);
+      this.value = v;
+    });
+  </script>
+
+</body>
+</html>

@@ -38,9 +38,6 @@
     .call-rescue { font-family: 'Space Mono', monospace; font-size: 0.58rem; letter-spacing: 0.1em; text-transform: uppercase; color: #6dbf8a; text-align: center; }
     .hero-right { position: relative; height: 100vh; overflow: hidden; }
     .hero-portrait { width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; filter: grayscale(20%) contrast(1.05); }
-    .portrait-placeholder { width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; background: linear-gradient(135deg, #1a1208 0%, #0d0a06 100%); border-left: 1px dashed rgba(201,168,76,0.2); gap: 1rem; }
-    .portrait-placeholder-icon { font-size: 4rem; opacity: 0.15; }
-    .portrait-placeholder-label { font-family: 'Space Mono', monospace; font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(201,168,76,0.3); }
     .portrait-overlay { position: absolute; inset: 0; background: linear-gradient(90deg, var(--dark) 0%, rgba(13,11,8,0.3) 30%, transparent 60%), linear-gradient(0deg, var(--dark) 0%, transparent 25%); }
     .portrait-caption { position: absolute; bottom: 40px; right: 32px; font-family: 'Space Mono', monospace; font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(201,168,76,0.5); }
     .quote-section { padding: 100px 80px; background: var(--dark2); text-align: center; }
@@ -105,14 +102,14 @@
     <div class="hero-left">
       <p class="hero-eyebrow">Astrologer · 1868–1932</p>
       <h1 class="hero-name">Evangeline<br>Adams</h1>
-      <p class="hero-dates">Born Jersey City, New Jersey · Died New York City · Astrologer to the Powerful</p>
-      <p class="hero-tagline">"The court finds she has raised astrology to the dignity of an exact science." — New York City, 1914</p>
+      <p class="hero-dates">Born New England · Died New York City · Astrologer to the Powerful</p>
+      <p class="hero-tagline">Astrologer to the Powerful</p>
       <p class="hero-desc">
-        She built the most serious astrological practice in American history.
-        JP Morgan consulted her before major financial decisions. Enrico Caruso and
-        Charlie Chaplin sat across from her desk. In 1914 a New York court tried to
-        put her in jail. Instead, the judge ruled she had elevated her field to a science.
-        Talk to the woman who made the powerful believers.
+        She built the most serious astrological practice in American history —
+        clients by appointment only, a waiting list, no palm reading, no performance.
+        JP Morgan consulted her before major financial decisions. In 1914 a New York
+        court tried to put her in jail for it. The judge ruled she had raised astrology
+        to the dignity of an exact science.
       </p>
       <div class="call-box" id="call">
         <p class="call-box-label">How It Works</p>
@@ -123,13 +120,15 @@
       </div>
     </div>
     <div class="hero-right">
-      <img src="images/evangeline.jpeg" alt="Evangeline Adams" style="width:100%;max-width:400px;display:block;margin:0 auto;border-radius:8px;">
+      <img class="hero-portrait" src="images/evangeline.jpeg" alt="Evangeline Adams" />
+      <div class="portrait-overlay"></div>
+      <p class="portrait-caption">Evangeline Adams · c. 1910</p>
     </div>
   </div>
 
   <div class="quote-section">
     <span class="quote-mark">"</span>
-    <p class="quote-text">The court finds that the defendant is possessed of a special knowledge of astrology, and that she has raised it to the dignity of an exact science.</p>
+    <p class="quote-text">The defendant has raised astrology to the dignity of an exact science.</p>
     <p class="quote-attr">— New York City Magistrate, 1914 · charges dismissed</p>
   </div>
 
@@ -144,28 +143,28 @@
       </div>
       <div class="starter-card">
         <div class="starter-num">02</div>
-        <p class="starter-q">"Tell me about the day you read for Caruso."</p>
-        <p class="starter-note">Enrico Caruso was among the most famous voices in the world when he sat across from her. She read his chart. Ask what she found.</p>
+        <p class="starter-q">"Tell me about reading for Caruso — what did you find in his chart?"</p>
+        <p class="starter-note">Enrico Caruso was among the most famous voices in the world when he came to her. She read his chart. Ask what she saw.</p>
       </div>
       <div class="starter-card">
         <div class="starter-num">03</div>
-        <p class="starter-q">"Walk me through the 1914 trial — what actually happened in that courtroom?"</p>
-        <p class="starter-note">She was arrested for fortune telling. The judge handed her his son's birth details with no name. She did the reading cold. The charge was dropped. Ask her how she felt when the ruling came.</p>
+        <p class="starter-q">"Walk me through the 1914 trial. What happened when the judge handed you those birth details?"</p>
+        <p class="starter-note">No name. No context. Just the numbers. She did the reading cold, in open court. The charge was dropped. Ask how she felt when the ruling came.</p>
       </div>
       <div class="starter-card">
         <div class="starter-num">04</div>
-        <p class="starter-q">"Did you ever doubt what you were doing?"</p>
-        <p class="starter-note">She built a practice that powerful men depended on, in a field the world dismissed. Ask her what it took to hold that position with certainty.</p>
+        <p class="starter-q">"How did you hold your nerve in a field the world constantly dismissed?"</p>
+        <p class="starter-note">She built a rigorous practice in a discipline treated as fraud. Powerful men depended on her. The world still didn't take it seriously. Ask her how she carried that.</p>
       </div>
       <div class="starter-card">
         <div class="starter-num">05</div>
         <p class="starter-q">"You finished your definitive work just before you died. Did you know it would be ignored?"</p>
-        <p class="starter-note">Published posthumously in 1932. Largely overlooked at the time. Ask what she hoped it would accomplish — and what she thinks now.</p>
+        <p class="starter-note">Published posthumously. Largely overlooked. Ask what she hoped it would accomplish — and what she thinks now, watching from wherever she is.</p>
       </div>
       <div class="starter-card">
         <div class="starter-num">06</div>
-        <p class="starter-q">"What do you make of astrology today — the apps, the memes, the horoscope columns?"</p>
-        <p class="starter-note">She spent her life trying to make it rigorous and serious. She has watched what the modern world did with it. She will have views.</p>
+        <p class="starter-q">"What do you make of astrology today — the apps, the memes, the sun-sign columns?"</p>
+        <p class="starter-note">She spent her life trying to make it precise and serious. She has been watching what the modern world did with it. She will have views.</p>
       </div>
     </div>
   </section>
@@ -174,7 +173,11 @@
     <div class="bio-sidebar">
       <div class="bio-fact">
         <p class="bio-fact-label">Born</p>
-        <p class="bio-fact-value">1868<br>Jersey City, New Jersey</p>
+        <p class="bio-fact-value">1868<br>New England</p>
+      </div>
+      <div class="bio-fact">
+        <p class="bio-fact-label">Lineage</p>
+        <p class="bio-fact-value">Adams family — traceable to the presidents</p>
       </div>
       <div class="bio-fact">
         <p class="bio-fact-label">Arrived in New York</p>
@@ -195,38 +198,33 @@
     </div>
     <div class="bio-content">
       <p>
-        Evangeline Adams arrived in New York City in 1899 and immediately set about building
-        something that had never existed before: <strong>a genuinely serious astrological
-        practice</strong>, run with the rigor of a professional consultancy, in the most powerful
-        city in the world. She did not traffic in vague reassurances. She worked charts with
-        precision and kept records. Her reputation spread by results.
+        Evangeline Adams was born in 1868 into a New England family that traced its lineage
+        to the presidents. She moved to New York City in 1899 and built <strong>the most serious
+        astrological practice in American history</strong> — clients by appointment only, a waiting
+        list, no palm reading, no performance. She read charts with the rigor a physician
+        reads an X-ray and told people what she saw.
       </p>
       <p>
-        JP Morgan was among her clients. He did not consult her casually — <strong>he consulted
-        her before major financial decisions.</strong> Enrico Caruso, the greatest operatic tenor of
-        the age, came to her. Charlie Chaplin sat across her desk. These were not credulous
-        people. They were people who had tested her and returned.
+        JP Morgan consulted her before major financial decisions. Enrico Caruso and Charlie
+        Chaplin sought her out. These were not credulous people. <strong>They were people who had
+        tested her and returned.</strong>
       </p>
       <p>
-        In 1914 she was arrested under a New York law prohibiting fortune telling. She did not
-        settle. She went to trial. The magistrate, skeptical, handed her the birth details of
-        his son — <strong>no name, no context, nothing.</strong> She read the chart cold, in open court.
-        The judge ruled that she had raised astrology to the dignity of an exact science.
-        The charge was dismissed. She walked out of the courtroom with a ruling that no one
-        in her field had ever obtained.
+        In 1914 she was arrested for fortune telling. In court she was handed the birth
+        details of a stranger — the judge's son — with no name attached. <strong>She did the
+        reading cold.</strong> The judge ruled she had raised astrology to the dignity of an exact
+        science. Charges dropped.
       </p>
       <p>
-        She spent the last years of her life completing what she considered her definitive work.
-        She died in 1932 just as she finished it. <strong>The book was published posthumously
-        and largely ignored.</strong> The serious practice she had spent thirty years building
-        did not survive her in the form she had built it. What survived was the legend — and
-        the court ruling, still on record in New York City.
+        She died in 1932 just as she finished the book she believed would be her definitive
+        work. It was published after her death and largely ignored. <strong>She has been
+        watching ever since.</strong>
       </p>
     </div>
   </div>
 
   <div class="bottom-cta">
-    <h2>The court said she was<br>an exact science.<br><em style="color:var(--gold-light)">Find out for yourself.</em></h2>
+    <h2>The court ruled it<br>an exact science.<br><em style="color:var(--gold-light)">Find out for yourself.</em></h2>
     <p>No script. No recordings. A live AI voice trained on Adams's writings, case records, and biographical accounts — speaking only to you, only now.</p>
     <a class="btn-large" href="payment.html?icon=evangeline">Start Your Free Call →</a>
     <br>

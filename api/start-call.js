@@ -96,6 +96,9 @@ function birthJD(birthDate, birthTime) {
   if (birthTime) {
     const parts = birthTime.split(':').map(Number);
     hour = parts[0] + (parts[1] || 0) / 60;
+    console.log('birthJD parsing — raw:', birthTime, '| H:', parts[0], 'M:', parts[1], '| decimal hour:', hour.toFixed(4));
+  } else {
+    console.log('birthJD parsing — no birthTime, defaulting to noon (hour=12)');
   }
   return julianLib.CalendarGregorianToJD(yr, mo, dy + hour / 24.0);
 }

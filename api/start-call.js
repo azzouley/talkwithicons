@@ -84,14 +84,6 @@ function lonToPosition(lonDeg) {
   };
 }
 
-// Ensure a value that might be radians is converted to degrees.
-// astronomia functions vary: solar returns degrees, planet positions
-// return radians. We detect by range: if |val| > 2π assume degrees already.
-function toDegreesIfRadians(val) {
-  const abs = Math.abs(val);
-  if (abs <= PI2 * 1.05) return val * RAD;   // looks like radians
-  return val;                                 // already degrees
-}
 
 // Julian Day from date string "YYYY-MM-DD" and optional time "HH:MM"
 // Birth time is treated as local solar time (no timezone conversion —
@@ -134,17 +126,19 @@ function plutoSign(year) {
 // ── Single planet longitude (degrees, 0–360) from a JD ───────────────────────
 function planetLon(planetObj, jd) {
   const pos = planetObj.position(jd);
-  // planetposition returns {lon, lat, range} — lon in radians
-  return norm360(toDegreesIfRadians(pos.lon));
+  // planetposition returns {lon, lat, range} — lon is always radians
+  return norm360(pos.lon * RAD);
 }
 
 // ── Full planetary positions for a given JD ───────────────────────────────────
 function getAllPlanetPositions(jd, birthYear) {
   const sunLonRaw = solarLib.apparentLongitude(jd);
-  const sunLon    = norm360(toDegreesIfRadians(sunLonRaw));
+  // solarLib.apparentLongitude returns degrees — no conversion needed
+  const sunLon    = norm360(sunLonRaw);
 
-  const moonPos    = moonLib.position(jd);
-  const moonLon    = norm360(toDegreesIfRadians(moonPos.lon));
+  const moonPos = moonLib.position(jd);
+  // moonposition returns {lon, ...} in radians — always multiply by RAD
+  const moonLon = norm360(moonPos.lon * RAD);
 
   return {
     Sun:     lonToPosition(sunLon),
@@ -175,7 +169,10 @@ function calcAscendantAndHouses(jd, latDeg, lonDeg) {
 
     // True obliquity of the ecliptic (radians)
     const epsRaw = nutationLib.trueObliquity(jd);
-    const epsRad = Math.abs(epsRaw) <= 1 ? epsRaw : epsRaw * DEG;
+    const absEps = Math.abs(epsRaw);
+    const epsRad = absEps > 360 ? epsRaw / 206265   // arcseconds → radians
+                 : absEps > 1   ? epsRaw * DEG       // degrees → radians
+                 :                epsRaw;             // already radians
 
     const latRad = latDeg * DEG;
 
@@ -189,7 +186,9 @@ function calcAscendantAndHouses(jd, latDeg, lonDeg) {
 
     // Midheaven (MC)
     const mcRad  = Math.atan2(Math.sin(lstRad), Math.cos(lstRad) * Math.cos(epsRad));
-    const mcDeg  = norm360(mcRad * RAD);
+    let   mcDeg  = norm360(mcRad * RAD);
+    // Quadrant correction: MC and ASC should never be within 90° of each other
+    if (Math.abs(norm360(mcDeg - ascDeg)) < 90) mcDeg = norm360(mcDeg + 180);
     const mc     = lonToPosition(mcDeg);
 
     // Equal house cusps: each cusp is 30° from the Ascendant
@@ -251,10 +250,12 @@ function buildNatalSummary({ name, birthDate, birthTime, birthCity }) {
 
   const coords  = lookupCity(birthCity);
   let ascBlock  = '';
+  let ascSign   = 'unknown — ask the caller';
 
   if (coords) {
     const result = calcAscendantAndHouses(jd, coords.lat, coords.lon);
     if (result) {
+      ascSign  = result.asc.sign;
       ascBlock = `
 ASCENDANT & HOUSES (Equal House system, birth coordinates: ${coords.lat.toFixed(2)}°, ${coords.lon.toFixed(2)}°)
 Ascendant (Rising): ${result.asc.label}
@@ -298,7 +299,7 @@ ${transitAspects.join('\n')}
 READING INSTRUCTIONS
 - Address the caller by name (${name}) immediately.
 - Lead with the Sun sign (${natal.Sun.sign}) and Moon sign (${natal.Moon.sign}).
-- Ascendant is ${coords ? natal.Sun.sign : 'unknown — ask the caller'}.
+- Ascendant is ${ascSign}.
 - Reference the most striking current transit aspect early.
 - Moon sign and rising shape the emotional tone — use them.
 - This is a conversation, not a monologue. Ask questions and follow threads.

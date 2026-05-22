@@ -235,6 +235,18 @@ function getTransitAspects(natal, current) {
   return lines.length > 0 ? lines : ['No major transit aspects within orb today.'];
 }
 
+// Convert 24-hour "HH:MM" to human-friendly "H:MM AM/PM"
+function formatBirthTime(t) {
+  if (!t) return null;
+  const [hStr, mStr] = t.split(':');
+  let h = parseInt(hStr, 10);
+  const m = mStr || '00';
+  const ampm = h < 12 ? 'AM' : 'PM';
+  if (h === 0) h = 12;
+  else if (h > 12) h -= 12;
+  return `${h}:${m} ${ampm}`;
+}
+
 // ── Build the full natal chart summary injected into the Vapi prompt ─────────
 function buildNatalSummary({ name, birthDate, birthTime, birthCity }) {
   if (!julianLib) {
@@ -269,14 +281,15 @@ ${result.houses.map((h, i) => `  House ${(i + 1).toString().padStart(2)}: ${h.la
 
   const transitAspects = getTransitAspects(natal, current);
 
-  const timeNote = birthTime
-    ? `Birth time ${birthTime} was provided.`
+  const friendlyTime = formatBirthTime(birthTime);
+  const timeNote = friendlyTime
+    ? `Birth time ${friendlyTime} was provided.`
     : 'No birth time was provided — Ascendant and house positions are approximate (defaulted to noon). Ask if the caller can find their exact birth time.';
 
   return `NATAL CHART — ${name.toUpperCase()}
 ${'='.repeat(50)}
 Birth Date:  ${birthDate}
-Birth Time:  ${birthTime || 'unknown (defaulted to noon)'}
+Birth Time:  ${friendlyTime || 'unknown (defaulted to noon)'}
 Birth City:  ${birthCity}
 ${timeNote}
 

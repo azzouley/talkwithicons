@@ -256,6 +256,11 @@ function buildNatalSummary({ name, birthDate, birthTime, birthCity }) {
     return `[Natal chart unavailable — astronomia failed to load. Proceed with name: ${name}, birth date: ${birthDate}, birth city: ${birthCity}.]`;
   }
 
+  const friendlyTime = formatBirthTime(birthTime);
+  const timeNote = friendlyTime
+    ? `Birth time ${friendlyTime} was provided.`
+    : 'No birth time was provided — Ascendant and house positions are approximate (defaulted to noon). Ask if the caller can find their exact birth time.';
+
   const [yr] = birthDate.split('-').map(Number);
   const jd   = birthJD(birthDate, birthTime);
   const jdNow = todayJD();
@@ -291,11 +296,6 @@ ${result.houses.map((h, i) => `  House ${(i + 1).toString().padStart(2)}: ${h.la
   }
 
   const transitAspects = getTransitAspects(natal, current);
-
-  const friendlyTime = formatBirthTime(birthTime);
-  const timeNote = friendlyTime
-    ? `Birth time ${friendlyTime} was provided.`
-    : 'No birth time was provided — Ascendant and house positions are approximate (defaulted to noon). Ask if the caller can find their exact birth time.';
 
   return `NATAL CHART — ${name.toUpperCase()}
 ${'='.repeat(50)}

@@ -386,11 +386,11 @@
       btn.disabled = true;
 
       const body = {
-        name:      document.getElementById('f-name').value.trim(),
-        phone:     document.getElementById('f-phone').value.trim(),
-        birthDate: document.getElementById('f-date').value,
-        birthTime: document.getElementById('f-time').value,
-        birthCity: document.getElementById('f-city').value.trim(),
+        name:        document.getElementById('f-name').value.trim(),
+        phoneNumber: document.getElementById('f-phone').value.trim(),
+        birthDate:   document.getElementById('f-date').value,
+        birthTime:   document.getElementById('f-time').value,
+        birthCity:   document.getElementById('f-city').value.trim(),
       };
 
       if (!body.name || !body.phone || !body.birthDate || !body.birthCity) {

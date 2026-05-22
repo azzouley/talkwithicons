@@ -321,9 +321,9 @@ module.exports = async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(204).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
-  const { name, phone, birthDate, birthTime, birthCity } = req.body || {};
-  if (!name || !phone || !birthDate || !birthCity) {
-    return res.status(400).json({ error: 'name, phone, birthDate, and birthCity are required' });
+  const { name, phoneNumber, birthDate, birthTime, birthCity } = req.body || {};
+  if (!name || !phoneNumber || !birthDate || !birthCity) {
+    return res.status(400).json({ error: 'name, phoneNumber, birthDate, and birthCity are required' });
   }
 
   let natalSummary;
@@ -336,7 +336,7 @@ module.exports = async function handler(req, res) {
 
   const vapiPayload = {
     phoneNumberId: VAPI_PHONE_NUMBER_ID,
-    customer: { number: normalizePhone(phone), name },
+    customer: { number: normalizePhone(phoneNumber), name },
     assistantId: VAPI_ASSISTANT_ID,
     // assistantOverrides.model.messages appends directly to the conversation
     // regardless of whether the assistant template uses {{variableValues}}.

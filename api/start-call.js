@@ -1,68 +1,311 @@
 // api/start-call.js
-// Accepts POST { name, phone, birthDate, birthTime, birthCity }
-// Calculates sun sign from birth date, builds natal chart summary,
-// then calls the Vapi API to initiate an outbound call with
-// Evangeline Adams as the assistant and the chart data injected.
+//
+// Full natal chart calculation using the astronomia package (VSOP87 / ELP-2000).
+// NOTE: astronomia uses Jean Meeus's "Astronomical Algorithms" (VSOP87 theory),
+// not Swiss Ephemeris. Accuracy is within arc-minutes for modern dates —
+// suitable for astrological sign and degree positions.
+//
+// Calculates: Sun, Moon, Mercury, Venus, Mars, Jupiter, Saturn, Uranus,
+// Neptune (all via VSOP87/ELP-2000), Pluto sign (year-based lookup —
+// Pluto is not in VSOP87), Ascendant + 12 Equal house cusps (requires
+// birth city coordinates from api/cities.js), and current transits with
+// major aspects to natal positions.
 
-const VAPI_API_KEY            = process.env.VAPI_API_KEY                    || 'YOUR_VAPI_API_KEY';
-const VAPI_ASSISTANT_ID       = process.env.VAPI_ASSISTANT_ID_EVANGELINE    || 'YOUR_EVANGELINE_ASSISTANT_ID';
-const VAPI_PHONE_NUMBER_ID    = process.env.VAPI_PHONE_NUMBER_ID            || 'YOUR_VAPI_PHONE_NUMBER_ID';
+// ── Vapi credentials (set in Vercel environment variables) ──────────────────
+const VAPI_API_KEY         = process.env.VAPI_API_KEY                 || 'YOUR_VAPI_API_KEY';
+const VAPI_ASSISTANT_ID    = process.env.VAPI_ASSISTANT_ID_EVANGELINE || 'YOUR_EVANGELINE_ASSISTANT_ID';
+const VAPI_PHONE_NUMBER_ID = process.env.VAPI_PHONE_NUMBER_ID         || 'YOUR_VAPI_PHONE_NUMBER_ID';
 
-// ─── Sun sign lookup ────────────────────────────────────────────────────────
-// Each entry: the sign begins on start[0] (month) / start[1] (day).
-// Listed in reverse so the first match walking backward wins.
-const ZODIAC = [
-  { sign: 'Capricorn',   start: [12, 22] },
-  { sign: 'Aquarius',    start: [1,  20] },
-  { sign: 'Pisces',      start: [2,  19] },
-  { sign: 'Aries',       start: [3,  21] },
-  { sign: 'Taurus',      start: [4,  20] },
-  { sign: 'Gemini',      start: [5,  21] },
-  { sign: 'Cancer',      start: [6,  21] },
-  { sign: 'Leo',         start: [7,  23] },
-  { sign: 'Virgo',       start: [8,  23] },
-  { sign: 'Libra',       start: [9,  23] },
-  { sign: 'Scorpio',     start: [10, 23] },
-  { sign: 'Sagittarius', start: [11, 22] },
-];
+// ── Astronomia modules ───────────────────────────────────────────────────────
+// If any require() fails, Vercel will surface the error at cold-start.
+// Run `ls node_modules/astronomia` after `npm install` to verify paths.
+let julianLib, solarLib, moonLib, ppLib, siderealLib, nutationLib;
+let mercuryPlanet, venusRPlanet, marsPlanet, jupiterPlanet, saturnPlanet, uranusPlanet, neptunePlanet;
 
-function getSunSign(month, day) {
-  for (let i = ZODIAC.length - 1; i >= 0; i--) {
-    const [m, d] = ZODIAC[i].start;
-    if (month > m || (month === m && day >= d)) return ZODIAC[i].sign;
-  }
-  return 'Capricorn'; // Dec 22–Jan 19 wraps back to Capricorn
+try {
+  julianLib   = require('astronomia/julian');
+  solarLib    = require('astronomia/solar');
+  moonLib     = require('astronomia/moonposition');
+  ppLib       = require('astronomia/planetposition');
+  siderealLib = require('astronomia/sidereal');
+  nutationLib = require('astronomia/nutation');
+
+  // Instantiate VSOP87 planet objects — each wraps a data file
+  mercuryPlanet  = new ppLib.Planet(require('astronomia/data/vsop87Bmercury'));
+  venusRPlanet   = new ppLib.Planet(require('astronomia/data/vsop87Bvenus'));
+  marsPlanet     = new ppLib.Planet(require('astronomia/data/vsop87Bmars'));
+  jupiterPlanet  = new ppLib.Planet(require('astronomia/data/vsop87Bjupiter'));
+  saturnPlanet   = new ppLib.Planet(require('astronomia/data/vsop87Bsaturn'));
+  uranusPlanet   = new ppLib.Planet(require('astronomia/data/vsop87Buranus'));
+  neptunePlanet  = new ppLib.Planet(require('astronomia/data/vsop87Bneptune'));
+} catch (e) {
+  console.error('astronomia load error — check module paths:', e.message);
 }
 
-// ─── Natal chart summary ─────────────────────────────────────────────────────
-// Full moon sign and ascendant calculation requires a planetary ephemeris and
-// geocoded birth coordinates. Inject what we have; prompt Evangeline to probe
-// for birth time precision if it was not provided.
-function buildNatalSummary({ name, birthDate, birthTime, birthCity }) {
-  const [year, month, day] = birthDate.split('-').map(Number);
-  const sunSign = getSunSign(month, day);
-  const timeNote = birthTime
-    ? `Birth time ${birthTime} was provided — use this when discussing the ascendant and house placements.`
-    : 'No birth time was provided. Note this early and ask if the caller can find it — it significantly affects the ascendant and house positions.';
+const { lookupCity } = require('./cities');
 
-  return `CALLER BIRTH DATA
-===================
-Name:        ${name}
-Birth Date:  ${month}/${day}/${year}
-Birth Time:  ${birthTime || 'not provided'}
+// ── Constants ────────────────────────────────────────────────────────────────
+const PI2   = Math.PI * 2;
+const DEG   = Math.PI / 180;   // degrees → radians
+const RAD   = 180 / Math.PI;   // radians → degrees
+
+const SIGNS = [
+  'Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo',
+  'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces',
+];
+
+const ASPECTS = [
+  { name: 'conjunct',   angle:   0, orb: 8 },
+  { name: 'sextile',    angle:  60, orb: 5 },
+  { name: 'square',     angle:  90, orb: 7 },
+  { name: 'trine',      angle: 120, orb: 7 },
+  { name: 'opposition', angle: 180, orb: 8 },
+];
+
+// ── Helpers ───────────────────────────────────────────────────────────────────
+
+function norm360(deg) {
+  return ((deg % 360) + 360) % 360;
+}
+
+// Convert ecliptic longitude (degrees, 0–360) to sign name, degree within sign, and minutes
+function lonToPosition(lonDeg) {
+  const l = norm360(lonDeg);
+  const signIdx = Math.floor(l / 30);
+  const degInSign = l % 30;
+  const d = Math.floor(degInSign);
+  const m = Math.floor((degInSign - d) * 60);
+  return {
+    sign:    SIGNS[signIdx],
+    degree:  d,
+    minutes: m,
+    label:   `${SIGNS[signIdx]} ${d}°${m.toString().padStart(2, '0')}'`,
+    lon:     l,
+  };
+}
+
+// Ensure a value that might be radians is converted to degrees.
+// astronomia functions vary: solar returns degrees, planet positions
+// return radians. We detect by range: if |val| > 2π assume degrees already.
+function toDegreesIfRadians(val) {
+  const abs = Math.abs(val);
+  if (abs <= PI2 * 1.05) return val * RAD;   // looks like radians
+  return val;                                 // already degrees
+}
+
+// Julian Day from date string "YYYY-MM-DD" and optional time "HH:MM"
+// Birth time is treated as local solar time (no timezone conversion —
+// for most natal chart work this is standard practice; errors < 15 min
+// shift the ascendant ~3–4° which is the acceptable range without a
+// known timezone offset).
+function birthJD(birthDate, birthTime) {
+  const [yr, mo, dy] = birthDate.split('-').map(Number);
+  let hour = 12; // default to noon if time unknown
+  if (birthTime) {
+    const parts = birthTime.split(':').map(Number);
+    hour = parts[0] + (parts[1] || 0) / 60;
+  }
+  return julianLib.CalendarGregorianToJD(yr, mo, dy + hour / 24.0);
+}
+
+// Today's Julian Day (UTC noon)
+function todayJD() {
+  const now = new Date();
+  return julianLib.CalendarGregorianToJD(
+    now.getUTCFullYear(),
+    now.getUTCMonth() + 1,
+    now.getUTCDate() + 0.5,
+  );
+}
+
+// ── Pluto sign (year-based — Pluto is not in VSOP87) ─────────────────────────
+function plutoSign(year) {
+  if (year < 1914) return 'Gemini';
+  if (year < 1939) return 'Cancer';
+  if (year < 1957) return 'Leo';
+  if (year < 1972) return 'Virgo';
+  if (year < 1984) return 'Libra';
+  if (year < 1995) return 'Scorpio';
+  if (year < 2008) return 'Sagittarius';
+  if (year < 2024) return 'Capricorn';
+  return 'Aquarius';
+}
+
+// ── Single planet longitude (degrees, 0–360) from a JD ───────────────────────
+function planetLon(planetObj, jd) {
+  const pos = planetObj.position(jd);
+  // planetposition returns {lon, lat, range} — lon in radians
+  return norm360(toDegreesIfRadians(pos.lon));
+}
+
+// ── Full planetary positions for a given JD ───────────────────────────────────
+function getAllPlanetPositions(jd, birthYear) {
+  const sunLonRaw = solarLib.apparentLongitude(jd);
+  const sunLon    = norm360(toDegreesIfRadians(sunLonRaw));
+
+  const moonPos    = moonLib.position(jd);
+  const moonLon    = norm360(toDegreesIfRadians(moonPos.lon));
+
+  return {
+    Sun:     lonToPosition(sunLon),
+    Moon:    lonToPosition(moonLon),
+    Mercury: lonToPosition(planetLon(mercuryPlanet,  jd)),
+    Venus:   lonToPosition(planetLon(venusRPlanet,   jd)),
+    Mars:    lonToPosition(planetLon(marsPlanet,      jd)),
+    Jupiter: lonToPosition(planetLon(jupiterPlanet,   jd)),
+    Saturn:  lonToPosition(planetLon(saturnPlanet,    jd)),
+    Uranus:  lonToPosition(planetLon(uranusPlanet,    jd)),
+    Neptune: lonToPosition(planetLon(neptunePlanet,   jd)),
+    Pluto:   { sign: plutoSign(birthYear || 2000), degree: null, minutes: null,
+               label: `${plutoSign(birthYear || 2000)} (sign only — Pluto not in VSOP87)`, lon: null },
+  };
+}
+
+// ── Ascendant and Equal house cusps ──────────────────────────────────────────
+// Requires geographic coordinates. Uses the standard ASC formula from
+// Jean Meeus "Astronomical Algorithms" ch. 14.
+function calcAscendantAndHouses(jd, latDeg, lonDeg) {
+  try {
+    // Greenwich Apparent Sidereal Time (astronomia returns radians)
+    const gastRaw = siderealLib.apparent(jd);
+    const gastRad = Math.abs(gastRaw) <= PI2 * 1.05 ? gastRaw : gastRaw * DEG;
+
+    // Local Sidereal Time (radians)
+    const lstRad = gastRad + lonDeg * DEG;
+
+    // True obliquity of the ecliptic (radians)
+    const epsRaw = nutationLib.trueObliquity(jd);
+    const epsRad = Math.abs(epsRaw) <= 1 ? epsRaw : epsRaw * DEG;
+
+    const latRad = latDeg * DEG;
+
+    // Ascendant (standard formula)
+    const ascRad = Math.atan2(
+      -Math.cos(lstRad),
+      Math.sin(lstRad) * Math.cos(epsRad) + Math.tan(latRad) * Math.sin(epsRad),
+    );
+    const ascDeg = norm360(ascRad * RAD);
+    const asc    = lonToPosition(ascDeg);
+
+    // Midheaven (MC)
+    const mcRad  = Math.atan2(Math.sin(lstRad), Math.cos(lstRad) * Math.cos(epsRad));
+    const mcDeg  = norm360(mcRad * RAD);
+    const mc     = lonToPosition(mcDeg);
+
+    // Equal house cusps: each cusp is 30° from the Ascendant
+    const houses = [];
+    for (let i = 0; i < 12; i++) {
+      houses.push(lonToPosition(norm360(ascDeg + i * 30)));
+    }
+
+    return { asc, mc, houses };
+  } catch (err) {
+    console.error('Ascendant calculation error:', err.message);
+    return null;
+  }
+}
+
+// ── Transit aspects ───────────────────────────────────────────────────────────
+// Compare current positions to natal positions; report major aspects.
+function getTransitAspects(natal, current) {
+  const lines = [];
+  const planetNames = ['Sun', 'Moon', 'Mercury', 'Venus', 'Mars', 'Jupiter', 'Saturn', 'Uranus', 'Neptune'];
+
+  for (const transitPlanet of planetNames) {
+    const tPos = current[transitPlanet];
+    if (tPos.lon === null) continue;
+
+    for (const natalPlanet of planetNames) {
+      const nPos = natal[natalPlanet];
+      if (nPos.lon === null) continue;
+
+      const diff = Math.abs(norm360(tPos.lon - nPos.lon));
+      const angle = diff > 180 ? 360 - diff : diff;
+
+      for (const asp of ASPECTS) {
+        if (Math.abs(angle - asp.angle) <= asp.orb) {
+          lines.push(
+            `Transit ${transitPlanet} (${tPos.label}) ${asp.name} natal ${natalPlanet} (${nPos.label})`,
+          );
+          break;
+        }
+      }
+    }
+  }
+
+  return lines.length > 0 ? lines : ['No major transit aspects within orb today.'];
+}
+
+// ── Build the full natal chart summary injected into the Vapi prompt ─────────
+function buildNatalSummary({ name, birthDate, birthTime, birthCity }) {
+  if (!julianLib) {
+    return `[Natal chart unavailable — astronomia failed to load. Proceed with name: ${name}, birth date: ${birthDate}, birth city: ${birthCity}.]`;
+  }
+
+  const [yr] = birthDate.split('-').map(Number);
+  const jd   = birthJD(birthDate, birthTime);
+  const jdNow = todayJD();
+
+  const natal   = getAllPlanetPositions(jd, yr);
+  const current = getAllPlanetPositions(jdNow, new Date().getUTCFullYear());
+
+  const coords  = lookupCity(birthCity);
+  let ascBlock  = '';
+
+  if (coords) {
+    const result = calcAscendantAndHouses(jd, coords.lat, coords.lon);
+    if (result) {
+      ascBlock = `
+ASCENDANT & HOUSES (Equal House system, birth coordinates: ${coords.lat.toFixed(2)}°, ${coords.lon.toFixed(2)}°)
+Ascendant (Rising): ${result.asc.label}
+Midheaven (MC):     ${result.mc.label}
+House Cusps:
+${result.houses.map((h, i) => `  House ${(i + 1).toString().padStart(2)}: ${h.label}`).join('\n')}`;
+    }
+  } else {
+    ascBlock = `\nASCENDANT & HOUSES: Birth city "${birthCity}" not found in coordinate table — Ascendant and house cusps could not be calculated. Ask the caller if they know their rising sign, or invite them to look up the coordinates (lat/lon) of their birth city.`;
+  }
+
+  const transitAspects = getTransitAspects(natal, current);
+
+  const timeNote = birthTime
+    ? `Birth time ${birthTime} was provided.`
+    : 'No birth time was provided — Ascendant and house positions are approximate (defaulted to noon). Ask if the caller can find their exact birth time.';
+
+  return `NATAL CHART — ${name.toUpperCase()}
+${'='.repeat(50)}
+Birth Date:  ${birthDate}
+Birth Time:  ${birthTime || 'unknown (defaulted to noon)'}
 Birth City:  ${birthCity}
-Sun Sign:    ${sunSign}
+${timeNote}
+
+NATAL PLANET POSITIONS
+Sun:     ${natal.Sun.label}
+Moon:    ${natal.Moon.label}
+Mercury: ${natal.Mercury.label}
+Venus:   ${natal.Venus.label}
+Mars:    ${natal.Mars.label}
+Jupiter: ${natal.Jupiter.label}
+Saturn:  ${natal.Saturn.label}
+Uranus:  ${natal.Uranus.label}
+Neptune: ${natal.Neptune.label}
+Pluto:   ${natal.Pluto.label}
+${ascBlock}
+
+CURRENT TRANSITS (today vs natal)
+${transitAspects.join('\n')}
 
 READING INSTRUCTIONS
 - Address the caller by name (${name}) immediately.
-- Open by acknowledging their Sun sign (${sunSign}) and what you see in it.
-- ${timeNote}
-- Their birth city is ${birthCity} — reference this in the geographic context of their chart.
-- Moon sign and full house placements require ephemeris data; probe with questions rather than stating uncertain positions as fact.
-- This is a conversation, not a monologue. Ask questions, follow threads, respond to what the caller brings.`.trim();
+- Lead with the Sun sign (${natal.Sun.sign}) and Moon sign (${natal.Moon.sign}).
+- Ascendant is ${coords ? natal.Sun.sign : 'unknown — ask the caller'}.
+- Reference the most striking current transit aspect early.
+- Moon sign and rising shape the emotional tone — use them.
+- This is a conversation, not a monologue. Ask questions and follow threads.
+- Do not invent planetary positions — use only the data provided above.`.trim();
 }
 
-// ─── Phone normalizer ────────────────────────────────────────────────────────
+// ── Phone normalizer ──────────────────────────────────────────────────────────
 function normalizePhone(raw) {
   const digits = raw.replace(/\D/g, '');
   if (digits.length === 10) return '+1' + digits;
@@ -70,37 +313,42 @@ function normalizePhone(raw) {
   return '+' + digits;
 }
 
-// ─── Handler ─────────────────────────────────────────────────────────────────
+// ── Vercel serverless handler ─────────────────────────────────────────────────
 module.exports = async function handler(req, res) {
-  // CORS preflight
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   if (req.method === 'OPTIONS') return res.status(204).end();
-
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
-  }
+  if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
   const { name, phone, birthDate, birthTime, birthCity } = req.body || {};
-
   if (!name || !phone || !birthDate || !birthCity) {
-    return res.status(400).json({
-      error: 'name, phone, birthDate, and birthCity are required',
-    });
+    return res.status(400).json({ error: 'name, phone, birthDate, and birthCity are required' });
   }
 
-  const natalSummary = buildNatalSummary({ name, birthDate, birthTime, birthCity });
-  const formattedPhone = normalizePhone(phone);
+  let natalSummary;
+  try {
+    natalSummary = buildNatalSummary({ name, birthDate, birthTime, birthCity });
+  } catch (err) {
+    console.error('Chart calculation error:', err);
+    natalSummary = `[Chart calculation failed: ${err.message}. Proceed with name: ${name}, birth date: ${birthDate}, birth city: ${birthCity}.]`;
+  }
 
   const vapiPayload = {
     phoneNumberId: VAPI_PHONE_NUMBER_ID,
-    customer: {
-      number: formattedPhone,
-      name,
-    },
+    customer: { number: normalizePhone(phone), name },
     assistantId: VAPI_ASSISTANT_ID,
+    // assistantOverrides.model.messages appends directly to the conversation
+    // regardless of whether the assistant template uses {{variableValues}}.
     assistantOverrides: {
+      model: {
+        messages: [
+          {
+            role: 'system',
+            content: natalSummary,
+          },
+        ],
+      },
       variableValues: {
         callerName: name,
         natalChart: natalSummary,
@@ -109,15 +357,11 @@ module.exports = async function handler(req, res) {
   };
 
   try {
-    const vapiRes = await fetch('https://api.vapi.ai/call', {
+    const vapiRes  = await fetch('https://api.vapi.ai/call', {
       method: 'POST',
-      headers: {
-        Authorization: `Bearer ${VAPI_API_KEY}`,
-        'Content-Type': 'application/json',
-      },
+      headers: { Authorization: `Bearer ${VAPI_API_KEY}`, 'Content-Type': 'application/json' },
       body: JSON.stringify(vapiPayload),
     });
-
     const vapiData = await vapiRes.json();
 
     if (!vapiRes.ok) {

@@ -336,6 +336,7 @@ module.exports = async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
   const { name, phoneNumber, birthDate, birthTime, birthCity } = req.body || {};
+  console.log('birthTime received:', birthTime, 'type:', typeof birthTime, 'length:', birthTime?.length);
   if (!name || !phoneNumber || !birthDate || !birthCity) {
     return res.status(400).json({ error: 'name, phoneNumber, birthDate, and birthCity are required' });
   }

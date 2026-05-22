@@ -339,18 +339,7 @@ module.exports = async function handler(req, res) {
     phoneNumberId: VAPI_PHONE_NUMBER_ID,
     customer: { number: normalizePhone(phoneNumber), name },
     assistantId: VAPI_ASSISTANT_ID,
-    // assistantOverrides.model.messages appends directly to the conversation
-    // regardless of whether the assistant template uses {{variableValues}}.
     assistantOverrides: {
-      model: {
-        provider: 'openai',
-        messages: [
-          {
-            role: 'system',
-            content: natalSummary,
-          },
-        ],
-      },
       variableValues: {
         callerName: name,
         natalChart: natalSummary,

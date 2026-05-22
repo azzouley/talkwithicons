@@ -527,13 +527,20 @@
       btn.textContent = 'Connecting...';
       btn.disabled = true;
 
+      const payload = { name, phoneNumber, birthDate, birthTime, birthCity, birthCountry };
+      const apiUrl  = window.location.origin + '/api/start-call';
+      console.log('[start-call] sending to:', apiUrl);
+      console.log('[start-call] payload:', JSON.stringify(payload, null, 2));
+
       try {
-        const res  = await fetch('/api/start-call', {
+        const res  = await fetch(apiUrl, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ name, phoneNumber, birthDate, birthTime, birthCity, birthCountry }),
+          body: JSON.stringify(payload),
         });
         const data = await res.json();
+        console.log('[start-call] response status:', res.status);
+        console.log('[start-call] response body:', JSON.stringify(data, null, 2));
 
         if (data.success) {
           document.getElementById('call-form').style.display = 'none';
@@ -545,6 +552,7 @@
           btn.disabled = false;
         }
       } catch (err) {
+        console.error('[start-call] fetch error:', err);
         errorMsg.textContent = 'Connection error. Please try again.';
         errorEl.style.display = 'block';
         btn.textContent = 'Call Me Now →';

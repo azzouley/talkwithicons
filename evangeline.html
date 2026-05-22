@@ -527,6 +527,11 @@
       btn.textContent = 'Connecting...';
       btn.disabled = true;
 
+      console.log('[birthTime] f-hour:', document.getElementById('f-hour').value);
+      console.log('[birthTime] f-min:', document.getElementById('f-min').value);
+      console.log('[birthTime] f-ampm:', document.getElementById('f-ampm').getAttribute('data-value'));
+      console.log('[birthTime] assembled:', birthTime);
+
       const payload = { name, phoneNumber, birthDate, birthTime, birthCity, birthCountry };
       const apiUrl  = window.location.origin + '/api/start-call';
       console.log('[start-call] sending to:', apiUrl);

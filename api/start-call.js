@@ -268,7 +268,12 @@ function buildNatalSummary({ name, birthDate, birthTime, birthCity }) {
   let ascSign   = 'unknown — ask the caller';
 
   if (coords) {
-    const result = calcAscendantAndHouses(jd, coords.lat, coords.lon);
+    let result = null;
+    try {
+      result = calcAscendantAndHouses(jd, coords.lat, coords.lon);
+    } catch (err) {
+      console.error('Ascendant calculation threw:', err.message);
+    }
     if (result) {
       ascSign  = result.asc.sign;
       ascBlock = `
@@ -277,6 +282,9 @@ Ascendant (Rising): ${result.asc.label}
 Midheaven (MC):     ${result.mc.label}
 House Cusps:
 ${result.houses.map((h, i) => `  House ${(i + 1).toString().padStart(2)}: ${h.label}`).join('\n')}`;
+    } else {
+      ascSign  = 'unknown (birth time required for accurate calculation)';
+      ascBlock = `\nASCENDANT & HOUSES: Calculation failed — a precise birth time is needed for an accurate ascendant and house cusps. Ask the caller if they know their rising sign.`;
     }
   } else {
     ascBlock = `\nASCENDANT & HOUSES: Birth city "${birthCity}" not found in coordinate table — Ascendant and house cusps could not be calculated. Ask the caller if they know their rising sign, or invite them to look up the coordinates (lat/lon) of their birth city.`;

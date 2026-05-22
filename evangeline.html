@@ -263,10 +263,14 @@
     .form-field { margin-bottom: 20px; }
     .form-label { display: block; font-family: 'Space Mono', monospace; font-size: 0.62rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold-dim); margin-bottom: 8px; }
     .form-label span { color: var(--muted); font-size: 0.56rem; text-transform: none; letter-spacing: 0; }
-    .form-input { display: block; width: 100%; background: rgba(255,255,255,0.04); border: 1px solid rgba(201,168,76,0.2); color: var(--warm-white); font-family: 'Crimson Pro', serif; font-size: 1rem; padding: 14px 16px; outline: none; transition: border-color 0.2s; -webkit-appearance: none; }
+    .form-input { display: block; width: 100%; background: rgba(255,255,255,0.04); border: 1px solid rgba(201,168,76,0.2); color: var(--warm-white); font-family: 'Crimson Pro', serif; font-size: 1rem; padding: 14px 16px; outline: none; transition: border-color 0.2s; -webkit-appearance: none; appearance: none; }
     .form-input:focus { border-color: var(--gold); }
     .form-input::placeholder { color: rgba(154,143,122,0.4); }
     .form-input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(0.5); }
+    select.form-input { cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238a6e30' stroke-width='1.5' fill='none'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 36px; }
+    .ampm-btn { font-family: 'Space Mono', monospace; font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em; background: rgba(201,168,76,0.1); border: 1px solid rgba(201,168,76,0.3); color: var(--gold); padding: 0 20px; cursor: pointer; transition: background 0.15s, color 0.15s; white-space: nowrap; flex-shrink: 0; }
+    .ampm-btn:hover { background: rgba(201,168,76,0.22); }
+    .ampm-btn.is-pm { background: var(--gold); color: var(--dark); }
     .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
     .btn-submit { display: block; width: 100%; font-family: 'Space Mono', monospace; font-size: 0.82rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 700; background: var(--gold); color: var(--dark); border: none; padding: 20px; cursor: pointer; transition: background 0.2s, transform 0.15s; margin-top: 8px; }
     .btn-submit:hover:not(:disabled) { background: var(--gold-light); transform: translateY(-1px); }
@@ -289,7 +293,8 @@
         </div>
         <div class="form-field">
           <label class="form-label" for="f-phone">Phone Number <span>(she calls you)</span></label>
-          <input class="form-input" id="f-phone" type="tel" placeholder="(555) 000-0000" autocomplete="tel" required />
+          <p style="font-family:'Space Mono',monospace;font-size:0.58rem;letter-spacing:0.08em;color:var(--muted);margin-bottom:8px;">10-digit number, no spaces or dashes</p>
+          <input class="form-input" id="f-phone" type="tel" placeholder="5855071661" autocomplete="tel" inputmode="numeric" maxlength="10" required />
         </div>
         <div class="form-row">
           <div class="form-field">
@@ -297,13 +302,41 @@
             <input class="form-input" id="f-date" type="date" required />
           </div>
           <div class="form-field">
-            <label class="form-label" for="f-time">Birth Time <span>(if known)</span></label>
-            <input class="form-input" id="f-time" type="time" />
+            <label class="form-label">Birth Time <span>(if known)</span></label>
+            <div style="display:flex;gap:8px;align-items:stretch;">
+              <select class="form-input" id="f-hour" style="flex:1;min-width:0;">
+                <option value="">Hour</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+                <option value="11">11</option>
+                <option value="12">12</option>
+              </select>
+              <select class="form-input" id="f-min" style="flex:1;min-width:0;">
+                <option value="">Min</option>
+                <option value="00">00</option>
+                <option value="15">15</option>
+                <option value="30">30</option>
+                <option value="45">45</option>
+              </select>
+              <button type="button" class="ampm-btn" id="f-ampm" data-value="AM">AM</button>
+            </div>
           </div>
         </div>
         <div class="form-field">
-          <label class="form-label" for="f-city">Birth City</label>
-          <input class="form-input" id="f-city" type="text" placeholder="City, State or Country" required />
+          <label class="form-label" for="f-city">Birth City &amp; State</label>
+          <input class="form-input" id="f-city" type="text" placeholder="Chicago, Illinois" required />
+        </div>
+        <div class="form-field">
+          <label class="form-label" for="f-country">Birth Country</label>
+          <input class="form-input" id="f-country" type="text" placeholder="United States" value="United States" />
         </div>
         <button class="btn-submit" id="submit-btn" type="submit">Call Me Now →</button>
         <p style="font-family:'Space Mono',monospace;font-size:0.58rem;letter-spacing:0.1em;text-transform:uppercase;color:#6dbf8a;text-align:center;margin-top:12px;">🐾 every paid call triggers at minimum a meal donation for a rescue dog</p>
@@ -374,38 +407,75 @@
   </footer>
 
   <script>
+    // Phone: strip non-numeric on every keystroke, cap at 10 digits
+    document.getElementById('f-phone').addEventListener('input', function () {
+      this.value = this.value.replace(/\D/g, '').slice(0, 10);
+    });
+
+    // AM/PM toggle
+    document.getElementById('f-ampm').addEventListener('click', function () {
+      const next = this.getAttribute('data-value') === 'AM' ? 'PM' : 'AM';
+      this.setAttribute('data-value', next);
+      this.textContent = next;
+      this.classList.toggle('is-pm', next === 'PM');
+    });
+
+    function getBirthTime() {
+      const hour = document.getElementById('f-hour').value;
+      const min  = document.getElementById('f-min').value;
+      const ampm = document.getElementById('f-ampm').getAttribute('data-value');
+      if (!hour || !min) return '';
+      let h = parseInt(hour, 10);
+      if (ampm === 'AM') { if (h === 12) h = 0; }
+      else               { if (h !== 12) h += 12; }
+      return h.toString().padStart(2, '0') + ':' + min;
+    }
+
     document.getElementById('call-form').addEventListener('submit', async function (e) {
       e.preventDefault();
-      const btn      = document.getElementById('submit-btn');
+      const btn       = document.getElementById('submit-btn');
       const successEl = document.getElementById('form-success');
-      const errorEl  = document.getElementById('form-error');
-      const errorMsg = document.getElementById('form-error-msg');
+      const errorEl   = document.getElementById('form-error');
+      const errorMsg  = document.getElementById('form-error-msg');
 
       errorEl.style.display = 'none';
-      btn.textContent = 'Connecting...';
-      btn.disabled = true;
 
-      const body = {
-        name:        document.getElementById('f-name').value.trim(),
-        phoneNumber: document.getElementById('f-phone').value.trim(),
-        birthDate:   document.getElementById('f-date').value,
-        birthTime:   document.getElementById('f-time').value,
-        birthCity:   document.getElementById('f-city').value.trim(),
-      };
+      const name         = document.getElementById('f-name').value.trim();
+      const phoneNumber  = document.getElementById('f-phone').value.trim();
+      const birthDate    = document.getElementById('f-date').value;
+      const birthCity    = document.getElementById('f-city').value.trim();
+      const birthCountry = document.getElementById('f-country').value.trim() || 'United States';
+      const birthTime    = getBirthTime();
 
-      if (!body.name || !body.phone || !body.birthDate || !body.birthCity) {
-        errorMsg.textContent = 'Please fill in your name, phone number, birth date, and birth city.';
+      if (!name) {
+        errorMsg.textContent = 'Please enter your name.';
         errorEl.style.display = 'block';
-        btn.textContent = 'Call Me Now →';
-        btn.disabled = false;
         return;
       }
+      if (phoneNumber.length !== 10) {
+        errorMsg.textContent = 'Please enter a valid 10-digit phone number.';
+        errorEl.style.display = 'block';
+        return;
+      }
+      if (!birthDate) {
+        errorMsg.textContent = 'Please enter your birth date.';
+        errorEl.style.display = 'block';
+        return;
+      }
+      if (!birthCity) {
+        errorMsg.textContent = 'Please enter your birth city.';
+        errorEl.style.display = 'block';
+        return;
+      }
+
+      btn.textContent = 'Connecting...';
+      btn.disabled = true;
 
       try {
         const res  = await fetch('/api/start-call', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(body),
+          body: JSON.stringify({ name, phoneNumber, birthDate, birthTime, birthCity, birthCountry }),
         });
         const data = await res.json();
 

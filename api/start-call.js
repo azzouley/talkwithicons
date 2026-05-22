@@ -343,6 +343,7 @@ module.exports = async function handler(req, res) {
     // regardless of whether the assistant template uses {{variableValues}}.
     assistantOverrides: {
       model: {
+        provider: 'openai',
         messages: [
           {
             role: 'system',

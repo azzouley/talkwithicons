@@ -265,8 +265,23 @@ function buildNatalSummary({ name, birthDate, birthTime, birthCity }) {
   const jd   = birthJD(birthDate, birthTime);
   const jdNow = todayJD();
 
-  const natal   = getAllPlanetPositions(jd, yr);
-  const current = getAllPlanetPositions(jdNow, new Date().getUTCFullYear());
+  const PLANET_UNKNOWN = { label: '[calculation failed]', sign: 'unknown', lon: null };
+  const PLANETS_FALLBACK = Object.fromEntries(
+    ['Sun','Moon','Mercury','Venus','Mars','Jupiter','Saturn','Uranus','Neptune','Pluto']
+      .map(p => [p, PLANET_UNKNOWN])
+  );
+
+  let natal          = PLANETS_FALLBACK;
+  let current        = PLANETS_FALLBACK;
+  let transitAspects = ['Transit aspects unavailable — planet calculation failed.'];
+
+  try {
+    natal          = getAllPlanetPositions(jd, yr);
+    current        = getAllPlanetPositions(jdNow, new Date().getUTCFullYear());
+    transitAspects = getTransitAspects(natal, current);
+  } catch (err) {
+    console.error('Planet calculation failed:', err.message);
+  }
 
   const coords  = lookupCity(birthCity);
   let ascBlock  = '';
@@ -294,8 +309,6 @@ ${result.houses.map((h, i) => `  House ${(i + 1).toString().padStart(2)}: ${h.la
   } else {
     ascBlock = `\nASCENDANT & HOUSES: Birth city "${birthCity}" not found in coordinate table — Ascendant and house cusps could not be calculated. Ask the caller if they know their rising sign, or invite them to look up the coordinates (lat/lon) of their birth city.`;
   }
-
-  const transitAspects = getTransitAspects(natal, current);
 
   return `NATAL CHART — ${name.toUpperCase()}
 ${'='.repeat(50)}

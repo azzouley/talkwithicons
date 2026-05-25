@@ -1,10 +1,9 @@
 // api/start-call.js
 //
-// Natal chart calculation using the ephemeris package (Moshier's ephemeris, pure JS).
+// Natal chart calculation using pure JS orbital mechanics (no external astronomy packages).
 // Planet positions: Sun, Moon, Mercury, Venus, Mars, Jupiter, Saturn, Uranus,
-// Neptune, Pluto — all via ephemeris.getAllPlanets(), returns ecliptic longitude
-// in degrees. Ascendant + 12 Equal house cusps via astronomia (julian/sidereal/
-// nutation only — no VSOP87 data files loaded).
+// Neptune, Pluto — all via Meeus orbital elements and simplified lunar theory.
+// Ascendant + 12 Equal house cusps via astronomia (julian/sidereal/nutation only).
 
 // ── Vapi credentials (set in Vercel environment variables) ──────────────────
 const VAPI_API_KEY         = process.env.VAPI_API_KEY                 || 'YOUR_VAPI_API_KEY';
@@ -42,14 +41,6 @@ async function sendChartFailureAlert({ name, birthDate, birthTime, birthCity, er
   } catch (mailErr) {
     console.error('Failed to send alert email:', mailErr.message);
   }
-}
-
-// ── Ephemeris (all planet positions, pure JS — no native binaries) ───────────
-let ephemerisLib;
-try {
-  ephemerisLib = require('ephemeris');
-} catch (e) {
-  console.error('ephemeris load error:', e.message);
 }
 
 // ── Astronomia (Julian Day + ascendant calc only — no VSOP87 data files) ─────
@@ -133,25 +124,104 @@ function todayJD() {
   );
 }
 
-// ── Full planetary positions for a given JD ───────────────────────────────────
-// Converts JD to a JS Date, then calls ephemeris.getAllPlanets().
-// Passes (0, 0, 0) for lon/lat/height — geocentric, standard for natal charts.
-// ephemeris returns apparentLongitude in degrees (0–360).
+// ── Full planetary positions for a given JD (pure JS — no npm packages) ──────
+// Meeus "Astronomical Algorithms" orbital elements; simplified lunar theory.
 function getAllPlanetPositions(jd) {
-  const date   = new Date((jd - 2440587.5) * 86400000);
-  const result = ephemerisLib.getAllPlanets(date, 0, 0, 0);
-  const obs    = result.observed;
+  const T   = (jd - 2451545.0) / 36525.0;
+  const D2R = Math.PI / 180;
+  const R2D = 180 / Math.PI;
+
+  function r(d) { return d * D2R; }
+  function n(d) { return ((d % 360) + 360) % 360; }
+
+  function equationOfCenter(M_deg, e) {
+    const M = r(M_deg);
+    return R2D * (
+      (2*e - e*e*e/4) * Math.sin(M) +
+      (5/4)*e*e       * Math.sin(2*M) +
+      (13/12)*e*e*e   * Math.sin(3*M)
+    );
+  }
+
+  function radiusVec(M_deg, a, e) {
+    const M = r(M_deg);
+    let E = M;
+    for (let i = 0; i < 5; i++) E = M + e * Math.sin(E);
+    return a * (1 - e * Math.cos(E));
+  }
+
+  // [mean_longitude_J2000, daily_motion_deg, lon_perihelion, eccentricity, semi-major_axis_AU]
+  const elems = {
+    Mercury: [252.250906, 149472.6746358,  77.45645, 0.20563069,  0.387098],
+    Venus:   [181.979801,  58517.8156760, 131.56370, 0.00677323,  0.723330],
+    Earth:   [100.466457,  35999.3728565, 102.93735, 0.01670862,  1.000000],
+    Mars:    [355.433275,  19140.2993313, 336.04084, 0.09341233,  1.523688],
+    Jupiter: [ 34.351519,   3034.9056606,  14.33131, 0.04839266,  5.202561],
+    Saturn:  [ 50.077444,   1222.1137943,  93.05678, 0.05415060,  9.537070],
+    Uranus:  [314.055005,    428.4669983, 173.00529, 0.04716771, 19.191264],
+    Neptune: [304.348665,    218.4862002,  48.12369, 0.00858587, 30.068963],
+    Pluto:   [238.956785,    145.1807643, 224.06676, 0.24880766, 39.48168677],
+  };
+
+  function helioLon(name) {
+    const [L0, Lr, wb, e] = elems[name];
+    const L = n(L0 + Lr * T);
+    return n(L + equationOfCenter(n(L - wb), e));
+  }
+
+  function helioR(name) {
+    const [L0, Lr, wb, e, a] = elems[name];
+    const L = n(L0 + Lr * T);
+    return radiusVec(n(L - wb), a, e);
+  }
+
+  const earthLon = helioLon('Earth');
+  const earthR   = helioR('Earth');
+  const earthX   = earthR * Math.cos(r(earthLon));
+  const earthY   = earthR * Math.sin(r(earthLon));
+
+  const sunLon = n(earthLon + 180);
+
+  function geocentricLon(name) {
+    const hLon = helioLon(name);
+    const hR   = helioR(name);
+    const px   = hR * Math.cos(r(hLon)) - earthX;
+    const py   = hR * Math.sin(r(hLon)) - earthY;
+    return n(Math.atan2(py, px) * R2D);
+  }
+
+  // Moon — simplified lunar theory (Meeus Ch. 47 abridged)
+  const Lm = n(218.3165 + 481267.8813 * T);
+  const Ms = n(357.5291 +  35999.0503 * T);
+  const Mm = n(134.9634 + 477198.8676 * T);
+  const Dm = n(297.8502 + 445267.1115 * T);
+  const Fm = n( 93.2721 + 483202.0175 * T);
+  const moonLon = n(Lm
+    - 1.274 * Math.sin(r(Mm - 2*Dm))
+    + 0.658 * Math.sin(r(2*Dm))
+    - 0.186 * Math.sin(r(Ms))
+    - 0.059 * Math.sin(r(2*Mm - 2*Dm))
+    - 0.057 * Math.sin(r(Mm - 2*Dm + Ms))
+    + 0.053 * Math.sin(r(Mm + 2*Dm))
+    + 0.046 * Math.sin(r(2*Dm - Ms))
+    + 0.041 * Math.sin(r(Mm - Ms))
+    - 0.035 * Math.sin(r(Dm))
+    - 0.031 * Math.sin(r(Mm + Ms))
+    - 0.015 * Math.sin(r(2*Fm - 2*Dm))
+    + 0.011 * Math.sin(r(Mm - 4*Dm))
+  );
+
   return {
-    Sun:     lonToPosition(norm360(obs.sun.position.apparentLongitude)),
-    Moon:    lonToPosition(norm360(obs.moon.position.apparentLongitude)),
-    Mercury: lonToPosition(norm360(obs.mercury.position.apparentLongitude)),
-    Venus:   lonToPosition(norm360(obs.venus.position.apparentLongitude)),
-    Mars:    lonToPosition(norm360(obs.mars.position.apparentLongitude)),
-    Jupiter: lonToPosition(norm360(obs.jupiter.position.apparentLongitude)),
-    Saturn:  lonToPosition(norm360(obs.saturn.position.apparentLongitude)),
-    Uranus:  lonToPosition(norm360(obs.uranus.position.apparentLongitude)),
-    Neptune: lonToPosition(norm360(obs.neptune.position.apparentLongitude)),
-    Pluto:   lonToPosition(norm360(obs.pluto.position.apparentLongitude)),
+    Sun:     lonToPosition(sunLon),
+    Moon:    lonToPosition(moonLon),
+    Mercury: lonToPosition(geocentricLon('Mercury')),
+    Venus:   lonToPosition(geocentricLon('Venus')),
+    Mars:    lonToPosition(geocentricLon('Mars')),
+    Jupiter: lonToPosition(geocentricLon('Jupiter')),
+    Saturn:  lonToPosition(geocentricLon('Saturn')),
+    Uranus:  lonToPosition(geocentricLon('Uranus')),
+    Neptune: lonToPosition(geocentricLon('Neptune')),
+    Pluto:   lonToPosition(geocentricLon('Pluto')),
   };
 }
 
@@ -248,8 +318,8 @@ function formatBirthTime(t) {
 }
 
 // ── Build the full natal chart summary injected into the Vapi prompt ─────────
-function buildNatalSummary({ name, birthDate, birthTime, birthCity }) {
-  if (!julianLib || !ephemerisLib) {
+async function buildNatalSummary({ name, birthDate, birthTime, birthCity }) {
+  if (!julianLib) {
     return `[Natal chart unavailable — required libraries failed to load. Proceed with name: ${name}, birth date: ${birthDate}, birth city: ${birthCity}.]`;
   }
 
@@ -365,7 +435,7 @@ module.exports = async function handler(req, res) {
 
   let natalSummary;
   try {
-    natalSummary = buildNatalSummary({ name, birthDate, birthTime, birthCity });
+    natalSummary = await buildNatalSummary({ name, birthDate, birthTime, birthCity });
   } catch (err) {
     console.error('Chart calculation error:', err);
     natalSummary = `[Chart calculation failed: ${err.message}. Proceed with name: ${name}, birth date: ${birthDate}, birth city: ${birthCity}.]`;

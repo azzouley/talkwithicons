@@ -1,15 +1,10 @@
 // api/start-call.js
 //
-// Full natal chart calculation using the astronomia package (VSOP87 / ELP-2000).
-// NOTE: astronomia uses Jean Meeus's "Astronomical Algorithms" (VSOP87 theory),
-// not Swiss Ephemeris. Accuracy is within arc-minutes for modern dates —
-// suitable for astrological sign and degree positions.
-//
-// Calculates: Sun, Moon, Mercury, Venus, Mars, Jupiter, Saturn, Uranus,
-// Neptune (all via VSOP87/ELP-2000), Pluto sign (year-based lookup —
-// Pluto is not in VSOP87), Ascendant + 12 Equal house cusps (requires
-// birth city coordinates from api/cities.js), and current transits with
-// major aspects to natal positions.
+// Natal chart calculation using the ephemeris package (Moshier's ephemeris, pure JS).
+// Planet positions: Sun, Moon, Mercury, Venus, Mars, Jupiter, Saturn, Uranus,
+// Neptune, Pluto — all via ephemeris.getAllPlanets(), returns ecliptic longitude
+// in degrees. Ascendant + 12 Equal house cusps via astronomia (julian/sidereal/
+// nutation only — no VSOP87 data files loaded).
 
 // ── Vapi credentials (set in Vercel environment variables) ──────────────────
 const VAPI_API_KEY         = process.env.VAPI_API_KEY                 || 'YOUR_VAPI_API_KEY';
@@ -49,28 +44,20 @@ async function sendChartFailureAlert({ name, birthDate, birthTime, birthCity, er
   }
 }
 
-// ── Astronomia modules ───────────────────────────────────────────────────────
-// If any require() fails, Vercel will surface the error at cold-start.
-// Run `ls node_modules/astronomia` after `npm install` to verify paths.
-let julianLib, solarLib, moonLib, ppLib, siderealLib, nutationLib;
-let mercuryPlanet, venusRPlanet, marsPlanet, jupiterPlanet, saturnPlanet, uranusPlanet, neptunePlanet;
+// ── Ephemeris (all planet positions, pure JS — no native binaries) ───────────
+let ephemerisLib;
+try {
+  ephemerisLib = require('ephemeris');
+} catch (e) {
+  console.error('ephemeris load error:', e.message);
+}
 
+// ── Astronomia (Julian Day + ascendant calc only — no VSOP87 data files) ─────
+let julianLib, siderealLib, nutationLib;
 try {
   julianLib   = require('astronomia/julian');
-  solarLib    = require('astronomia/solar');
-  moonLib     = require('astronomia/moonposition');
-  ppLib       = require('astronomia/planetposition');
   siderealLib = require('astronomia/sidereal');
   nutationLib = require('astronomia/nutation');
-
-  // Instantiate VSOP87 planet objects — each wraps a data file
-  mercuryPlanet  = new ppLib.Planet(require('astronomia/data/vsop87Bmercury'));
-  venusRPlanet   = new ppLib.Planet(require('astronomia/data/vsop87Bvenus'));
-  marsPlanet     = new ppLib.Planet(require('astronomia/data/vsop87Bmars'));
-  jupiterPlanet  = new ppLib.Planet(require('astronomia/data/vsop87Bjupiter'));
-  saturnPlanet   = new ppLib.Planet(require('astronomia/data/vsop87Bsaturn'));
-  uranusPlanet   = new ppLib.Planet(require('astronomia/data/vsop87Buranus'));
-  neptunePlanet  = new ppLib.Planet(require('astronomia/data/vsop87Bneptune'));
 } catch (e) {
   console.error('astronomia load error — check module paths:', e.message);
 }
@@ -146,48 +133,25 @@ function todayJD() {
   );
 }
 
-// ── Pluto sign (year-based — Pluto is not in VSOP87) ─────────────────────────
-function plutoSign(year) {
-  if (year < 1914) return 'Gemini';
-  if (year < 1939) return 'Cancer';
-  if (year < 1957) return 'Leo';
-  if (year < 1972) return 'Virgo';
-  if (year < 1984) return 'Libra';
-  if (year < 1995) return 'Scorpio';
-  if (year < 2008) return 'Sagittarius';
-  if (year < 2024) return 'Capricorn';
-  return 'Aquarius';
-}
-
-// ── Single planet longitude (degrees, 0–360) from a JD ───────────────────────
-function planetLon(planetObj, jd) {
-  const pos = planetObj.position(jd);
-  // planetposition returns {lon, lat, range} — lon is always radians
-  return norm360(pos.lon * RAD);
-}
-
 // ── Full planetary positions for a given JD ───────────────────────────────────
-function getAllPlanetPositions(jd, birthYear) {
-  const sunLonRaw = solarLib.apparentLongitude(jd);
-  // solarLib.apparentLongitude returns degrees — no conversion needed
-  const sunLon    = norm360(sunLonRaw);
-
-  const moonPos = moonLib.position(jd);
-  // moonposition returns {lon, ...} in radians — always multiply by RAD
-  const moonLon = norm360(moonPos.lon * RAD);
-
+// Converts JD to a JS Date, then calls ephemeris.getAllPlanets().
+// Passes (0, 0, 0) for lon/lat/height — geocentric, standard for natal charts.
+// ephemeris returns apparentLongitude in degrees (0–360).
+function getAllPlanetPositions(jd) {
+  const date   = new Date((jd - 2440587.5) * 86400000);
+  const result = ephemerisLib.getAllPlanets(date, 0, 0, 0);
+  const obs    = result.observed;
   return {
-    Sun:     lonToPosition(sunLon),
-    Moon:    lonToPosition(moonLon),
-    Mercury: lonToPosition(planetLon(mercuryPlanet,  jd)),
-    Venus:   lonToPosition(planetLon(venusRPlanet,   jd)),
-    Mars:    lonToPosition(planetLon(marsPlanet,      jd)),
-    Jupiter: lonToPosition(planetLon(jupiterPlanet,   jd)),
-    Saturn:  lonToPosition(planetLon(saturnPlanet,    jd)),
-    Uranus:  lonToPosition(planetLon(uranusPlanet,    jd)),
-    Neptune: lonToPosition(planetLon(neptunePlanet,   jd)),
-    Pluto:   { sign: plutoSign(birthYear || 2000), degree: null, minutes: null,
-               label: `${plutoSign(birthYear || 2000)} (sign only — Pluto not in VSOP87)`, lon: null },
+    Sun:     lonToPosition(norm360(obs.sun.position.apparentLongitude)),
+    Moon:    lonToPosition(norm360(obs.moon.position.apparentLongitude)),
+    Mercury: lonToPosition(norm360(obs.mercury.position.apparentLongitude)),
+    Venus:   lonToPosition(norm360(obs.venus.position.apparentLongitude)),
+    Mars:    lonToPosition(norm360(obs.mars.position.apparentLongitude)),
+    Jupiter: lonToPosition(norm360(obs.jupiter.position.apparentLongitude)),
+    Saturn:  lonToPosition(norm360(obs.saturn.position.apparentLongitude)),
+    Uranus:  lonToPosition(norm360(obs.uranus.position.apparentLongitude)),
+    Neptune: lonToPosition(norm360(obs.neptune.position.apparentLongitude)),
+    Pluto:   lonToPosition(norm360(obs.pluto.position.apparentLongitude)),
   };
 }
 
@@ -285,8 +249,8 @@ function formatBirthTime(t) {
 
 // ── Build the full natal chart summary injected into the Vapi prompt ─────────
 function buildNatalSummary({ name, birthDate, birthTime, birthCity }) {
-  if (!julianLib) {
-    return `[Natal chart unavailable — astronomia failed to load. Proceed with name: ${name}, birth date: ${birthDate}, birth city: ${birthCity}.]`;
+  if (!julianLib || !ephemerisLib) {
+    return `[Natal chart unavailable — required libraries failed to load. Proceed with name: ${name}, birth date: ${birthDate}, birth city: ${birthCity}.]`;
   }
 
   const friendlyTime = formatBirthTime(birthTime);
@@ -309,8 +273,8 @@ function buildNatalSummary({ name, birthDate, birthTime, birthCity }) {
   let transitAspects = ['Transit aspects unavailable — planet calculation failed.'];
 
   try {
-    natal          = getAllPlanetPositions(jd, yr);
-    current        = getAllPlanetPositions(jdNow, new Date().getUTCFullYear());
+    natal          = getAllPlanetPositions(jd);
+    current        = getAllPlanetPositions(jdNow);
     transitAspects = getTransitAspects(natal, current);
   } catch (err) {
     console.error('Planet calculation failed:', err.message);
@@ -361,7 +325,7 @@ Jupiter: ${natal.Jupiter.label}
 Saturn:  ${natal.Saturn.label}
 Uranus:  ${natal.Uranus.label}
 Neptune: ${natal.Neptune.label}
-Pluto:   ${natal.Pluto.label}
+Pluto:   ${natal.Pluto.label}  (exact position via ephemeris)
 ${ascBlock}
 
 CURRENT TRANSITS (today vs natal)

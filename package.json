@@ -6,7 +6,7 @@
     "node": "24.x"
   },
   "dependencies": {
-    "astronomia": "^4.1.1",
+    "astronomy-engine": "^2.1.19",
     "nodemailer": "^6.9.14"
   }
 }

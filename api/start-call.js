@@ -1,9 +1,7 @@
 // api/start-call.js
-//
-// Natal chart calculation using pure JS orbital mechanics (no external astronomy packages).
-// Planet positions: Sun, Moon, Mercury, Venus, Mars, Jupiter, Saturn, Uranus,
-// Neptune, Pluto — all via Meeus orbital elements and simplified lunar theory.
-// Ascendant + 12 Equal house cusps via astronomia (julian/sidereal/nutation only).
+// Natal chart using astronomy-engine (pure JS, no native deps, serverless-safe).
+// All planetary positions via Astronomy.EclipticLongitude(); ascendant via
+// Astronomy.SiderealTime() + standard Meeus ASC formula.
 
 // ── Vapi credentials (set in Vercel environment variables) ──────────────────
 const VAPI_API_KEY         = process.env.VAPI_API_KEY                 || 'YOUR_VAPI_API_KEY';
@@ -43,23 +41,17 @@ async function sendChartFailureAlert({ name, birthDate, birthTime, birthCity, er
   }
 }
 
-// ── Astronomia (Julian Day + ascendant calc only — no VSOP87 data files) ─────
-let julianLib, siderealLib, nutationLib;
+// ── astronomy-engine ──────────────────────────────────────────────────────────
+let Astronomy;
 try {
-  julianLib   = require('astronomia/julian');
-  siderealLib = require('astronomia/sidereal');
-  nutationLib = require('astronomia/nutation');
+  Astronomy = require('astronomy-engine');
 } catch (e) {
-  console.error('astronomia load error — check module paths:', e.message);
+  console.error('astronomy-engine load error:', e.message);
 }
 
 const { lookupCity } = require('./cities');
 
-// ── Constants ────────────────────────────────────────────────────────────────
-const PI2   = Math.PI * 2;
-const DEG   = Math.PI / 180;   // degrees → radians
-const RAD   = 180 / Math.PI;   // radians → degrees
-
+// ── Constants ─────────────────────────────────────────────────────────────────
 const SIGNS = [
   'Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo',
   'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces',
@@ -81,8 +73,8 @@ function norm360(deg) {
 
 // Convert ecliptic longitude (degrees, 0–360) to sign name, degree within sign, and minutes
 function lonToPosition(lonDeg) {
-  const l = norm360(lonDeg);
-  const signIdx = Math.floor(l / 30);
+  const l        = norm360(lonDeg);
+  const signIdx  = Math.floor(l / 30);
   const degInSign = l % 30;
   const d = Math.floor(degInSign);
   const m = Math.floor((degInSign - d) * 60);
@@ -95,177 +87,69 @@ function lonToPosition(lonDeg) {
   };
 }
 
-
-// Julian Day from date string "YYYY-MM-DD" and optional time "HH:MM"
-// Birth time is treated as local solar time (no timezone conversion —
-// for most natal chart work this is standard practice; errors < 15 min
-// shift the ascendant ~3–4° which is the acceptable range without a
-// known timezone offset).
-function birthJD(birthDate, birthTime) {
-  const [yr, mo, dy] = birthDate.split('-').map(Number);
-  let hour = 12; // default to noon if time unknown
+// Parse "YYYY-MM-DD" + optional "HH:MM" (24-hour) into a UTC Date.
+// Birth time is treated as local solar time — standard natal chart practice.
+function parseBirthDate(birthDateStr, birthTime) {
+  const [yr, mo, dy] = birthDateStr.split('-').map(Number);
+  let hour = 12; // default noon if time unknown
   if (birthTime) {
     const parts = birthTime.split(':').map(Number);
     hour = parts[0] + (parts[1] || 0) / 60;
-    console.log('birthJD parsing — raw:', birthTime, '| H:', parts[0], 'M:', parts[1], '| decimal hour:', hour.toFixed(4));
+    console.log('parseBirthDate — raw:', birthTime, '| H:', parts[0], 'M:', parts[1], '| decimal hour:', hour.toFixed(4));
   } else {
-    console.log('birthJD parsing — no birthTime, defaulting to noon (hour=12)');
+    console.log('parseBirthDate — no birthTime, defaulting to noon');
   }
-  return julianLib.CalendarGregorianToJD(yr, mo, dy + hour / 24.0);
+  const h = Math.floor(hour);
+  const min = Math.round((hour - h) * 60);
+  return new Date(Date.UTC(yr, mo - 1, dy, h, min));
 }
 
-// Today's Julian Day (UTC noon)
-function todayJD() {
-  const now = new Date();
-  return julianLib.CalendarGregorianToJD(
-    now.getUTCFullYear(),
-    now.getUTCMonth() + 1,
-    now.getUTCDate() + 0.5,
-  );
-}
-
-// ── Full planetary positions for a given JD (pure JS — no npm packages) ──────
-// Meeus "Astronomical Algorithms" orbital elements; simplified lunar theory.
-function getAllPlanetPositions(jd) {
-  const T   = (jd - 2451545.0) / 36525.0;
-  const D2R = Math.PI / 180;
-  const R2D = 180 / Math.PI;
-
-  function r(d) { return d * D2R; }
-  function n(d) { return ((d % 360) + 360) % 360; }
-
-  function equationOfCenter(M_deg, e) {
-    const M = r(M_deg);
-    return R2D * (
-      (2*e - e*e*e/4) * Math.sin(M) +
-      (5/4)*e*e       * Math.sin(2*M) +
-      (13/12)*e*e*e   * Math.sin(3*M)
-    );
+// ── Planet positions via astronomy-engine ─────────────────────────────────────
+function getAllPlanetPositions(date) {
+  const bodyNames = ['Sun', 'Moon', 'Mercury', 'Venus', 'Mars',
+                     'Jupiter', 'Saturn', 'Uranus', 'Neptune', 'Pluto'];
+  const result = {};
+  for (const name of bodyNames) {
+    const lon = Astronomy.EclipticLongitude(Astronomy.Body[name], date);
+    result[name] = lonToPosition(lon);
   }
-
-  function radiusVec(M_deg, a, e) {
-    const M = r(M_deg);
-    let E = M;
-    for (let i = 0; i < 5; i++) E = M + e * Math.sin(E);
-    return a * (1 - e * Math.cos(E));
-  }
-
-  // [mean_longitude_J2000, daily_motion_deg, lon_perihelion, eccentricity, semi-major_axis_AU]
-  const elems = {
-    Mercury: [252.250906, 149472.6746358,  77.45645, 0.20563069,  0.387098],
-    Venus:   [181.979801,  58517.8156760, 131.56370, 0.00677323,  0.723330],
-    Earth:   [100.466457,  35999.3728565, 102.93735, 0.01670862,  1.000000],
-    Mars:    [355.433275,  19140.2993313, 336.04084, 0.09341233,  1.523688],
-    Jupiter: [ 34.351519,   3034.9056606,  14.33131, 0.04839266,  5.202561],
-    Saturn:  [ 50.077444,   1222.1137943,  93.05678, 0.05415060,  9.537070],
-    Uranus:  [314.055005,    428.4669983, 173.00529, 0.04716771, 19.191264],
-    Neptune: [304.348665,    218.4862002,  48.12369, 0.00858587, 30.068963],
-    Pluto:   [238.956785,    145.1807643, 224.06676, 0.24880766, 39.48168677],
-  };
-
-  function helioLon(name) {
-    const [L0, Lr, wb, e] = elems[name];
-    const L = n(L0 + Lr * T);
-    return n(L + equationOfCenter(n(L - wb), e));
-  }
-
-  function helioR(name) {
-    const [L0, Lr, wb, e, a] = elems[name];
-    const L = n(L0 + Lr * T);
-    return radiusVec(n(L - wb), a, e);
-  }
-
-  const earthLon = helioLon('Earth');
-  const earthR   = helioR('Earth');
-  const earthX   = earthR * Math.cos(r(earthLon));
-  const earthY   = earthR * Math.sin(r(earthLon));
-
-  const sunLon = n(earthLon + 180);
-
-  function geocentricLon(name) {
-    const hLon = helioLon(name);
-    const hR   = helioR(name);
-    const px   = hR * Math.cos(r(hLon)) - earthX;
-    const py   = hR * Math.sin(r(hLon)) - earthY;
-    return n(Math.atan2(py, px) * R2D);
-  }
-
-  // Moon — simplified lunar theory (Meeus Ch. 47 abridged)
-  const Lm = n(218.3165 + 481267.8813 * T);
-  const Ms = n(357.5291 +  35999.0503 * T);
-  const Mm = n(134.9634 + 477198.8676 * T);
-  const Dm = n(297.8502 + 445267.1115 * T);
-  const Fm = n( 93.2721 + 483202.0175 * T);
-  const moonLon = n(Lm
-    - 1.274 * Math.sin(r(Mm - 2*Dm))
-    + 0.658 * Math.sin(r(2*Dm))
-    - 0.186 * Math.sin(r(Ms))
-    - 0.059 * Math.sin(r(2*Mm - 2*Dm))
-    - 0.057 * Math.sin(r(Mm - 2*Dm + Ms))
-    + 0.053 * Math.sin(r(Mm + 2*Dm))
-    + 0.046 * Math.sin(r(2*Dm - Ms))
-    + 0.041 * Math.sin(r(Mm - Ms))
-    - 0.035 * Math.sin(r(Dm))
-    - 0.031 * Math.sin(r(Mm + Ms))
-    - 0.015 * Math.sin(r(2*Fm - 2*Dm))
-    + 0.011 * Math.sin(r(Mm - 4*Dm))
-  );
-
-  return {
-    Sun:     lonToPosition(sunLon),
-    Moon:    lonToPosition(moonLon),
-    Mercury: lonToPosition(geocentricLon('Mercury')),
-    Venus:   lonToPosition(geocentricLon('Venus')),
-    Mars:    lonToPosition(geocentricLon('Mars')),
-    Jupiter: lonToPosition(geocentricLon('Jupiter')),
-    Saturn:  lonToPosition(geocentricLon('Saturn')),
-    Uranus:  lonToPosition(geocentricLon('Uranus')),
-    Neptune: lonToPosition(geocentricLon('Neptune')),
-    Pluto:   lonToPosition(geocentricLon('Pluto')),
-  };
+  return result;
 }
 
 // ── Ascendant and Equal house cusps ──────────────────────────────────────────
-// Requires geographic coordinates. Uses the standard ASC formula from
-// Jean Meeus "Astronomical Algorithms" ch. 14.
-function calcAscendantAndHouses(jd, latDeg, lonDeg) {
+// GAST from astronomy-engine; obliquity via standard Meeus formula.
+function calcAscendantAndHouses(date, latDeg, lonDeg) {
   try {
-    // Greenwich Apparent Sidereal Time (astronomia returns radians)
-    const gastRaw = siderealLib.apparent(jd);
-    const gastRad = Math.abs(gastRaw) <= PI2 * 1.05 ? gastRaw : gastRaw * DEG;
+    const D2R = Math.PI / 180;
+    const R2D = 180 / Math.PI;
 
-    // Local Sidereal Time (radians)
-    const lstRad = gastRad + lonDeg * DEG;
+    // GAST (sidereal hours → degrees) + geographic longitude → LST
+    const gastHours = Astronomy.SiderealTime(date);
+    const lst       = norm360(gastHours * 15 + lonDeg);
 
-    // True obliquity of the ecliptic (radians)
-    const epsRaw = nutationLib.trueObliquity(jd);
-    const absEps = Math.abs(epsRaw);
-    const epsRad = absEps > 360 ? epsRaw / 206265   // arcseconds → radians
-                 : absEps > 1   ? epsRaw * DEG       // degrees → radians
-                 :                epsRaw;             // already radians
+    // Mean obliquity (degrees) — Meeus formula, accurate to ~0.001° for modern dates
+    const jd  = date.getTime() / 86400000 + 2440587.5;
+    const T   = (jd - 2451545.0) / 36525.0;
+    const eps = 23.439291111 - 0.013004167 * T - 0.00000016389 * T * T + 0.00000050361 * T * T * T;
 
-    const latRad = latDeg * DEG;
+    const lstR = lst * D2R;
+    const epsR = eps * D2R;
+    const latR = latDeg * D2R;
 
-    // Ascendant (standard formula)
-    const ascRad = Math.atan2(
-      -Math.cos(lstRad),
-      Math.sin(lstRad) * Math.cos(epsRad) + Math.tan(latRad) * Math.sin(epsRad),
-    );
-    const ascDeg = norm360(ascRad * RAD);
+    // Ascendant (standard formula — Meeus ch. 14)
+    const ascR   = Math.atan2(-Math.cos(lstR), Math.sin(lstR) * Math.cos(epsR) + Math.tan(latR) * Math.sin(epsR));
+    const ascDeg = norm360(ascR * R2D);
     const asc    = lonToPosition(ascDeg);
 
-    // Midheaven (MC)
-    const mcRad  = Math.atan2(Math.sin(lstRad), Math.cos(lstRad) * Math.cos(epsRad));
-    let   mcDeg  = norm360(mcRad * RAD);
-    // Quadrant correction: MC and ASC should never be within 90° of each other
+    // Midheaven (MC) with quadrant correction
+    const mcR  = Math.atan2(Math.sin(lstR), Math.cos(lstR) * Math.cos(epsR));
+    let mcDeg  = norm360(mcR * R2D);
     if (Math.abs(norm360(mcDeg - ascDeg)) < 90) mcDeg = norm360(mcDeg + 180);
-    const mc     = lonToPosition(mcDeg);
+    const mc   = lonToPosition(mcDeg);
 
-    // Equal house cusps: each cusp is 30° from the Ascendant
+    // Equal house cusps: 12 cusps each 30° from the Ascendant
     const houses = [];
-    for (let i = 0; i < 12; i++) {
-      houses.push(lonToPosition(norm360(ascDeg + i * 30)));
-    }
+    for (let i = 0; i < 12; i++) houses.push(lonToPosition(norm360(ascDeg + i * 30)));
 
     return { asc, mc, houses };
   } catch (err) {
@@ -275,9 +159,8 @@ function calcAscendantAndHouses(jd, latDeg, lonDeg) {
 }
 
 // ── Transit aspects ───────────────────────────────────────────────────────────
-// Compare current positions to natal positions; report major aspects.
 function getTransitAspects(natal, current) {
-  const lines = [];
+  const lines       = [];
   const planetNames = ['Sun', 'Moon', 'Mercury', 'Venus', 'Mars', 'Jupiter', 'Saturn', 'Uranus', 'Neptune'];
 
   for (const transitPlanet of planetNames) {
@@ -288,14 +171,12 @@ function getTransitAspects(natal, current) {
       const nPos = natal[natalPlanet];
       if (nPos.lon === null) continue;
 
-      const diff = Math.abs(norm360(tPos.lon - nPos.lon));
+      const diff  = Math.abs(norm360(tPos.lon - nPos.lon));
       const angle = diff > 180 ? 360 - diff : diff;
 
       for (const asp of ASPECTS) {
         if (Math.abs(angle - asp.angle) <= asp.orb) {
-          lines.push(
-            `Transit ${transitPlanet} (${tPos.label}) ${asp.name} natal ${natalPlanet} (${nPos.label})`,
-          );
+          lines.push(`Transit ${transitPlanet} (${tPos.label}) ${asp.name} natal ${natalPlanet} (${nPos.label})`);
           break;
         }
       }
@@ -310,7 +191,7 @@ function formatBirthTime(t) {
   if (!t) return null;
   const [hStr, mStr] = t.split(':');
   let h = parseInt(hStr, 10);
-  const m = mStr || '00';
+  const m    = mStr || '00';
   const ampm = h < 12 ? 'AM' : 'PM';
   if (h === 0) h = 12;
   else if (h > 12) h -= 12;
@@ -319,8 +200,8 @@ function formatBirthTime(t) {
 
 // ── Build the full natal chart summary injected into the Vapi prompt ─────────
 async function buildNatalSummary({ name, birthDate, birthTime, birthCity }) {
-  if (!julianLib) {
-    return `[Natal chart unavailable — required libraries failed to load. Proceed with name: ${name}, birth date: ${birthDate}, birth city: ${birthCity}.]`;
+  if (!Astronomy) {
+    return `[Natal chart unavailable — astronomy-engine failed to load. Proceed with name: ${name}, birth date: ${birthDate}, birth city: ${birthCity}.]`;
   }
 
   const friendlyTime = formatBirthTime(birthTime);
@@ -328,11 +209,10 @@ async function buildNatalSummary({ name, birthDate, birthTime, birthCity }) {
     ? `Birth time ${friendlyTime} was provided.`
     : 'No birth time was provided — Ascendant and house positions are approximate (defaulted to noon). Ask if the caller can find their exact birth time.';
 
-  const [yr] = birthDate.split('-').map(Number);
-  const jd   = birthJD(birthDate, birthTime);
-  const jdNow = todayJD();
+  const bDate   = parseBirthDate(birthDate, birthTime);
+  const nowDate = new Date();
 
-  const PLANET_UNKNOWN = { label: '[calculation failed]', sign: 'unknown', lon: null };
+  const PLANET_UNKNOWN   = { label: '[calculation failed]', sign: 'unknown', lon: null };
   const PLANETS_FALLBACK = Object.fromEntries(
     ['Sun','Moon','Mercury','Venus','Mars','Jupiter','Saturn','Uranus','Neptune','Pluto']
       .map(p => [p, PLANET_UNKNOWN])
@@ -343,22 +223,22 @@ async function buildNatalSummary({ name, birthDate, birthTime, birthCity }) {
   let transitAspects = ['Transit aspects unavailable — planet calculation failed.'];
 
   try {
-    natal          = getAllPlanetPositions(jd);
-    current        = getAllPlanetPositions(jdNow);
+    natal          = getAllPlanetPositions(bDate);
+    current        = getAllPlanetPositions(nowDate);
     transitAspects = getTransitAspects(natal, current);
   } catch (err) {
     console.error('Planet calculation failed:', err.message);
     await sendChartFailureAlert({ name, birthDate, birthTime, birthCity, error: err.message });
   }
 
-  const coords  = lookupCity(birthCity);
-  let ascBlock  = '';
-  let ascSign   = 'unknown — ask the caller';
+  const coords = lookupCity(birthCity);
+  let ascBlock = '';
+  let ascSign  = 'unknown — ask the caller';
 
   if (coords) {
     let result = null;
     try {
-      result = calcAscendantAndHouses(jd, coords.lat, coords.lon);
+      result = calcAscendantAndHouses(bDate, coords.lat, coords.lon);
     } catch (err) {
       console.error('Ascendant calculation threw:', err.message);
     }
@@ -395,7 +275,7 @@ Jupiter: ${natal.Jupiter.label}
 Saturn:  ${natal.Saturn.label}
 Uranus:  ${natal.Uranus.label}
 Neptune: ${natal.Neptune.label}
-Pluto:   ${natal.Pluto.label}  (exact position via ephemeris)
+Pluto:   ${natal.Pluto.label}
 ${ascBlock}
 
 CURRENT TRANSITS (today vs natal)

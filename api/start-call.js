@@ -105,15 +105,28 @@ function parseBirthDate(birthDateStr, birthTime) {
 }
 
 // ── Planet positions via astronomy-engine ─────────────────────────────────────
+// EclipticLongitude() is heliocentric and throws for Sun — do not use it.
+// Sun:  SunPosition() → geocentric apparent ecliptic longitude (.elon)
+// Moon: EclipticGeoMoon() → geocentric ecliptic longitude (.lon)
+// Planets: GeoVector() [geocentric equatorial J2000] → Ecliptic() → .elon
 function getAllPlanetPositions(date) {
-  const bodyNames = ['Sun', 'Moon', 'Mercury', 'Venus', 'Mars',
-                     'Jupiter', 'Saturn', 'Uranus', 'Neptune', 'Pluto'];
-  const result = {};
-  for (const name of bodyNames) {
-    const lon = Astronomy.EclipticLongitude(Astronomy.Body[name], date);
-    result[name] = lonToPosition(lon);
+  function geoEclLon(body) {
+    const vec = Astronomy.GeoVector(body, date, true);
+    return Astronomy.Ecliptic(vec).elon;
   }
-  return result;
+
+  return {
+    Sun:     lonToPosition(Astronomy.SunPosition(date).elon),
+    Moon:    lonToPosition(Astronomy.EclipticGeoMoon(date).lon),
+    Mercury: lonToPosition(geoEclLon(Astronomy.Body.Mercury)),
+    Venus:   lonToPosition(geoEclLon(Astronomy.Body.Venus)),
+    Mars:    lonToPosition(geoEclLon(Astronomy.Body.Mars)),
+    Jupiter: lonToPosition(geoEclLon(Astronomy.Body.Jupiter)),
+    Saturn:  lonToPosition(geoEclLon(Astronomy.Body.Saturn)),
+    Uranus:  lonToPosition(geoEclLon(Astronomy.Body.Uranus)),
+    Neptune: lonToPosition(geoEclLon(Astronomy.Body.Neptune)),
+    Pluto:   lonToPosition(geoEclLon(Astronomy.Body.Pluto)),
+  };
 }
 
 // ── Ascendant and Equal house cusps ──────────────────────────────────────────

@@ -16,6 +16,39 @@ const VAPI_API_KEY         = process.env.VAPI_API_KEY                 || 'YOUR_V
 const VAPI_ASSISTANT_ID    = process.env.VAPI_ASSISTANT_ID_EVANGELINE || 'YOUR_EVANGELINE_ASSISTANT_ID';
 const VAPI_PHONE_NUMBER_ID = process.env.VAPI_PHONE_NUMBER_ID         || 'YOUR_VAPI_PHONE_NUMBER_ID';
 
+// ── Alert email (nodemailer / Gmail SMTP) ────────────────────────────────────
+async function sendChartFailureAlert({ name, birthDate, birthTime, birthCity, error }) {
+  if (!process.env.GMAIL_USER || !process.env.GMAIL_PASS) {
+    console.warn('GMAIL_USER/GMAIL_PASS not set — skipping alert email');
+    return;
+  }
+  try {
+    const nodemailer = require('nodemailer');
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: { user: process.env.GMAIL_USER, pass: process.env.GMAIL_PASS },
+    });
+    await transporter.sendMail({
+      from: process.env.GMAIL_USER,
+      to:   'steverubenstein09@gmail.com',
+      subject: 'Evangeline Chart Failure',
+      text: [
+        'Planet calculation failed for a caller.',
+        '',
+        `Caller:     ${name}`,
+        `Birth Date: ${birthDate}`,
+        `Birth Time: ${birthTime || 'not provided'}`,
+        `Birth City: ${birthCity}`,
+        '',
+        `Error: ${error}`,
+      ].join('\n'),
+    });
+    console.log('Chart failure alert email sent');
+  } catch (mailErr) {
+    console.error('Failed to send alert email:', mailErr.message);
+  }
+}
+
 // ── Astronomia modules ───────────────────────────────────────────────────────
 // If any require() fails, Vercel will surface the error at cold-start.
 // Run `ls node_modules/astronomia` after `npm install` to verify paths.
@@ -281,6 +314,7 @@ function buildNatalSummary({ name, birthDate, birthTime, birthCity }) {
     transitAspects = getTransitAspects(natal, current);
   } catch (err) {
     console.error('Planet calculation failed:', err.message);
+    await sendChartFailureAlert({ name, birthDate, birthTime, birthCity, error: err.message });
   }
 
   const coords  = lookupCity(birthCity);

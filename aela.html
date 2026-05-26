@@ -110,9 +110,9 @@
         <p class="call-details">First 3 minutes free. Minutes 4 through 6 cost $2.99 total. After that, just $1.00 per minute.</p>
         <form id="call-form" onsubmit="handleCall(event)" style="margin-bottom:12px;">
           <input id="f-name" type="text" placeholder="First Name" required autocomplete="given-name"
-                 style="display:block;width:100%;margin-bottom:8px;padding:10px 14px;background:#1c1710;border:1px solid rgba(201,168,76,0.3);color:#f5f0e8;font-family:'Space Mono',monospace;font-size:0.82rem;outline:none;" />
+                 style="display:block;width:100%;margin-bottom:8px;padding:10px 14px;background:#1c1710;border:1px solid rgba(201,168,76,0.7);color:#f5f0e8;font-family:'Space Mono',monospace;font-size:0.82rem;outline:none;" />
           <input id="f-phone" type="tel" placeholder="Phone Number" required autocomplete="tel"
-                 style="display:block;width:100%;margin-bottom:12px;padding:10px 14px;background:#1c1710;border:1px solid rgba(201,168,76,0.3);color:#f5f0e8;font-family:'Space Mono',monospace;font-size:0.82rem;outline:none;" />
+                 style="display:block;width:100%;margin-bottom:12px;padding:10px 14px;background:#1c1710;border:1px solid rgba(201,168,76,0.7);color:#f5f0e8;font-family:'Space Mono',monospace;font-size:0.82rem;outline:none;" />
           <button type="submit" class="btn-call" style="width:100%;cursor:pointer;border:none;">Call Me Now →</button>
         </form>
         <p id="call-msg" style="font-size:0.85rem;margin-bottom:12px;display:none;"></p>
@@ -229,6 +229,9 @@
     </div>
   </footer>
 
+<style>
+#f-name::placeholder, #f-phone::placeholder { color: #c9a84c; opacity: 1; }
+</style>
 <script>
 async function handleCall(e) {
   e.preventDefault();

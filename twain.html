@@ -113,7 +113,14 @@
       <div class="call-box" id="call">
         <p class="call-box-label">How It Works</p>
         <p class="call-details">First 3 minutes free. Minutes 4 through 6 cost $2.99 total. After that, just $1.00 per minute.</p>
-        <a class="btn-call" href="payment.html?icon=twain">Start Your Free Call →</a>
+        <form id="call-form" onsubmit="handleCall(event)" style="margin-bottom:12px;">
+          <input id="f-name" type="text" placeholder="First Name" required autocomplete="given-name"
+                 style="display:block;width:100%;margin-bottom:8px;padding:10px 14px;background:#1c1710;border:1px solid rgba(201,168,76,0.3);color:#f5f0e8;font-family:'Space Mono',monospace;font-size:0.82rem;outline:none;" />
+          <input id="f-phone" type="tel" placeholder="Phone Number" required autocomplete="tel"
+                 style="display:block;width:100%;margin-bottom:12px;padding:10px 14px;background:#1c1710;border:1px solid rgba(201,168,76,0.3);color:#f5f0e8;font-family:'Space Mono',monospace;font-size:0.82rem;outline:none;" />
+          <button type="submit" class="btn-call" style="width:100%;cursor:pointer;border:none;">Call Me Now →</button>
+        </form>
+        <p id="call-msg" style="font-size:0.85rem;margin-bottom:12px;display:none;"></p>
         <p class="call-rescue">🐾 every paid call triggers at minimum a meal donation for a rescue dog</p>
       </div>
     </div>
@@ -221,7 +228,7 @@
   <div class="bottom-cta">
     <h2>Three minutes.<br>One conversation.<br><em style="color:var(--gold-light)">Never repeated.</em></h2>
     <p>No script. No recordings. A live AI voice trained on Twain's novels, letters, and lectures — speaking only to you, only now.</p>
-    <a class="btn-large" href="payment.html?icon=twain">Start Your Free Call →</a>
+    <a class="btn-large" href="#call">Start Your Free Call →</a>
     <br>
     <p class="bottom-rescue">🐾 every paid call triggers at minimum a meal donation for a rescue dog</p>
   </div>
@@ -270,5 +277,40 @@
     </div>
   </footer>
 
+<script>
+async function handleCall(e) {
+  e.preventDefault();
+  const form = document.getElementById('call-form');
+  const btn  = form.querySelector('button[type="submit"]');
+  const msg  = document.getElementById('call-msg');
+  const firstName   = document.getElementById('f-name').value.trim();
+  const phoneNumber = document.getElementById('f-phone').value.trim();
+  btn.disabled    = true;
+  btn.textContent = 'Connecting...';
+  msg.style.display = 'none';
+  try {
+    const res  = await fetch(window.location.origin + '/api/start-call-basic', {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify({ firstName, phoneNumber, character: 'twain' }),
+    });
+    const data = await res.json();
+    if (res.ok) {
+      msg.textContent   = 'Your call is connecting — pick up within 30 seconds.';
+      msg.style.color   = '#6dbf8a';
+      msg.style.display = 'block';
+      btn.textContent   = 'Call Placed ✓';
+    } else {
+      throw new Error(data.error || 'Something went wrong.');
+    }
+  } catch (err) {
+    msg.textContent   = err.message;
+    msg.style.color   = '#e07070';
+    msg.style.display = 'block';
+    btn.disabled      = false;
+    btn.textContent   = 'Call Me Now →';
+  }
+}
+</script>
 </body>
 </html>

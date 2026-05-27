@@ -1,7 +1,8 @@
 const https = require('https');
+const zlib = require('zlib');
 
 module.exports = async (req, res) => {
-  console.log('TAVILY_API_KEY present:', !!process.env.TAVILY_API_KEY, 'key starts with:', process.env.TAVILY_API_KEY?.substring(0, 8));
+  console.log('BRAVE_API_KEY present:', !!process.env.BRAVE_API_KEY, 'key starts with:', process.env.BRAVE_API_KEY?.substring(0, 8));
 
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
@@ -10,23 +11,19 @@ module.exports = async (req, res) => {
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
-  const tavilyKey = process.env.TAVILY_API_KEY;
-  if (!tavilyKey) return res.status(500).json({ error: 'TAVILY_API_KEY not configured' });
+  const braveKey = process.env.BRAVE_API_KEY;
+  if (!braveKey) return res.status(500).json({ error: 'BRAVE_API_KEY not configured' });
 
-  // Log the raw body so we can see exactly what Vapi sends
-  console.log('tavily-search raw body:', JSON.stringify(req.body));
-  console.log('tavily-search content-type:', req.headers['content-type']);
+  console.log('search raw body:', JSON.stringify(req.body));
+  console.log('search content-type:', req.headers['content-type']);
 
   // Extract query — try every known Vapi payload shape in order
   let query;
   try {
     const body = req.body || {};
-
-    // Helper: parse if string, pass through if object
     const parse = (v) => (typeof v === 'string' ? JSON.parse(v) : v);
 
     // Shape 1 (current Vapi): { message: { toolCalls: [{ function: { arguments: { query } } }] } }
-    // arguments may be a JSON string
     const toolCall = body?.message?.toolCalls?.[0];
     if (toolCall) {
       const args = parse(toolCall?.function?.arguments);
@@ -56,10 +53,10 @@ module.exports = async (req, res) => {
       query = body?.query;
     }
   } catch (err) {
-    console.error('tavily-search body parse error:', err.message);
+    console.error('search body parse error:', err.message);
   }
 
-  console.log('tavily-search extracted query:', query);
+  console.log('search extracted query:', query);
 
   if (!query) {
     return res.status(400).json({
@@ -68,51 +65,51 @@ module.exports = async (req, res) => {
     });
   }
 
-  const payload = JSON.stringify({
-    query,
-    max_results: 5,
-    search_depth: 'basic',
-    include_answer: true,
-  });
-
   const options = {
-    hostname: 'api.tavily.com',
-    path: '/search',
-    method: 'POST',
+    hostname: 'api.search.brave.com',
+    path: `/res/v1/web/search?q=${encodeURIComponent(query)}&count=5`,
+    method: 'GET',
     headers: {
-      'Authorization': `Bearer ${tavilyKey}`,
-      'Content-Type': 'application/json',
-      'Content-Length': Buffer.byteLength(payload),
+      'Accept': 'application/json',
+      'Accept-Encoding': 'gzip',
+      'X-Subscription-Token': braveKey,
     },
   };
 
   try {
-    const tavilyRes = await new Promise((resolve, reject) => {
+    const braveRes = await new Promise((resolve, reject) => {
       const request = https.request(options, (r) => {
+        let stream = r;
+        if (r.headers['content-encoding'] === 'gzip') {
+          stream = r.pipe(zlib.createGunzip());
+        }
         let data = '';
-        r.on('data', chunk => data += chunk);
-        r.on('end', () => resolve({ status: r.statusCode, body: data }));
+        stream.on('data', chunk => data += chunk);
+        stream.on('end', () => resolve({ status: r.statusCode, body: data }));
+        stream.on('error', reject);
       });
       request.on('error', reject);
-      request.write(payload);
       request.end();
     });
 
-    if (tavilyRes.status !== 200) {
-      console.error('Tavily error:', tavilyRes.status, tavilyRes.body);
-      return res.status(502).json({ error: 'Tavily search failed', details: tavilyRes.body });
+    console.log('Brave status:', braveRes.status);
+
+    if (braveRes.status !== 200) {
+      console.error('Brave error:', braveRes.status, braveRes.body);
+      return res.status(502).json({ error: 'Brave Search failed', details: braveRes.body });
     }
 
-    const results = JSON.parse(tavilyRes.body);
+    const data = JSON.parse(braveRes.body);
+    const results = data?.web?.results || [];
 
-    const summary = results.answer
-      ? `Answer: ${results.answer}\n\nSources:\n${(results.results || []).slice(0, 3).map(r => `- ${r.title}: ${r.url}`).join('\n')}`
-      : (results.results || []).slice(0, 5).map(r => `${r.title}: ${r.content}`).join('\n\n');
+    const summary = results.slice(0, 3).map(r =>
+      `${r.title}\n${r.description || ''}\n${r.url}`
+    ).join('\n\n');
 
-    console.log('tavily-search success, summary length:', summary.length);
-    return res.status(200).json({ result: summary });
+    console.log('search success, results:', results.length);
+    return res.status(200).json({ result: summary || 'No results found.' });
   } catch (err) {
-    console.error('tavily-search fetch error:', err.message);
+    console.error('search fetch error:', err.message);
     return res.status(500).json({ error: err.message });
   }
 };

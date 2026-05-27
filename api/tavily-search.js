@@ -1,6 +1,8 @@
 const https = require('https');
 
 module.exports = async (req, res) => {
+  console.log('TAVILY_API_KEY present:', !!process.env.TAVILY_API_KEY, 'key starts with:', process.env.TAVILY_API_KEY?.substring(0, 8));
+
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');

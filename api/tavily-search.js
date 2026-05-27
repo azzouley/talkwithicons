@@ -11,19 +11,43 @@ module.exports = async (req, res) => {
   const tavilyKey = process.env.TAVILY_API_KEY;
   if (!tavilyKey) return res.status(500).json({ error: 'TAVILY_API_KEY not configured' });
 
-  // Vapi sends function call payloads with the args inside message.functionCall.parameters
-  // or directly as the body depending on version — handle both
+  // Log the raw body so we can see exactly what Vapi sends
+  console.log('tavily-search raw body:', JSON.stringify(req.body));
+  console.log('tavily-search content-type:', req.headers['content-type']);
+
+  // Extract query from every known Vapi function-call payload shape
   let query;
   try {
     const body = req.body || {};
-    const params = body?.message?.functionCall?.parameters || body?.parameters || body;
-    query = params?.query || params?.arguments?.query;
-    if (!query && typeof params === 'string') {
-      query = JSON.parse(params)?.query;
-    }
-  } catch (_) {}
 
-  if (!query) return res.status(400).json({ error: 'query parameter is required' });
+    // Shape 1: { message: { functionCall: { parameters: '{"query":"..."}' } } }
+    // Shape 2: { message: { functionCall: { parameters: { query: '...' } } } }
+    // Shape 3: { functionCall: { parameters: ... } }  (no message wrapper)
+    // Shape 4: { parameters: { query: '...' } }
+    // Shape 5: { query: '...' }  (direct)
+
+    const rawParams =
+      body?.message?.functionCall?.parameters ??
+      body?.functionCall?.parameters ??
+      body?.parameters ??
+      body;
+
+    // parameters may be a JSON string or an object
+    const params = typeof rawParams === 'string' ? JSON.parse(rawParams) : rawParams;
+
+    query = params?.query ?? params?.arguments?.query;
+  } catch (err) {
+    console.error('tavily-search body parse error:', err.message);
+  }
+
+  console.log('tavily-search extracted query:', query);
+
+  if (!query) {
+    return res.status(400).json({
+      error: 'query parameter is required',
+      receivedBody: req.body,
+    });
+  }
 
   const payload = JSON.stringify({
     query,
@@ -56,18 +80,20 @@ module.exports = async (req, res) => {
     });
 
     if (tavilyRes.status !== 200) {
+      console.error('Tavily error:', tavilyRes.status, tavilyRes.body);
       return res.status(502).json({ error: 'Tavily search failed', details: tavilyRes.body });
     }
 
     const results = JSON.parse(tavilyRes.body);
 
-    // Return a concise result string Vapi can pass back to the assistant
     const summary = results.answer
       ? `Answer: ${results.answer}\n\nSources:\n${(results.results || []).slice(0, 3).map(r => `- ${r.title}: ${r.url}`).join('\n')}`
       : (results.results || []).slice(0, 5).map(r => `${r.title}: ${r.content}`).join('\n\n');
 
+    console.log('tavily-search success, summary length:', summary.length);
     return res.status(200).json({ result: summary });
   } catch (err) {
+    console.error('tavily-search fetch error:', err.message);
     return res.status(500).json({ error: err.message });
   }
 };

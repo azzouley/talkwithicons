@@ -15,27 +15,44 @@ module.exports = async (req, res) => {
   console.log('tavily-search raw body:', JSON.stringify(req.body));
   console.log('tavily-search content-type:', req.headers['content-type']);
 
-  // Extract query from every known Vapi function-call payload shape
+  // Extract query — try every known Vapi payload shape in order
   let query;
   try {
     const body = req.body || {};
 
-    // Shape 1: { message: { functionCall: { parameters: '{"query":"..."}' } } }
-    // Shape 2: { message: { functionCall: { parameters: { query: '...' } } } }
-    // Shape 3: { functionCall: { parameters: ... } }  (no message wrapper)
-    // Shape 4: { parameters: { query: '...' } }
-    // Shape 5: { query: '...' }  (direct)
+    // Helper: parse if string, pass through if object
+    const parse = (v) => (typeof v === 'string' ? JSON.parse(v) : v);
 
-    const rawParams =
-      body?.message?.functionCall?.parameters ??
-      body?.functionCall?.parameters ??
-      body?.parameters ??
-      body;
+    // Shape 1 (current Vapi): { message: { toolCalls: [{ function: { arguments: { query } } }] } }
+    // arguments may be a JSON string
+    const toolCall = body?.message?.toolCalls?.[0];
+    if (toolCall) {
+      const args = parse(toolCall?.function?.arguments);
+      query = args?.query;
+    }
 
-    // parameters may be a JSON string or an object
-    const params = typeof rawParams === 'string' ? JSON.parse(rawParams) : rawParams;
+    // Shape 2: { message: { functionCall: { parameters: { query } } } }  (older Vapi)
+    if (!query) {
+      const params = parse(body?.message?.functionCall?.parameters);
+      query = params?.query;
+    }
 
-    query = params?.query ?? params?.arguments?.query;
+    // Shape 3: { functionCall: { parameters: { query } } }  (no message wrapper)
+    if (!query) {
+      const params = parse(body?.functionCall?.parameters);
+      query = params?.query;
+    }
+
+    // Shape 4: { parameters: { query } }
+    if (!query) {
+      const params = parse(body?.parameters);
+      query = params?.query;
+    }
+
+    // Shape 5: { query }  (direct / test calls)
+    if (!query) {
+      query = body?.query;
+    }
   } catch (err) {
     console.error('tavily-search body parse error:', err.message);
   }

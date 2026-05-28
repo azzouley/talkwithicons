@@ -4,10 +4,10 @@
 // Each character's Vapi assistant must have {{callerName}} in their system prompt.
 
 // ── Shared Vapi credentials ───────────────────────────────────────────────────
-const VAPI_API_KEY         = process.env.VAPI_API_KEY         || 'YOUR_VAPI_API_KEY';
-const VAPI_PHONE_NUMBER_ID = process.env.VAPI_PHONE_NUMBER_ID || 'YOUR_VAPI_PHONE_NUMBER_ID';
+const VAPI_API_KEY             = process.env.VAPI_API_KEY             || 'YOUR_VAPI_API_KEY';
+const VAPI_PHONE_NUMBER_ID_DEFAULT = process.env.VAPI_PHONE_NUMBER_ID || 'YOUR_VAPI_PHONE_NUMBER_ID';
 
-// ── Per-character Vapi assistant IDs (set each in Vercel environment variables) ─
+// ── Per-character Vapi assistant IDs ─────────────────────────────────────────
 const ASSISTANT_IDS = {
   einstein:    process.env.VAPI_ASSISTANT_ID_EINSTEIN    || 'YOUR_EINSTEIN_ASSISTANT_ID',
   nostradamus: process.env.VAPI_ASSISTANT_ID_NOSTRADAMUS || 'YOUR_NOSTRADAMUS_ASSISTANT_ID',
@@ -17,6 +17,18 @@ const ASSISTANT_IDS = {
   aela:        process.env.VAPI_ASSISTANT_ID_AELA        || 'YOUR_AELA_ASSISTANT_ID',
   bennet:      process.env.VAPI_ASSISTANT_ID_BENNET      || 'YOUR_BENNET_ASSISTANT_ID',
   curie:       process.env.VAPI_ASSISTANT_ID_CURIE       || 'YOUR_CURIE_ASSISTANT_ID',
+};
+
+// ── Per-character phone number IDs (fall back to shared if not set) ───────────
+const PHONE_NUMBER_IDS = {
+  einstein:    process.env.VAPI_PHONE_NUMBER_ID_EINSTEIN    || VAPI_PHONE_NUMBER_ID_DEFAULT,
+  nostradamus: process.env.VAPI_PHONE_NUMBER_ID_NOSTRADAMUS || VAPI_PHONE_NUMBER_ID_DEFAULT,
+  twain:       process.env.VAPI_PHONE_NUMBER_ID_TWAIN       || VAPI_PHONE_NUMBER_ID_DEFAULT,
+  tesla:       process.env.VAPI_PHONE_NUMBER_ID_TESLA       || VAPI_PHONE_NUMBER_ID_DEFAULT,
+  holmes:      process.env.VAPI_PHONE_NUMBER_ID_HOLMES      || VAPI_PHONE_NUMBER_ID_DEFAULT,
+  aela:        process.env.VAPI_PHONE_NUMBER_ID_AELA        || VAPI_PHONE_NUMBER_ID_DEFAULT,
+  bennet:      process.env.VAPI_PHONE_NUMBER_ID_BENNET      || VAPI_PHONE_NUMBER_ID_DEFAULT,
+  curie:       process.env.VAPI_PHONE_NUMBER_ID_CURIE       || VAPI_PHONE_NUMBER_ID_DEFAULT,
 };
 
 function normalizePhone(raw) {
@@ -44,7 +56,7 @@ module.exports = async function handler(req, res) {
   }
 
   const vapiPayload = {
-    phoneNumberId: VAPI_PHONE_NUMBER_ID,
+    phoneNumberId: PHONE_NUMBER_IDS[character.toLowerCase()],
     customer:      { number: normalizePhone(phoneNumber), name: firstName },
     assistantId,
     assistantOverrides: {

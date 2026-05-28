@@ -43,5 +43,6 @@ module.exports = async (req, res) => {
   const results = JSON.parse(searchRes.body)?.web?.results || [];
   const result = results.slice(0, 3).map(r => `${r.title}: ${r.description || r.url}`).join('\n');
 
+  console.log('result string:', result);
   return res.status(200).json({ result: result || 'No results found.' });
 };

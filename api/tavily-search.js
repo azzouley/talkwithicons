@@ -45,5 +45,5 @@ module.exports = async (req, res) => {
 
   const content = result || 'No results found.';
   console.log('result string:', content);
-  return res.status(200).json({ results: [{ content }] });
+  return res.status(200).json({ result: content });
 };

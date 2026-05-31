@@ -1,16 +1,11 @@
 // QStash delayed receiver — fires 30 minutes after a call ends.
-// Verifies QStash signature, then sends:
-//   • SMS via Twilio  (always, if TWILIO_* vars are set)
-//   • Email via Gmail (only if callerEmail was collected during registration)
+// Verifies QStash signature, then sends email via Gmail.
 //
 // Required env vars:
 //   QSTASH_CURRENT_SIGNING_KEY, QSTASH_NEXT_SIGNING_KEY
-//   TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, TWILIO_FROM_NUMBER
 //   GMAIL_USER, GMAIL_PASS  (Gmail app password — not your Google password)
 
 const crypto = require('crypto');
-const https  = require('https');
-const qs     = require('querystring');
 
 // Disable Vercel body parser — need raw bytes for QStash signature verification
 const handler = async function (req, res) {
@@ -40,31 +35,22 @@ const handler = async function (req, res) {
   try { data = JSON.parse(rawBody); }
   catch (_) { return res.status(400).json({ error: 'Invalid JSON' }); }
 
-  const { callerPhone, callerName, callerEmail, characterName, durationSeconds } = data;
-
-  if (!callerPhone) {
-    return res.status(400).json({ error: 'callerPhone required' });
-  }
+  const { callerName, callerEmail, characterName, durationSeconds } = data;
 
   const firstName = (callerName || '').split(' ')[0] || 'there';
   const minutes   = Math.round((durationSeconds || 0) / 60);
   const hook      = CHARACTER_HOOKS[characterName] || 'Every conversation on TalkWithIcons is one of a kind.';
   const site      = 'talkwithicons.vercel.app';
 
-  const smsText = buildSMS(firstName, characterName, minutes, hook, site);
   const emailHtml = buildEmail(firstName, characterName, minutes, hook, site);
 
-  const [smsResult, emailResult] = await Promise.allSettled([
-    sendSMS(callerPhone, smsText),
-    sendEmail(
-      callerEmail,
-      `Your call with ${characterName} — TalkWithIcons`,
-      emailHtml
-    ),
-  ]);
+  const result = await sendEmail(
+    callerEmail,
+    `Your call with ${characterName} — TalkWithIcons`,
+    emailHtml
+  );
 
-  console.log('follow-up SMS:', JSON.stringify(smsResult.value || smsResult.reason?.message));
-  console.log('follow-up email:', JSON.stringify(emailResult.value || emailResult.reason?.message));
+  console.log('follow-up email:', JSON.stringify(result));
 
   return res.status(200).json({ ok: true });
 };
@@ -82,7 +68,6 @@ function verifyQStash(rawBody, sigHeader, keys) {
   const message = hdr + '.' + payload;
 
   for (const key of keys) {
-    // Compute expected signature as base64url
     const mac = crypto.createHmac('sha256', key)
       .update(message)
       .digest('base64')
@@ -92,7 +77,6 @@ function verifyQStash(rawBody, sigHeader, keys) {
 
     if (mac !== sig) continue;
 
-    // Verify the body hash inside the JWT payload
     try {
       const b64 = payload.replace(/-/g, '+').replace(/_/g, '/');
       const decoded = JSON.parse(Buffer.from(b64, 'base64').toString('utf8'));
@@ -103,7 +87,6 @@ function verifyQStash(rawBody, sigHeader, keys) {
   return false;
 }
 
-// Character-specific closing line used in both SMS and email
 const CHARACTER_HOOKS = {
   'Albert Einstein':   'The questions that conversation opened — those belong to you now.',
   'Mark Twain':        'Twain had his say. The question is what you do with it.',
@@ -115,20 +98,6 @@ const CHARACTER_HOOKS = {
   'Elizabeth Bennet':  'Bennet had strong opinions. The ones that stuck — keep those.',
   'Evangeline Adams':  'The chart has been read. The transits are already in motion.',
 };
-
-function buildSMS(firstName, characterName, minutes, hook, site) {
-  const durationNote = minutes > 0
-    ? `Your ${minutes}-minute call with ${characterName} just ended.`
-    : `Your call with ${characterName} just ended.`;
-  return [
-    `Hi ${firstName} — ${durationNote}`,
-    '',
-    hook,
-    '',
-    `Ready for another? ${site}`,
-    'Reply STOP to opt out.',
-  ].join('\n');
-}
 
 function buildEmail(firstName, characterName, minutes, hook, site) {
   const durationLine = minutes > 0
@@ -178,45 +147,6 @@ function buildEmail(firstName, characterName, minutes, hook, site) {
 </html>`;
 }
 
-// Send SMS via Twilio REST API (no SDK needed)
-async function sendSMS(to, body) {
-  const sid  = process.env.TWILIO_ACCOUNT_SID;
-  const auth = process.env.TWILIO_AUTH_TOKEN;
-  const from = process.env.TWILIO_FROM_NUMBER;
-  if (!sid || !auth || !from) return { skipped: 'Twilio not configured' };
-
-  const payload = qs.stringify({ To: to, From: from, Body: body });
-
-  return new Promise((resolve, reject) => {
-    const opts = {
-      hostname: 'api.twilio.com',
-      path:     `/2010-04-01/Accounts/${sid}/Messages.json`,
-      method:   'POST',
-      headers:  {
-        'Authorization':  'Basic ' + Buffer.from(sid + ':' + auth).toString('base64'),
-        'Content-Type':   'application/x-www-form-urlencoded',
-        'Content-Length': Buffer.byteLength(payload),
-      },
-    };
-    const r = https.request(opts, res => {
-      let d = '';
-      res.on('data', c => d += c);
-      res.on('end', () => {
-        const parsed = JSON.parse(d);
-        if (res.statusCode >= 400) {
-          reject(new Error('Twilio ' + res.statusCode + ': ' + (parsed.message || d)));
-        } else {
-          resolve({ sid: parsed.sid, status: parsed.status });
-        }
-      });
-    });
-    r.on('error', reject);
-    r.write(payload);
-    r.end();
-  });
-}
-
-// Send email via Gmail SMTP using nodemailer
 async function sendEmail(to, subject, html) {
   if (!to) return { skipped: 'no email address' };
   const user = process.env.GMAIL_USER;

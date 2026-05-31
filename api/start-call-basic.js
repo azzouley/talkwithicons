@@ -12,11 +12,11 @@ const ASSISTANT_IDS = {
   einstein:    process.env.VAPI_ASSISTANT_ID_EINSTEIN    || 'YOUR_EINSTEIN_ASSISTANT_ID',
   nostradamus: process.env.VAPI_ASSISTANT_ID_NOSTRADAMUS || 'YOUR_NOSTRADAMUS_ASSISTANT_ID',
   twain:       process.env.VAPI_ASSISTANT_ID_TWAIN       || 'YOUR_TWAIN_ASSISTANT_ID',
-  tesla:       process.env.VAPI_ASSISTANT_ID_TESLA       || 'YOUR_TESLA_ASSISTANT_ID',
+  brucelee:    process.env.VAPI_ASSISTANT_ID_BRUCE_LEE    || 'YOUR_BRUCE_LEE_ASSISTANT_ID',
   holmes:      process.env.VAPI_ASSISTANT_ID_HOLMES      || 'YOUR_HOLMES_ASSISTANT_ID',
   aela:        process.env.VAPI_ASSISTANT_ID_AELA        || 'YOUR_AELA_ASSISTANT_ID',
   bennet:      process.env.VAPI_ASSISTANT_ID_BENNET      || 'YOUR_BENNET_ASSISTANT_ID',
-  curie:       process.env.VAPI_ASSISTANT_ID_CURIE       || 'YOUR_CURIE_ASSISTANT_ID',
+  baldwin:     process.env.VAPI_ASSISTANT_ID_BALDWIN     || 'YOUR_BALDWIN_ASSISTANT_ID',
 };
 
 // ── Per-character phone number IDs (fall back to shared if not set) ───────────
@@ -24,11 +24,11 @@ const PHONE_NUMBER_IDS = {
   einstein:    process.env.VAPI_PHONE_NUMBER_ID_EINSTEIN    || VAPI_PHONE_NUMBER_ID_DEFAULT,
   nostradamus: process.env.VAPI_PHONE_NUMBER_ID_NOSTRADAMUS || VAPI_PHONE_NUMBER_ID_DEFAULT,
   twain:       process.env.VAPI_PHONE_NUMBER_ID_TWAIN       || VAPI_PHONE_NUMBER_ID_DEFAULT,
-  tesla:       process.env.VAPI_PHONE_NUMBER_ID_TESLA       || VAPI_PHONE_NUMBER_ID_DEFAULT,
+  brucelee:    process.env.VAPI_PHONE_NUMBER_ID_BRUCE_LEE    || VAPI_PHONE_NUMBER_ID_DEFAULT,
   holmes:      process.env.VAPI_PHONE_NUMBER_ID_HOLMES      || VAPI_PHONE_NUMBER_ID_DEFAULT,
   aela:        process.env.VAPI_PHONE_NUMBER_ID_AELA        || VAPI_PHONE_NUMBER_ID_DEFAULT,
   bennet:      process.env.VAPI_PHONE_NUMBER_ID_BENNET      || VAPI_PHONE_NUMBER_ID_DEFAULT,
-  curie:       process.env.VAPI_PHONE_NUMBER_ID_CURIE       || VAPI_PHONE_NUMBER_ID_DEFAULT,
+  baldwin:     process.env.VAPI_PHONE_NUMBER_ID_BALDWIN     || VAPI_PHONE_NUMBER_ID_DEFAULT,
 };
 
 function normalizePhone(raw) {

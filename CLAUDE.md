@@ -120,6 +120,7 @@ Tesla and Curie were removed and replaced by Bruce Lee and Baldwin respectively.
 - Max duration: 2400 seconds
 - First message: always begins with `...Mm....` to prevent audio cutoff
 - Server URL: `https://www.talkwithicons.com/api/call-ended` (set on all 10 assistants)
+- Holmes — Perplexity sonar-pro, built-in search, deduction, optional self-description field at registration for cold open
 
 **Assistant IDs:**
 | Character | Assistant ID | Phone Number ID |

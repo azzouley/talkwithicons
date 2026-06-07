@@ -102,7 +102,7 @@ Tesla and Curie were removed and replaced by Bruce Lee and Baldwin respectively.
 - ✅ /api/call-ended.js — Vapi webhook receiver; schedules follow-up via QStash
 - ✅ /api/send-followup.js — QStash delayed receiver; sends follow-up email via Gmail
 - ✅ /api/cities.js — city autocomplete for Evangeline birth city field
-- ✅ Vapi assistants — all 9 characters configured, GPT 4.1, Server URL set
+- ✅ Vapi assistants — all 9 characters configured, sonar-pro (Perplexity custom-llm), Server URL set
 - ✅ ElevenLabs voices — all characters have assigned voices
 - ✅ Post-call follow-up system — architecture complete; fires when GMAIL_USER/GMAIL_PASS are in Vercel
 - ⬜ Email field in registration forms — callerEmail never populated; follow-up email leg is wired but never fires
@@ -116,11 +116,12 @@ Tesla and Curie were removed and replaced by Bruce Lee and Baldwin respectively.
 **API Key:** `[REDACTED]`
 
 **All assistants:**
-- Model: GPT 4.1 (exception: Holmes uses Perplexity sonar-pro via custom-llm)
+- Model: Perplexity sonar-pro via custom-llm (all 9 assistants — switched from GPT 4.1 on 2026-06-04)
 - Max duration: 2400 seconds
 - First message: always begins with `...Mm....` to prevent audio cutoff
 - Server URL: `https://www.talkwithicons.com/api/call-ended` (set on all 10 assistants)
-- Holmes — Perplexity sonar-pro, built-in search, deduction, optional self-description field at registration for cold open
+- All assistants now use Perplexity sonar-pro (custom-llm, url: https://api.perplexity.ai/chat/completions)
+- Holmes — sonar-pro, built-in search, deduction, optional self-description field at registration for cold open
 
 **Assistant IDs:**
 | Character | Assistant ID | Phone Number ID |

@@ -116,16 +116,17 @@ Tesla and Curie were removed and replaced by Bruce Lee and Baldwin respectively.
 **API Key:** `[REDACTED]`
 
 **All assistants:**
-- Model: Perplexity sonar-pro via custom-llm (all 9 assistants — switched from GPT 4.1 on 2026-06-04)
+- Model: Perplexity sonar-pro via custom-llm (original 9 — switched from GPT 4.1 on 2026-06-04)
+- La Llorona: GPT 4.1 (openai) — will switch to sonar-pro with the others later
 - Max duration: 2400 seconds
 - First message: always begins with `...Mm....` to prevent audio cutoff
-- Server URL: `https://www.talkwithicons.com/api/call-ended` (set on all 10 assistants)
-- All assistants now use Perplexity sonar-pro (custom-llm, url: https://api.perplexity.ai/chat/completions)
+- Server URL: `https://www.talkwithicons.com/api/call-ended` (set on all assistants)
 - Holmes — sonar-pro, built-in search, deduction, optional self-description field at registration for cold open
+- La Llorona — GPT 4.1, Brave web search tool (searchWeb → /api/tavily-search), ElevenLabs voice (Rachel placeholder — update in Vapi dashboard)
 
 **Assistant IDs:**
-| Character | Assistant ID | Phone Number ID |
-|-----------|-------------|-----------------|
+| Character | Assistant ID | Phone Number |
+|-----------|-------------|--------------|
 | Einstein | b98cec95-47a4-455d-92c8-3a08aacb556d | +15853162340 |
 | Nostradamus | bca7797f-d4c5-4b67-b22c-7506a0b045b9 | +15854073813 ⚠️ verify — may share Aela's line |
 | Twain | 3a6a8107-3faf-4cdd-a67b-5f71023c027d | +15858009390 |
@@ -135,6 +136,7 @@ Tesla and Curie were removed and replaced by Bruce Lee and Baldwin respectively.
 | Bennet | 0560582f-8258-4803-8f2b-78b364fa23ca | +15854073507 |
 | Baldwin | 2f0047c1-eeb7-412d-b455-f8f731bdd232 | +15853781304 |
 | Evangeline Adams | 7fd88fa7-f013-4693-9b52-ab8937e4225d | +15853121359 |
+| La Llorona | a30672aa-7bbb-4cff-91ed-7a2f01b5823a | +15854073097 |
 
 ---
 

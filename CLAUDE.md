@@ -130,7 +130,7 @@ Tesla and Curie were removed and replaced by Bruce Lee and Baldwin respectively.
 | Nostradamus | bca7797f-d4c5-4b67-b22c-7506a0b045b9 | +15854073813 ⚠️ verify — may share Aela's line |
 | Twain | 3a6a8107-3faf-4cdd-a67b-5f71023c027d | +15858009390 |
 | Bruce Lee | 099b6a90-1fa9-4e6a-bc4d-8c127c6b1141 | +15854073450 |
-| Holmes | b65fb3ab-df3c-4a5b-8a96-3e865d9315b6 | +15854073525 |
+| Holmes | b65fb3ab-df3c-4a5b-8a96-3e865d9315b6 | +15854073131 |
 | Aela | 9647119e-7cf6-4d22-968d-25f3f455a834 | +15854073813 |
 | Bennet | 0560582f-8258-4803-8f2b-78b364fa23ca | +15854073507 |
 | Baldwin | 2f0047c1-eeb7-412d-b455-f8f731bdd232 | +15853781304 |

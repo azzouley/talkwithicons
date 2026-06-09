@@ -89,6 +89,7 @@
       footer { flex-direction: column; gap: 16px; text-align: center; padding: 32px; } .quote-section { padding: 60px 32px; }
     }
   </style>
+<script src="https://js.stripe.com/v3/"></script>
 </head>
 <body>
 
@@ -393,6 +394,13 @@
           <label class="form-label" for="f-country">Birth Country</label>
           <input class="form-input" id="f-country" type="text" placeholder="United States" value="United States" />
         </div>
+        <div class="form-field">
+          <label class="form-label" for="card-element">Card Details <span>(held, not charged until call ends)</span></label>
+          <div id="card-element"
+               style="padding:14px 16px;background:#1c1710;border:1px solid rgba(201,168,76,0.5);color:#f5f0e8;font-family:'Space Mono',monospace;font-size:0.88rem;box-sizing:border-box;width:100%;"></div>
+          <div id="card-errors"
+               style="color:#e07070;font-size:0.78rem;margin-top:6px;display:none;"></div>
+        </div>
         <button class="btn-submit" id="submit-btn" type="submit">Call Me Now →</button>
         <p style="font-family:'Space Mono',monospace;font-size:1.16rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#6dbf8a;text-align:center;margin-top:12px;">🐾 every paid call triggers at minimum a meal donation for a rescue dog</p>
       </form>
@@ -486,14 +494,46 @@
       return h.toString().padStart(2, '0') + ':' + min;
     }
 
+let stripe, cardElement;
+
+async function initStripe() {
+  if (stripe) return;
+  try {
+    const cfg = await fetch(window.location.origin + '/api/config').then(r => r.json());
+    if (!cfg.stripePublicKey) throw new Error('Stripe not configured');
+    stripe = Stripe(cfg.stripePublicKey);
+    const elements = stripe.elements({
+      fonts: [{ cssSrc: 'https://fonts.googleapis.com/css2?family=Space+Mono&display=swap' }],
+    });
+    cardElement = elements.create('card', {
+      style: {
+        base: {
+          color: '#f5f0e8',
+          fontFamily: '"Space Mono", monospace',
+          fontSize: '13px',
+          '::placeholder': { color: 'rgba(245,240,232,0.4)' },
+        },
+        invalid: { color: '#e07070' },
+      },
+    });
+    cardElement.mount('#card-element');
+  } catch (err) {
+    console.error('Stripe init error:', err.message);
+  }
+}
+
+document.addEventListener('DOMContentLoaded', initStripe);
+
     document.getElementById('call-form').addEventListener('submit', async function (e) {
       e.preventDefault();
       const btn       = document.getElementById('submit-btn');
       const successEl = document.getElementById('form-success');
       const errorEl   = document.getElementById('form-error');
       const errorMsg  = document.getElementById('form-error-msg');
+      const errDiv    = document.getElementById('card-errors');
 
       errorEl.style.display = 'none';
+      if (errDiv) errDiv.style.display = 'none';
 
       const name         = document.getElementById('f-name').value.trim();
       const phoneNumber  = document.getElementById('f-phone').value.trim();
@@ -523,24 +563,44 @@
         return;
       }
 
-      btn.textContent = 'Connecting...';
-      btn.disabled = true;
-
-      console.log('[birthTime] f-hour:', document.getElementById('f-hour').value);
-      console.log('[birthTime] f-min:', document.getElementById('f-min').value);
-      console.log('[birthTime] f-ampm:', document.getElementById('f-ampm').getAttribute('data-value'));
-      console.log('[birthTime] assembled:', birthTime);
-
-      const payload = { name, phoneNumber, birthDate, birthTime, birthCity, birthCountry };
-      const apiUrl  = window.location.origin + '/api/start-call';
-      console.log('[start-call] sending to:', apiUrl);
-      console.log('[start-call] payload:', JSON.stringify(payload, null, 2));
+      btn.textContent = 'Authorizing...';
+      btn.disabled    = true;
 
       try {
-        const res  = await fetch(apiUrl, {
-          method: 'POST',
+        const piRes  = await fetch(window.location.origin + '/api/create-payment-intent', {
+          method:  'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload),
+          body:    JSON.stringify({ firstName: name, phoneNumber, character: 'evangeline' }),
+        });
+        const piData = await piRes.json();
+        if (!piRes.ok) throw new Error(piData.error || 'Payment setup failed.');
+
+        const { error: stripeError, paymentIntent } = await stripe.confirmCardPayment(
+          piData.clientSecret,
+          { payment_method: { card: cardElement, billing_details: { name } } }
+        );
+        if (stripeError) {
+          if (errDiv) { errDiv.textContent = stripeError.message; errDiv.style.display = 'block'; }
+          else { errorMsg.textContent = stripeError.message; errorEl.style.display = 'block'; }
+          btn.textContent = 'Call Me Now →';
+          btn.disabled    = false;
+          return;
+        }
+
+        btn.textContent = 'Connecting...';
+        const payload = {
+          name, phoneNumber, birthDate, birthTime, birthCity, birthCountry,
+          paymentIntentId:  paymentIntent.id,
+          stripeCustomerId: piData.stripeCustomerId,
+        };
+
+        console.log('[start-call] sending to:', window.location.origin + '/api/start-call');
+        console.log('[start-call] payload:', JSON.stringify(payload, null, 2));
+
+        const res  = await fetch(window.location.origin + '/api/start-call', {
+          method:  'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body:    JSON.stringify(payload),
         });
         const data = await res.json();
         console.log('[start-call] response status:', res.status);
@@ -553,14 +613,14 @@
           errorMsg.textContent = data.error || 'Something went wrong. Please try again.';
           errorEl.style.display = 'block';
           btn.textContent = 'Call Me Now →';
-          btn.disabled = false;
+          btn.disabled    = false;
         }
       } catch (err) {
         console.error('[start-call] fetch error:', err);
         errorMsg.textContent = 'Connection error. Please try again.';
         errorEl.style.display = 'block';
         btn.textContent = 'Call Me Now →';
-        btn.disabled = false;
+        btn.disabled    = false;
       }
     });
   </script>

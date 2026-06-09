@@ -89,6 +89,7 @@
       footer { flex-direction: column; gap: 16px; text-align: center; padding: 32px; } .quote-section { padding: 60px 32px; }
     }
   </style>
+<script src="https://js.stripe.com/v3/"></script>
 </head>
 <body>
 
@@ -117,7 +118,11 @@
           <input id="f-name" type="text" placeholder="First Name" required autocomplete="given-name"
                  style="display:block;width:100%;margin-bottom:8px;padding:10px 14px;background:#1c1710;border:1px solid rgba(201,168,76,0.7);color:#f5f0e8;font-family:'Space Mono',monospace;font-size:0.82rem;outline:none;" />
           <input id="f-phone" type="tel" placeholder="Phone Number" required autocomplete="tel"
-                 style="display:block;width:100%;margin-bottom:12px;padding:10px 14px;background:#1c1710;border:1px solid rgba(201,168,76,0.7);color:#f5f0e8;font-family:'Space Mono',monospace;font-size:0.82rem;outline:none;" />
+                 style="display:block;width:100%;margin-bottom:8px;padding:10px 14px;background:#1c1710;border:1px solid rgba(201,168,76,0.7);color:#f5f0e8;font-family:'Space Mono',monospace;font-size:0.82rem;outline:none;" />
+          <div id="card-element"
+               style="display:block;width:100%;margin-bottom:8px;padding:10px 14px;background:#1c1710;border:1px solid rgba(201,168,76,0.7);box-sizing:border-box;"></div>
+          <div id="card-errors"
+               style="color:#e07070;font-size:0.78rem;margin-bottom:8px;display:none;"></div>
           <button type="submit" class="btn-call" style="width:100%;cursor:pointer;border:none;">Call Me Now →</button>
         </form>
         <p id="call-msg" style="font-size:0.85rem;margin-bottom:12px;display:none;"></p>
@@ -284,30 +289,91 @@
 #f-name::placeholder, #f-phone::placeholder { color: #c9a84c; opacity: 1; }
 </style>
 <script>
+let stripe, cardElement;
+
+async function initStripe() {
+  if (stripe) return;
+  try {
+    const cfg = await fetch(window.location.origin + '/api/config').then(r => r.json());
+    if (!cfg.stripePublicKey) throw new Error('Stripe not configured');
+    stripe = Stripe(cfg.stripePublicKey);
+    const elements = stripe.elements({
+      fonts: [{ cssSrc: 'https://fonts.googleapis.com/css2?family=Space+Mono&display=swap' }],
+    });
+    cardElement = elements.create('card', {
+      style: {
+        base: {
+          color: '#f5f0e8',
+          fontFamily: '"Space Mono", monospace',
+          fontSize: '13px',
+          '::placeholder': { color: 'rgba(245,240,232,0.4)' },
+        },
+        invalid: { color: '#e07070' },
+      },
+    });
+    cardElement.mount('#card-element');
+  } catch (err) {
+    console.error('Stripe init error:', err.message);
+  }
+}
+
+document.addEventListener('DOMContentLoaded', initStripe);
+
 async function handleCall(e) {
   e.preventDefault();
-  const form = document.getElementById('call-form');
-  const btn  = form.querySelector('button[type="submit"]');
-  const msg  = document.getElementById('call-msg');
+  const form    = document.getElementById('call-form');
+  const btn     = form.querySelector('button[type="submit"]');
+  const msg     = document.getElementById('call-msg');
+  const errDiv  = document.getElementById('card-errors');
   const firstName   = document.getElementById('f-name').value.trim();
   const phoneNumber = document.getElementById('f-phone').value.trim();
-  btn.disabled    = true;
-  btn.textContent = 'Connecting...';
-  msg.style.display = 'none';
+
+  btn.disabled     = true;
+  btn.textContent  = 'Authorizing...';
+  msg.style.display    = 'none';
+  errDiv.style.display = 'none';
+
   try {
-    const res  = await fetch(window.location.origin + '/api/start-call-basic', {
+    const piRes  = await fetch(window.location.origin + '/api/create-payment-intent', {
       method:  'POST',
       headers: { 'Content-Type': 'application/json' },
       body:    JSON.stringify({ firstName, phoneNumber, character: 'bennet' }),
     });
-    const data = await res.json();
-    if (res.ok) {
+    const piData = await piRes.json();
+    if (!piRes.ok) throw new Error(piData.error || 'Payment setup failed.');
+
+    const { error: stripeError, paymentIntent } = await stripe.confirmCardPayment(
+      piData.clientSecret,
+      { payment_method: { card: cardElement, billing_details: { name: firstName } } }
+    );
+    if (stripeError) {
+      errDiv.textContent   = stripeError.message;
+      errDiv.style.display = 'block';
+      btn.disabled    = false;
+      btn.textContent = 'Call Me Now →';
+      return;
+    }
+
+    btn.textContent = 'Connecting...';
+    const callRes  = await fetch(window.location.origin + '/api/start-call-basic', {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify({
+        firstName,
+        phoneNumber,
+        character:        'bennet',
+        paymentIntentId:  paymentIntent.id,
+        stripeCustomerId: piData.stripeCustomerId,
+      }),
+    });
+    const callData = await callRes.json();
+    if (callRes.ok) {
       msg.textContent   = 'Your call is connecting — pick up within 30 seconds.';
       msg.style.color   = '#6dbf8a';
       msg.style.display = 'block';
       btn.textContent   = 'Call Placed ✓';
     } else {
-      throw new Error(data.error || 'Something went wrong.');
+      throw new Error(callData.error || 'Something went wrong.');
     }
   } catch (err) {
     msg.textContent   = err.message;

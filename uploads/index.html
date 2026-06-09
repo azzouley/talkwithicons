@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TalkWithIcons — Call History's Greatest Minds</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500&family=Space+Mono&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --gold: #C9952A;
+      --gold-light: #E8B84B;
+      --dark: #0d0a06;
+      --dark2: #1a0f02;
+      --dark3: #120c02;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', sans-serif; background: var(--dark); color: #f0ebe0; overflow-x: hidden; }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: 1.1rem 3rem;
+      display: flex; justify-content: space-between; align-items: center;
+      background: rgba(13,10,6,0.95); backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(201,149,42,0.2);
+    }
+    .nav-logo { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 700; color: #f0ebe0; display: flex; align-items: center; gap: 0.5rem; text-decoration: none; }
+    .nav-logo span { color: var(--gold); }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a { text-decoration: none; color: rgba(240,235,224,0.55); font-size: 0.78rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--gold); }
+    .nav-actions { display: flex; gap: 1rem; align-items: center; }
+    .btn-outline { padding: 0.55rem 1.4rem; font-size: 0.78rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; text-decoration: none; border: 1px solid rgba(201,149,42,0.4); color: #f0ebe0; background: transparent; transition: all 0.2s; }
+    .btn-outline:hover { border-color: var(--gold); color: var(--gold); }
+    .btn-gold { padding: 0.55rem 1.4rem; font-size: 0.78rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; text-decoration: none; background: var(--gold); border: 1px solid var(--gold); color: #0d0a06; transition: all 0.2s; }
+    .btn-gold:hover { background: var(--gold-light); border-color: var(--gold-light); }
+
+    /* HERO — strict two-column grid */
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      gap: 3rem;
+      padding: 7rem 4rem 4rem;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    /* LEFT COLUMN */
+    .hero-left { display: flex; flex-direction: column; gap: 1.25rem; }
+    .hero-eyebrow { font-size: 0.68rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); }
+    .hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.8rem, 4.5vw, 4.2rem);
+      font-weight: 900;
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+    }
+    .hero-title em { font-style: italic; color: var(--gold); }
+    .hero-sub { font-size: 0.95rem; line-height: 1.75; color: rgba(240,235,224,0.6); max-width: 460px; }
+    .hero-quote { font-style: italic; color: rgba(240,235,224,0.5); font-size: 0.9rem; line-height: 1.65; border-left: 2px solid var(--gold); padding-left: 1rem; max-width: 420px; }
+    .hero-pricing { font-size: 0.82rem; color: rgba(240,235,224,0.45); }
+    .hero-pricing strong { color: #f0ebe0; }
+    .hero-buttons { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .btn-hero-primary {
+      display: inline-flex; align-items: center;
+      background: var(--gold); color: #0d0a06;
+      padding: 0.9rem 1.8rem; font-size: 0.82rem; font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none;
+      border: 2px solid var(--gold); transition: all 0.25s;
+    }
+    .btn-hero-primary:hover { background: var(--gold-light); border-color: var(--gold-light); transform: translateY(-2px); }
+    .btn-hero-secondary {
+      display: inline-flex; align-items: center;
+      background: transparent; color: #f0ebe0;
+      padding: 0.9rem 1.8rem; font-size: 0.82rem; font-weight: 500;
+      letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none;
+      border: 2px solid rgba(240,235,224,0.2); transition: all 0.25s;
+    }
+    .btn-hero-secondary:hover { border-color: rgba(240,235,224,0.5); transform: translateY(-2px); }
+
+    /* RIGHT COLUMN */
+    .hero-right { display: flex; flex-direction: column; gap: 1.5rem; }
+
+    /* CHARACTER CIRCLES — horizontal row */
+    .char-circles {
+      display: flex;
+      flex-direction: row;
+      gap: 1.25rem;
+      align-items: flex-start;
+    }
+    .char-circle-wrap { display: flex; flex-direction: column; align-items: center; gap: 0.5rem; cursor: pointer; }
+    .char-circle {
+      width: 120px; height: 120px; border-radius: 50%;
+      background: rgba(201,149,42,0.1);
+      border: 2px solid rgba(201,149,42,0.35);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2.8rem;
+      transition: all 0.3s;
+      flex-shrink: 0;
+    }
+    .char-circle:hover { border-color: var(--gold); background: rgba(201,149,42,0.2); transform: scale(1.05); }
+    .char-circle-name { font-family: 'Playfair Display', serif; font-size: 0.85rem; font-weight: 600; color: #f0ebe0; }
+    .char-circle-role { font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(240,235,224,0.35); text-align: center; }
+    .more-icons { font-size: 0.72rem; color: rgba(240,235,224,0.35); letter-spacing: 0.08em; padding-left: 0.25rem; }
+    .more-icons a { color: var(--gold); text-decoration: none; }
+
+    /* WAVEFORM BOX */
+    .waveform {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(201,149,42,0.2);
+      border-radius: 8px;
+      padding: 1.25rem 1.5rem;
+    }
+    .wf-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+    .wf-dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: #4CAF50; margin-right: 7px; }
+    .wf-label { font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(240,235,224,0.45); }
+    .wf-time { font-size: 0.78rem; color: var(--gold); font-family: monospace; }
+    .wf-bars { display: flex; gap: 3px; align-items: center; height: 44px; margin-bottom: 0.9rem; }
+    .wf-bar { flex: 1; background: var(--gold); border-radius: 2px; animation: pulse 1.3s ease-in-out infinite; }
+    .wf-bar:nth-child(1){height:30%;animation-delay:.0s}.wf-bar:nth-child(2){height:65%;animation-delay:.1s}
+    .wf-bar:nth-child(3){height:45%;animation-delay:.2s}.wf-bar:nth-child(4){height:85%;animation-delay:.3s}
+    .wf-bar:nth-child(5){height:50%;animation-delay:.4s}.wf-bar:nth-child(6){height:95%;animation-delay:.5s}
+    .wf-bar:nth-child(7){height:40%;animation-delay:.6s}.wf-bar:nth-child(8){height:70%;animation-delay:.7s}
+    .wf-bar:nth-child(9){height:55%;animation-delay:.8s}.wf-bar:nth-child(10){height:80%;animation-delay:.9s}
+    .wf-bar:nth-child(11){height:35%;animation-delay:1.0s}.wf-bar:nth-child(12){height:60%;animation-delay:1.1s}
+    .wf-bar:nth-child(13){height:75%;animation-delay:.15s}.wf-bar:nth-child(14){height:42%;animation-delay:.25s}
+    .wf-bar:nth-child(15){height:88%;animation-delay:.35s}
+    @keyframes pulse { 0%,100%{opacity:.35;transform:scaleY(.55)} 50%{opacity:1;transform:scaleY(1)} }
+    @keyframes dot-pulse { 0%,100%{box-shadow:0 0 0 0 rgba(201,168,76,0.7)} 50%{box-shadow:0 0 0 8px rgba(201,168,76,0)} }
+    .wf-speaking { font-size: 0.78rem; color: rgba(240,235,224,0.55); text-align: center; font-style: italic; margin-bottom: 0.4rem; }
+    .wf-rescue { font-size: 0.68rem; color: rgba(201,149,42,0.65); text-align: center; }
+
+    /* HERO STATS */
+    .hero-stats {
+      display: flex; gap: 2.5rem;
+      padding-top: 1rem;
+      border-top: 1px solid rgba(240,235,224,0.07);
+    }
+    .stat-num { font-family: 'Playfair Display', serif; font-size: 1.6rem; font-weight: 700; line-height: 1; color: #f0ebe0; }
+    .stat-label { font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(240,235,224,0.3); margin-top: 4px; }
+
+    /* RESCUE MISSION BLOCK */
+    .rescue-block {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 360px;
+      width: 100%;
+    }
+    .rescue-photo {
+      background: #111;
+      border: 2px dashed #2a2a2a;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 1rem; min-height: 360px;
+    }
+    .rescue-photo-icon { font-size: 3rem; opacity: 0.25; }
+    .rescue-photo-label { font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: #444; }
+    .rescue-text {
+      background: var(--dark2);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      padding: 3.5rem 3rem; text-align: center;
+      gap: 1rem;
+    }
+    .rescue-eyebrow { font-size: 0.62rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); }
+    .rescue-heading { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 700; line-height: 1.2; color: #f0ebe0; }
+    .rescue-body { font-size: 0.9rem; line-height: 1.75; color: rgba(240,235,224,0.6); max-width: 330px; }
+    .rescue-num { font-family: 'Playfair Display', serif; font-size: 3.2rem; font-weight: 700; color: var(--gold); line-height: 1; }
+    .rescue-num-label { font-size: 0.62rem; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(240,235,224,0.3); }
+
+    /* SECTION WRAPPERS */
+    .section { padding: 5rem 4rem; max-width: 1300px; margin: 0 auto; }
+    .section-full { padding: 5rem 4rem; }
+    .section-dark { background: var(--dark3); }
+    .section-label { font-size: 0.62rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); text-align: center; margin-bottom: 0.75rem; }
+    .section-title { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 3vw, 2.6rem); font-weight: 700; text-align: center; color: #f0ebe0; margin-bottom: 0.75rem; line-height: 1.2; }
+    .section-body { text-align: center; max-width: 550px; margin: 0 auto 3rem; font-size: 0.92rem; line-height: 1.8; color: rgba(240,235,224,0.5); }
+    .gold-line { width: 48px; height: 2px; background: var(--gold); margin: 0 auto 2.5rem; }
+
+    /* CHARACTER GRID */
+    .char-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(310px, 1fr)); gap: 1.25rem; max-width: 1300px; margin: 0 auto; }
+    .char-card { background: rgba(255,255,255,0.025); border: 1px solid rgba(201,149,42,0.12); padding: 0; position: relative; overflow: hidden; transition: all 0.3s; cursor: pointer; }
+    .char-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--gold); transform: scaleX(0); transition: transform 0.3s; z-index: 1; }
+    .char-card:hover { transform: translateY(-3px); border-color: rgba(201,149,42,0.3); }
+    .char-card:hover::before { transform: scaleX(1); }
+    .card-portrait {
+      width: 100%; height: 220px;
+      background: linear-gradient(135deg, #1a1208 0%, #0d0a06 100%);
+      border-bottom: 1px solid rgba(201,149,42,0.15);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 0.5rem; position: relative; overflow: hidden;
+    }
+    .card-portrait::after {
+      content: ''; position: absolute; inset: 0;
+      background: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(201,149,42,0.02) 10px, rgba(201,149,42,0.02) 11px);
+    }
+    .card-portrait-icon { font-size: 4rem; opacity: 0.2; }
+    .card-portrait-label { font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(240,235,224,0.2); }
+    .card-portrait-frame {
+      position: absolute; inset: 8px;
+      border: 1px dashed rgba(201,149,42,0.2);
+    }
+    .card-body { padding: 1.5rem 1.75rem 1.75rem; }
+    .card-num { font-size: 0.58rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.6rem; }
+    .card-name { font-family: 'Playfair Display', serif; font-size: 1.45rem; font-weight: 700; margin-bottom: 0.2rem; color: #f0ebe0; }
+    .card-era { font-size: 0.68rem; color: rgba(240,235,224,0.3); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 0.9rem; }
+    .card-desc { font-size: 0.84rem; line-height: 1.7; color: rgba(240,235,224,0.55); margin-bottom: 1.25rem; }
+    .card-link { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #f0ebe0; text-decoration: none; border-bottom: 1px solid var(--gold); padding-bottom: 2px; transition: color 0.2s; }
+    .card-link:hover { color: var(--gold); }
+    .card-bg-icon { position: absolute; bottom: 1.25rem; right: 1.25rem; font-size: 2.5rem; opacity: 0.05; }
+
+    /* PRICING */
+    .pricing-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; max-width: 1000px; margin: 0 auto 2rem; }
+    .price-card { border: 1px solid rgba(240,235,224,0.08); padding: 2rem 1.5rem; text-align: center; }
+    .price-card.featured { border-color: var(--gold); background: rgba(201,149,42,0.07); }
+    .price-tier { font-size: 0.62rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.75rem; }
+    .price-amount { font-family: 'Playfair Display', serif; font-size: 2.2rem; font-weight: 700; color: #f0ebe0; line-height: 1; margin-bottom: 0.5rem; }
+    .price-desc { font-size: 0.78rem; color: rgba(240,235,224,0.4); line-height: 1.5; }
+    .price-note { font-size: 0.82rem; color: rgba(240,235,224,0.35); text-align: center; max-width: 480px; margin: 0 auto 2.5rem; line-height: 1.7; }
+
+    /* EXAMPLE CALLS */
+    .example-calls { max-width: 700px; margin: 0 auto 2rem; border: 1px solid rgba(240,235,224,0.08); }
+    .example-header { background: rgba(240,235,224,0.04); padding: 0.75rem 1.5rem; font-size: 0.62rem; letter-spacing: 0.25em; text-transform: uppercase; color: rgba(240,235,224,0.35); }
+    .example-row { display: flex; justify-content: space-between; padding: 1rem 1.5rem; border-top: 1px solid rgba(240,235,224,0.06); font-size: 0.88rem; }
+    .example-row span:first-child { color: rgba(240,235,224,0.6); }
+    .example-row span:last-child { color: var(--gold); font-weight: 600; }
+    .example-row .free { color: #4CAF50; }
+    .donation-note { max-width: 700px; margin: 0 auto; background: rgba(201,149,42,0.06); border: 1px solid rgba(201,149,42,0.15); padding: 1.25rem 1.5rem; font-size: 0.85rem; color: rgba(240,235,224,0.6); line-height: 1.6; display: flex; align-items: flex-start; gap: 0.75rem; }
+    .donation-note strong { color: var(--gold-light); }
+
+    /* RESCUE FULL */
+    .rescue-full { text-align: center; }
+    .rescue-big { font-family: 'Playfair Display', serif; font-size: 5rem; font-weight: 900; color: var(--gold); line-height: 1; margin: 2rem 0 0.5rem; }
+    .rescue-big-label { font-size: 0.68rem; letter-spacing: 0.25em; text-transform: uppercase; color: rgba(240,235,224,0.3); }
+    .partner-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; max-width: 750px; margin: 3rem auto 0; }
+    .partner-card { border: 1px solid rgba(240,235,224,0.08); padding: 2rem; text-align: left; }
+    .partner-card.national { border-color: rgba(201,149,42,0.25); }
+    .partner-tag { font-size: 0.58rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.75rem; }
+    .partner-name { font-family: 'Playfair Display', serif; font-size: 1.1rem; margin-bottom: 0.4rem; color: #f0ebe0; }
+    .partner-detail { font-size: 0.78rem; color: rgba(240,235,224,0.4); line-height: 1.6; }
+
+    /* GIFTS */
+    .gift-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 3rem; }
+    .gift-card { border: 1px solid rgba(240,235,224,0.08); padding: 1.75rem 1.5rem; transition: all 0.25s; }
+    .gift-card:hover { border-color: rgba(201,149,42,0.35); transform: translateY(-2px); }
+    .gift-name { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; color: #f0ebe0; margin-bottom: 0.3rem; }
+    .gift-detail { font-size: 0.75rem; color: rgba(240,235,224,0.38); margin-bottom: 0.75rem; }
+    .gift-price { font-weight: 700; font-size: 1.15rem; color: var(--gold); }
+
+    /* FAQ */
+    .faq-wrap { max-width: 720px; margin: 0 auto; }
+    .faq-item { border-bottom: 1px solid rgba(240,235,224,0.07); }
+    .faq-q { padding: 1.4rem 0; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-size: 0.92rem; font-weight: 500; color: #f0ebe0; }
+    .faq-icon { color: var(--gold); font-size: 1.1rem; flex-shrink: 0; margin-left: 1rem; }
+    .faq-a { font-size: 0.85rem; color: rgba(240,235,224,0.5); line-height: 1.75; padding-bottom: 1.4rem; display: none; }
+    .faq-item.open .faq-a { display: block; }
+
+    /* FOOTER */
+    footer { background: #060402; padding: 3rem 4rem; text-align: center; border-top: 1px solid rgba(240,235,224,0.05); }
+    .footer-logo { font-family: 'Playfair Display', serif; font-size: 1.35rem; font-weight: 700; color: #f0ebe0; margin-bottom: 0.75rem; }
+    .footer-logo span { color: var(--gold); }
+    footer p { font-size: 0.78rem; color: rgba(240,235,224,0.28); line-height: 1.7; max-width: 400px; margin: 0 auto 1.5rem; }
+    .footer-links { display: flex; gap: 2rem; justify-content: center; list-style: none; font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 2rem; }
+    .footer-links a { color: rgba(240,235,224,0.28); text-decoration: none; transition: color 0.2s; }
+    .footer-links a:hover { color: var(--gold); }
+
+    /* ANIMATIONS */
+    .fade-in { opacity: 0; transform: translateY(18px); transition: opacity 0.7s, transform 0.7s; }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 960px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { display: none; }
+      .hero { grid-template-columns: 1fr; padding: 5.5rem 1.5rem 3rem; gap: 2.5rem; }
+      .rescue-block { grid-template-columns: 1fr; }
+      .rescue-photo { min-height: 220px; }
+      .pricing-grid { grid-template-columns: 1fr 1fr; }
+      .partner-grid { grid-template-columns: 1fr; }
+      .section { padding: 4rem 1.5rem; }
+      .section-full { padding: 4rem 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="/" class="nav-logo">🎙 Talk<span>With</span>Icons</a>
+  <ul class="nav-links">
+    <li><a href="#characters">Characters</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="#rescue">Rescue</a></li>
+    <li><a href="#gifts">Gifts</a></li>
+    <li><a href="#faq">FAQ</a></li>
+  </ul>
+  <div class="nav-actions">
+    <a href="#characters" class="btn-outline">Explore</a>
+    <a href="#characters" class="btn-gold">Start Free</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+
+  <!-- LEFT -->
+  <div class="hero-left">
+    <p class="hero-eyebrow">Real voice conversations with history's greatest minds</p>
+    <h1 class="hero-title">Talk <em>With</em> the<br>Greatest Minds<br>in History</h1>
+    <p class="hero-sub">Call Einstein. Call Holmes. Call Twain. Not a recording, not a script — a genuine conversation with AI so advanced it thinks, reacts, and surprises you. Every call is unique. None will ever happen again.</p>
+    <p class="hero-quote">"Not a recording. Not a script. A conversation that has never happened before and never will again."</p>
+    <p class="hero-pricing">First 3 minutes free. Minutes 4 through 6 cost $2.99 total. After that, just $1.00 per minute.</p>
+    <div class="hero-buttons">
+      <a href="#characters" class="btn-hero-primary">Start Your Free Call</a>
+      <a href="#how-it-works" class="btn-hero-secondary">How It Works</a>
+    </div>
+  </div>
+
+  <!-- RIGHT -->
+  <div class="hero-right">
+
+    <!-- THREE CHARACTER CIRCLES — horizontal row -->
+    <div class="char-circles">
+      <div class="char-circle-wrap">
+        <div class="char-circle"><img src="images/einstein.webp" alt="Einstein" style="width:100%;height:100%;border-radius:50%;object-fit:cover;display:block;"></div>
+        <div class="char-circle-name">Einstein</div>
+        <div class="char-circle-role">Physicist</div>
+      </div>
+      <div class="char-circle-wrap">
+        <div class="char-circle"><img src="images/holmes.jpeg" alt="Holmes" style="width:100%;height:100%;border-radius:50%;object-fit:cover;display:block;"></div>
+        <div class="char-circle-name">Holmes</div>
+        <div class="char-circle-role">Detective</div>
+      </div>
+      <div class="char-circle-wrap">
+        <div class="char-circle"><img src="images/bennet.jpeg" alt="Bennet" style="width:100%;height:100%;border-radius:50%;object-fit:cover;display:block;"></div>
+        <div class="char-circle-name">Bennet</div>
+        <div class="char-circle-role">Longbourn · 1813</div>
+      </div>
+    </div>
+    <p class="more-icons">+ 5 more iconic voices &nbsp;<a href="#characters">See all →</a></p>
+
+    <!-- WAVEFORM -->
+    <div class="waveform">
+      <div class="wf-header">
+        <div><span class="wf-dot"></span><span class="wf-label">Call in Progress</span></div>
+        <div class="wf-time">02:14</div>
+      </div>
+      <div class="wf-bars">
+        <div class="wf-bar"></div><div class="wf-bar"></div><div class="wf-bar"></div>
+        <div class="wf-bar"></div><div class="wf-bar"></div><div class="wf-bar"></div>
+        <div class="wf-bar"></div><div class="wf-bar"></div><div class="wf-bar"></div>
+        <div class="wf-bar"></div><div class="wf-bar"></div><div class="wf-bar"></div>
+        <div class="wf-bar"></div><div class="wf-bar"></div><div class="wf-bar"></div>
+      </div>
+      <p class="wf-speaking">Einstein is speaking...</p>
+      <p class="wf-rescue">🐾 Every paid call triggers at minimum a meal donation for a rescue dog</p>
+    </div>
+
+    <!-- STATS -->
+    <div class="hero-stats">
+      <div>
+        <div class="stat-num">3 min</div>
+        <div class="stat-label">Always Free</div>
+      </div>
+      <div>
+        <div class="stat-num">9</div>
+        <div class="stat-label">Iconic Voices</div>
+      </div>
+      <div>
+        <div class="stat-num">🥣</div>
+        <div class="stat-label">Every Paid Call Feeds a Dog</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- RESCUE MISSION BANNER -->
+<div style="display:flex; justify-content:center; padding:1.5rem 2rem; background:#0d0a06;">
+  <div style="display:flex; align-items:center; gap:2rem; padding:2rem 2rem; border:2px solid #C9952A; background:#1a0f02; max-width:800px; width:100%;">
+    <img src="images/dogbowl.jpg" style="height:120px;width:120px;object-fit:cover;border-radius:8px;">
+    <div style="flex:1; text-align:center;">
+      <p style="font-size:0.6rem; letter-spacing:0.25em; text-transform:uppercase; color:#C9952A; margin-bottom:0.3rem;">🐾 Dog Rescue Mission</p>
+      <h3 style="font-family:'Playfair Display',serif; font-size:1.4rem; font-weight:900; color:#f0ebe0; margin-bottom:0.4rem;">Every Paid Call Feeds a Rescue Dog</h3>
+      <p style="font-size:0.82rem; line-height:1.6; color:rgba(240,235,224,0.6);">$0.50 minimum per paid call — then $0.10 per additional minute. 25% ASPCA, 75% rotating regional rescue partners.</p>
+    </div>
+    <img src="images/huskymix.jpg" alt="Rescue dog" style="flex-shrink:0; width:auto; height:120px; object-fit:cover; border-radius:8px; display:block;">
+  </div>
+</div>
+
+<!-- CHARACTERS -->
+<div class="section-full section-dark" id="characters">
+  <div style="max-width:1300px; margin:0 auto;">
+    <p class="section-label">The Characters</p>
+    <h2 class="section-title">Nine conversations.<br>None like any other.</h2>
+    <div class="gold-line"></div>
+    <div class="char-grid">
+
+      <div class="char-card fade-in">
+        <div class="card-portrait"><img src="images/einstein.webp" alt="Albert Einstein" style="width:100%;height:220px;object-fit:cover;display:block;"></div>
+        <div class="card-body">
+          <div class="card-num">Character 01</div>
+          <h3 class="card-name">Albert Einstein</h3>
+          <p class="card-era">Princeton, 1955</p>
+          <p class="card-desc">Warm, curious, self-deprecating. Speaking from the final year of his life, he has been watching the world since his death and has strong views on AI, Elon Musk, social media, and the state of civilization.</p>
+          <a href="einstein.html" class="card-link">Call Einstein →</a>
+        </div>
+      </div>
+
+      <div class="char-card fade-in">
+        <div class="card-portrait"><img src="images/nostradamus.jpeg" alt="Nostradamus" style="width:100%;height:220px;object-fit:cover;display:block;"></div>
+        <div class="card-body">
+          <div class="card-num">Character 02</div>
+          <h3 class="card-name">Nostradamus</h3>
+          <p class="card-era">Salon-de-Provence, 1555</p>
+          <p class="card-desc">Slow, measured, atmospheric. The mysticism is the vehicle. The humanity is the destination. He has seen patterns in the modern world he recognized centuries ago.</p>
+          <a href="nostradamus.html" class="card-link">Call Nostradamus →</a>
+        </div>
+      </div>
+
+      <div class="char-card fade-in">
+        <div class="card-portrait"><img src="images/twain.png" alt="Mark Twain" style="width:100%;height:220px;object-fit:cover;display:block;"></div>
+        <div class="card-body">
+          <div class="card-num">Character 03</div>
+          <h3 class="card-name">Mark Twain</h3>
+          <p class="card-era">New York City, 1905</p>
+          <p class="card-desc">Drawling, unhurried, deceptively casual. The slow build to a devastating point. The Twain who had savage things to say about the pretensions of civilization.</p>
+          <a href="twain.html" class="card-link">Call Twain →</a>
+        </div>
+      </div>
+
+      <div class="char-card fade-in">
+        <div class="card-portrait"><img src="images/brucelee.jpeg" alt="Bruce Lee" style="width:100%;height:220px;object-fit:cover;display:block;"></div>
+        <div class="card-body">
+          <div class="card-num">Character 04</div>
+          <h3 class="card-name">Bruce Lee</h3>
+          <p class="card-era">Hong Kong · Los Angeles, 1973</p>
+          <p class="card-desc">Philosopher, artist, revolutionary. He did not just change martial arts — he changed what it means to master anything. Be like water.</p>
+          <a href="brucelee.html" class="card-link">Call Bruce Lee →</a>
+        </div>
+      </div>
+
+      <div class="char-card fade-in">
+        <div class="card-portrait"><img src="images/holmes.jpeg" alt="Sherlock Holmes" style="width:100%;height:220px;object-fit:cover;display:block;"></div>
+        <div class="card-body">
+          <div class="card-num">Character 05</div>
+          <h3 class="card-name">Sherlock Holmes</h3>
+          <p class="card-era">221B Baker Street</p>
+          <p class="card-desc">Every call is a consultation. You are the client. He begins every call by deducing something specific about you. The deduction cold open is rated the most memorable moment by 91% of callers.</p>
+          <a href="holmes.html" class="card-link">Call Holmes →</a>
+        </div>
+      </div>
+
+      <div class="char-card fade-in">
+        <div class="card-portrait"><img src="images/aela.jpeg" alt="Aela" style="width:100%;height:220px;object-fit:cover;display:block;"></div>
+        <div class="card-body">
+          <div class="card-num">Character 06</div>
+          <h3 class="card-name">Aela</h3>
+          <p class="card-era">Pleiadian Council Liaison</p>
+          <p class="card-desc">Warm, patient, specific rather than vague. When she names something you have not found language for — that is the moment callers share with everyone they know.</p>
+          <a href="aela.html" class="card-link">Call Aela →</a>
+        </div>
+      </div>
+
+      <div class="char-card fade-in">
+        <div class="card-portrait"><img src="images/bennet.jpeg" alt="Elizabeth Bennet" style="width:100%;height:220px;object-fit:cover;display:block;"></div>
+        <div class="card-body">
+          <div class="card-num">Character 07</div>
+          <h3 class="card-name">Elizabeth Bennet</h3>
+          <p class="card-era">Longbourn, 1813</p>
+          <p class="card-desc">Sharp, witty, and unafraid to disagree. Strong views on modern relationships, dating apps, social media performance, and the new forms of pride and prejudice she observes in contemporary life.</p>
+          <a href="bennet.html" class="card-link">Call Bennet →</a>
+        </div>
+      </div>
+
+      <div class="char-card fade-in">
+        <div class="card-portrait"><img src="images/baldwin.jpeg" alt="James Baldwin" style="width:100%;height:220px;object-fit:cover;display:block;"></div>
+        <div class="card-body">
+          <div class="card-num">Character 08</div>
+          <h3 class="card-name">James Baldwin</h3>
+          <p class="card-era">Harlem, 1963</p>
+          <p class="card-desc">Precise, devastating, and full of love. The writer who saw everything coming and said so plainly. He has been watching America since his death and has things to say.</p>
+          <a href="baldwin.html" class="card-link">Call Baldwin →</a>
+        </div>
+      </div>
+
+      <div class="char-card fade-in">
+        <div class="card-portrait"><img src="images/evangeline.jpeg" alt="Evangeline Adams" style="width:100%;height:220px;object-fit:cover;display:block;"></div>
+        <div class="card-body">
+          <div class="card-num">Character 09</div>
+          <h3 class="card-name">Evangeline Adams</h3>
+          <p class="card-era">Astrologer to the Powerful</p>
+          <p class="card-desc">Bring your birth date, birth time, and birth city. An accurate birth time is essential for meaningful transits and your rising sign. Evangeline Adams — astrologer to JP Morgan, Enrico Caruso, and Charlie Chaplin — reads your natal chart live, discusses your transits, and tells you what she sees.</p>
+          <a href="evangeline.html" class="card-link">Call Evangeline →</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- PRICING -->
+<section id="pricing" style="max-width:860px;margin:0 auto;padding:60px 32px 100px;text-align:center;">
+  <p style="font-family:'Space Mono',monospace;font-size:0.68rem;letter-spacing:0.2em;text-transform:uppercase;color:#c9a84c;margin-bottom:16px;">Pricing</p>
+  <h2 style="font-family:'Playfair Display',serif;font-size:2.5rem;font-weight:700;color:#f5f0e8;margin-bottom:24px;">Simple and honest.</h2>
+  <p style="font-size:1.1rem;color:#9a8f7a;margin-bottom:40px;">First 3 minutes free. Minutes 4 through 6 cost $2.99 total. After that, just $1.00 per minute.</p>
+  <a href="#characters" style="font-family:'Space Mono',monospace;font-size:0.8rem;letter-spacing:0.1em;text-transform:uppercase;background:#c9a84c;color:#0d0b08;padding:18px 48px;text-decoration:none;font-weight:700;">Choose an Icon to Begin</a>
+</section>
+
+<!-- RESCUE FULL SECTION -->
+<div class="section-full section-dark rescue-full" id="rescue">
+  <p class="section-label">The Cause</p>
+  <h2 class="section-title">Every call feeds a rescue dog.</h2>
+  <div class="gold-line"></div>
+  <p class="section-body">$0.50 minimum per paid call — then $0.10 per additional paid minute. 25% goes to the ASPCA permanently. 75% is split evenly among 2–3 rotating regional rescue partners that change every two weeks.</p>
+
+  <!-- MEAL COUNTER -->
+  <div style="display:flex; align-items:center; justify-content:center; gap:1.5rem; margin:2rem auto 3rem;">
+    <div style="width:100px;height:100px;border-radius:50%;overflow:hidden;flex-shrink:0;">
+      <img src="images/dogbowl.jpg" alt="Dog bowl" style="width:100%;height:100%;object-fit:cover;">
+    </div>
+    <div id="meal-counter" style="font-family:'Playfair Display',serif; font-size:5rem; font-weight:900; color:#C9952A; line-height:1;">0</div>
+    <div style="font-size:1.15rem; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:#c9a84c; max-width:160px; line-height:1.4;">meals funded this month</div>
+    <div style="width:100px;height:100px;border-radius:50%;overflow:hidden;flex-shrink:0;">
+      <img src="https://images.unsplash.com/photo-1477884010312-ff137931cc3e?w=200" alt="Rescue dog" style="width:100%;height:100%;object-fit:cover;object-position:top;">
+    </div>
+  </div>
+
+  <!-- RESCUE PARTNERS MAP -->
+  <div style="max-width:900px;margin:80px auto;padding:0 32px;text-align:center;">
+    <p style="font-family:'Space Mono',monospace;font-size:0.68rem;letter-spacing:0.2em;text-transform:uppercase;color:#c9a84c;margin-bottom:16px;">Rescue Partners</p>
+    <h2 style="font-family:'Playfair Display',serif;font-size:2.5rem;font-weight:700;color:#f5f0e8;margin-bottom:40px;">Where Every Call Makes a Difference</h2>
+    <div id="mapdiv" style="width:100%;height:420px;max-width:860px;margin:0 auto;"></div>
+    <script src="https://cdn.amcharts.com/lib/4/core.js"></script>
+    <script src="https://cdn.amcharts.com/lib/4/maps.js"></script>
+    <script src="https://cdn.amcharts.com/lib/4/geodata/usaLow.js"></script>
+    <script>
+    var chart=am4core.create("mapdiv",am4maps.MapChart);
+    chart.geodata=am4geodata_usaLow;
+    chart.projection=new am4maps.projections.AlbersUsa();
+    chart.background.fill=am4core.color("#131009");
+    chart.background.fillOpacity=1;
+    var ps=chart.series.push(new am4maps.MapPolygonSeries());
+    ps.useGeodata=true;
+    ps.mapPolygons.template.fill=am4core.color("#1c1710");
+    ps.mapPolygons.template.stroke=am4core.color("#c9a84c");
+    ps.mapPolygons.template.strokeWidth=0.5;
+    var is=chart.series.push(new am4maps.MapImageSeries());
+    var it=is.mapImages.template;
+    it.nonScaling=true;
+    var circle=it.createChild(am4core.Circle);
+    circle.radius=8;
+    circle.fill=am4core.color("#c9a84c");
+    circle.stroke=am4core.color("#ffffff");
+    circle.strokeWidth=2;
+    it.propertyFields.latitude="latitude";
+    it.propertyFields.longitude="longitude";
+    is.data=[{latitude:43.1566,longitude:-77.6088,title:"Rochester Animal Services"}];
+    </script>
+  </div>
+
+  <div class="partner-grid">
+    <div class="partner-card national">
+      <div class="partner-tag">Permanent National Partner</div>
+      <div class="partner-name">ASPCA</div>
+      <div class="partner-detail">American Society for the Prevention of Cruelty to Animals. 25% of every donation, every call, permanently.</div>
+    </div>
+    <div class="partner-card">
+      <div class="partner-tag">Current Regional Partner — Rochester, NY</div>
+      <div class="partner-name">Rochester Animal Services</div>
+      <div class="partner-detail">Our current 2-week regional partner. Changes every two weeks to a new city, a new rescue, a new story.</div>
+    </div>
+  </div>
+</div>
+
+<!-- GIFTS -->
+<div class="section" id="gifts" style="text-align:center;">
+  <p class="section-label">Gift a Call</p>
+  <h2 class="section-title">The most unusual gift<br><em style="font-family:'Playfair Display',serif;">they will ever receive.</em></h2>
+  <div class="gold-line"></div>
+  <p class="section-body">Named experiences, not minute bundles. Fully pre-paid. Beautiful atmospheric gift email. 90-day expiry.</p>
+
+  <div class="gift-grid">
+    <div class="gift-card">
+      <div class="gift-name">The Einstein Evening</div>
+      <div class="gift-detail">15 minutes with Albert Einstein</div>
+      <div class="gift-price">$14.99</div>
+    </div>
+    <div class="gift-card">
+      <div class="gift-name">A Consultation with Holmes</div>
+      <div class="gift-detail">20 minutes at 221B Baker Street</div>
+      <div class="gift-price">$19.99</div>
+    </div>
+    <div class="gift-card">
+      <div class="gift-name">A Reading with Nostradamus</div>
+      <div class="gift-detail">20 minutes in Salon-de-Provence</div>
+      <div class="gift-price">$19.99</div>
+    </div>
+    <div class="gift-card">
+      <div class="gift-name">An Evening with Aela</div>
+      <div class="gift-detail">30 minutes with the Pleiadian Liaison</div>
+      <div class="gift-price">$29.99</div>
+    </div>
+    <div class="gift-card">
+      <div class="gift-name">The Grand Tour</div>
+      <div class="gift-detail">10 minutes each with all 9 characters</div>
+      <div class="gift-price">$75</div>
+    </div>
+  </div>
+
+  <a href="#" class="btn-hero-primary">Give a Call as a Gift →</a>
+</div>
+
+<!-- FAQ -->
+<div class="section section-dark" id="faq" style="max-width:900px; margin:0 auto; background:var(--dark3);">
+  <p class="section-label">Questions</p>
+  <h2 class="section-title">FAQ</h2>
+  <div class="gold-line"></div>
+  <div class="faq-wrap">
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggle(this)">Is this a real conversation or a recording? <span class="faq-icon">+</span></div>
+      <div class="faq-a">Every call is a unique, real-time conversation generated by AI. Nothing is pre-recorded or scripted. What you say shapes what happens. No two calls are ever the same.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggle(this)">When does my card get charged? <span class="faq-icon">+</span></div>
+      <div class="faq-a">Your card is never charged until after your call ends. First 3 minutes free. Minutes 4 through 6 cost $2.99 total. After that, just $1.00 per minute.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggle(this)">Can I call the same character more than once? <span class="faq-icon">+</span></div>
+      <div class="faq-a">Yes — and every call will be different. However, the free 3-minute window applies once per character per phone number. Subsequent calls to the same character start billing from minute 1.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggle(this)">How does the rescue dog donation work? <span class="faq-icon">+</span></div>
+      <div class="faq-a">Every paid call triggers at minimum a meal donation for a rescue dog</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggle(this)">Do I dial a number or does the character call me? <span class="faq-icon">+</span></div>
+      <div class="faq-a">You enter your phone number and the character calls you. You don't dial anything. The call comes within seconds of completing registration.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggle(this)">Can I give a call as a gift? <span class="faq-icon">+</span></div>
+      <div class="faq-a">Yes. Gift experiences are fully pre-paid and come with a beautiful atmospheric email delivered to the recipient. They have 90 days to use it.</div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Talk<span>With</span>Icons</div>
+  <p>Real voice conversations with history's greatest minds. Every call feeds a rescue dog. Every conversation has never happened before and never will again.</p>
+  <ul class="footer-links">
+    <li><a href="#characters">Characters</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="#rescue">Rescue</a></li>
+    <li><a href="#gifts">Gifts</a></li>
+    <li><a href="#faq">FAQ</a></li>
+    <li><a href="#">Privacy</a></li>
+  </ul>
+  <p>© 2026 TalkWithIcons.com — All rights reserved.</p>
+</footer>
+
+<script>
+  // Scroll fade-in
+  const obs = new IntersectionObserver(e => {
+    e.forEach(el => { if (el.isIntersecting) el.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fade-in').forEach(el => obs.observe(el));
+
+  // Meal counter animation
+  let counted = false;
+  const counterEl = document.getElementById('meal-counter');
+  const counterObs = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && !counted) {
+        counted = true;
+        const target = 1247;
+        const duration = 2000;
+        const increment = target / (duration / 16);
+        let current = 0;
+        const timer = setInterval(() => {
+          current += increment;
+          if (current >= target) {
+            counterEl.textContent = target.toLocaleString();
+            clearInterval(timer);
+          } else {
+            counterEl.textContent = Math.floor(current).toLocaleString();
+          }
+        }, 16);
+      }
+    });
+  }, { threshold: 0.3 });
+  if (counterEl) counterObs.observe(counterEl);
+
+  // FAQ toggle
+  function toggle(el) {
+    const item = el.parentElement;
+    const icon = el.querySelector('.faq-icon');
+    item.classList.toggle('open');
+    icon.textContent = item.classList.contains('open') ? '−' : '+';
+  }
+</script>
+</body>
+</html>

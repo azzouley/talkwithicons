@@ -71,6 +71,58 @@ WHAT NEEDS TO BE TRIED:
 6. Test all 8 non-Evangeline characters for quality
 7. Build social clip workflow for TikTok/Instagram
 
+## NONPROFIT PARTNERSHIP MODEL - APPROVED
+
+### Concept
+Sub-sites that partner with nonprofits for 2-4 week fundraising campaigns. Nonprofit emails their membership to drive traffic. Members call TalkWithIcons characters for fun while raising money.
+
+### Split Structure
+- 50% to nonprofit partner
+- 50% to Steve (rescue dog donation comes from Steve's 50%)
+- Local dog rescue gets 100% of the rescue portion
+- Each campaign uses a named local rescue, not ASPCA
+
+### Technical Requirements
+- Subdomain per campaign (e.g. atlanta.talkwithicons.com)
+- Campaign tracking via URL code to attribute calls to correct campaign
+- Stripe required (already pending DBA/business checking)
+- Simple one-page partnership agreement needed (not a lawyer job)
+
+### Nonprofit Pitch
+- 3-week campaign
+- Their members call famous historical figures for fun
+- They email their list twice (launch + reminder)
+- They keep 50% of every call with zero overhead on their end
+
+### Character Changes
+- Replacing Marie Curie with James Baldwin and Bruce Lee
+- Baldwin: race, love, America - contemporary relevance
+- Bruce Lee: philosophy, discipline, identity - massive audience
+- No legal barriers at current scale (both deceased)
+- Bruce Lee estate is active but voice call service is unlikely to be an issue
+
+### Status
+- Stripe pending
+- Characters pending voice selection and prompt writing
+- Campaign subdomain build pending
+
+## MARKETING STRATEGY - INSTAGRAM & TIKTOK
+
+### Primary Content: Reaction Videos
+- Format: Split screen or speaker phone - caller's face + Holmes/character audio
+- Capture method: Caller films themselves with Holmes on speaker (Option 2 - raw/authentic performs best on TikTok)
+- Alternative: Caller at laptop, films with phone while Holmes plays through laptop speakers
+- Content: Genuine reactions to shocking answers - jaw drops, laughter, disbelief
+- Hook formula: "I called a 150-year-old detective and asked him who really killed JFK. This is what he said."
+- End every video with: call him yourself + site URL
+- Best characters for virality: Holmes on conspiracies, Aela on alien contact, Nostradamus on predictions
+- Start with friends/family to get first 5-6 strong reaction clips for launch
+
+### Secondary Content: Carousels
+- Purpose: Build brand and feed algorithm between video posts
+- Angle: The thing nobody knows about each icon - not biography
+- Format: Dark background, single str [TRUNCATED - more content to be added]
+
 ## CLAUDE RULES FOR THIS PROJECT
 - Always use Claude Code for any Vapi, Vercel, or site changes - never ask Steve to do it manually unless absolutely no programmatic option exists
 - Always save/backup before changing anything that is working

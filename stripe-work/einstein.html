@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Call Einstein — TalkWithIcons</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --gold: #c9a84c;
+      --gold-light: #e8c96b;
+      --gold-dim: #8a6e30;
+      --dark: #0d0b08;
+      --dark2: #131009;
+      --dark3: #1c1710;
+      --warm-white: #f5f0e8;
+      --muted: #9a8f7a;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--dark);
+      color: var(--warm-white);
+      font-family: 'Crimson Pro', Georgia, serif;
+      font-size: 18px;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 48px;
+      background: linear-gradient(180deg, rgba(13,11,8,0.98) 0%, rgba(13,11,8,0) 100%);
+      border-bottom: 1px solid rgba(201,168,76,0.15);
+    }
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      font-weight: 900;
+      letter-spacing: 0.04em;
+      color: var(--gold);
+      text-decoration: none;
+    }
+    .nav-back {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-back:hover { color: var(--gold); }
+    .nav-cta {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--dark);
+      background: var(--gold);
+      padding: 10px 24px;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+    .nav-cta:hover { background: var(--gold-light); }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      padding-top: 80px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 60% 80% at 70% 50%, rgba(201,168,76,0.05) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-left {
+      padding: 80px 60px 80px 80px;
+      position: relative;
+      z-index: 2;
+    }
+    .hero-eyebrow {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .hero-eyebrow::before {
+      content: '';
+      display: block;
+      width: 32px;
+      height: 1px;
+      background: var(--gold-dim);
+    }
+
+    .hero-name {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3.5rem, 6vw, 5.5rem);
+      font-weight: 900;
+      line-height: 0.95;
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+      color: var(--warm-white);
+    }
+    .hero-dates {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      color: #d4af70;
+      margin-bottom: 32px;
+    }
+    .hero-tagline {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      font-style: italic;
+      font-weight: 400;
+      color: var(--gold-light);
+      line-height: 1.4;
+      margin-bottom: 28px;
+      max-width: 480px;
+    }
+    .hero-desc {
+      font-size: 1rem;
+      color: var(--muted);
+      line-height: 1.75;
+      max-width: 460px;
+      margin-bottom: 48px;
+    }
+
+    .call-box {
+      border: 1px solid rgba(201,168,76,0.4);
+      background: rgba(201,168,76,0.04);
+      padding: 28px 32px;
+      max-width: 420px;
+    }
+    .call-box-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold-dim);
+      margin-bottom: 12px;
+    }
+    .call-price {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.4rem;
+      font-weight: 900;
+      color: var(--warm-white);
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .call-price span {
+      font-size: 1rem;
+      font-family: 'Crimson Pro', serif;
+      font-weight: 300;
+      color: var(--muted);
+    }
+    .call-details {
+      font-size: 0.88rem;
+      color: var(--muted);
+      margin-bottom: 20px;
+      line-height: 1.5;
+    }
+    .btn-call {
+      display: block;
+      width: 100%;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-weight: 700;
+      background: var(--gold);
+      color: var(--dark);
+      border: none;
+      padding: 18px;
+      cursor: pointer;
+      text-align: center;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.15s;
+      margin-bottom: 12px;
+    }
+    .btn-call:hover { background: var(--gold-light); transform: translateY(-1px); }
+    .call-rescue {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.58rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #6dbf8a;
+      text-align: center;
+    }
+
+    /* PORTRAIT SIDE */
+    .hero-right {
+      position: relative;
+      height: 100vh;
+      overflow: hidden;
+    }
+    .hero-portrait {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      display: block;
+      filter: grayscale(20%) contrast(1.05);
+    }
+    .portrait-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, var(--dark) 0%, rgba(13,11,8,0.3) 30%, transparent 60%),
+                  linear-gradient(0deg, var(--dark) 0%, transparent 25%);
+    }
+    .portrait-caption {
+      position: absolute;
+      bottom: 40px;
+      right: 32px;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(201,168,76,0.5);
+    }
+
+    /* QUOTE SECTION */
+    .quote-section {
+      padding: 100px 80px;
+      background: var(--dark2);
+      text-align: center;
+      position: relative;
+    }
+    .quote-mark {
+      font-family: 'Playfair Display', serif;
+      font-size: 8rem;
+      color: rgba(201,168,76,0.1);
+      line-height: 0.5;
+      margin-bottom: 32px;
+      display: block;
+    }
+    .quote-text {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.4rem, 3vw, 2.2rem);
+      font-style: italic;
+      font-weight: 400;
+      line-height: 1.5;
+      max-width: 760px;
+      margin: 0 auto 24px;
+      color: var(--warm-white);
+    }
+    .quote-attr {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold-dim);
+    }
+
+    /* CONVERSATION STARTERS */
+    .starters-section {
+      padding: 100px 80px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .section-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 16px;
+    }
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+      font-weight: 700;
+      line-height: 1.15;
+      margin-bottom: 48px;
+      max-width: 600px;
+    }
+    .starters-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 2px;
+    }
+    .starter-card {
+      background: var(--dark3);
+      border: 1px solid rgba(201,168,76,0.12);
+      padding: 28px 28px 32px;
+      transition: border-color 0.25s;
+      cursor: default;
+    }
+    .starter-card:hover { border-color: rgba(201,168,76,0.35); }
+    .starter-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.2rem;
+      font-weight: 900;
+      color: rgba(201,168,76,0.15);
+      line-height: 1;
+      margin-bottom: 12px;
+    }
+    .starter-q {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.05rem;
+      font-style: italic;
+      color: var(--warm-white);
+      line-height: 1.5;
+      margin-bottom: 10px;
+    }
+    .starter-note {
+      font-size: 0.85rem;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    /* BIO SECTION */
+    .bio-section {
+      padding: 100px 80px;
+      background: var(--dark2);
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 80px;
+      align-items: start;
+    }
+    .bio-sidebar {
+      position: sticky;
+      top: 120px;
+    }
+    .bio-fact {
+      margin-bottom: 32px;
+      padding-bottom: 32px;
+      border-bottom: 1px solid rgba(201,168,76,0.1);
+    }
+    .bio-fact:last-child { border-bottom: none; margin-bottom: 0; }
+    .bio-fact-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--gold-dim);
+      margin-bottom: 6px;
+    }
+    .bio-fact-value {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--warm-white);
+    }
+    .bio-content p {
+      font-size: 1.05rem;
+      color: var(--muted);
+      line-height: 1.8;
+      margin-bottom: 24px;
+    }
+    .bio-content p:last-child { margin-bottom: 0; }
+    .bio-content strong { color: var(--warm-white); font-weight: 600; }
+
+    /* BOTTOM CTA */
+    .bottom-cta {
+      padding: 100px 80px;
+      text-align: center;
+      background: linear-gradient(180deg, var(--dark) 0%, #0a0800 100%);
+      position: relative;
+    }
+    .bottom-cta::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 50%; transform: translateX(-50%);
+      width: 1px;
+      height: 80px;
+      background: linear-gradient(180deg, transparent, var(--gold-dim));
+    }
+    .bottom-cta h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-weight: 900;
+      margin-bottom: 16px;
+      line-height: 1.1;
+    }
+    .bottom-cta p {
+      font-size: 1rem;
+      color: var(--muted);
+      max-width: 480px;
+      margin: 0 auto 40px;
+    }
+    .btn-large {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.85rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-weight: 700;
+      background: var(--gold);
+      color: var(--dark);
+      border: none;
+      padding: 20px 56px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      transition: background 0.2s, transform 0.15s;
+      margin-bottom: 16px;
+    }
+    .btn-large:hover { background: var(--gold-light); transform: translateY(-2px); }
+    .bottom-rescue {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #6dbf8a;
+    }
+
+    /* OTHER ICONS */
+    .others-section {
+      padding: 80px;
+      border-top: 1px solid rgba(201,168,76,0.1);
+    }
+    .others-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 2px;
+      margin-top: 40px;
+    }
+    .other-card {
+      background: var(--dark3);
+      border: 1px solid rgba(201,168,76,0.1);
+      padding: 20px 16px;
+      text-align: center;
+      text-decoration: none;
+      transition: border-color 0.2s;
+    }
+    .other-card:hover { border-color: rgba(201,168,76,0.4); }
+    .other-portrait {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      object-fit: cover;
+      object-position: top;
+      display: block;
+      margin: 0 auto 10px;
+      border: 1px solid rgba(201,168,76,0.2);
+    }
+    .other-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--warm-white);
+    }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid rgba(201,168,76,0.15);
+      padding: 40px 80px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .footer-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      font-weight: 900;
+      color: var(--gold);
+    }
+    .footer-copy {
+      font-size: 0.78rem;
+      color: rgba(154,143,122,0.45);
+      max-width: 500px;
+      text-align: center;
+    }
+    .footer-links {
+      display: flex;
+      gap: 24px;
+    }
+    .footer-links a {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+    }
+    .footer-links a:hover { color: var(--gold); }
+
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: 1fr; }
+      .hero-right { height: 50vh; }
+      .hero-left { padding: 100px 32px 60px; }
+      .bio-section { grid-template-columns: 1fr; padding: 60px 32px; }
+      .bio-sidebar { position: static; }
+      .starters-section, .others-section, .bottom-cta { padding: 60px 32px; }
+      .others-grid { grid-template-columns: repeat(4, 1fr); }
+      nav { padding: 16px 24px; }
+      footer { flex-direction: column; gap: 16px; text-align: center; padding: 32px; }
+      .quote-section { padding: 60px 32px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a class="nav-logo" href="index.html">TalkWithIcons</a>
+    <a class="nav-back" href="index.html">← All Icons</a>
+    <a class="nav-cta" href="#call">Start the Call</a>
+  </nav>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-left">
+      <p class="hero-eyebrow">Physicist · Philosopher · 1879–1955</p>
+      <h1 class="hero-name">Albert<br>Einstein</h1>
+      <p class="hero-dates">Born Ulm, Germany · Nobel Prize 1921 · Princeton, New Jersey</p>
+      <p class="hero-tagline">"Imagination is more important than knowledge."</p>
+      <p class="hero-desc">
+        He redrew the map of reality. Relativity, the photoelectric effect, Brownian motion —
+        all in a single year, working as a patent clerk in Bern. Talk to the man behind the myth:
+        warm, funny, deeply human, and still capable of stopping you cold with a single thought.
+      </p>
+
+      <div class="call-box" id="call">
+        <p class="call-box-label">How It Works</p>
+        <p class="call-details">First 3 minutes free. Minutes 4 through 6 cost $2.99 total. After that, just $1.00 per minute.</p>
+        <form id="call-form" onsubmit="handleCall(event)" style="margin-bottom:12px;">
+          <input id="f-name" type="text" placeholder="First Name" required autocomplete="given-name"
+                 style="display:block;width:100%;margin-bottom:8px;padding:10px 14px;background:#1c1710;border:1px solid rgba(201,168,76,0.7);color:#f5f0e8;font-family:'Space Mono',monospace;font-size:0.82rem;outline:none;" />
+          <input id="f-phone" type="tel" placeholder="Phone Number" required autocomplete="tel"
+                 style="display:block;width:100%;margin-bottom:12px;padding:10px 14px;background:#1c1710;border:1px solid rgba(201,168,76,0.7);color:#f5f0e8;font-family:'Space Mono',monospace;font-size:0.82rem;outline:none;" />
+          <button type="submit" class="btn-call" style="width:100%;cursor:pointer;border:none;">Call Me Now →</button>
+        </form>
+        <p id="call-msg" style="font-size:0.85rem;margin-bottom:12px;display:none;"></p>
+        <p class="call-rescue">🐾 Every paid call triggers at minimum a meal donation for a rescue dog</p>
+      </div>
+    </div>
+
+    <div class="hero-right">
+      <img class="hero-portrait" src="images/einstein.webp" alt="Albert Einstein" />
+      <div class="portrait-overlay"></div>
+      <p class="portrait-caption">Albert Einstein · c. 1947</p>
+    </div>
+  </div>
+
+  <!-- QUOTE -->
+  <div class="quote-section">
+    <span class="quote-mark">"</span>
+    <p class="quote-text">
+      The most beautiful thing we can experience is the mysterious.
+      It is the source of all true art and science.
+    </p>
+    <p class="quote-attr">— Albert Einstein, What I Believe, 1930</p>
+  </div>
+
+  <!-- CONVERSATION STARTERS -->
+  <section class="starters-section">
+    <p class="section-label">What to Ask</p>
+    <h2 class="section-title" style="font-size:1.4rem;font-family:'Crimson Pro',serif;font-weight:400;font-style:normal;border:2px solid #c9a84c;padding:20px 28px;display:block;margin-bottom:48px;text-align:center;margin-left:auto;margin-right:auto;">To jog your imagination, here are 6 conversation starters. But you are encouraged to ask absolutely anything you want including questions of our present age. Your time with Einstein is your own!</h2>
+    <div class="starters-grid">
+      <div class="starter-card">
+        <div class="starter-num">01</div>
+        <p class="starter-q">"Was there a moment you knew relativity was right — before any proof?"</p>
+        <p class="starter-note">He'll describe the thought experiment on the light beam. You'll feel the click of it.</p>
+      </div>
+      <div class="starter-card">
+        <div class="starter-num">02</div>
+        <p class="starter-q">"What do you actually think about God?"</p>
+        <p class="starter-note">Not the bumper sticker answer. The real one — Spinoza, the cosmos, what mystery means to a scientist.</p>
+      </div>
+      <div class="starter-card">
+        <div class="starter-num">03</div>
+        <p class="starter-q">"Do you regret the letter to Roosevelt?"</p>
+        <p class="starter-note">The letter that started the Manhattan Project. He signed it. He'll tell you why — and what it cost him.</p>
+      </div>
+      <div class="starter-card">
+        <div class="starter-num">04</div>
+        <p class="starter-q">"Why did your first marriage fail?"</p>
+        <p class="starter-note">Mileva Marić was also a physicist. The story is more complicated than history usually tells it.</p>
+      </div>
+      <div class="starter-card">
+        <div class="starter-num">05</div>
+        <p class="starter-q">"What do you make of quantum mechanics?"</p>
+        <p class="starter-note">"God does not play dice." Bohr disagreed. This argument is still unresolved. Hear his side.</p>
+      </div>
+      <div class="starter-card">
+        <div class="starter-num">06</div>
+        <p class="starter-q">"Are you happy?"</p>
+        <p class="starter-note">An unexpected question for an unexpected answer. The most famous mind of the century, asked the simplest thing.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- BIO -->
+  <div class="bio-section">
+    <div class="bio-sidebar">
+      <div class="bio-fact">
+        <p class="bio-fact-label">Born</p>
+        <p class="bio-fact-value">March 14, 1879<br>Ulm, Kingdom of Württemberg</p>
+      </div>
+      <div class="bio-fact">
+        <p class="bio-fact-label">Died</p>
+        <p class="bio-fact-value">April 18, 1955<br>Princeton, New Jersey</p>
+      </div>
+      <div class="bio-fact">
+        <p class="bio-fact-label">Nobel Prize</p>
+        <p class="bio-fact-value">Physics, 1921<br>Photoelectric Effect</p>
+      </div>
+      <div class="bio-fact">
+        <p class="bio-fact-label">Languages</p>
+        <p class="bio-fact-value">German, English, some Italian</p>
+      </div>
+      <div class="bio-fact">
+        <p class="bio-fact-label">Known For</p>
+        <p class="bio-fact-value">Special &amp; General Relativity, E=mc²</p>
+      </div>
+    </div>
+
+    <div class="bio-content">
+      <p>
+        Albert Einstein did not speak until he was three years old. His teachers found him slow.
+        One called him "mentally slow, unsociable, and adrift forever in his foolish dreams."
+        In 1905 — working as a <strong>third-class patent clerk in Bern, Switzerland</strong> —
+        he published four papers that rewrote physics. Any one of them would have made a career.
+        Together, they changed everything.
+      </p>
+      <p>
+        He did not arrive at his discoveries through calculation alone. His method was imagination.
+        <strong>He called them thought experiments.</strong> He imagined riding alongside a beam of light.
+        He imagined an elevator falling in free space. The mathematics came after — to confirm
+        what intuition had already told him was true.
+      </p>
+      <p>
+        Einstein was also a deeply political man. He fled Nazi Germany in 1933 and never returned.
+        He was a pacifist who nonetheless signed the letter urging Roosevelt to develop the atomic bomb —
+        a decision that haunted his final years. He was offered the presidency of Israel and declined.
+        <strong>The FBI kept a file on him for decades.</strong>
+      </p>
+      <p>
+        He played the violin. He loved sailing, even though he couldn't swim and refused to learn.
+        He was married twice, had complicated relationships with his sons, and was devoted to his
+        sister Maja until her death. He died in Princeton in 1955, having refused surgery,
+        saying: <em>"I want to go when I want. It is tasteless to prolong life artificially."</em>
+      </p>
+    </div>
+  </div>
+
+  <!-- BOTTOM CTA -->
+  <div class="bottom-cta">
+    <h2>Three minutes.<br>One conversation.<br><em style="color:var(--gold-light)">Never repeated.</em></h2>
+    <p>No script. No recordings. A live AI voice trained on Einstein's letters, lectures, and interviews — speaking only to you, only now.</p>
+    <a class="btn-large" href="#call">Start Your Free Call →</a>
+    <br>
+    <p class="bottom-rescue">🐾 Every paid call triggers at minimum a meal donation for a rescue dog</p>
+  </div>
+
+  <!-- OTHER ICONS -->
+  <div class="others-section">
+    <p class="section-label">Other Icons</p>
+    <div class="others-grid">
+      <a class="other-card" href="twain.html">
+        <img class="other-portrait" src="images/twain.png" alt="Mark Twain" />
+        <p class="other-name">Twain</p>
+      </a>
+      <a class="other-card" href="holmes.html">
+        <img class="other-portrait" src="images/holmes.jpeg" alt="Sherlock Holmes" />
+        <p class="other-name">Holmes</p>
+      </a>
+      <a class="other-card" href="tesla.html">
+        <img class="other-portrait" src="images/tesla.jpeg" alt="Nikola Tesla" />
+        <p class="other-name">Tesla</p>
+      </a>
+      <a class="other-card" href="nostradamus.html">
+        <img class="other-portrait" src="images/nostradamus.jpeg" alt="Nostradamus" />
+        <p class="other-name">Nostradamus</p>
+      </a>
+      <a class="other-card" href="bennet.html">
+        <img class="other-portrait" src="images/bennet.jpeg" alt="Elizabeth Bennet" />
+        <p class="other-name">Bennet</p>
+      </a>
+      <a class="other-card" href="curie.html">
+        <img class="other-portrait" src="images/curie.jpeg" alt="Marie Curie" />
+        <p class="other-name">Curie</p>
+      </a>
+      <a class="other-card" href="aela.html">
+        <img class="other-portrait" src="images/aela.jpeg" alt="Aela" />
+        <p class="other-name">Aela</p>
+      </a>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <p class="footer-logo">TalkWithIcons</p>
+    <p class="footer-copy">© 2026 TalkWithIcons. AI-generated conversations for entertainment and educational purposes only. Responses do not represent the actual views or words of any historical person or their estate.</p>
+    <div class="footer-links">
+      <a href="index.html">Home</a>
+      <a href="#">Privacy</a>
+      <a href="#">Terms</a>
+    </div>
+  </footer>
+
+<style>
+#f-name::placeholder, #f-phone::placeholder { color: #c9a84c; opacity: 1; }
+</style>
+<script>
+async function handleCall(e) {
+  e.preventDefault();
+  const form = document.getElementById('call-form');
+  const btn  = form.querySelector('button[type="submit"]');
+  const msg  = document.getElementById('call-msg');
+  const firstName   = document.getElementById('f-name').value.trim();
+  const phoneNumber = document.getElementById('f-phone').value.trim();
+  btn.disabled    = true;
+  btn.textContent = 'Connecting...';
+  msg.style.display = 'none';
+  try {
+    const res  = await fetch(window.location.origin + '/api/start-call-basic', {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify({ firstName, phoneNumber, character: 'einstein' }),
+    });
+    const data = await res.json();
+    if (res.ok) {
+      msg.textContent   = 'Your call is connecting — pick up within 30 seconds.';
+      msg.style.color   = '#6dbf8a';
+      msg.style.display = 'block';
+      btn.textContent   = 'Call Placed ✓';
+    } else {
+      throw new Error(data.error || 'Something went wrong.');
+    }
+  } catch (err) {
+    msg.textContent   = err.message;
+    msg.style.color   = '#e07070';
+    msg.style.display = 'block';
+    btn.disabled      = false;
+    btn.textContent   = 'Call Me Now →';
+  }
+}
+</script>
+</body>
+</html>

@@ -276,3 +276,6 @@ All Node.js HTTPS calls require the `--use-system-ca` flag: `node --use-system-c
 
 ### Rule 7: Always backup before patching Vapi
 Before PATCHing any Vapi assistant, GET the current state first and log it. Vapi has no version history.
+
+### Rule 8: SECURITY — No hardcoded secrets in any committed file
+Never hardcode API keys, secrets, or tokens in any file committed to GitHub. All keys must be read from Vercel environment variables via `process.env` only. Never commit `.env` files or scripts containing literal key values. Violation of this rule exposes credentials publicly.

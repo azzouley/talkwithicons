@@ -113,7 +113,7 @@ Tesla and Curie were removed and replaced by Bruce Lee and Baldwin respectively.
 
 ## Vapi Configuration
 
-**API Key:** `[REDACTED]`
+**API Key:** `aa0f9ca9-ffab-4fe5-b2f0-6be65421ed7e`
 
 **All assistants:**
 - Model: Perplexity sonar-pro via custom-llm (original 9 — switched from GPT 4.1 on 2026-06-04)

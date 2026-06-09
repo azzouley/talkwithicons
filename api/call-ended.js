@@ -1,8 +1,9 @@
-// Vapi webhook receiver.
-// Register this URL in the Vapi dashboard under Assistant → Server URL (or Organization Server URL).
-// Fires on every call event; only acts on end-of-call-report.
-// Skips calls under 60 s (hangups / test dials).
-// Schedules /api/send-followup via QStash with a 30-minute delay.
+// api/call-ended.js
+// Vapi webhook receiver — fires on every call event; only acts on end-of-call-report.
+// Handles two jobs:
+//   1. Stripe billing — cancel auth hold (free calls) or charge correct amount (paid calls).
+//      Runs for ALL calls including short ones so the auth hold is never left dangling.
+//   2. QStash follow-up email — scheduled 30 min after call end (skipped for very short calls).
 
 const https = require('https');
 
@@ -16,9 +17,26 @@ const ASSISTANT_NAMES = {
   '0560582f-8258-4803-8f2b-78b364fa23ca': 'Elizabeth Bennet',
   '2f0047c1-eeb7-412d-b455-f8f731bdd232': 'James Baldwin',
   '7fd88fa7-f013-4693-9b52-ab8937e4225d': 'Evangeline Adams',
+  'a30672aa-7bbb-4cff-91ed-7a2f01b5823a': 'La Llorona',
 };
 
 const SITE_URL = process.env.SITE_URL || 'https://talkwithicons.vercel.app';
+
+// ── Billing calculation ───────────────────────────────────────────────────────
+// Minutes 1–3: free | Minutes 4–6: $2.99 gate | Minute 7+: $1.00/min
+// Uses ceil(seconds/60) so a started minute is a billed minute.
+function calcChargeAmountCents(durationSeconds) {
+  const minutes = Math.ceil(durationSeconds / 60);
+  if (minutes <= 3) return 0;
+  if (minutes <= 6) return 299;
+  return 299 + (minutes - 6) * 100;
+}
+
+function getStripe() {
+  const key = process.env.STRIPE_SECRET_KEY;
+  if (!key) throw new Error('STRIPE_SECRET_KEY is not configured');
+  return require('stripe')(key);
+}
 
 module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -29,7 +47,6 @@ module.exports = async function handler(req, res) {
 
   const msg = req.body?.message;
 
-  // Vapi sends many event types — only process end-of-call-report
   if (!msg || msg.type !== 'end-of-call-report') {
     return res.status(200).json({ ok: true });
   }
@@ -49,12 +66,63 @@ module.exports = async function handler(req, res) {
   );
   const transcript = (msg.transcript || '').slice(0, 3000);
 
-  // Skip very short calls — likely test dials or immediate hangups
+  // ── Stripe billing ────────────────────────────────────────────────────────────
+  // Runs before the short-call guard so auth holds are always resolved.
+  const paymentIntentId  = call.metadata?.paymentIntentId;
+  const paymentMethodId  = call.metadata?.paymentMethodId;
+  const stripeCustomerId = call.metadata?.stripeCustomerId;
+
+  if (paymentIntentId && process.env.STRIPE_SECRET_KEY) {
+    try {
+      const stripe       = getStripe();
+      const chargeAmount = calcChargeAmountCents(durationSeconds);
+      const durationMins = Math.ceil(durationSeconds / 60);
+
+      if (chargeAmount === 0) {
+        // Free call — release the auth hold
+        await stripe.paymentIntents.cancel(paymentIntentId);
+        console.log(`Stripe: free call — auth hold cancelled. PI=${paymentIntentId} phone=${callerPhone}`);
+      } else {
+        // Paid call — cancel the $1 hold, create final charge against the saved PM
+        await stripe.paymentIntents.cancel(paymentIntentId);
+
+        const charge = await stripe.paymentIntents.create({
+          amount:         chargeAmount,
+          currency:       'usd',
+          customer:       stripeCustomerId || undefined,
+          payment_method: paymentMethodId,
+          confirm:        true,
+          off_session:    true,
+          description:    `TalkWithIcons — ${characterName} (${durationMins} min)`,
+          metadata:       {
+            callerPhone:   callerPhone || '',
+            callerName,
+            durationMins:  String(durationMins),
+            character:     characterName,
+          },
+        });
+
+        console.log(
+          `Stripe: charged $${(chargeAmount / 100).toFixed(2)} — ${charge.id}` +
+          ` | ${durationMins} min | ${characterName} | ${callerPhone}`
+        );
+      }
+    } catch (stripeErr) {
+      // Log but don't fail the webhook — QStash follow-up must still be attempted
+      console.error('Stripe billing error:', stripeErr.message, {
+        paymentIntentId,
+        chargeAmount: calcChargeAmountCents(durationSeconds),
+        callerPhone,
+      });
+    }
+  }
+
+  // ── Skip follow-up for very short calls ───────────────────────────────────────
   if (!callerPhone || durationSeconds < 60) {
     return res.status(200).json({ ok: true, skipped: 'too short or no phone' });
   }
 
-  // Schedule the follow-up via QStash
+  // ── Schedule follow-up via QStash ────────────────────────────────────────────
   const qstashBase  = (process.env.QSTASH_URL || 'https://qstash.upstash.io').replace(/\/$/, '');
   const qstashToken = process.env.QSTASH_TOKEN;
 
@@ -76,7 +144,7 @@ module.exports = async function handler(req, res) {
     transcript,
   });
 
-  await new Promise((resolve, reject) => {
+  await new Promise((resolve) => {
     const opts = {
       hostname: qstashHost,
       path:     publishPath,
@@ -98,7 +166,7 @@ module.exports = async function handler(req, res) {
     });
     r.on('error', err => {
       console.error('QStash publish error:', err.message);
-      resolve(); // Don't fail the webhook response over a scheduling error
+      resolve();
     });
     r.write(payload);
     r.end();

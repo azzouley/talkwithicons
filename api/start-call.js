@@ -304,6 +304,13 @@ READING INSTRUCTIONS
 - Do not invent planetary positions — use only the data provided above.`.trim();
 }
 
+// ── Stripe helper ─────────────────────────────────────────────────────────────
+function getStripe() {
+  const key = process.env.STRIPE_SECRET_KEY;
+  if (!key) throw new Error('STRIPE_SECRET_KEY is not configured');
+  return require('stripe')(key);
+}
+
 // ── Phone normalizer ──────────────────────────────────────────────────────────
 function normalizePhone(raw) {
   const digits = raw.replace(/\D/g, '');
@@ -320,10 +327,37 @@ module.exports = async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(204).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
-  const { name, phoneNumber, birthDate, birthTime, birthCity } = req.body || {};
+  const { name, phoneNumber, birthDate, birthTime, birthCity, paymentIntentId, stripeCustomerId } = req.body || {};
   console.log('birthTime received:', birthTime, 'type:', typeof birthTime, 'length:', birthTime?.length);
   if (!name || !phoneNumber || !birthDate || !birthCity) {
     return res.status(400).json({ error: 'name, phoneNumber, birthDate, and birthCity are required' });
+  }
+
+  // ── Stripe auth hold verification (same flow as start-call-basic) ────────────
+  let paymentMethodId = null;
+
+  if (process.env.STRIPE_SECRET_KEY) {
+    if (!paymentIntentId) {
+      return res.status(402).json({ error: 'Payment authorization required' });
+    }
+    try {
+      const stripe = getStripe();
+      const pi = await stripe.paymentIntents.retrieve(paymentIntentId);
+
+      if (pi.status !== 'requires_capture') {
+        return res.status(402).json({
+          error: 'Payment authorization not confirmed',
+          status: pi.status,
+        });
+      }
+
+      paymentMethodId = typeof pi.payment_method === 'string'
+        ? pi.payment_method
+        : pi.payment_method?.id || null;
+    } catch (err) {
+      console.error('Stripe PI verification error:', err.message);
+      return res.status(502).json({ error: 'Payment verification failed', detail: err.message });
+    }
   }
 
   let natalSummary;
@@ -344,6 +378,11 @@ module.exports = async function handler(req, res) {
         natalChart: natalSummary,
       },
     },
+    metadata: paymentIntentId ? {
+      paymentIntentId,
+      paymentMethodId:  paymentMethodId || '',
+      stripeCustomerId: stripeCustomerId || '',
+    } : {},
   };
 
   try {

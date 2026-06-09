@@ -1,7 +1,9 @@
 // api/start-call-basic.js
-// Outbound call trigger for the 8 non-Evangeline characters.
-// Takes firstName + phoneNumber + character, injects callerName via variableValues.
-// Each character's Vapi assistant must have {{callerName}} in their system prompt.
+// Outbound call trigger for all non-Evangeline characters.
+// Payment flow: frontend confirms a $1 Stripe auth hold via create-payment-intent,
+// then sends paymentIntentId + stripeCustomerId here. This endpoint verifies the hold
+// is confirmed (requires_capture) before triggering the Vapi call, and stores the
+// payment identifiers in Vapi call metadata so call-ended.js can bill correctly.
 
 // ── Shared Vapi credentials ───────────────────────────────────────────────────
 const VAPI_API_KEY             = process.env.VAPI_API_KEY             || 'YOUR_VAPI_API_KEY';
@@ -40,6 +42,12 @@ function normalizePhone(raw) {
   return '+' + digits;
 }
 
+function getStripe() {
+  const key = process.env.STRIPE_SECRET_KEY;
+  if (!key) throw new Error('STRIPE_SECRET_KEY is not configured');
+  return require('stripe')(key);
+}
+
 module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
@@ -47,7 +55,7 @@ module.exports = async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(204).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
-  const { firstName, phoneNumber, character } = req.body || {};
+  const { firstName, phoneNumber, character, paymentIntentId, stripeCustomerId } = req.body || {};
   if (!firstName || !phoneNumber || !character) {
     return res.status(400).json({ error: 'firstName, phoneNumber, and character are required' });
   }
@@ -57,6 +65,36 @@ module.exports = async function handler(req, res) {
     return res.status(400).json({ error: `Character "${character}" is not yet configured` });
   }
 
+  // ── Stripe auth hold verification ────────────────────────────────────────────
+  // paymentIntentId is required once STRIPE_SECRET_KEY is live.
+  // During development (key not set), the check is skipped so calls still work.
+  let paymentMethodId = null;
+
+  if (process.env.STRIPE_SECRET_KEY) {
+    if (!paymentIntentId) {
+      return res.status(402).json({ error: 'Payment authorization required' });
+    }
+    try {
+      const stripe = getStripe();
+      const pi = await stripe.paymentIntents.retrieve(paymentIntentId);
+
+      if (pi.status !== 'requires_capture') {
+        return res.status(402).json({
+          error: 'Payment authorization not confirmed',
+          status: pi.status,
+        });
+      }
+
+      paymentMethodId = typeof pi.payment_method === 'string'
+        ? pi.payment_method
+        : pi.payment_method?.id || null;
+    } catch (err) {
+      console.error('Stripe PI verification error:', err.message);
+      return res.status(502).json({ error: 'Payment verification failed', detail: err.message });
+    }
+  }
+
+  // ── Build Vapi call payload ───────────────────────────────────────────────────
   const vapiPayload = {
     phoneNumberId: PHONE_NUMBER_IDS[character.toLowerCase()],
     customer:      { number: normalizePhone(phoneNumber), name: firstName },
@@ -64,6 +102,12 @@ module.exports = async function handler(req, res) {
     assistantOverrides: {
       variableValues: { callerName: firstName },
     },
+    // Payment identifiers stored in metadata so call-ended.js can bill correctly
+    metadata: paymentIntentId ? {
+      paymentIntentId,
+      paymentMethodId:   paymentMethodId || '',
+      stripeCustomerId:  stripeCustomerId || '',
+    } : {},
   };
 
   try {

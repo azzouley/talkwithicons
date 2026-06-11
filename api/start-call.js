@@ -327,11 +327,12 @@ module.exports = async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(204).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
-  const { name, phoneNumber, birthDate, birthTime, birthCity, paymentIntentId, stripeCustomerId } = req.body || {};
+  const { name, phoneNumber, birthDate, birthTime, birthCity, language, paymentIntentId, stripeCustomerId } = req.body || {};
   console.log('birthTime received:', birthTime, 'type:', typeof birthTime, 'length:', birthTime?.length);
   if (!name || !phoneNumber || !birthDate || !birthCity) {
     return res.status(400).json({ error: 'name, phoneNumber, birthDate, and birthCity are required' });
   }
+  const lang = (language === 'es') ? 'es' : 'en';
 
   // ── Stripe auth hold verification (same flow as start-call-basic) ────────────
   let paymentMethodId = null;
@@ -376,13 +377,15 @@ module.exports = async function handler(req, res) {
       variableValues: {
         callerName: name,
         natalChart: natalSummary,
+        language:   lang,
       },
     },
     metadata: paymentIntentId ? {
       paymentIntentId,
       paymentMethodId:  paymentMethodId || '',
       stripeCustomerId: stripeCustomerId || '',
-    } : {},
+      language:         lang,
+    } : { language: lang },
   };
 
   try {

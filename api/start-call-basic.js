@@ -55,10 +55,11 @@ module.exports = async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(204).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
-  const { firstName, phoneNumber, character, paymentIntentId, stripeCustomerId } = req.body || {};
+  const { firstName, phoneNumber, character, language, paymentIntentId, stripeCustomerId } = req.body || {};
   if (!firstName || !phoneNumber || !character) {
     return res.status(400).json({ error: 'firstName, phoneNumber, and character are required' });
   }
+  const lang = (language === 'es') ? 'es' : 'en';
 
   const assistantId = ASSISTANT_IDS[character.toLowerCase()];
   if (!assistantId || assistantId.startsWith('YOUR_')) {
@@ -100,14 +101,15 @@ module.exports = async function handler(req, res) {
     customer:      { number: normalizePhone(phoneNumber), name: firstName },
     assistantId,
     assistantOverrides: {
-      variableValues: { callerName: firstName },
+      variableValues: { callerName: firstName, language: lang },
     },
     // Payment identifiers stored in metadata so call-ended.js can bill correctly
     metadata: paymentIntentId ? {
       paymentIntentId,
       paymentMethodId:   paymentMethodId || '',
       stripeCustomerId:  stripeCustomerId || '',
-    } : {},
+      language:          lang,
+    } : { language: lang },
   };
 
   try {

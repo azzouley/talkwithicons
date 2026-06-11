@@ -118,6 +118,18 @@
                style="display:block;width:100%;margin-bottom:8px;padding:10px 14px;background:#0f1518;border:1px solid rgba(42,138,156,0.7);box-sizing:border-box;"></div>
           <div id="card-errors"
                style="color:#e07070;font-size:0.78rem;margin-bottom:8px;display:none;"></div>
+          <!-- Language toggle -->
+          <div style="margin-bottom: 1.25rem;">
+            <label style="display:block; font-size:0.72rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--muted); margin-bottom:0.6rem;">Language / Idioma</label>
+            <div style="display:flex; gap:1rem;">
+              <label style="display:flex; align-items:center; gap:0.4rem; cursor:pointer; font-size:0.9rem;">
+                <input type="radio" name="language" value="en" checked style="accent-color:var(--gold);"> English
+              </label>
+              <label style="display:flex; align-items:center; gap:0.4rem; cursor:pointer; font-size:0.9rem;">
+                <input type="radio" name="language" value="es" style="accent-color:var(--gold);"> Español
+              </label>
+            </div>
+          </div>
           <button type="submit" class="btn-call" style="width:100%;cursor:pointer;border:none;">Call Me Now →</button>
         </form>
         <p id="call-msg" style="font-size:0.85rem;margin-bottom:12px;display:none;"></p>
@@ -319,6 +331,7 @@ async function handleCall(e) {
         firstName,
         phoneNumber,
         character:        'llorona',
+        language: document.querySelector('input[name=\"language\"]:checked').value,
         paymentIntentId:  paymentIntent.id,
         stripeCustomerId: piData.stripeCustomerId,
       }),

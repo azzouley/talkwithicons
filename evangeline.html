@@ -401,6 +401,18 @@
           <div id="card-errors"
                style="color:#e07070;font-size:0.78rem;margin-top:6px;display:none;"></div>
         </div>
+        <!-- Language toggle -->
+        <div style="margin-bottom: 1.25rem;">
+          <label style="display:block; font-size:0.72rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--muted); margin-bottom:0.6rem;">Language / Idioma</label>
+          <div style="display:flex; gap:1rem;">
+            <label style="display:flex; align-items:center; gap:0.4rem; cursor:pointer; font-size:0.9rem;">
+              <input type="radio" name="language" value="en" checked style="accent-color:var(--gold);"> English
+            </label>
+            <label style="display:flex; align-items:center; gap:0.4rem; cursor:pointer; font-size:0.9rem;">
+              <input type="radio" name="language" value="es" style="accent-color:var(--gold);"> Español
+            </label>
+          </div>
+        </div>
         <button class="btn-submit" id="submit-btn" type="submit">Call Me Now →</button>
         <p style="font-family:'Space Mono',monospace;font-size:1.16rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#6dbf8a;text-align:center;margin-top:12px;">🐾 every paid call triggers at minimum a meal donation for a rescue dog</p>
       </form>
@@ -590,6 +602,7 @@ document.addEventListener('DOMContentLoaded', initStripe);
         btn.textContent = 'Connecting...';
         const payload = {
           name, phoneNumber, birthDate, birthTime, birthCity, birthCountry,
+          language: document.querySelector('input[name="language"]:checked').value,
           paymentIntentId:  paymentIntent.id,
           stripeCustomerId: piData.stripeCustomerId,
         };

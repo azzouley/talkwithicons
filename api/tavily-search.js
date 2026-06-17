@@ -7,7 +7,8 @@ module.exports = async (req, res) => {
 
   const body = req.body || {};
 
-  let rawArgs = body?.message?.toolCalls?.[0]?.function?.arguments;
+  let rawArgs = body?.message?.toolCallList?.[0]?.function?.arguments
+             ?? body?.message?.toolCalls?.[0]?.function?.arguments;
   if (typeof rawArgs === 'string') rawArgs = JSON.parse(rawArgs);
   let query = rawArgs?.query
     || body?.message?.functionCall?.parameters?.query

@@ -375,10 +375,6 @@ module.exports = async function handler(req, res) {
     customer: { number: normalizePhone(phoneNumber), name },
     assistantId: VAPI_ASSISTANT_ID,
     assistantOverrides: {
-      // firstMessageMode: Perplexity requires the first non-system message to be
-      // from user, not assistant. Model-generated first message ensures the
-      // conversation is [system, user, assistant, user...] not [system, assistant, user].
-      firstMessageMode: 'assistant-speaks-first-with-model-generated-message',
       variableValues: {
         callerName: name,
         natalChart: natalSummary,

@@ -2,9 +2,6 @@
   "functions": {
     "api/start-call.js": {
       "maxDuration": 30
-    },
-    "api/perplexity-proxy.js": {
-      "maxDuration": 60
     }
   },
   "headers": [
@@ -17,11 +14,11 @@
         },
         {
           "key": "Access-Control-Allow-Methods",
-          "value": "POST, OPTIONS"
+          "value": "POST, OPTIONS, GET"
         },
         {
           "key": "Access-Control-Allow-Headers",
-          "value": "Content-Type"
+          "value": "Content-Type, Authorization"
         }
       ]
     }

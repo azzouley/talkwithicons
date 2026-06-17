@@ -4,7 +4,10 @@
       "maxDuration": 30
     },
     "api/perplexity-proxy.mjs": {
-      "maxDuration": 30
+      "maxDuration": 30,
+      "regions": [
+        "all"
+      ]
     }
   },
   "headers": [

@@ -2,6 +2,9 @@
   "functions": {
     "api/start-call.js": {
       "maxDuration": 30
+    },
+    "api/perplexity-proxy.mjs": {
+      "maxDuration": 30
     }
   },
   "headers": [

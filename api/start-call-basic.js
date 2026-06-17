@@ -57,7 +57,8 @@ module.exports = async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(204).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
-  const { firstName, phoneNumber, character, language, paymentIntentId, stripeCustomerId } = req.body || {};
+  const { firstName: firstNameRaw, phoneNumber, character, language, paymentIntentId, stripeCustomerId } = req.body || {};
+  const firstName = (firstNameRaw || '').trim();
   if (!firstName || !phoneNumber || !character) {
     return res.status(400).json({ error: 'firstName, phoneNumber, and character are required' });
   }
@@ -103,6 +104,10 @@ module.exports = async function handler(req, res) {
     customer:      { number: normalizePhone(phoneNumber), name: firstName },
     assistantId,
     assistantOverrides: {
+      // firstMessageMode tells Vapi to call the LLM for the opening turn instead of
+      // playing the static firstMessage as an assistant turn. Perplexity requires
+      // the first non-system message to be from user, not assistant.
+      firstMessageMode: 'assistant-speaks-first-with-model-generated-message',
       variableValues: { callerName: firstName, language: lang },
     },
     // Payment identifiers stored in metadata so call-ended.js can bill correctly
@@ -114,6 +119,7 @@ module.exports = async function handler(req, res) {
     } : { language: lang },
   };
 
+  console.log('start-call-basic:', character, '| callerName:', firstName, '| lang:', lang);
   try {
     const vapiRes  = await fetch('https://api.vapi.ai/call', {
       method:  'POST',

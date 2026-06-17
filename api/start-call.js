@@ -327,7 +327,8 @@ module.exports = async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(204).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
-  const { name, phoneNumber, birthDate, birthTime, birthCity, language, paymentIntentId, stripeCustomerId } = req.body || {};
+  const { name: nameRaw, phoneNumber, birthDate, birthTime, birthCity, language, paymentIntentId, stripeCustomerId } = req.body || {};
+  const name = (nameRaw || '').trim();
   console.log('birthTime received:', birthTime, 'type:', typeof birthTime, 'length:', birthTime?.length);
   if (!name || !phoneNumber || !birthDate || !birthCity) {
     return res.status(400).json({ error: 'name, phoneNumber, birthDate, and birthCity are required' });
@@ -374,6 +375,10 @@ module.exports = async function handler(req, res) {
     customer: { number: normalizePhone(phoneNumber), name },
     assistantId: VAPI_ASSISTANT_ID,
     assistantOverrides: {
+      // firstMessageMode: Perplexity requires the first non-system message to be
+      // from user, not assistant. Model-generated first message ensures the
+      // conversation is [system, user, assistant, user...] not [system, assistant, user].
+      firstMessageMode: 'assistant-speaks-first-with-model-generated-message',
       variableValues: {
         callerName: name,
         natalChart: natalSummary,
@@ -388,6 +393,7 @@ module.exports = async function handler(req, res) {
     } : { language: lang },
   };
 
+  console.log('start-call:', 'callerName:', name, '| lang:', lang, '| birthDate:', birthDate);
   try {
     const vapiRes  = await fetch('https://api.vapi.ai/call', {
       method: 'POST',

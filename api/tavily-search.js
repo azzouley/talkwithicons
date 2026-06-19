@@ -6,16 +6,25 @@ module.exports = async (req, res) => {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
   const body = req.body || {};
+  console.log('raw body keys:', Object.keys(body));
 
-  let rawArgs = body?.message?.toolCallList?.[0]?.function?.arguments
-             ?? body?.message?.toolCalls?.[0]?.function?.arguments;
-  if (typeof rawArgs === 'string') rawArgs = JSON.parse(rawArgs);
-  let query = rawArgs?.query
-    || body?.message?.functionCall?.parameters?.query
-    || body?.query;
+  // Vapi sends toolCalls or toolCallList — handle both
+  const toolCallEntry = body?.message?.toolCalls?.[0] ?? body?.message?.toolCallList?.[0];
+  const toolCallId = toolCallEntry?.id ?? null;
 
-  console.log('query:', query);
-  if (!query) return res.status(400).json({ error: 'query required', body });
+  let rawArgs = toolCallEntry?.function?.arguments;
+  if (typeof rawArgs === 'string') {
+    try { rawArgs = JSON.parse(rawArgs); } catch { rawArgs = {}; }
+  }
+  const query = rawArgs?.query
+    ?? body?.message?.functionCall?.parameters?.query
+    ?? body?.query;
+
+  console.log('toolCallId:', toolCallId, 'query:', query);
+  if (!query) {
+    console.log('full body:', JSON.stringify(body).slice(0, 1000));
+    return res.status(400).json({ error: 'query required' });
+  }
 
   const braveKey = process.env.BRAVE_API_KEY;
   if (!braveKey) return res.status(500).json({ error: 'BRAVE_API_KEY not set' });
@@ -41,10 +50,16 @@ module.exports = async (req, res) => {
   console.log('Brave status:', searchRes.status);
   if (searchRes.status !== 200) return res.status(502).json({ error: 'Brave failed', detail: searchRes.body });
 
-  const results = JSON.parse(searchRes.body)?.web?.results || [];
-  const result = results.slice(0, 3).map(r => `${r.title}: ${r.description || r.url}`).join('\n');
+  const webResults = JSON.parse(searchRes.body)?.web?.results ?? [];
+  const resultText = webResults.slice(0, 3).map(r => `${r.title}: ${r.description || r.url}`).join('\n') || 'No results found.';
 
-  const content = result || 'No results found.';
-  console.log('result string:', content);
-  return res.status(200).json({ result: content });
+  console.log('result string:', resultText.slice(0, 200));
+
+  // Vapi custom-tool server protocol: respond with results array keyed by toolCallId.
+  // If no toolCallId (direct test), fall back to simple { result } shape.
+  const responseBody = toolCallId
+    ? { results: [{ toolCallId, result: resultText }] }
+    : { result: resultText };
+
+  return res.status(200).json(responseBody);
 };

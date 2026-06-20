@@ -21,7 +21,8 @@ const ASSISTANT_IDS = {
   baldwin:     process.env.VAPI_ASSISTANT_ID_BALDWIN     || 'YOUR_BALDWIN_ASSISTANT_ID',
   llorona:     process.env.VAPI_ASSISTANT_ID_LLORONA     || 'YOUR_LLORONA_ASSISTANT_ID',
   davinci:     process.env.VAPI_ASSISTANT_ID_DAVINCI     || 'YOUR_DAVINCI_ASSISTANT_ID',
-  houdini:     process.env.VAPI_ASSISTANT_ID_HOUDINI    || 'YOUR_HOUDINI_ASSISTANT_ID',
+  houdini:       process.env.VAPI_ASSISTANT_ID_HOUDINI        || 'YOUR_HOUDINI_ASSISTANT_ID',
+  frankenstein:  process.env.VAPI_ASSISTANT_ID_FRANKENSTEIN   || 'YOUR_FRANKENSTEIN_ASSISTANT_ID',
 };
 
 // ── Per-character phone number IDs (fall back to shared if not set) ───────────
@@ -36,7 +37,8 @@ const PHONE_NUMBER_IDS = {
   baldwin:     process.env.VAPI_PHONE_NUMBER_ID_BALDWIN     || VAPI_PHONE_NUMBER_ID_DEFAULT,
   llorona:     process.env.VAPI_PHONE_NUMBER_ID_LLORONA     || VAPI_PHONE_NUMBER_ID_DEFAULT,
   davinci:     process.env.VAPI_PHONE_NUMBER_ID_DAVINCI     || VAPI_PHONE_NUMBER_ID_DEFAULT,
-  houdini:     process.env.VAPI_PHONE_NUMBER_ID_HOUDINI    || VAPI_PHONE_NUMBER_ID_DEFAULT,
+  houdini:       process.env.VAPI_PHONE_NUMBER_ID_HOUDINI       || VAPI_PHONE_NUMBER_ID_DEFAULT,
+  frankenstein:  process.env.VAPI_PHONE_NUMBER_ID_FRANKENSTEIN  || VAPI_PHONE_NUMBER_ID_DEFAULT,
 };
 
 function normalizePhone(raw) {

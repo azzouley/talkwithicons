@@ -261,9 +261,10 @@ All HTML and CSS layout work must be written as COMPLETE files by Claude (the ch
 ### Rule 2: Claude Code is for backend only
 Claude Code handles: git commands, file copying, Vapi integration, Stripe integration, API connections, server-side logic. Nothing else.
 
-### Rule 3: Git push always goes to main
-Always push to main branch: `git push origin HEAD:main`
-Never push to master only — Vercel watches main.
+### Rule 3: This repo uses 'main' as the ONLY branch — never push to master
+Always push with: `git push origin HEAD:main`
+
+The 'master' branch was deleted on 2026-06-21 after causing a deployment mismatch with Vercel: Vercel's production branch is 'main', so pushes to 'master' silently created preview deployments instead of production. The live site appeared unchanged for hours even though git showed the commits as pushed. Never create or push to a 'master' branch in this repo again.
 
 ### Rule 4: Verify before moving on
 After every change, open the browser and confirm it looks correct before making the next change.

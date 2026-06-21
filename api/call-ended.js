@@ -6,6 +6,7 @@
 //   2. QStash follow-up email — scheduled 30 min after call end (skipped for very short calls).
 
 const https = require('https');
+const { sql, calcPerCallDonationCents, updateDonationLedger } = require('./_db');
 
 const ASSISTANT_NAMES = {
   'b98cec95-47a4-455d-92c8-3a08aacb556d': 'Albert Einstein',
@@ -106,6 +107,20 @@ module.exports = async function handler(req, res) {
           `Stripe: charged $${(chargeAmount / 100).toFixed(2)} — ${charge.id}` +
           ` | ${durationMins} min | ${characterName} | ${callerPhone}`
         );
+
+        const donationCents = calcPerCallDonationCents(durationSeconds);
+        sql`
+          INSERT INTO transactions
+            (stripe_charge_id, stripe_payment_intent_id, caller_phone, caller_name,
+             character_name, duration_seconds, charge_cents, donation_cents)
+          VALUES
+            (${charge.id}, ${paymentIntentId || ''}, ${callerPhone || ''}, ${callerName},
+             ${characterName}, ${durationSeconds}, ${chargeAmount}, ${donationCents})
+        `.catch(err => console.error('transactions insert error:', err.message));
+
+        updateDonationLedger(donationCents).catch(err =>
+          console.error('donation ledger update error:', err.message)
+        );
       }
     } catch (stripeErr) {
       // Log but don't fail the webhook — QStash follow-up must still be attempted
@@ -114,6 +129,37 @@ module.exports = async function handler(req, res) {
         chargeAmount: calcChargeAmountCents(durationSeconds),
         callerPhone,
       });
+    }
+  }
+
+  // ── Grand Tour minute deduction ───────────────────────────────────────────────
+  const tourCode = call.metadata?.tourCode;
+  if (tourCode && durationSeconds > 0) {
+    const gtMins = Math.ceil(durationSeconds / 60);
+    if (gtMins > 3) {
+      try {
+        await sql`
+          UPDATE grand_tour_balances
+          SET minutes_remaining = GREATEST(0, minutes_remaining - ${gtMins}),
+              updated_at        = NOW()
+          WHERE access_code = ${tourCode}
+        `;
+        const updated = await sql`
+          SELECT minutes_remaining FROM grand_tour_balances WHERE access_code = ${tourCode}
+        `;
+        const remaining = updated.rows[0]?.minutes_remaining ?? 0;
+        await sql`
+          INSERT INTO grand_tour_call_log
+            (access_code, caller_phone, character_name, duration_seconds,
+             minutes_deducted, minutes_remaining_after, vapi_call_id)
+          VALUES
+            (${tourCode}, ${callerPhone || ''}, ${characterName}, ${durationSeconds},
+             ${gtMins}, ${remaining}, ${call.id || null})
+        `;
+        console.log(`Grand Tour: deducted ${gtMins} min from ${tourCode} — ${remaining} min remaining`);
+      } catch (gtErr) {
+        console.error('Grand Tour minute deduction error:', gtErr.message);
+      }
     }
   }
 

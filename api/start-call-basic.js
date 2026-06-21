@@ -5,6 +5,8 @@
 // is confirmed (requires_capture) before triggering the Vapi call, and stores the
 // payment identifiers in Vapi call metadata so call-ended.js can bill correctly.
 
+const { sql } = require('./_db');
+
 // ── Shared Vapi credentials ───────────────────────────────────────────────────
 const VAPI_API_KEY             = process.env.VAPI_API_KEY             || 'YOUR_VAPI_API_KEY';
 const VAPI_PHONE_NUMBER_ID_DEFAULT = process.env.VAPI_PHONE_NUMBER_ID || 'YOUR_VAPI_PHONE_NUMBER_ID';
@@ -61,7 +63,7 @@ module.exports = async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(204).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
-  const { firstName: firstNameRaw, phoneNumber, character, language, paymentIntentId, stripeCustomerId } = req.body || {};
+  const { firstName: firstNameRaw, phoneNumber, character, language, paymentIntentId, stripeCustomerId, tourCode } = req.body || {};
   const firstName = (firstNameRaw || '').trim();
   if (!firstName || !phoneNumber || !character) {
     return res.status(400).json({ error: 'firstName, phoneNumber, and character are required' });
@@ -71,6 +73,66 @@ module.exports = async function handler(req, res) {
   const assistantId = ASSISTANT_IDS[character.toLowerCase()];
   if (!assistantId || assistantId.startsWith('YOUR_')) {
     return res.status(400).json({ error: `Character "${character}" is not yet configured` });
+  }
+
+  // ── Grand Tour path (bypasses Stripe entirely) ────────────────────────────────
+  if (tourCode) {
+    const code  = tourCode.trim().toUpperCase();
+    const phone = normalizePhone(phoneNumber);
+    try {
+      const result = await sql`
+        SELECT purchaser_phone, minutes_remaining
+        FROM grand_tour_balances
+        WHERE access_code = ${code}
+      `;
+      if (result.rows.length === 0) {
+        return res.status(403).json({ error: 'Grand Tour code not found' });
+      }
+      const row = result.rows[0];
+      if (row.purchaser_phone && row.purchaser_phone !== phone) {
+        return res.status(403).json({ error: 'Phone number does not match this Grand Tour code' });
+      }
+      if (row.minutes_remaining < 6) {
+        return res.status(403).json({
+          error:            'Insufficient minutes remaining',
+          minutesRemaining: row.minutes_remaining,
+        });
+      }
+    } catch (dbErr) {
+      console.error('Grand Tour validation error:', dbErr.message);
+      return res.status(500).json({ error: 'Grand Tour validation failed' });
+    }
+
+    const vapiPayload = {
+      phoneNumberId: PHONE_NUMBER_IDS[character.toLowerCase()],
+      customer:      { number: normalizePhone(phoneNumber), name: firstName },
+      assistantId,
+      assistantOverrides: {
+        variableValues: { callerName: firstName, language: lang },
+      },
+      metadata: { tourCode: code, language: lang },
+    };
+
+    console.log('start-call-basic [Grand Tour]:', character, '| callerName:', firstName, '| code:', code);
+    try {
+      const vapiRes  = await fetch('https://api.vapi.ai/call', {
+        method:  'POST',
+        headers: {
+          Authorization:  `Bearer ${VAPI_API_KEY}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(vapiPayload),
+      });
+      const vapiData = await vapiRes.json();
+      if (!vapiRes.ok) {
+        console.error('Vapi error:', vapiData);
+        return res.status(502).json({ error: 'Call service error', detail: vapiData });
+      }
+      return res.status(200).json({ success: true, callId: vapiData.id });
+    } catch (err) {
+      console.error('start-call-basic [Grand Tour] error:', err);
+      return res.status(500).json({ error: 'Internal server error' });
+    }
   }
 
   // ── Stripe auth hold verification ────────────────────────────────────────────

@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin — TalkWithIcons</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #0f0f0f;
+      color: #d0d0d0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-size: 14px;
+      padding: 24px 16px 80px;
+    }
+
+    h1 { font-size: 20px; color: #fff; margin-bottom: 4px; font-weight: 600; }
+    h2 { font-size: 15px; color: #e0e0e0; margin: 32px 0 14px; font-weight: 600; border-bottom: 1px solid #222; padding-bottom: 8px; }
+    h3 { font-size: 13px; color: #aaa; margin: 20px 0 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.06em; }
+
+    .page-header { margin-bottom: 28px; }
+    .page-header p { color: #888; font-size: 13px; margin-top: 4px; }
+
+    /* Login gate */
+    #login-gate {
+      max-width: 360px;
+      margin: 80px auto;
+      text-align: center;
+    }
+    #login-gate h2 { border: none; margin-bottom: 20px; font-size: 18px; color: #fff; }
+    #pw-input {
+      width: 100%;
+      background: #1a1a1a;
+      border: 1px solid #333;
+      color: #e0e0e0;
+      padding: 10px 14px;
+      font-size: 15px;
+      margin-bottom: 12px;
+      outline: none;
+    }
+    #pw-input:focus { border-color: #555; }
+    #login-btn {
+      width: 100%;
+      background: #2a2a2a;
+      border: 1px solid #444;
+      color: #e0e0e0;
+      padding: 10px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+    #login-btn:hover { background: #333; }
+    #login-error { color: #e05050; font-size: 13px; margin-top: 10px; }
+
+    /* Main content */
+    #main-content { display: none; max-width: 1100px; margin: 0 auto; }
+
+    /* Tables */
+    .table-wrap { overflow-x: auto; margin-bottom: 8px; }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    th { background: #1a1a1a; color: #888; font-weight: 500; text-align: left; padding: 8px 12px; border-bottom: 1px solid #2a2a2a; white-space: nowrap; }
+    td { padding: 8px 12px; border-bottom: 1px solid #1a1a1a; vertical-align: top; }
+    tr:hover td { background: #161616; }
+    .mono { font-family: 'SF Mono', 'Consolas', monospace; letter-spacing: 1px; }
+    .dim { color: #666; }
+    .ok { color: #5cb85c; }
+    .warn { color: #f0ad4e; }
+
+    /* Summary cards */
+    .summary-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; margin-bottom: 24px; }
+    .summary-card { background: #1a1a1a; border: 1px solid #2a2a2a; padding: 16px; }
+    .summary-card .label { font-size: 11px; color: #666; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px; }
+    .summary-card .value { font-size: 22px; color: #fff; font-weight: 600; }
+    .summary-card .sub { font-size: 12px; color: #888; margin-top: 4px; }
+
+    /* Forms */
+    .admin-form { background: #1a1a1a; border: 1px solid #2a2a2a; padding: 20px; max-width: 500px; margin-bottom: 20px; }
+    .admin-form label { display: block; font-size: 11px; color: #888; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px; margin-top: 14px; }
+    .admin-form label:first-of-type { margin-top: 0; }
+    .admin-form input[type="text"],
+    .admin-form input[type="number"],
+    .admin-form input[type="month"] {
+      width: 100%;
+      background: #111;
+      border: 1px solid #333;
+      color: #e0e0e0;
+      padding: 8px 12px;
+      font-size: 14px;
+      outline: none;
+    }
+    .admin-form input:focus { border-color: #555; }
+    .admin-form button {
+      margin-top: 16px;
+      background: #2a2a2a;
+      border: 1px solid #444;
+      color: #e0e0e0;
+      padding: 9px 20px;
+      font-size: 13px;
+      cursor: pointer;
+    }
+    .admin-form button:hover { background: #333; }
+    .form-result { margin-top: 10px; font-size: 13px; min-height: 18px; }
+    .form-result.ok { color: #5cb85c; }
+    .form-result.err { color: #e05050; }
+
+    .refresh-btn {
+      background: none;
+      border: 1px solid #333;
+      color: #888;
+      padding: 4px 12px;
+      font-size: 12px;
+      cursor: pointer;
+      margin-left: 12px;
+      vertical-align: middle;
+    }
+    .refresh-btn:hover { border-color: #555; color: #ccc; }
+
+    .loading { color: #666; font-size: 13px; padding: 16px 0; }
+    .error-banner { background: #2a1010; border: 1px solid #5a2020; color: #e05050; padding: 12px 16px; font-size: 13px; margin-bottom: 16px; }
+  </style>
+</head>
+<body>
+
+  <!-- Login gate -->
+  <div id="login-gate">
+    <h2>TalkWithIcons Admin</h2>
+    <input type="password" id="pw-input" placeholder="Admin password" autocomplete="current-password">
+    <button id="login-btn">Enter</button>
+    <div id="login-error"></div>
+  </div>
+
+  <!-- Main dashboard -->
+  <div id="main-content">
+
+    <div class="page-header">
+      <h1>TalkWithIcons Admin</h1>
+      <p id="last-loaded">—</p>
+    </div>
+
+    <div id="error-banner" class="error-banner" style="display:none"></div>
+
+    <!-- Summary cards -->
+    <div class="summary-grid" id="summary-grid">
+      <div class="summary-card"><div class="label">Total Accrued (all time)</div><div class="value" id="s-total">—</div><div class="sub">donations</div></div>
+      <div class="summary-card"><div class="label">Owed — ASPCA</div><div class="value" id="s-aspca">—</div><div class="sub">unpaid</div></div>
+      <div class="summary-card"><div class="label">Owed — Partner</div><div class="value" id="s-partner">—</div><div class="sub">unpaid</div></div>
+      <div class="summary-card"><div class="label">Grand Tour Codes</div><div class="value" id="s-codes">—</div><div class="sub">sold</div></div>
+    </div>
+
+    <!-- Donation Ledger -->
+    <h2>
+      Donation Ledger
+      <button class="refresh-btn" onclick="loadData()">↺ Refresh</button>
+    </h2>
+    <div class="table-wrap">
+      <table id="ledger-table">
+        <thead>
+          <tr>
+            <th>Period</th>
+            <th>Accrued</th>
+            <th>Owed ASPCA</th>
+            <th>Owed Partner</th>
+            <th>Paid ASPCA</th>
+            <th>Paid Partner</th>
+            <th>Partner Name</th>
+            <th>Last Payout</th>
+          </tr>
+        </thead>
+        <tbody id="ledger-body"><tr><td colspan="8" class="loading">Loading...</td></tr></tbody>
+      </table>
+    </div>
+
+    <!-- Grand Tour Codes -->
+    <h2>Grand Tour Codes</h2>
+    <div class="table-wrap">
+      <table id="codes-table">
+        <thead>
+          <tr>
+            <th>Code</th>
+            <th>Name</th>
+            <th>Phone</th>
+            <th>Email</th>
+            <th>Minutes</th>
+            <th>Remaining</th>
+            <th>Purchased</th>
+          </tr>
+        </thead>
+        <tbody id="codes-body"><tr><td colspan="7" class="loading">Loading...</td></tr></tbody>
+      </table>
+    </div>
+
+    <!-- Management -->
+    <h2>Management</h2>
+
+    <h3>Record Payout</h3>
+    <div class="admin-form" id="payout-form">
+      <label>Period (YYYY-MM)</label>
+      <input type="month" id="payout-period">
+      <label>Amount Paid to ASPCA ($)</label>
+      <input type="number" id="payout-aspca" min="0" step="0.01" placeholder="0.00">
+      <label>Amount Paid to Partner ($)</label>
+      <input type="number" id="payout-partner" min="0" step="0.01" placeholder="0.00">
+      <button onclick="submitPayout()">Record Payout</button>
+      <div class="form-result" id="payout-result"></div>
+    </div>
+
+    <h3>Unlock / Rebind Code</h3>
+    <div class="admin-form" id="unlock-form">
+      <label>Access Code</label>
+      <input type="text" id="unlock-code" placeholder="ABCD1234" maxlength="8" style="text-transform:uppercase">
+      <label>New Phone Number (leave blank to fully unlock)</label>
+      <input type="text" id="unlock-phone" placeholder="+15555555555 or leave blank">
+      <button onclick="submitUnlock()">Update Code</button>
+      <div class="form-result" id="unlock-result"></div>
+    </div>
+
+  </div>
+
+  <script>
+    let adminPassword = '';
+
+    // ── Login ────────────────────────────────────────────────────────────────────
+    document.getElementById('pw-input').addEventListener('keydown', e => {
+      if (e.key === 'Enter') document.getElementById('login-btn').click();
+    });
+
+    document.getElementById('login-btn').addEventListener('click', async () => {
+      const pw = document.getElementById('pw-input').value;
+      if (!pw) return;
+      try {
+        const res = await fetch('/api/admin/ledger', {
+          headers: { 'x-admin-password': pw },
+        });
+        if (res.status === 401) {
+          document.getElementById('login-error').textContent = 'Incorrect password.';
+          return;
+        }
+        adminPassword = pw;
+        document.getElementById('login-gate').style.display = 'none';
+        document.getElementById('main-content').style.display = 'block';
+        processData(await res.json());
+      } catch (err) {
+        document.getElementById('login-error').textContent = 'Connection error: ' + err.message;
+      }
+    });
+
+    // ── Load data ────────────────────────────────────────────────────────────────
+    async function loadData() {
+      try {
+        const res = await fetch('/api/admin/ledger', {
+          headers: { 'x-admin-password': adminPassword },
+        });
+        if (!res.ok) { showError('Failed to load data: ' + res.status); return; }
+        processData(await res.json());
+      } catch (err) {
+        showError('Load error: ' + err.message);
+      }
+    }
+
+    function processData(data) {
+      hideError();
+      document.getElementById('last-loaded').textContent = 'Last loaded: ' + new Date().toLocaleTimeString();
+
+      renderLedger(data.ledger || []);
+      renderCodes(data.grand_tour_codes || []);
+      renderSummary(data.ledger || [], data.grand_tour_codes || []);
+    }
+
+    function fmt(cents) {
+      return '$' + (cents / 100).toFixed(2);
+    }
+
+    function renderSummary(ledger, codes) {
+      let totalAccrued = 0, owedAspca = 0, owedPartner = 0;
+      ledger.forEach(row => {
+        totalAccrued += row.total_donations_accrued || 0;
+        owedAspca    += (row.amount_owed_aspca - row.total_paid_aspca) || 0;
+        owedPartner  += (row.amount_owed_current_partner - row.total_paid_current_partner) || 0;
+      });
+      document.getElementById('s-total').textContent   = fmt(totalAccrued);
+      document.getElementById('s-aspca').textContent   = fmt(Math.max(0, owedAspca));
+      document.getElementById('s-partner').textContent = fmt(Math.max(0, owedPartner));
+      document.getElementById('s-codes').textContent   = codes.length;
+    }
+
+    function renderLedger(rows) {
+      const tbody = document.getElementById('ledger-body');
+      if (!rows.length) {
+        tbody.innerHTML = '<tr><td colspan="8" class="dim">No ledger entries yet.</td></tr>';
+        return;
+      }
+      tbody.innerHTML = rows.map(r => {
+        const owedAspca   = (r.amount_owed_aspca || 0) - (r.total_paid_aspca || 0);
+        const owedPartner = (r.amount_owed_current_partner || 0) - (r.total_paid_current_partner || 0);
+        return `<tr>
+          <td class="mono">${r.period}</td>
+          <td>${fmt(r.total_donations_accrued || 0)}</td>
+          <td class="${owedAspca > 0 ? 'warn' : 'ok'}">${fmt(r.amount_owed_aspca || 0)}</td>
+          <td class="${owedPartner > 0 ? 'warn' : 'ok'}">${fmt(r.amount_owed_current_partner || 0)}</td>
+          <td class="ok">${fmt(r.total_paid_aspca || 0)}</td>
+          <td class="ok">${fmt(r.total_paid_current_partner || 0)}</td>
+          <td class="dim">${r.partner_name || '—'}</td>
+          <td class="dim">${r.last_payout_at ? new Date(r.last_payout_at).toLocaleDateString() : '—'}</td>
+        </tr>`;
+      }).join('');
+    }
+
+    function renderCodes(rows) {
+      const tbody = document.getElementById('codes-body');
+      if (!rows.length) {
+        tbody.innerHTML = '<tr><td colspan="7" class="dim">No Grand Tour codes sold yet.</td></tr>';
+        return;
+      }
+      tbody.innerHTML = rows.map(r => {
+        const pct  = Math.round((r.minutes_remaining / r.minutes_total) * 100);
+        const cls  = pct > 50 ? 'ok' : pct > 20 ? 'warn' : 'dim';
+        return `<tr>
+          <td class="mono" style="letter-spacing:2px">${r.access_code}</td>
+          <td>${r.purchaser_name || '—'}</td>
+          <td class="mono dim">${r.purchaser_phone || '—'}</td>
+          <td class="dim">${r.purchaser_email || '—'}</td>
+          <td class="dim">${r.minutes_total}</td>
+          <td class="${cls}">${r.minutes_remaining} min</td>
+          <td class="dim">${new Date(r.created_at).toLocaleDateString()}</td>
+        </tr>`;
+      }).join('');
+    }
+
+    // ── Payout form ──────────────────────────────────────────────────────────────
+    async function submitPayout() {
+      const period  = document.getElementById('payout-period').value;
+      const aspca   = document.getElementById('payout-aspca').value;
+      const partner = document.getElementById('payout-partner').value;
+      const el      = document.getElementById('payout-result');
+
+      if (!period || aspca === '' || partner === '') {
+        setResult(el, 'All fields are required.', false);
+        return;
+      }
+
+      try {
+        const res = await fetch('/api/admin/update-payout', {
+          method:  'POST',
+          headers: {
+            'Content-Type':    'application/json',
+            'x-admin-password': adminPassword,
+          },
+          body: JSON.stringify({ period, aspca_paid: aspca, partner_paid: partner }),
+        });
+        const data = await res.json();
+        if (res.ok) {
+          setResult(el, 'Payout recorded.', true);
+          loadData();
+        } else {
+          setResult(el, data.error || 'Error', false);
+        }
+      } catch (err) {
+        setResult(el, err.message, false);
+      }
+    }
+
+    // ── Unlock form ──────────────────────────────────────────────────────────────
+    async function submitUnlock() {
+      const code  = document.getElementById('unlock-code').value.trim().toUpperCase();
+      const phone = document.getElementById('unlock-phone').value.trim();
+      const el    = document.getElementById('unlock-result');
+
+      if (!code) { setResult(el, 'Access code is required.', false); return; }
+
+      try {
+        const res = await fetch('/api/admin/unlock-code', {
+          method:  'POST',
+          headers: {
+            'Content-Type':    'application/json',
+            'x-admin-password': adminPassword,
+          },
+          body: JSON.stringify({ accessCode: code, newPhone: phone || undefined }),
+        });
+        const data = await res.json();
+        if (res.ok) {
+          const bound = data.code.purchaser_phone || 'unbound (portable)';
+          setResult(el, `Updated. Code ${data.code.access_code} is now bound to: ${bound}`, true);
+          loadData();
+        } else {
+          setResult(el, data.error || 'Error', false);
+        }
+      } catch (err) {
+        setResult(el, err.message, false);
+      }
+    }
+
+    // ── Helpers ──────────────────────────────────────────────────────────────────
+    function setResult(el, msg, ok) {
+      el.textContent  = msg;
+      el.className    = 'form-result ' + (ok ? 'ok' : 'err');
+    }
+
+    function showError(msg) {
+      const el = document.getElementById('error-banner');
+      el.textContent = msg;
+      el.style.display = 'block';
+    }
+
+    function hideError() {
+      document.getElementById('error-banner').style.display = 'none';
+    }
+  </script>
+
+</body>
+</html>

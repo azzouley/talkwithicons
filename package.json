@@ -6,6 +6,7 @@
     "node": "24.x"
   },
   "dependencies": {
+    "@vercel/postgres": "^0.10.0",
     "astronomy-engine": "^2.1.19",
     "nodemailer": "^6.9.14",
     "stripe": "^16.12.0"

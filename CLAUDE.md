@@ -113,11 +113,13 @@ Tesla and Curie were removed and replaced by Bruce Lee and Baldwin respectively.
 
 ## Vapi Configuration
 
-**API Key:** `aa0f9ca9-ffab-4fe5-b2f0-6be65421ed7e`
+**API Key:** ⚠️ DO NOT TRUST THIS FILE FOR THE LIVE KEY — the key stored here has been confirmed stale as of 2026-06-25. The Vapi API key rotates and CLAUDE.md is not updated automatically. Always confirm the current key from the Vercel `VAPI_API_KEY` env var before making API calls. (Old stale value for reference only: `aa0f9ca9-ffab-4fe5-b2f0-6be65421ed7e`)
 
 **All assistants:**
 - Model: Perplexity sonar-pro via custom-llm (original 9 — switched from GPT 4.1 on 2026-06-04)
 - La Llorona: GPT 4.1 (openai) — will switch to sonar-pro with the others later
+- Frankenstein: GPT-4o (openai) — was set up after the sonar-pro migration; not yet switched
+- Houdini, Da Vinci: model not yet audited — confirm in Vapi dashboard
 - Max duration: 2400 seconds
 - First message: always begins with `...Mm....` to prevent audio cutoff
 - Server URL: `https://www.talkwithicons.com/api/call-ended` (set on all assistants)
@@ -137,6 +139,9 @@ Tesla and Curie were removed and replaced by Bruce Lee and Baldwin respectively.
 | Baldwin | 2f0047c1-eeb7-412d-b455-f8f731bdd232 | +15853781304 |
 | Evangeline Adams | 7fd88fa7-f013-4693-9b52-ab8937e4225d | +15853121359 |
 | La Llorona | a30672aa-7bbb-4cff-91ed-7a2f01b5823a | +15854073097 |
+| Houdini | ca384c56-f276-4940-b20b-1ae939bef23b | (confirm in Vercel) |
+| Da Vinci | 23ef91d2-fc8f-4fee-9c2e-25e93b51c331 | (confirm in Vercel) |
+| Frankenstein | f96bb0a5-6e8f-4153-8bee-6b76fa14f881 | (confirm in Vercel) |
 
 ---
 

@@ -29,23 +29,30 @@ module.exports = async (req, res) => {
   const braveKey = process.env.BRAVE_API_KEY;
   if (!braveKey) return res.status(500).json({ error: 'BRAVE_API_KEY not set' });
 
-  const searchRes = await new Promise((resolve, reject) => {
-    const req2 = https.request({
-      hostname: 'api.search.brave.com',
-      path: `/res/v1/web/search?q=${encodeURIComponent(query)}`,
-      method: 'GET',
-      headers: {
-        'X-Subscription-Token': braveKey,
-        'Accept': 'application/json',
-      },
-    }, (r) => {
-      let data = '';
-      r.on('data', c => data += c);
-      r.on('end', () => resolve({ status: r.statusCode, body: data }));
+  let searchRes;
+  try {
+    searchRes = await new Promise((resolve, reject) => {
+      const req2 = https.request({
+        hostname: 'api.search.brave.com',
+        path: `/res/v1/web/search?q=${encodeURIComponent(query)}`,
+        method: 'GET',
+        headers: {
+          'X-Subscription-Token': braveKey,
+          'Accept': 'application/json',
+        },
+      }, (r) => {
+        let data = '';
+        r.on('data', c => data += c);
+        r.on('end', () => resolve({ status: r.statusCode, body: data }));
+      });
+      req2.setTimeout(8000, () => req2.destroy());
+      req2.on('error', reject);
+      req2.end();
     });
-    req2.on('error', reject);
-    req2.end();
-  });
+  } catch (err) {
+    console.log('Brave request failed:', err.message);
+    return res.status(502).json({ error: 'Search request failed', detail: err.message });
+  }
 
   console.log('Brave status:', searchRes.status);
   if (searchRes.status !== 200) return res.status(502).json({ error: 'Brave failed', detail: searchRes.body });

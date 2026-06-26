@@ -31,17 +31,17 @@ Tesla and Curie were removed and replaced by Bruce Lee and Baldwin respectively.
 ## Pricing Structure
 
 - **Minutes 1–3:** FREE — always, no card required
-- **Minutes 4–6:** $2.99 flat gate
+- **Minutes 4–6:** $3.99 flat gate
 - **Minute 7+:** $1.00 per minute
 - **Monthly package:** $29.99 for 30 minutes
 - **Card is NEVER charged until the call ends**
 
 ### Example Calls
 - 3 min call = $0.00 (free)
-- 5 min call = $2.99
-- 10 min call = $6.99
-- 20 min call = $16.99
-- 30 min call = $26.99
+- 5 min call = $3.99
+- 10 min call = $7.99
+- 20 min call = $17.99
+- 30 min call = $27.99
 
 ---
 

@@ -33,7 +33,6 @@ Tesla and Curie were removed and replaced by Bruce Lee and Baldwin respectively.
 - **Minutes 1–3:** FREE — always, no card required
 - **Minutes 4–6:** $3.99 flat gate
 - **Minute 7+:** $1.00 per minute
-- **Monthly package:** $29.99 for 30 minutes
 - **Card is NEVER charged until the call ends**
 
 ### Example Calls
@@ -64,13 +63,15 @@ Tesla and Curie were removed and replaced by Bruce Lee and Baldwin respectively.
 
 ## Gift Packages
 
+Live on homepage (index.html #gifts section). Fully pre-paid named experiences with atmospheric gift email. 90-day expiry.
+
 | Name | Duration | Price |
 |------|----------|-------|
-| The Einstein Evening | 15 min with Einstein | $14.99 |
-| A Consultation with Holmes | 20 min at 221B | $19.99 |
-| A Reading with Nostradamus | 20 min in Salon-de-Provence | $19.99 |
-| An Evening with Aela | 30 min with Aela | $29.99 |
-| The Grand Tour | 10 min each with all 9 characters | $75.00 |
+| The Einstein Evening | 15 min with Albert Einstein | $11.99 |
+| A Consultation with Holmes | 20 min at 221B Baker Street | $16.99 |
+| A Reading with Evangeline | 20 min with Evangeline Adams | $16.99 |
+| An Evening with Aela | 30 min with the Pleiadian Liaison | $26.99 |
+| The Grand Tour | 100 min, any characters, any split | $79 |
 
 ---
 

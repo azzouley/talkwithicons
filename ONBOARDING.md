@@ -30,7 +30,7 @@ Tesla and Curie were removed and replaced by Bruce Lee and Baldwin respectively.
 
 ## Pricing Structure
 
-- **Minutes 1–3:** FREE — always, no card required
+- **Minutes 1–3:** FREE — card authorized (not charged) before the call starts; no charge unless the call continues past minute 3
 - **Minutes 4–6:** $3.99 flat gate
 - **Minute 7+:** $1.00 per minute
 - **Card is NEVER charged until the call ends**

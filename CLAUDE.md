@@ -1,4 +1,4 @@
-# TalkWithIcons — Claude Code Reference Document
+﻿# TalkWithIcons — Claude Code Reference Document
 ## Last Updated: June 2026
 
 ---
@@ -120,7 +120,7 @@ Live on homepage (index.html #gifts section). Fully pre-paid named experiences w
 **All assistants:**
 - Model: openai / gpt-4o (all 13 as of 2026-06-26)
 - Max duration: 2400 seconds
-- **maxTokens: 150** (set 2026-06-27 — stopgap for confirmed Vapi streaming-abort bug; Vapi aborts GPT-4o stream after ~4.25s of continuous generation causing mid-sentence cutoffs. Cap forces responses short enough to complete before abort window. Known tradeoff: shorter answers. Remove or raise once Vapi resolves the underlying bug.)
+- **maxTokens: 300** (set 2026-06-27, raised from 150 same day — stopgap for confirmed Vapi streaming-abort bug; Vapi aborts GPT-4o stream after ~4.25s of continuous generation causing mid-sentence cutoffs. 150 was too clipped; 300 allows a complete thought while staying under abort threshold. Known tradeoff: shorter answers than uncapped. Remove or adjust once Vapi resolves the underlying bug.)
 - First message: always begins with `...Mm....` to prevent audio cutoff
 - Server URL: `https://www.talkwithicons.com/api/call-ended` (set on all assistants)
 - Holmes — sonar-pro, built-in search, deduction, optional self-description field at registration for cold open

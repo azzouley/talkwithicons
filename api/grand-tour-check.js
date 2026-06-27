@@ -6,7 +6,7 @@
 
 const { sql, normalizePhone } = require('./_db');
 
-const MIN_MINUTES_TO_START = 6;
+const MIN_MINUTES_TO_START = 5;
 
 module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');

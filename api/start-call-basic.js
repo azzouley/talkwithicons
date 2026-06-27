@@ -90,7 +90,7 @@ module.exports = async function handler(req, res) {
       if (row.purchaser_phone && row.purchaser_phone !== phone) {
         return res.status(403).json({ error: 'Phone number does not match this Grand Tour code' });
       }
-      if (row.minutes_remaining < 6) {
+      if (row.minutes_remaining < 5) {
         return res.status(403).json({
           error:            'Insufficient minutes remaining',
           minutesRemaining: row.minutes_remaining,

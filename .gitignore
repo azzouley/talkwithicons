@@ -1,5 +1,5 @@
 .vercel
-vapi-backup-2026-06-26/
+vapi-backup-*/
 vapi-backup-*.json
 brucelee-rule-patch.json
 davinci-patch.json

@@ -118,11 +118,9 @@ Live on homepage (index.html #gifts section). Fully pre-paid named experiences w
 **API Key:** ⚠️ DO NOT TRUST THIS FILE FOR THE LIVE KEY — the key stored here has been confirmed stale as of 2026-06-25. The Vapi API key rotates and CLAUDE.md is not updated automatically. Always confirm the current key from the Vercel `VAPI_API_KEY` env var before making API calls. (Old stale value for reference only: `aa0f9ca9-ffab-4fe5-b2f0-6be65421ed7e`)
 
 **All assistants:**
-- Model: Perplexity sonar-pro via custom-llm (original 9 — switched from GPT 4.1 on 2026-06-04)
-- La Llorona: GPT 4.1 (openai) — will switch to sonar-pro with the others later
-- Frankenstein: GPT-4o (openai) — was set up after the sonar-pro migration; not yet switched
-- Houdini, Da Vinci: model not yet audited — confirm in Vapi dashboard
+- Model: openai / gpt-4o (all 13 as of 2026-06-26)
 - Max duration: 2400 seconds
+- **maxTokens: 150** (set 2026-06-27 — stopgap for confirmed Vapi streaming-abort bug; Vapi aborts GPT-4o stream after ~4.25s of continuous generation causing mid-sentence cutoffs. Cap forces responses short enough to complete before abort window. Known tradeoff: shorter answers. Remove or raise once Vapi resolves the underlying bug.)
 - First message: always begins with `...Mm....` to prevent audio cutoff
 - Server URL: `https://www.talkwithicons.com/api/call-ended` (set on all assistants)
 - Holmes — sonar-pro, built-in search, deduction, optional self-description field at registration for cold open

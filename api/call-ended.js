@@ -135,7 +135,7 @@ module.exports = async function handler(req, res) {
   const tourCode = call.metadata?.tourCode;
   if (tourCode && durationSeconds > 0) {
     const gtMins = Math.ceil(durationSeconds / 60);
-    if (gtMins > 3) {
+    if (gtMins > 2) {
       try {
         await sql`
           UPDATE grand_tour_balances

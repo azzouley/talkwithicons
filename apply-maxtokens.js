@@ -10,8 +10,8 @@ const path   = require('path');
 
 const KEY            = process.env.VAPI_API_KEY_LOCAL;
 if (!KEY) { console.error('Error: VAPI_API_KEY_LOCAL env var is required. Run: set VAPI_API_KEY_LOCAL=<your-key>'); process.exit(1); }
-const NEW_MAX_TOKENS = 275;
-const BACKUP_DIR     = path.join('C:/talkwithicons/vapi-backup-2026-06-27-to275');
+const NEW_MAX_TOKENS = 250;
+const BACKUP_DIR     = path.join('C:/talkwithicons/vapi-backup-2026-06-27-to250');
 
 const ASSISTANTS = [
   { name: 'einstein',     id: 'b98cec95-47a4-455d-92c8-3a08aacb556d' },

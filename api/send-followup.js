@@ -126,7 +126,7 @@ function buildEmail(firstName, characterName, minutes, hook, site) {
   </blockquote>
 
   <p style="font-size:0.95rem;color:#9a8f7a;line-height:1.75;margin:0 0 32px;">
-    When you're ready for another conversation — with ${characterName} again, or any of the eight other icons — the first three minutes are always free.
+    When you're ready for another conversation — with ${characterName} again, or any of the eight other icons — the first two minutes are always free.
   </p>
 
   <a href="https://${site}"

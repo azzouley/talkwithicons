@@ -30,17 +30,17 @@ Tesla and Curie were removed and replaced by Bruce Lee and Baldwin respectively.
 
 ## Pricing Structure
 
-- **Minutes 1–3:** FREE — card authorized (not charged) before the call starts; no charge unless the call continues past minute 3
-- **Minutes 4–6:** $3.99 flat gate
-- **Minute 7+:** $1.00 per minute
+- **Minutes 1–2:** FREE — card authorized (not charged) before the call starts; no charge unless the call continues past minute 2
+- **Minutes 3–5:** $3.99 flat gate
+- **Minute 6+:** $1.00 per minute
 - **Card is NEVER charged until the call ends**
 
 ### Example Calls
-- 3 min call = $0.00 (free)
+- 2 min call = $0.00 (free)
 - 5 min call = $3.99
-- 10 min call = $7.99
-- 20 min call = $17.99
-- 30 min call = $27.99
+- 10 min call = $8.99
+- 20 min call = $18.99
+- 30 min call = $28.99
 
 ---
 
@@ -216,7 +216,7 @@ California Civil Code §3344.1 covers voice *likeness* not just exact reproducti
 ## Key Business Rules
 
 1. Card never charged until call ends
-2. First 3 minutes always free — no exceptions
+2. First 2 minutes always free — no exceptions
 3. Holmes registration has optional self-description field (for deduction cold open)
 4. Post-call follow-up email sends 30 minutes after call ends (requires email collection + Gmail creds)
 5. Rescue counter displays meals not dollars

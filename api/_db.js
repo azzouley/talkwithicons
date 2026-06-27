@@ -18,12 +18,12 @@ function generateAccessCode() {
   return code;
 }
 
-// Per-call donation: $0.50 minimum on any paid call, +$0.10/min after minute 6.
+// Per-call donation: $0.50 minimum on any paid call, +$0.10/min after minute 5.
 function calcPerCallDonationCents(durationSeconds) {
   const minutes = Math.ceil(durationSeconds / 60);
-  if (minutes <= 3) return 0;   // free call — no donation
-  if (minutes <= 6) return 50;  // $0.50
-  return 50 + (minutes - 6) * 10;
+  if (minutes <= 2) return 0;   // free call — no donation
+  if (minutes <= 5) return 50;  // $0.50
+  return 50 + (minutes - 5) * 10;
 }
 
 function getCurrentPeriod() {

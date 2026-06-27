@@ -23,13 +23,13 @@ const ASSISTANT_NAMES = {
 const SITE_URL = process.env.SITE_URL || 'https://talkwithicons.vercel.app';
 
 // ── Billing calculation ───────────────────────────────────────────────────────
-// Minutes 1–3: free | Minutes 4–6: $3.99 gate | Minute 7+: $1.00/min
+// Minutes 1–2: free | Minutes 3–5: $3.99 gate | Minute 6+: $1.00/min
 // Uses ceil(seconds/60) so a started minute is a billed minute.
 function calcChargeAmountCents(durationSeconds) {
   const minutes = Math.ceil(durationSeconds / 60);
-  if (minutes <= 3) return 0;
-  if (minutes <= 6) return 399;
-  return 399 + (minutes - 6) * 100;
+  if (minutes <= 2) return 0;
+  if (minutes <= 5) return 399;
+  return 399 + (minutes - 5) * 100;
 }
 
 function getStripe() {

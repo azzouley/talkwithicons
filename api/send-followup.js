@@ -89,8 +89,7 @@ function verifyQStash(rawBody, sigHeader, keys) {
 
 const CHARACTER_HOOKS = {
   'Albert Einstein':   'The questions that conversation opened — those belong to you now.',
-  'Mark Twain':        'Twain had his say. The question is what you do with it.',
-  'Sherlock Holmes':   'Holmes has filed the case. The deduction stands.',
+'Sherlock Holmes':   'Holmes has filed the case. The deduction stands.',
   'Nostradamus':       'What was said was written. What you do with it is not.',
   'Bruce Lee':         'Be water. You know what that means now.',
   'James Baldwin':     'The witness has spoken. What you carry forward is yours.',

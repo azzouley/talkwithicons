@@ -11,8 +11,7 @@ const { sql, calcPerCallDonationCents, updateDonationLedger } = require('./_db')
 const ASSISTANT_NAMES = {
   'b98cec95-47a4-455d-92c8-3a08aacb556d': 'Albert Einstein',
   'bca7797f-d4c5-4b67-b22c-7506a0b045b9': 'Nostradamus',
-  '3a6a8107-3faf-4cdd-a67b-5f71023c027d': 'Mark Twain',
-  '099b6a90-1fa9-4e6a-bc4d-8c127c6b1141': 'Bruce Lee',
+'099b6a90-1fa9-4e6a-bc4d-8c127c6b1141': 'Bruce Lee',
   'b65fb3ab-df3c-4a5b-8a96-3e865d9315b6': 'Sherlock Holmes',
   '9647119e-7cf6-4d22-968d-25f3f455a834': 'Aela',
   '0560582f-8258-4803-8f2b-78b364fa23ca': 'Elizabeth Bennet',

@@ -17,8 +17,7 @@ const BACKUP_DIR = 'C:/talkwithicons/vapi-backup-2026-06-27-pacing';
 const ASSISTANTS = [
   { name: 'einstein',     id: 'b98cec95-47a4-455d-92c8-3a08aacb556d' },
   { name: 'nostradamus',  id: 'bca7797f-d4c5-4b67-b22c-7506a0b045b9' },
-  { name: 'twain',        id: '3a6a8107-3faf-4cdd-a67b-5f71023c027d' },
-  { name: 'brucelee',     id: '099b6a90-1fa9-4e6a-bc4d-8c127c6b1141' },
+{ name: 'brucelee',     id: '099b6a90-1fa9-4e6a-bc4d-8c127c6b1141' },
   { name: 'holmes',       id: 'b65fb3ab-df3c-4a5b-8a96-3e865d9315b6' },
   { name: 'aela',         id: '9647119e-7cf6-4d22-968d-25f3f455a834' },
   { name: 'bennet',       id: '0560582f-8258-4803-8f2b-78b364fa23ca' },
@@ -45,12 +44,7 @@ const EDITS = {
     replace: `In shorter exchanges, no more than 3-4 sentences before you ask {{callerName}} something real. Match the weight of your response to the weight of the question — most exchanges are short, and a simple question does not summon prophecy. When a question warrants the full weight of what you carry — a long pattern, a vision that requires context — give it the depth it needs. A physician does not cut a diagnosis short, but neither does he deliver one when the patient only asked for the time.`,
   },
 
-  twain: {
-    find: `No more than 3-4 sentences before you ask {{callerName}} something real. You are more interested in people than in the sound of your own voice, which is saying something because you find your own voice quite agreeable.`,
-    replace: `No more than 3-4 sentences before you ask {{callerName}} something real. You are more interested in people than in the sound of your own voice, which is saying something because you find your own voice quite agreeable. A simple question deserves a short answer — the best sentences stop before they should. When a question genuinely invites the long form, earn it. Most don't.`,
-  },
-
-  brucelee: {
+brucelee: {
     find: `In shorter exchanges, never speak more than 3-4 sentences before asking something real — not a generic question, proof you were actually listening. In longer answers, when a question genuinely warrants depth, go as long as it needs. Depth is not weakness.`,
     replace: `In shorter exchanges, never speak more than 3-4 sentences before asking something real — not a generic question, proof you were actually listening. Match the length of your answer to the weight of the question. A short answer given with full presence hits harder than a long one given by default — most exchanges should be brief, direct, and sharp. When a question genuinely warrants depth, earn it and go as long as it needs. Depth is not weakness — but length without weight is.`,
   },

@@ -10,21 +10,26 @@ TalkWithIcons is a paid voice phone call service. Users call AI versions of hist
 
 ---
 
-## The 9 Characters
+## The 12 Active Characters
 
 | # | Name | Era/Location | Type |
 |---|------|-------------|------|
 | 01 | Albert Einstein | Princeton, 1955 | Historical |
 | 02 | Nostradamus | Salon-de-Provence, 1555 | Historical |
-| 03 | Mark Twain | New York City, 1905 | Historical |
+| 03 | Da Vinci | Florence/Milan/France, 1500s | Historical |
 | 04 | Bruce Lee | Hong Kong · Los Angeles, 1973 | Historical |
 | 05 | Sherlock Holmes | 221B Baker Street | Fictional |
 | 06 | Aela | Pleiadian Council Liaison | Original |
 | 07 | Elizabeth Bennet | Longbourn, 1813 | Fictional |
 | 08 | James Baldwin | Harlem, 1963 | Historical |
 | 09 | Evangeline Adams | New York City, 1930s | Historical |
+| 10 | La Llorona | — | Legend |
+| 11 | Houdini | New York City, 1920s | Historical |
+| 12 | Frankenstein's Creature | — | Fictional |
 
-Tesla and Curie were removed and replaced by Bruce Lee and Baldwin respectively. Evangeline Adams was added as a 9th character with a specialised natal chart flow.
+Tesla and Curie were removed and replaced by Bruce Lee and Baldwin respectively. Evangeline Adams was added as a 9th character with a specialised natal chart flow. La Llorona, Houdini, and Frankenstein's Creature were added to expand the roster to 12.
+
+**Mark Twain — RETIRED (2026-06):** Twain (Vapi assistant ID `3a6a8107`) was replaced by Da Vinci as Character 03. His front-end page was unlinked from the live site. However, his Vapi assistant remained fully live and callable in the backend for weeks after removal — patched in every single maxTokens and prompt update run against the active roster. Discovered 2026-06-27 when a roster-wide script accidentally included him. Root cause: the Vapi assistant was renamed "Da Vinci" in the Vapi dashboard (confusing it with the real Da Vinci assistant `23ef91d2`), and the phone number `af4c55a0` still had his assistantId for inbound routing. **Lesson: when retiring a character, the backend/Vapi state must be cleaned up explicitly — unlink from the front-end site is not enough. Any assistant still in ASSISTANTS arrays in scripts or in Vercel env vars remains callable.** Twain's assistant was permanently deleted 2026-06-27. Phone number `af4c55a0` inbound routing updated to real Da Vinci (`23ef91d2`). VAPI_ASSISTANT_ID_TWAIN and VAPI_PHONE_NUMBER_ID_TWAIN removed from Vercel.
 
 ---
 
@@ -118,9 +123,9 @@ Live on homepage (index.html #gifts section). Fully pre-paid named experiences w
 **API Key:** ⚠️ DO NOT TRUST THIS FILE FOR THE LIVE KEY — the key stored here has been confirmed stale as of 2026-06-25. The Vapi API key rotates and CLAUDE.md is not updated automatically. Always confirm the current key from the Vercel `VAPI_API_KEY` env var before making API calls. (Old stale value for reference only: `aa0f9ca9-ffab-4fe5-b2f0-6be65421ed7e`)
 
 **All assistants:**
-- Model: openai / gpt-4o (all 13 as of 2026-06-26)
+- Model: openai / gpt-4o (all 12 active characters as of 2026-06-27; Twain's assistant deleted 2026-06-27)
 - Max duration: 2400 seconds
-- **Response length calibration added to all 13 assistant prompts** (2026-06-27): each character's CRITICAL RULES Rule 3 was updated to explicitly scale response length to question weight. Simple/casual questions get short conversational answers; depth is earned when a question warrants it, not the default for every response. This is a separate fix from the maxTokens cap — the cap addresses a Vapi technical bug, this addresses the underlying tendency to default to extended exposition regardless of what was asked.
+- **Response length calibration added to all 12 assistant prompts** (2026-06-27): each character's CRITICAL RULES Rule 3 was updated to explicitly scale response length to question weight. Simple/casual questions get short conversational answers; depth is earned when a question warrants it, not the default for every response. This is a separate fix from the maxTokens cap — the cap addresses a Vapi technical bug, this addresses the underlying tendency to default to extended exposition regardless of what was asked. (Note: Twain's now-deleted assistant was also patched in the same run before his retirement was discovered.)
 - **maxTokens: 250** (set 2026-06-27, lowered progressively throughout the night — stopgap for confirmed Vapi streaming-abort bug; Vapi aborts GPT-4o stream after ~4.25s of continuous generation causing mid-sentence cutoffs. History: 150 too clipped → raised to 300 → 300 hit cutoff in live test → lowered to 275 → 275 hit cutoff 1:48 into a Houdini answer → lowered to 250. Root cause: the actual trigger is generation TIME (~4.25s), not token count directly. Token count is only a rough proxy for generation time and varies by how verbose a character's response style is — a verbose character hits the abort window at fewer tokens than a terse one. No token cap is fully reliable as a workaround. 250 reduces cutoff frequency further but is not guaranteed to eliminate it. Known tradeoff: shorter answers than uncapped. Remove or adjust once Vapi resolves the underlying bug.)
 - First message: always begins with `...Mm....` to prevent audio cutoff
 - Server URL: `https://www.talkwithicons.com/api/call-ended` (set on all assistants)
@@ -132,7 +137,7 @@ Live on homepage (index.html #gifts section). Fully pre-paid named experiences w
 |-----------|-------------|--------------|
 | Einstein | b98cec95-47a4-455d-92c8-3a08aacb556d | +15853162340 |
 | Nostradamus | bca7797f-d4c5-4b67-b22c-7506a0b045b9 | +15854073813 ⚠️ verify — may share Aela's line |
-| Twain | 3a6a8107-3faf-4cdd-a67b-5f71023c027d | +15858009390 |
+| Da Vinci | 23ef91d2-fc8f-4fee-9c2e-25e93b51c331 | +15858009390 (phone record af4c55a0; inbound routing updated to real Da Vinci 2026-06-27) |
 | Bruce Lee | 099b6a90-1fa9-4e6a-bc4d-8c127c6b1141 | +15854073450 |
 | Holmes | b65fb3ab-df3c-4a5b-8a96-3e865d9315b6 | +15854073131 |
 | Aela | 9647119e-7cf6-4d22-968d-25f3f455a834 | +15854073813 |
@@ -141,7 +146,6 @@ Live on homepage (index.html #gifts section). Fully pre-paid named experiences w
 | Evangeline Adams | 7fd88fa7-f013-4693-9b52-ab8937e4225d | +15853121359 |
 | La Llorona | a30672aa-7bbb-4cff-91ed-7a2f01b5823a | +15854073097 |
 | Houdini | ca384c56-f276-4940-b20b-1ae939bef23b | (confirm in Vercel) |
-| Da Vinci | 23ef91d2-fc8f-4fee-9c2e-25e93b51c331 | (confirm in Vercel) |
 | Frankenstein | f96bb0a5-6e8f-4153-8bee-6b76fa14f881 | (confirm in Vercel) |
 
 ---
@@ -179,8 +183,8 @@ California Civil Code §3344.1 covers voice *likeness* not just exact reproducti
 
 **Set and active:**
 - `VAPI_API_KEY`
-- `VAPI_ASSISTANT_ID_EINSTEIN`, `_NOSTRADAMUS`, `_TWAIN`, `_BRUCE_LEE`, `_HOLMES`, `_AELA`, `_BENNET`, `_BALDWIN`
-- `VAPI_PHONE_NUMBER_ID_EINSTEIN`, `_NOSTRADAMUS`, `_TWAIN`, `_BRUCE_LEE`, `_HOLMES`, `_AELA`, `_BENNET`, `_BALDWIN`
+- `VAPI_ASSISTANT_ID_EINSTEIN`, `_NOSTRADAMUS`, `_DAVINCI`, `_BRUCE_LEE`, `_HOLMES`, `_AELA`, `_BENNET`, `_BALDWIN`, `_LLORONA`, `_HOUDINI`, `_FRANKENSTEIN`
+- `VAPI_PHONE_NUMBER_ID_EINSTEIN`, `_NOSTRADAMUS`, `_DAVINCI`, `_BRUCE_LEE`, `_HOLMES`, `_AELA`, `_BENNET`, `_BALDWIN`, `_LLORONA`, `_HOUDINI`, `_FRANKENSTEIN`
 - `VAPI_ASSISTANT_ID_EVANGELINE`, `VAPI_PHONE_NUMBER_ID` (Evangeline default)
 - `BRAVE_API_KEY`
 - `QSTASH_URL`, `QSTASH_TOKEN`, `QSTASH_CURRENT_SIGNING_KEY`, `QSTASH_NEXT_SIGNING_KEY`

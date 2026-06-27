@@ -15,8 +15,7 @@ const VAPI_PHONE_NUMBER_ID_DEFAULT = process.env.VAPI_PHONE_NUMBER_ID || 'YOUR_V
 const ASSISTANT_IDS = {
   einstein:    process.env.VAPI_ASSISTANT_ID_EINSTEIN    || 'YOUR_EINSTEIN_ASSISTANT_ID',
   nostradamus: process.env.VAPI_ASSISTANT_ID_NOSTRADAMUS || 'YOUR_NOSTRADAMUS_ASSISTANT_ID',
-  twain:       process.env.VAPI_ASSISTANT_ID_TWAIN       || 'YOUR_TWAIN_ASSISTANT_ID',
-  brucelee:    process.env.VAPI_ASSISTANT_ID_BRUCE_LEE    || 'YOUR_BRUCE_LEE_ASSISTANT_ID',
+brucelee:    process.env.VAPI_ASSISTANT_ID_BRUCE_LEE    || 'YOUR_BRUCE_LEE_ASSISTANT_ID',
   holmes:      process.env.VAPI_ASSISTANT_ID_HOLMES      || 'YOUR_HOLMES_ASSISTANT_ID',
   aela:        process.env.VAPI_ASSISTANT_ID_AELA        || 'YOUR_AELA_ASSISTANT_ID',
   bennet:      process.env.VAPI_ASSISTANT_ID_BENNET      || 'YOUR_BENNET_ASSISTANT_ID',
@@ -31,8 +30,7 @@ const ASSISTANT_IDS = {
 const PHONE_NUMBER_IDS = {
   einstein:    process.env.VAPI_PHONE_NUMBER_ID_EINSTEIN    || VAPI_PHONE_NUMBER_ID_DEFAULT,
   nostradamus: process.env.VAPI_PHONE_NUMBER_ID_NOSTRADAMUS || VAPI_PHONE_NUMBER_ID_DEFAULT,
-  twain:       process.env.VAPI_PHONE_NUMBER_ID_TWAIN       || VAPI_PHONE_NUMBER_ID_DEFAULT,
-  brucelee:    process.env.VAPI_PHONE_NUMBER_ID_BRUCE_LEE    || VAPI_PHONE_NUMBER_ID_DEFAULT,
+brucelee:    process.env.VAPI_PHONE_NUMBER_ID_BRUCE_LEE    || VAPI_PHONE_NUMBER_ID_DEFAULT,
   holmes:      process.env.VAPI_PHONE_NUMBER_ID_HOLMES      || VAPI_PHONE_NUMBER_ID_DEFAULT,
   aela:        process.env.VAPI_PHONE_NUMBER_ID_AELA        || VAPI_PHONE_NUMBER_ID_DEFAULT,
   bennet:      process.env.VAPI_PHONE_NUMBER_ID_BENNET      || VAPI_PHONE_NUMBER_ID_DEFAULT,

@@ -7,11 +7,11 @@ const KEY = process.env.VAPI_API_KEY_LOCAL;
 if (!KEY) { console.error('VAPI_API_KEY_LOCAL not set'); process.exit(1); }
 
 const ASSISTANTS = [
-  { name: 'houdini',      id: 'ca384c56-f276-4940-b20b-1ae939bef23b' },
-  { name: 'davinci',      id: '23ef91d2-fc8f-4fee-9c2e-25e93b51c331' },
-  { name: 'frankenstein', id: 'f96bb0a5-6e8f-4153-8bee-6b76fa14f881' },
-  { name: 'baldwin',      id: '2f0047c1-eeb7-412d-b455-f8f731bdd232' },
-  { name: 'nostradamus',  id: 'bca7797f-d4c5-4b67-b22c-7506a0b045b9' },
+  { name: 'einstein', id: 'b98cec95-47a4-455d-92c8-3a08aacb556d' },
+  { name: 'holmes',   id: 'b65fb3ab-df3c-4a5b-8a96-3e865d9315b6' },
+  { name: 'brucelee', id: '099b6a90-1fa9-4e6a-bc4d-8c127c6b1141' },
+  { name: 'bennet',   id: '0560582f-8258-4803-8f2b-78b364fa23ca' },
+  { name: 'llorona',  id: 'a30672aa-7bbb-4cff-91ed-7a2f01b5823a' },
 ];
 
 function vapiGet(id) {

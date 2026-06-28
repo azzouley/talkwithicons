@@ -24,6 +24,7 @@ brucelee:    process.env.VAPI_ASSISTANT_ID_BRUCE_LEE    || 'YOUR_BRUCE_LEE_ASSIS
   davinci:     process.env.VAPI_ASSISTANT_ID_DAVINCI     || 'YOUR_DAVINCI_ASSISTANT_ID',
   houdini:       process.env.VAPI_ASSISTANT_ID_HOUDINI        || 'YOUR_HOUDINI_ASSISTANT_ID',
   frankenstein:  process.env.VAPI_ASSISTANT_ID_FRANKENSTEIN   || 'YOUR_FRANKENSTEIN_ASSISTANT_ID',
+  sittingbull:   process.env.VAPI_ASSISTANT_ID_SITTINGBULL    || 'YOUR_SITTING_BULL_ASSISTANT_ID',
 };
 
 // ── Per-character phone number IDs (fall back to shared if not set) ───────────
@@ -39,6 +40,7 @@ brucelee:    process.env.VAPI_PHONE_NUMBER_ID_BRUCE_LEE    || VAPI_PHONE_NUMBER_
   davinci:     process.env.VAPI_PHONE_NUMBER_ID_DAVINCI     || VAPI_PHONE_NUMBER_ID_DEFAULT,
   houdini:       process.env.VAPI_PHONE_NUMBER_ID_HOUDINI       || VAPI_PHONE_NUMBER_ID_DEFAULT,
   frankenstein:  process.env.VAPI_PHONE_NUMBER_ID_FRANKENSTEIN  || VAPI_PHONE_NUMBER_ID_DEFAULT,
+  sittingbull:   process.env.VAPI_PHONE_NUMBER_ID_SITTINGBULL   || VAPI_PHONE_NUMBER_ID_DEFAULT,
 };
 
 function normalizePhone(raw) {

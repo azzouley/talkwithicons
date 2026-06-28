@@ -1,9 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Call Leonardo da Vinci — TalkWithIcons</title>
+  <title>Call Sitting Bull — TalkWithIcons</title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -11,66 +11,70 @@
       --gold: #c9a84c; --gold-light: #e8c96b; --gold-dim: #8a6e30;
       --dark: #0d0b08; --dark2: #131009; --dark3: #1c1710;
       --warm-white: #f5f0e8; --muted: #9a8f7a;
-      --mystery: #8B6914; --mystery-dim: #5a3880;
     }
     html { scroll-behavior: smooth; }
     body { background: var(--dark); color: var(--warm-white); font-family: 'Crimson Pro', Georgia, serif; font-size: 18px; line-height: 1.6; overflow-x: hidden; }
-    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 18px 48px; background: linear-gradient(180deg, rgba(13,11,8,0.98) 0%, rgba(13,11,8,0) 100%); border-bottom: 1px solid rgba(144,96,192,0.2); }
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 18px 48px; background: linear-gradient(180deg, rgba(13,11,8,0.98) 0%, rgba(13,11,8,0) 100%); border-bottom: 1px solid rgba(201,168,76,0.15); }
     .nav-logo { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 900; letter-spacing: 0.04em; color: var(--gold); text-decoration: none; }
     .nav-back { font-family: 'Space Mono', monospace; font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color 0.2s; }
-    .nav-back:hover { color: var(--mystery); }
-    .nav-cta { font-family: 'Space Mono', monospace; font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--dark); background: var(--mystery); padding: 10px 24px; text-decoration: none; transition: background 0.2s; }
-    .nav-cta:hover { background: #b080e0; }
+    .nav-back:hover { color: var(--gold); }
+    .nav-cta { font-family: 'Space Mono', monospace; font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--dark); background: var(--gold); padding: 10px 24px; text-decoration: none; transition: background 0.2s; }
+    .nav-cta:hover { background: var(--gold-light); }
     .hero { min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr; align-items: center; padding-top: 80px; position: relative; overflow: hidden; }
-    .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 60% 80% at 70% 50%, rgba(144,96,192,0.08) 0%, transparent 70%); pointer-events: none; }
+    .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 60% 80% at 70% 50%, rgba(201,168,76,0.05) 0%, transparent 70%); pointer-events: none; }
     .hero-left { padding: 80px 60px 80px 80px; position: relative; z-index: 2; }
-    .hero-eyebrow { font-family: 'Space Mono', monospace; font-size: 0.65rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--mystery); margin-bottom: 24px; display: flex; align-items: center; gap: 12px; }
-    .hero-eyebrow::before { content: ''; display: block; width: 32px; height: 1px; background: var(--mystery-dim); }
-    .hero-name { font-family: 'Playfair Display', serif; font-size: clamp(4.5rem, 8vw, 7rem); font-weight: 900; line-height: 0.95; letter-spacing: -0.02em; margin-bottom: 8px; color: var(--warm-white); }
+    .hero-eyebrow { font-family: 'Space Mono', monospace; font-size: 0.65rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold); margin-bottom: 24px; display: flex; align-items: center; gap: 12px; }
+    .hero-eyebrow::before { content: ''; display: block; width: 32px; height: 1px; background: var(--gold-dim); }
+    .hero-name { font-family: 'Playfair Display', serif; font-size: clamp(2.8rem, 5vw, 4.5rem); font-weight: 900; line-height: 0.95; letter-spacing: -0.02em; margin-bottom: 8px; color: var(--warm-white); }
     .hero-dates { font-family: 'Space Mono', monospace; font-size: 0.7rem; letter-spacing: 0.15em; color: #d4af70; margin-bottom: 32px; }
-    .hero-tagline { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-style: italic; font-weight: 400; color: #b080e0; line-height: 1.4; margin-bottom: 28px; max-width: 480px; }
+    .hero-tagline { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-style: italic; font-weight: 400; color: var(--gold-light); line-height: 1.4; margin-bottom: 28px; max-width: 480px; }
     .hero-desc { font-size: 1rem; color: var(--muted); line-height: 1.75; max-width: 460px; margin-bottom: 48px; }
-    .call-box { border: 1px solid rgba(144,96,192,0.5); background: rgba(144,96,192,0.04); padding: 28px 32px; max-width: 420px; }
-    .call-box-label { font-family: 'Space Mono', monospace; font-size: 0.62rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--mystery-dim); margin-bottom: 12px; }
-    .call-price-title { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 700; color: var(--warm-white); margin-bottom: 16px; }
+    .call-box { border: 1px solid rgba(201,168,76,0.4); background: rgba(201,168,76,0.04); padding: 28px 32px; max-width: 420px; }
+    .call-box-label { font-family: 'Space Mono', monospace; font-size: 0.62rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-dim); margin-bottom: 12px; }
     .call-details { font-size: 0.88rem; color: var(--muted); margin-bottom: 20px; line-height: 1.6; }
-    .btn-call { display: block; width: 100%; font-family: 'Space Mono', monospace; font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 700; background: var(--mystery); color: var(--warm-white); border: none; padding: 18px; cursor: pointer; text-align: center; text-decoration: none; transition: background 0.2s, transform 0.15s; margin-bottom: 12px; }
-    .btn-call:hover { background: #b080e0; transform: translateY(-1px); }
+    .btn-call { display: block; width: 100%; font-family: 'Space Mono', monospace; font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 700; background: var(--gold); color: var(--dark); border: none; padding: 18px; cursor: pointer; text-align: center; text-decoration: none; transition: background 0.2s, transform 0.15s; margin-bottom: 12px; }
+    .btn-call:hover { background: var(--gold-light); transform: translateY(-1px); }
     .call-rescue { font-family: 'Space Mono', monospace; font-size: 0.58rem; letter-spacing: 0.1em; text-transform: uppercase; color: #6dbf8a; text-align: center; }
     .hero-right { position: relative; height: 100vh; overflow: hidden; }
-    .hero-portrait { width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; filter: saturate(0.8) contrast(1.1); }
-    .portrait-overlay { position: absolute; inset: 0; background: linear-gradient(90deg, var(--dark) 0%, rgba(13,11,8,0.2) 30%, transparent 60%), linear-gradient(0deg, var(--dark) 0%, transparent 25%); }
-    .portrait-caption { position: absolute; bottom: 40px; right: 32px; font-family: 'Space Mono', monospace; font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(144,96,192,0.5); }
+    .hero-portrait { width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; filter: grayscale(20%) contrast(1.05); }
+    .portrait-overlay { position: absolute; inset: 0; background: linear-gradient(90deg, var(--dark) 0%, rgba(13,11,8,0.3) 30%, transparent 60%), linear-gradient(0deg, var(--dark) 0%, transparent 25%); }
+    .portrait-caption { position: absolute; bottom: 40px; right: 32px; font-family: 'Space Mono', monospace; font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(201,168,76,0.5); }
     .quote-section { padding: 100px 80px; background: var(--dark2); text-align: center; }
-    .quote-mark { font-family: 'Playfair Display', serif; font-size: 8rem; color: rgba(144,96,192,0.1); line-height: 0.5; margin-bottom: 32px; display: block; }
+    .quote-mark { font-family: 'Playfair Display', serif; font-size: 8rem; color: rgba(201,168,76,0.1); line-height: 0.5; margin-bottom: 32px; display: block; }
     .quote-text { font-family: 'Playfair Display', serif; font-size: clamp(1.4rem, 3vw, 2.2rem); font-style: italic; font-weight: 400; line-height: 1.5; max-width: 760px; margin: 0 auto 24px; color: var(--warm-white); }
-    .quote-attr { font-family: 'Space Mono', monospace; font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--mystery-dim); }
+    .quote-attr { font-family: 'Space Mono', monospace; font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-dim); }
     .starters-section { padding: 100px 80px; max-width: 1100px; margin: 0 auto; }
-    .section-label { font-family: 'Space Mono', monospace; font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--mystery); margin-bottom: 16px; }
-    .starters-intro { font-family: 'Crimson Pro', serif; font-size: 1.4rem; font-weight: 400; font-style: normal; border: 2px solid var(--mystery); padding: 20px 28px; display: block; margin: 0 auto 48px; text-align: center; }
+    .section-label { font-family: 'Space Mono', monospace; font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; }
+    .starters-intro { font-family: 'Crimson Pro', serif; font-size: 1.4rem; font-weight: 400; font-style: normal; border: 2px solid #c9a84c; padding: 20px 28px; display: block; margin: 0 auto 48px; text-align: center; }
     .starters-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 2px; }
-    .starter-card { background: var(--dark3); border: 1px solid rgba(144,96,192,0.15); padding: 28px 28px 32px; transition: border-color 0.25s; }
-    .starter-card:hover { border-color: rgba(144,96,192,0.45); }
-    .starter-num { font-family: 'Playfair Display', serif; font-size: 2.2rem; font-weight: 900; color: rgba(144,96,192,0.2); line-height: 1; margin-bottom: 12px; }
+    .starter-card { background: var(--dark3); border: 1px solid rgba(201,168,76,0.12); padding: 28px 28px 32px; transition: border-color 0.25s; }
+    .starter-card:hover { border-color: rgba(201,168,76,0.35); }
+    .starter-num { font-family: 'Playfair Display', serif; font-size: 2.2rem; font-weight: 900; color: rgba(201,168,76,0.15); line-height: 1; margin-bottom: 12px; }
     .starter-q { font-family: 'Playfair Display', serif; font-size: 1.05rem; font-style: italic; color: var(--warm-white); line-height: 1.5; margin-bottom: 10px; }
     .starter-note { font-size: 0.85rem; color: var(--muted); line-height: 1.55; }
-    .mystery-section { padding: 100px 80px; background: var(--dark2); text-align: center; }
-    .mystery-section p { font-size: 1.05rem; color: var(--muted); max-width: 680px; margin: 0 auto 20px; line-height: 1.8; }
-    .mystery-section p:last-child { margin-bottom: 0; }
-    .bottom-cta { padding: 100px 80px; text-align: center; background: linear-gradient(180deg, var(--dark) 0%, #080508 100%); position: relative; }
-    .bottom-cta::before { content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 1px; height: 80px; background: linear-gradient(180deg, transparent, var(--mystery-dim)); }
+    .bio-section { padding: 100px 80px; background: var(--dark2); display: grid; grid-template-columns: 1fr 2fr; gap: 80px; align-items: start; }
+    .bio-sidebar { position: sticky; top: 120px; }
+    .bio-fact { margin-bottom: 32px; padding-bottom: 32px; border-bottom: 1px solid rgba(201,168,76,0.1); }
+    .bio-fact:last-child { border-bottom: none; margin-bottom: 0; }
+    .bio-fact-label { font-family: 'Space Mono', monospace; font-size: 0.6rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold-dim); margin-bottom: 6px; }
+    .bio-fact-value { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; color: var(--warm-white); }
+    .bio-content p { font-size: 1.05rem; color: var(--muted); line-height: 1.8; margin-bottom: 24px; }
+    .bio-content p:last-child { margin-bottom: 0; }
+    .bio-content strong { color: var(--warm-white); font-weight: 600; }
+    .bottom-cta { padding: 100px 80px; text-align: center; background: linear-gradient(180deg, var(--dark) 0%, #0a0800 100%); position: relative; }
+    .bottom-cta::before { content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 1px; height: 80px; background: linear-gradient(180deg, transparent, var(--gold-dim)); }
     .bottom-cta h2 { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 900; margin-bottom: 16px; line-height: 1.1; }
     .bottom-cta p { font-size: 1rem; color: var(--muted); max-width: 480px; margin: 0 auto 40px; }
-    .btn-large { font-family: 'Space Mono', monospace; font-size: 0.85rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 700; background: var(--mystery); color: var(--warm-white); border: none; padding: 20px 56px; cursor: pointer; text-decoration: none; display: inline-block; transition: background 0.2s, transform 0.15s; margin-bottom: 16px; }
-    .btn-large:hover { background: #b080e0; transform: translateY(-2px); }
+    .btn-large { font-family: 'Space Mono', monospace; font-size: 0.85rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 700; background: var(--gold); color: var(--dark); border: none; padding: 20px 56px; cursor: pointer; text-decoration: none; display: inline-block; transition: background 0.2s, transform 0.15s; margin-bottom: 16px; }
+    .btn-large:hover { background: var(--gold-light); transform: translateY(-2px); }
     .bottom-rescue { font-family: 'Space Mono', monospace; font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase; color: #6dbf8a; }
-    .others-section { padding: 80px; border-top: 1px solid rgba(144,96,192,0.15); }
-    .others-grid { display: grid; grid-template-columns: repeat(8, 1fr); gap: 2px; margin-top: 40px; }
+    .others-section { padding: 80px; border-top: 1px solid rgba(201,168,76,0.1); }
+    .others-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; margin-top: 40px; }
     .other-card { background: var(--dark3); border: 1px solid rgba(201,168,76,0.1); padding: 20px 16px; text-align: center; text-decoration: none; transition: border-color 0.2s; }
     .other-card:hover { border-color: rgba(201,168,76,0.4); }
     .other-portrait { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; object-position: top; display: block; margin: 0 auto 10px; border: 1px solid rgba(201,168,76,0.2); }
     .other-name { font-family: 'Playfair Display', serif; font-size: 0.9rem; font-weight: 700; color: var(--warm-white); }
-    footer { border-top: 1px solid rgba(144,96,192,0.15); padding: 40px 80px; display: flex; justify-content: space-between; align-items: center; }
+    footer { border-top: 1px solid rgba(201,168,76,0.15); padding: 40px 80px; display: flex; justify-content: space-between; align-items: center; }
     .footer-logo { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 900; color: var(--gold); }
     .footer-copy { font-size: 0.78rem; color: rgba(154,143,122,0.45); max-width: 500px; text-align: center; }
     .footer-links { display: flex; gap: 24px; }
@@ -78,7 +82,7 @@
     .footer-links a:hover { color: var(--gold); }
     @media (max-width: 900px) {
       .hero { grid-template-columns: 1fr; } .hero-right { height: 50vh; } .hero-left { padding: 100px 32px 60px; }
-      .mystery-section { padding: 60px 32px; }
+      .bio-section { grid-template-columns: 1fr; padding: 60px 32px; } .bio-sidebar { position: static; }
       .starters-section, .others-section, .bottom-cta { padding: 60px 32px; }
       .others-grid { grid-template-columns: repeat(4, 1fr); } nav { padding: 16px 24px; }
       footer { flex-direction: column; gap: 16px; text-align: center; padding: 32px; } .quote-section { padding: 60px 32px; }
@@ -96,15 +100,15 @@
 
   <div class="hero">
     <div class="hero-left">
-      <p class="hero-eyebrow">Florence, 1497 · The Renaissance Man</p>
-      <h1 class="hero-name">Leonardo da Vinci</h1>
-      <p class="hero-dates">1452 – 1519 · Painter · Scientist · Engineer · Anatomist · Dreamer</p>
-      <p class="hero-tagline">"The noblest pleasure is the joy of understanding."</p>
+      <p class="hero-eyebrow">Hunkpapa Lakota · Grand River · The Northern Plains</p>
+      <h1 class="hero-name">Sitting Bull</h1>
+      <p class="hero-dates">Tatanka Iyotake · War Chief · Holy Man · 1831–1890</p>
+      <p class="hero-tagline">"A name for a thing that does not move because it has decided not to move, not because it cannot."</p>
       <p class="hero-desc">
-        He painted the Mona Lisa. He designed flying machines five centuries before flight.
-        He mapped the human body when dissecting it was illegal. He filled 13,000 notebook pages
-        with questions no one had thought to ask. He never stopped. He is still not finished.
-        Ask him anything. He has had five centuries to think about it.
+        He is the last of the great northern leaders to surrender his rifle, and the only one
+        the world still knows by name. He outlasted, outnegotiated, and outwaited men who
+        underestimated him for thirty years. He has specific things to say about what was
+        promised, what was taken, and what any of it actually cost. He is ready to say them.
       </p>
       <div class="call-box" id="call">
         <p class="call-box-label">How It Works</p>
@@ -118,7 +122,6 @@
                style="display:block;width:100%;margin-bottom:8px;padding:10px 14px;background:#1c1710;border:1px solid rgba(201,168,76,0.7);box-sizing:border-box;"></div>
           <div id="card-errors"
                style="color:#e07070;font-size:0.78rem;margin-bottom:8px;display:none;"></div>
-          <!-- Language toggle -->
           <div style="margin-bottom: 1.25rem;">
             <label style="display:block; font-size:0.72rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--muted); margin-bottom:0.6rem;">Language / Idioma</label>
             <div style="display:flex; gap:1rem;">
@@ -130,74 +133,122 @@
               </label>
             </div>
           </div>
-          <button type="submit" class="btn-call" style="width:100%;cursor:pointer;border:none;">Call Me Now →</button>
+          <button type="submit" class="btn-call" style="width:100%;cursor:pointer;border:none;">Call Sitting Bull →</button>
         </form>
         <p id="call-msg" style="font-size:0.85rem;margin-bottom:12px;display:none;"></p>
         <p class="call-rescue">🐾 every paid call triggers at minimum a meal donation for a rescue dog</p>
       </div>
     </div>
     <div class="hero-right">
-      <img class="hero-portrait" src="images/davinci.jpeg" alt="Leonardo da Vinci" />
+      <img class="hero-portrait" src="images/sittingbull.jpeg" alt="Sitting Bull" />
       <div class="portrait-overlay"></div>
-      <p class="portrait-caption">Leonardo da Vinci · Florence</p>
+      <p class="portrait-caption">Sitting Bull · Tatanka Iyotake</p>
     </div>
   </div>
 
   <div class="quote-section">
     <span class="quote-mark">"</span>
-    <p class="quote-text">I have been impressed with the urgency of doing. Knowing is not enough — we must apply. Being willing is not enough — we must do.</p>
-    <p class="quote-attr">— Leonardo da Vinci</p>
+    <p class="quote-text">The earth receives the sun's embrace in spring, and every seed and every creature wakes because of it. This same power lives in me. In all of us. I do not understand why a people who say they believe this build fences across their own mother.</p>
+    <p class="quote-attr">— Sitting Bull, c. 1880s</p>
   </div>
 
   <section class="starters-section">
     <p class="section-label">What to Ask</p>
-    <p class="starters-intro">To jog your imagination, here are 6 conversation starters. But you are encouraged to ask absolutely anything — about art, science, the Mona Lisa, AI, creativity, or what he sees when he looks at the world today. Your time with Leonardo is your own.</p>
+    <p class="starters-intro">Six ways in. But he will take any question — about the Greasy Grass, about what the land actually means, about what happens when a country decides it can simply take what it wants and call it progress. Your time with him is your own.</p>
     <div class="starters-grid">
       <div class="starter-card">
         <div class="starter-num">01</div>
-        <p class="starter-q">"Why did you never deliver the Mona Lisa?"</p>
-        <p class="starter-note">He kept it for a reason. He will tell you the real one — not the one in the textbooks.</p>
+        <p class="starter-q">"Tell me what actually happened at the Little Bighorn."</p>
+        <p class="starter-note">Not the Custer myth. The real shape of that day — who actually fought, what he contributed, and what it cost on every side. He will not let you leave with the simplified version.</p>
       </div>
       <div class="starter-card">
         <div class="starter-num">02</div>
-        <p class="starter-q">"What do you think of artificial intelligence?"</p>
-        <p class="starter-note">A man who designed thinking machines in 1495 has opinions. They are not what you expect.</p>
+        <p class="starter-q">"What did you actually say at the railroad celebration in 1883?"</p>
+        <p class="starter-note">They thought he was delivering words of thanks. He was not. He finds this one of the truer jokes of his life.</p>
       </div>
       <div class="starter-card">
         <div class="starter-num">03</div>
-        <p class="starter-q">"What is the secret in the Last Supper?"</p>
-        <p class="starter-note">He will tell you what he put there deliberately. And what he prefers to leave as a question.</p>
+        <p class="starter-q">"Why did you really surrender in 1881?"</p>
+        <p class="starter-note">Not a military defeat. He will tell you exactly what ended the resistance, and he will not dress it up for you. Hunger is a specific word with a specific meaning.</p>
       </div>
       <div class="starter-card">
         <div class="starter-num">04</div>
-        <p class="starter-q">"What did you leave unfinished that you regret?"</p>
-        <p class="starter-note">The list is long. His answer about why will change how you think about your own unfinished things.</p>
+        <p class="starter-q">"What do you think has actually changed for Native people since your time?"</p>
+        <p class="starter-note">He wants real information. He will search for current facts. He is looking for whether anything has changed, or whether it is the same forces wearing different names.</p>
       </div>
       <div class="starter-card">
         <div class="starter-num">05</div>
-        <p class="starter-q">"What is beauty?"</p>
-        <p class="starter-note">He spent his life answering this. He does not think it is a matter of opinion.</p>
+        <p class="starter-q">"Tell me about the pipe you smoked while soldiers shot at you."</p>
+        <p class="starter-note">1872, the Yellowstone. He sat down in the open ground in front of soldiers' rifles, smoked a pipe, cleaned it carefully, and walked away. He will tell you exactly why.</p>
       </div>
       <div class="starter-card">
         <div class="starter-num">06</div>
-        <p class="starter-q">"What would you build today?"</p>
-        <p class="starter-note">Give a man who designed flying machines in 1495 access to the modern world. Ask him what he sees.</p>
+        <p class="starter-q">"What was the Ghost Dance, and why didn't you stop your people from doing it?"</p>
+        <p class="starter-note">He did not fully believe it would work. He would not take away the last thing starving people still had to hold on to. That distinction cost him his life.</p>
       </div>
     </div>
   </section>
 
-  <div class="mystery-section">
-    <p class="section-label" style="text-align:center;margin-bottom:24px;">Who Is Leonardo da Vinci</p>
-    <p>Born illegitimate in Tuscany in 1452, denied access to university and the guild system, he taught himself everything by looking at things more carefully than anyone before or since.</p>
-    <p>He painted the Mona Lisa over four years and never delivered it. He dissected more than thirty human bodies and drew the heart accurately a century before medicine caught up. He designed a robot, a tank, a solar concentrator, and a flying machine — none built in his lifetime.</p>
-    <p>He filled 13,000 notebook pages with questions. Most of them are still open. He is still working on them.</p>
-    <p>Call him if you have ever wanted to ask the most curious mind in human history what it actually thinks.</p>
+  <div class="bio-section">
+    <div class="bio-sidebar">
+      <div class="bio-fact">
+        <p class="bio-fact-label">Born</p>
+        <p class="bio-fact-value">~1831 · Grand River<br>(present-day South Dakota)</p>
+      </div>
+      <div class="bio-fact">
+        <p class="bio-fact-label">People</p>
+        <p class="bio-fact-value">Hunkpapa Lakota</p>
+      </div>
+      <div class="bio-fact">
+        <p class="bio-fact-label">Role</p>
+        <p class="bio-fact-value">War Chief · Holy Man · Leader of the Northern Bands</p>
+      </div>
+      <div class="bio-fact">
+        <p class="bio-fact-label">Died</p>
+        <p class="bio-fact-value">December 15, 1890<br>Standing Rock</p>
+      </div>
+    </div>
+    <div class="bio-content">
+      <p>
+        He was born near the Grand River and called Jumping Badger, then Slow — a name some
+        mistook for dullness, when it was only patience. At fourteen he rode into his first
+        real fight and counted his first coup. His father gave him his own name that night:
+        <strong>Tatanka Iyotake. Buffalo Bull Who Sits Down. A name for a thing that does not
+        move because it has decided not to move.</strong>
+      </p>
+      <p>
+        He rose through the Strong Heart Warrior Society to become the principal war chief
+        of the northern hunting bands — not by command, since no Lakota man could simply
+        command another, but because men chose, again and again, to follow what he said.
+        In 1872 he sat in the open ground in front of soldiers' rifles, smoked a pipe with
+        four other men while bullets passed near their heads, cleaned the pipe when he was
+        finished, and walked away. <strong>He did this because fear is a thing other men needed
+        to see him not have.</strong>
+      </p>
+      <p>
+        Before the battle at the Greasy Grass in June 1876, he danced the Sun Dance and
+        fell into a vision: soldiers falling into camp like grasshoppers from the sky.
+        Days later, Custer's regiment attacked. Not one of them survived. He did not swing
+        the weapons that day — that work belonged to younger men. What he gave was something
+        different: the conviction, beforehand, that the fight could be won.
+        <strong>He does not pretend that is a small thing.</strong>
+      </p>
+      <p>
+        The Army did not forgive that victory. He led his people north to Canada, survived
+        four hard winters, and finally came back across the line in 1881 — the last principal
+        leader to surrender, by his own insistence on that point. Not defeated in battle.
+        Defeated by hunger. He spent two years a prisoner, then settled at Standing Rock under
+        close watch, where he sold his photograph and his signature to white tourists and gave
+        most of the money away to hungry children, white and Indian both, because he genuinely
+        could not understand how a country with so much could let any child go without.
+      </p>
+    </div>
   </div>
 
   <div class="bottom-cta">
-    <h2>He is mid-thought.<br>He has been waiting<br><em style="color:#b8860b;">five centuries.</em></h2>
-    <p>No script. A mind unlike any other in human history — curious about you, about now, about everything. The conversation starts the moment you answer.</p>
-    <a class="btn-large" href="#call">Begin Your Call →</a>
+    <h2>He was the last<br>to put down his rifle.<br><em style="color:var(--gold-light)">He has not stopped arguing.</em></h2>
+    <p>No script. The man who outlasted every general, every Indian agent, every negotiator who underestimated him — speaking only to you, only now. He would like to ask you something real. He asks only that you stay long enough to answer it.</p>
+    <a class="btn-large" href="#call">Call Sitting Bull →</a>
     <br>
     <p class="bottom-rescue">🐾 every paid call triggers at minimum a meal donation for a rescue dog</p>
   </div>
@@ -237,9 +288,9 @@
         <img class="other-portrait" src="images/evangeline.jpeg" alt="Evangeline Adams" />
         <p class="other-name">Evangeline</p>
       </a>
-      <a class="other-card" href="sittingbull.html">
-        <img class="other-portrait" src="images/sittingbull.jpeg" alt="Sitting Bull" />
-        <p class="other-name">Sitting Bull</p>
+      <a class="other-card" href="davinci.html">
+        <img class="other-portrait" src="images/davinci.jpeg" alt="Leonardo da Vinci" />
+        <p class="other-name">Da Vinci</p>
       </a>
       <a class="other-card" href="houdini.html">
         <img class="other-portrait" src="images/houdini.jpeg" alt="Harry Houdini" />
@@ -314,7 +365,7 @@ async function handleCall(e) {
     const piRes  = await fetch(window.location.origin + '/api/create-payment-intent', {
       method:  'POST',
       headers: { 'Content-Type': 'application/json' },
-      body:    JSON.stringify({ firstName, phoneNumber, character: 'davinci' }),
+      body:    JSON.stringify({ firstName, phoneNumber, character: 'sittingbull' }),
     });
     const piData = await piRes.json();
     if (!piRes.ok) throw new Error(piData.error || 'Payment setup failed.');
@@ -327,7 +378,7 @@ async function handleCall(e) {
       errDiv.textContent   = stripeError.message;
       errDiv.style.display = 'block';
       btn.disabled    = false;
-      btn.textContent = 'Call Me Now →';
+      btn.textContent = 'Call Sitting Bull →';
       return;
     }
 
@@ -338,8 +389,8 @@ async function handleCall(e) {
       body:    JSON.stringify({
         firstName,
         phoneNumber,
-        character:        'davinci',
-        language: document.querySelector('input[name=\"language\"]:checked').value,
+        character:        'sittingbull',
+        language: document.querySelector('input[name="language"]:checked').value,
         paymentIntentId:  paymentIntent.id,
         stripeCustomerId: piData.stripeCustomerId,
       }),
@@ -358,7 +409,7 @@ async function handleCall(e) {
     msg.style.color   = '#e07070';
     msg.style.display = 'block';
     btn.disabled      = false;
-    btn.textContent   = 'Call Me Now →';
+    btn.textContent   = 'Call Sitting Bull →';
   }
 }
 </script>

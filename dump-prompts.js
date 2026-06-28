@@ -7,11 +7,8 @@ const KEY = process.env.VAPI_API_KEY_LOCAL;
 if (!KEY) { console.error('VAPI_API_KEY_LOCAL not set'); process.exit(1); }
 
 const ASSISTANTS = [
-  { name: 'einstein', id: 'b98cec95-47a4-455d-92c8-3a08aacb556d' },
-  { name: 'holmes',   id: 'b65fb3ab-df3c-4a5b-8a96-3e865d9315b6' },
-  { name: 'brucelee', id: '099b6a90-1fa9-4e6a-bc4d-8c127c6b1141' },
-  { name: 'bennet',   id: '0560582f-8258-4803-8f2b-78b364fa23ca' },
-  { name: 'llorona',  id: 'a30672aa-7bbb-4cff-91ed-7a2f01b5823a' },
+  { name: 'evangeline', id: '7fd88fa7-f013-4693-9b52-ab8937e4225d' },
+  { name: 'aela',       id: '9647119e-7cf6-4d22-968d-25f3f455a834' },
 ];
 
 function vapiGet(id) {

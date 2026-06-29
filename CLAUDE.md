@@ -290,3 +290,10 @@ Before PATCHing any Vapi assistant, GET the current state first and log it. Vapi
 
 ### Rule 8: SECURITY — No hardcoded secrets in any committed file
 Never hardcode API keys, secrets, or tokens in any file committed to GitHub. All keys must be read from Vercel environment variables via `process.env` only. Never commit `.env` files or scripts containing literal key values. Violation of this rule exposes credentials publicly.
+
+### Rule 9: New characters must include all current known fixes at creation, not as a follow-up patch
+When creating any new character (new Vapi assistant + system prompt), the creation step must apply every fix/patch that is currently standard across the live roster — not just the character's unique content. Before writing a new character's system prompt, check this file's most recent session notes for any roster-wide patch (e.g. beat-delivery chunking, response-calibration rules, language toggle, search tool wiring) and bake it into the new prompt from the start.
+
+Do not treat "create the character" and "apply the current standard patches" as two separate steps performed in two separate sessions. If a patch is standard enough to be applied to all existing characters, it is standard enough to be in the prompt before the character ever goes live.
+
+Background: Sitting Bull was created June 28, 2026 after the Tier 1-3 beat-delivery rewrites had already been applied to all 11 other characters to fix the Vapi mid-sentence cutoff bug. His prompt did not include it. This wasn't caught until a status report check on June 29, requiring a separate Tier 4 patch session to fix something that should have been correct on day one.

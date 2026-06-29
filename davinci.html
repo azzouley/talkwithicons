@@ -45,7 +45,9 @@
     .quote-mark { font-family: 'Playfair Display', serif; font-size: 8rem; color: rgba(144,96,192,0.1); line-height: 0.5; margin-bottom: 32px; display: block; }
     .quote-text { font-family: 'Playfair Display', serif; font-size: clamp(1.4rem, 3vw, 2.2rem); font-style: italic; font-weight: 400; line-height: 1.5; max-width: 760px; margin: 0 auto 24px; color: var(--warm-white); }
     .quote-attr { font-family: 'Space Mono', monospace; font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--mystery-dim); }
-    .starters-section { padding: 100px 80px; max-width: 1100px; margin: 0 auto; }
+    .starters-section { padding: 80px; }
+    .decision-section { display: grid; grid-template-columns: 3fr 2fr; align-items: start; }
+    .decision-form { padding: 80px 60px; position: sticky; top: 80px; background: var(--dark2); border-left: 1px solid rgba(144,96,192,0.12); }
     .section-label { font-family: 'Space Mono', monospace; font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--mystery); margin-bottom: 16px; }
     .starters-intro { font-family: 'Crimson Pro', serif; font-size: 1.4rem; font-weight: 400; font-style: normal; border: 2px solid var(--mystery); padding: 20px 28px; display: block; margin: 0 auto 48px; text-align: center; }
     .starters-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 2px; }
@@ -80,6 +82,8 @@
       .hero { grid-template-columns: 1fr; } .hero-right { height: 50vh; } .hero-left { padding: 100px 32px 60px; }
       .mystery-section { padding: 60px 32px; }
       .starters-section, .others-section, .bottom-cta { padding: 60px 32px; }
+      .decision-section { grid-template-columns: 1fr; }
+      .decision-form { padding: 48px 32px; position: static; border-left: none; border-top: 1px solid rgba(144,96,192,0.12); }
       .others-grid { grid-template-columns: repeat(4, 1fr); } nav { padding: 16px 24px; }
       footer { flex-direction: column; gap: 16px; text-align: center; padding: 32px; } .quote-section { padding: 60px 32px; }
     }
@@ -106,7 +110,59 @@
         with questions no one had thought to ask. He never stopped. He is still not finished.
         Ask him anything. He has had five centuries to think about it.
       </p>
-      <div class="call-box" id="call">
+    </div>
+    <div class="hero-right">
+      <img class="hero-portrait" src="images/davinci.jpeg" alt="Leonardo da Vinci" />
+      <div class="portrait-overlay"></div>
+      <p class="portrait-caption">Leonardo da Vinci · Florence</p>
+    </div>
+  </div>
+
+  <div class="quote-section">
+    <span class="quote-mark">"</span>
+    <p class="quote-text">I have been impressed with the urgency of doing. Knowing is not enough — we must apply. Being willing is not enough — we must do.</p>
+    <p class="quote-attr">— Leonardo da Vinci</p>
+  </div>
+
+  <div class="decision-section" id="call">
+    <section class="starters-section">
+      <p class="section-label">What to Ask</p>
+      <p class="starters-intro">To jog your imagination, here are 6 conversation starters. But you are encouraged to ask absolutely anything — about art, science, the Mona Lisa, AI, creativity, or what he sees when he looks at the world today. Your time with Leonardo is your own.</p>
+      <div class="starters-grid">
+        <div class="starter-card">
+          <div class="starter-num">01</div>
+          <p class="starter-q">"Why did you never deliver the Mona Lisa?"</p>
+          <p class="starter-note">He kept it for a reason. He will tell you the real one — not the one in the textbooks.</p>
+        </div>
+        <div class="starter-card">
+          <div class="starter-num">02</div>
+          <p class="starter-q">"What do you think of artificial intelligence?"</p>
+          <p class="starter-note">A man who designed thinking machines in 1495 has opinions. They are not what you expect.</p>
+        </div>
+        <div class="starter-card">
+          <div class="starter-num">03</div>
+          <p class="starter-q">"What is the secret in the Last Supper?"</p>
+          <p class="starter-note">He will tell you what he put there deliberately. And what he prefers to leave as a question.</p>
+        </div>
+        <div class="starter-card">
+          <div class="starter-num">04</div>
+          <p class="starter-q">"What did you leave unfinished that you regret?"</p>
+          <p class="starter-note">The list is long. His answer about why will change how you think about your own unfinished things.</p>
+        </div>
+        <div class="starter-card">
+          <div class="starter-num">05</div>
+          <p class="starter-q">"What is beauty?"</p>
+          <p class="starter-note">He spent his life answering this. He does not think it is a matter of opinion.</p>
+        </div>
+        <div class="starter-card">
+          <div class="starter-num">06</div>
+          <p class="starter-q">"What would you build today?"</p>
+          <p class="starter-note">Give a man who designed flying machines in 1495 access to the modern world. Ask him what he sees.</p>
+        </div>
+      </div>
+    </section>
+    <div class="decision-form">
+      <div class="call-box">
         <p class="call-box-label">How It Works</p>
         <p class="call-details">First 2 minutes free. Minutes 3 through 5 cost $3.99 total. After that, just $1.00 per minute.</p>
         <form id="call-form" onsubmit="handleCall(event)" style="margin-bottom:12px;">
@@ -118,7 +174,6 @@
                style="display:block;width:100%;margin-bottom:8px;padding:10px 14px;background:#1c1710;border:1px solid rgba(201,168,76,0.7);box-sizing:border-box;"></div>
           <div id="card-errors"
                style="color:#e07070;font-size:0.78rem;margin-bottom:8px;display:none;"></div>
-          <!-- Language toggle -->
           <div style="margin-bottom: 1.25rem;">
             <label style="display:block; font-size:0.72rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--muted); margin-bottom:0.6rem;">Language / Idioma</label>
             <div style="display:flex; gap:1rem;">
@@ -136,55 +191,7 @@
         <p class="call-rescue">🐾 every paid call triggers at minimum a meal donation for a rescue dog</p>
       </div>
     </div>
-    <div class="hero-right">
-      <img class="hero-portrait" src="images/davinci.jpeg" alt="Leonardo da Vinci" />
-      <div class="portrait-overlay"></div>
-      <p class="portrait-caption">Leonardo da Vinci · Florence</p>
-    </div>
   </div>
-
-  <div class="quote-section">
-    <span class="quote-mark">"</span>
-    <p class="quote-text">I have been impressed with the urgency of doing. Knowing is not enough — we must apply. Being willing is not enough — we must do.</p>
-    <p class="quote-attr">— Leonardo da Vinci</p>
-  </div>
-
-  <section class="starters-section">
-    <p class="section-label">What to Ask</p>
-    <p class="starters-intro">To jog your imagination, here are 6 conversation starters. But you are encouraged to ask absolutely anything — about art, science, the Mona Lisa, AI, creativity, or what he sees when he looks at the world today. Your time with Leonardo is your own.</p>
-    <div class="starters-grid">
-      <div class="starter-card">
-        <div class="starter-num">01</div>
-        <p class="starter-q">"Why did you never deliver the Mona Lisa?"</p>
-        <p class="starter-note">He kept it for a reason. He will tell you the real one — not the one in the textbooks.</p>
-      </div>
-      <div class="starter-card">
-        <div class="starter-num">02</div>
-        <p class="starter-q">"What do you think of artificial intelligence?"</p>
-        <p class="starter-note">A man who designed thinking machines in 1495 has opinions. They are not what you expect.</p>
-      </div>
-      <div class="starter-card">
-        <div class="starter-num">03</div>
-        <p class="starter-q">"What is the secret in the Last Supper?"</p>
-        <p class="starter-note">He will tell you what he put there deliberately. And what he prefers to leave as a question.</p>
-      </div>
-      <div class="starter-card">
-        <div class="starter-num">04</div>
-        <p class="starter-q">"What did you leave unfinished that you regret?"</p>
-        <p class="starter-note">The list is long. His answer about why will change how you think about your own unfinished things.</p>
-      </div>
-      <div class="starter-card">
-        <div class="starter-num">05</div>
-        <p class="starter-q">"What is beauty?"</p>
-        <p class="starter-note">He spent his life answering this. He does not think it is a matter of opinion.</p>
-      </div>
-      <div class="starter-card">
-        <div class="starter-num">06</div>
-        <p class="starter-q">"What would you build today?"</p>
-        <p class="starter-note">Give a man who designed flying machines in 1495 access to the modern world. Ask him what he sees.</p>
-      </div>
-    </div>
-  </section>
 
   <div class="mystery-section">
     <p class="section-label" style="text-align:center;margin-bottom:24px;">Who Is Leonardo da Vinci</p>

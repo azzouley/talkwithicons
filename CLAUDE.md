@@ -136,11 +136,11 @@ Live on homepage (index.html #gifts section). Fully pre-paid named experiences w
 | Character | Assistant ID | Phone Number |
 |-----------|-------------|--------------|
 | Einstein | b98cec95-47a4-455d-92c8-3a08aacb556d | +15853162340 |
-| Nostradamus | bca7797f-d4c5-4b67-b22c-7506a0b045b9 | +15854073813 ⚠️ verify — may share Aela's line |
+| Nostradamus | bca7797f-d4c5-4b67-b22c-7506a0b045b9 | +15853162339 (phone record 4c6793f2-4f89-421b-9662-38d2b01792c0) |
 | Da Vinci | 23ef91d2-fc8f-4fee-9c2e-25e93b51c331 | +15858009390 (phone record af4c55a0; inbound routing updated to real Da Vinci 2026-06-27) |
 | Bruce Lee | 099b6a90-1fa9-4e6a-bc4d-8c127c6b1141 | +15854073450 |
 | Holmes | b65fb3ab-df3c-4a5b-8a96-3e865d9315b6 | +15854073131 |
-| Aela | 9647119e-7cf6-4d22-968d-25f3f455a834 | +15854073813 |
+| Aela | 9647119e-7cf6-4d22-968d-25f3f455a834 | +15854073813 (phone record 1a9e7507-9a7d-4931-b364-45943393d83d) |
 | Bennet | 0560582f-8258-4803-8f2b-78b364fa23ca | +15854073507 |
 | Baldwin | 2f0047c1-eeb7-412d-b455-f8f731bdd232 | +15853781304 |
 | Evangeline Adams | 7fd88fa7-f013-4693-9b52-ab8937e4225d | +15853121359 |

@@ -44,7 +44,9 @@
     .quote-mark { font-family: 'Playfair Display', serif; font-size: 8rem; color: rgba(201,168,76,0.1); line-height: 0.5; margin-bottom: 32px; display: block; }
     .quote-text { font-family: 'Playfair Display', serif; font-size: clamp(1.4rem, 3vw, 2.2rem); font-style: italic; font-weight: 400; line-height: 1.5; max-width: 760px; margin: 0 auto 24px; color: var(--warm-white); }
     .quote-attr { font-family: 'Space Mono', monospace; font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-dim); }
-    .starters-section { padding: 100px 80px; max-width: 1100px; margin: 0 auto; }
+    .starters-section { padding: 80px; }
+    .decision-section { display: grid; grid-template-columns: 3fr 2fr; align-items: start; }
+    .decision-form { padding: 80px 60px; position: sticky; top: 80px; background: var(--dark2); border-left: 1px solid rgba(201,168,76,0.12); }
     .section-label { font-family: 'Space Mono', monospace; font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; }
     .starters-intro { font-family: 'Crimson Pro', serif; font-size: 1.4rem; font-weight: 400; font-style: normal; border: 2px solid #c9a84c; padding: 20px 28px; display: block; margin: 0 auto 48px; text-align: center; }
     .starters-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 2px; }
@@ -85,6 +87,8 @@
       .hero { grid-template-columns: 1fr; } .hero-right { height: 50vh; } .hero-left { padding: 100px 32px 60px; }
       .bio-section { grid-template-columns: 1fr; padding: 60px 32px; } .bio-sidebar { position: static; }
       .starters-section, .others-section, .bottom-cta { padding: 60px 32px; }
+      .decision-section { grid-template-columns: 1fr; }
+      .decision-form { padding: 48px 32px; position: static; border-left: none; border-top: 1px solid rgba(201,168,76,0.12); }
       .others-grid { grid-template-columns: repeat(4, 1fr); } nav { padding: 16px 24px; }
       footer { flex-direction: column; gap: 16px; text-align: center; padding: 32px; } .quote-section { padding: 60px 32px; }
     }
@@ -112,12 +116,6 @@
         court tried to put her in jail for it. The judge ruled she had raised astrology
         to the dignity of an exact science.
       </p>
-      <div class="call-box" id="call">
-        <p class="call-box-label">How It Works</p>
-        <p class="call-details">First 2 minutes free. Minutes 3 through 5 cost $3.99 total. After that, just $1.00 per minute.</p>
-        <a class="btn-call" href="#start">Start Your Free Call →</a>
-        <p class="call-rescue">🐾 every paid call triggers at minimum a meal donation for a rescue dog</p>
-      </div>
     </div>
     <div class="hero-right">
       <img class="hero-portrait" src="images/evangeline.jpeg" alt="Evangeline Adams" />
@@ -167,6 +165,7 @@
     <p class="quote-attr">— New York City Magistrate, 1914 · charges dismissed</p>
   </div>
 
+<div class="decision-section" id="call">
   <section class="starters-section">
     <p class="section-label">What to Ask</p>
     <p class="starters-intro">To jog your imagination, here are 6 conversation starters. But you are encouraged to ask absolutely anything you want including questions of our present age. Your time with Evangeline Adams is your own!</p>
@@ -203,6 +202,16 @@
       </div>
     </div>
   </section>
+  <div class="decision-form">
+    <div class="call-box">
+      <p class="call-box-label">Before You Call</p>
+      <p class="call-details">First 2 minutes free. Minutes 3 through 5 cost $3.99 total. After that, just $1.00 per minute.</p>
+      <p class="call-details" style="margin-top:-8px;">Have your <strong>birth date, birth time, and birth city</strong> ready. The more precise the time, the more precise the reading.</p>
+      <a href="#start" class="btn-call">Start Your Reading →</a>
+      <p class="call-rescue">🐾 every paid call triggers at minimum a meal donation for a rescue dog</p>
+    </div>
+  </div>
+</div>
 
   <div class="bio-section">
     <div class="bio-sidebar">

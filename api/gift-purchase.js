@@ -2,10 +2,10 @@
 // Creates a Stripe PaymentIntent for a gift package purchase.
 // Frontend confirms with Stripe Elements, then calls /api/gift-confirm.
 
-const { GIFT_PACKAGES } = require('./_db');
+const { GIFT_PACKAGES, getStripeSecretKey } = require('./_db');
 
-function getStripe() {
-  const key = process.env.STRIPE_SECRET_KEY;
+async function getStripe() {
+  const key = await getStripeSecretKey();
   if (!key) throw new Error('STRIPE_SECRET_KEY is not configured');
   return require('stripe')(key);
 }
@@ -27,7 +27,7 @@ module.exports = async function handler(req, res) {
   if (!gifterName) return res.status(400).json({ error: 'gifterName is required' });
 
   try {
-    const stripe = getStripe();
+    const stripe = await getStripe();
     const pi = await stripe.paymentIntents.create({
       amount:        pkg.priceCents,
       currency:      'usd',

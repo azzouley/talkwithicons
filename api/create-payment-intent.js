@@ -5,8 +5,10 @@
 // paymentIntentId + stripeCustomerId to start-call-basic (or start-call for Evangeline).
 // At call end, call-ended.js cancels this hold and creates the final charge.
 
-function getStripe() {
-  const key = process.env.STRIPE_SECRET_KEY;
+const { getStripeSecretKey } = require('./_db');
+
+async function getStripe() {
+  const key = await getStripeSecretKey();
   if (!key) throw new Error('STRIPE_SECRET_KEY is not configured');
   return require('stripe')(key);
 }
@@ -24,7 +26,7 @@ module.exports = async function handler(req, res) {
   }
 
   try {
-    const stripe = getStripe();
+    const stripe = await getStripe();
 
     // Customer is required so the saved PM can be charged off-session at call end
     const customer = await stripe.customers.create({

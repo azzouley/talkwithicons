@@ -11,10 +11,11 @@ const {
   normalizePhone,
   GRAND_TOUR_MINUTES,
   GRAND_TOUR_DONATION_CENTS,
+  getStripeSecretKey,
 } = require('./_db');
 
-function getStripe() {
-  const key = process.env.STRIPE_SECRET_KEY;
+async function getStripe() {
+  const key = await getStripeSecretKey();
   if (!key) throw new Error('STRIPE_SECRET_KEY is not configured');
   return require('stripe')(key);
 }
@@ -87,7 +88,7 @@ module.exports = async function handler(req, res) {
 
   // ── Verify Stripe payment succeeded ──────────────────────────────────────────
   try {
-    const stripe = getStripe();
+    const stripe = await getStripe();
     const pi = await stripe.paymentIntents.retrieve(paymentIntentId);
     if (pi.status !== 'succeeded') {
       return res.status(402).json({

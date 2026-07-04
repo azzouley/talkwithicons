@@ -298,10 +298,21 @@ function toggleGiftMode() {
   }
 }
 
+function showTestModeBanner() {
+  if (document.getElementById('test-mode-banner')) return;
+  const b = document.createElement('div');
+  b.id = 'test-mode-banner';
+  b.style.cssText = 'position:fixed;top:0;left:0;right:0;z-index:9999;background:#c0392b;color:#fff;text-align:center;padding:10px 16px;font-family:-apple-system,sans-serif;font-size:13px;font-weight:700;letter-spacing:0.08em;';
+  b.textContent = 'TEST MODE ACTIVE — NO REAL CHARGES';
+  document.body.prepend(b);
+  document.body.style.paddingTop = (parseInt(document.body.style.paddingTop || '0') + 44) + 'px';
+}
+
 async function initStripe() {
   if (stripe) return;
   try {
     const cfg = await fetch(window.location.origin + '/api/config').then(r => r.json());
+    if (cfg.testMode) showTestModeBanner();
     if (!cfg.stripePublicKey) throw new Error('Stripe not configured');
     stripe = Stripe(cfg.stripePublicKey);
     const elements = stripe.elements({

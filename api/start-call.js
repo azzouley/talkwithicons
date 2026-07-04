@@ -50,7 +50,7 @@ try {
 }
 
 const { lookupCity } = require('./cities');
-const { sql, normalizePhone: dbNormalizePhone } = require('./_db');
+const { sql, normalizePhone: dbNormalizePhone, getStripeSecretKey } = require('./_db');
 
 // ── Constants ─────────────────────────────────────────────────────────────────
 const SIGNS = [
@@ -306,8 +306,8 @@ READING INSTRUCTIONS
 }
 
 // ── Stripe helper ─────────────────────────────────────────────────────────────
-function getStripe() {
-  const key = process.env.STRIPE_SECRET_KEY;
+async function getStripe() {
+  const key = await getStripeSecretKey();
   if (!key) throw new Error('STRIPE_SECRET_KEY is not configured');
   return require('stripe')(key);
 }
@@ -382,12 +382,13 @@ module.exports = async function handler(req, res) {
   let paymentMethodId = null;
 
   if (!resolvedGiftCode) {
-    if (process.env.STRIPE_SECRET_KEY) {
+    const activeStripeKey = await getStripeSecretKey();
+    if (activeStripeKey) {
       if (!paymentIntentId) {
         return res.status(402).json({ error: 'Payment authorization required' });
       }
       try {
-        const stripe = getStripe();
+        const stripe = await getStripe();
         const pi = await stripe.paymentIntents.retrieve(paymentIntentId);
 
         if (pi.status !== 'requires_capture') {

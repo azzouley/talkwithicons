@@ -2,10 +2,10 @@
 // Creates a $79 Stripe PaymentIntent for the Grand Tour package.
 // Frontend confirms with Stripe Elements, then calls /api/grand-tour-confirm.
 
-const { GRAND_TOUR_PRICE_CENTS } = require('./_db');
+const { GRAND_TOUR_PRICE_CENTS, getStripeSecretKey } = require('./_db');
 
-function getStripe() {
-  const key = process.env.STRIPE_SECRET_KEY;
+async function getStripe() {
+  const key = await getStripeSecretKey();
   if (!key) throw new Error('STRIPE_SECRET_KEY is not configured');
   return require('stripe')(key);
 }
@@ -23,7 +23,7 @@ module.exports = async function handler(req, res) {
   }
 
   try {
-    const stripe = getStripe();
+    const stripe = await getStripe();
     const pi = await stripe.paymentIntents.create({
       amount:               GRAND_TOUR_PRICE_CENTS,
       currency:             'usd',

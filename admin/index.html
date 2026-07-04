@@ -117,6 +117,38 @@
 
     .loading { color: #666; font-size: 13px; padding: 16px 0; }
     .error-banner { background: #2a1010; border: 1px solid #5a2020; color: #e05050; padding: 12px 16px; font-size: 13px; margin-bottom: 16px; }
+
+    /* Test mode toggle */
+    .mode-bar {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: #1a1a1a;
+      border: 1px solid #2a2a2a;
+      padding: 12px 16px;
+      margin-bottom: 24px;
+    }
+    .mode-label { font-size: 13px; color: #888; }
+    #mode-badge {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      padding: 4px 10px;
+      border-radius: 2px;
+    }
+    #mode-badge.live { background: #1a3a1a; color: #5cb85c; border: 1px solid #2a5a2a; }
+    #mode-badge.test { background: #3a1010; color: #e05050; border: 1px solid #5a2020; }
+    #mode-toggle-btn {
+      background: #2a2a2a;
+      border: 1px solid #444;
+      color: #e0e0e0;
+      padding: 7px 16px;
+      font-size: 12px;
+      cursor: pointer;
+      letter-spacing: 0.04em;
+    }
+    #mode-toggle-btn:hover { background: #333; }
+    #mode-toggle-btn:disabled { opacity: 0.5; cursor: default; }
   </style>
 </head>
 <body>
@@ -135,6 +167,13 @@
     <div class="page-header">
       <h1>TalkWithIcons Admin</h1>
       <p id="last-loaded">—</p>
+    </div>
+
+    <div class="mode-bar">
+      <span class="mode-label">Stripe mode:</span>
+      <span id="mode-badge" class="live">LIVE MODE</span>
+      <button id="mode-toggle-btn" onclick="toggleTestMode()">Switch to TEST MODE</button>
+      <span id="mode-toggle-result" style="font-size:12px;color:#888"></span>
     </div>
 
     <div id="error-banner" class="error-banner" style="display:none"></div>
@@ -239,6 +278,7 @@
         document.getElementById('login-gate').style.display = 'none';
         document.getElementById('main-content').style.display = 'block';
         processData(await res.json());
+        loadTestMode();
       } catch (err) {
         document.getElementById('login-error').textContent = 'Connection error: ' + err.message;
       }
@@ -386,6 +426,67 @@
         }
       } catch (err) {
         setResult(el, err.message, false);
+      }
+    }
+
+    // ── Test mode toggle ─────────────────────────────────────────────────────────
+    let currentTestMode = false;
+
+    async function loadTestMode() {
+      try {
+        const res = await fetch('/api/admin/test-mode', {
+          headers: { 'x-admin-password': adminPassword },
+        });
+        if (!res.ok) return;
+        const data = await res.json();
+        currentTestMode = data.testMode;
+        renderTestMode(currentTestMode);
+      } catch (err) {
+        console.error('loadTestMode error:', err.message);
+      }
+    }
+
+    function renderTestMode(isTest) {
+      const badge  = document.getElementById('mode-badge');
+      const btn    = document.getElementById('mode-toggle-btn');
+      if (isTest) {
+        badge.textContent = 'TEST MODE';
+        badge.className   = 'test';
+        btn.textContent   = 'Switch to LIVE MODE';
+      } else {
+        badge.textContent = 'LIVE MODE';
+        badge.className   = 'live';
+        btn.textContent   = 'Switch to TEST MODE';
+      }
+    }
+
+    async function toggleTestMode() {
+      const btn    = document.getElementById('mode-toggle-btn');
+      const result = document.getElementById('mode-toggle-result');
+      btn.disabled = true;
+      result.textContent = 'Switching...';
+      try {
+        const res = await fetch('/api/admin/test-mode', {
+          method:  'POST',
+          headers: {
+            'Content-Type':     'application/json',
+            'x-admin-password': adminPassword,
+          },
+          body: JSON.stringify({ enabled: !currentTestMode }),
+        });
+        const data = await res.json();
+        if (res.ok) {
+          currentTestMode = data.testMode;
+          renderTestMode(currentTestMode);
+          result.textContent = 'Switched.';
+          setTimeout(() => { result.textContent = ''; }, 3000);
+        } else {
+          result.textContent = data.error || 'Error';
+        }
+      } catch (err) {
+        result.textContent = err.message;
+      } finally {
+        btn.disabled = false;
       }
     }
 

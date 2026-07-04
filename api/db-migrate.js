@@ -93,6 +93,22 @@ module.exports = async function handler(req, res) {
     results.push('gift_call_log: ok');
 
     await sql`
+      CREATE TABLE IF NOT EXISTS app_settings (
+        key        TEXT PRIMARY KEY,
+        value      TEXT NOT NULL,
+        updated_at TIMESTAMPTZ DEFAULT NOW()
+      )
+    `;
+    results.push('app_settings: ok');
+
+    await sql`
+      INSERT INTO app_settings (key, value)
+      VALUES ('test_mode', 'false')
+      ON CONFLICT (key) DO NOTHING
+    `;
+    results.push('app_settings seed: ok');
+
+    await sql`
       CREATE TABLE IF NOT EXISTS donation_ledger (
         period                      TEXT PRIMARY KEY,
         total_donations_accrued     INTEGER NOT NULL DEFAULT 0,

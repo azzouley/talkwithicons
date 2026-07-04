@@ -5,7 +5,7 @@
 // is confirmed (requires_capture) before triggering the Vapi call, and stores the
 // payment identifiers in Vapi call metadata so call-ended.js can bill correctly.
 
-const { sql } = require('./_db');
+const { sql, getStripeSecretKey } = require('./_db');
 
 // ── Shared Vapi credentials ───────────────────────────────────────────────────
 const VAPI_API_KEY             = process.env.VAPI_API_KEY             || 'YOUR_VAPI_API_KEY';
@@ -50,8 +50,8 @@ function normalizePhone(raw) {
   return '+' + digits;
 }
 
-function getStripe() {
-  const key = process.env.STRIPE_SECRET_KEY;
+async function getStripe() {
+  const key = await getStripeSecretKey();
   if (!key) throw new Error('STRIPE_SECRET_KEY is not configured');
   return require('stripe')(key);
 }
@@ -213,12 +213,13 @@ module.exports = async function handler(req, res) {
   // During development (key not set), the check is skipped so calls still work.
   let paymentMethodId = null;
 
-  if (process.env.STRIPE_SECRET_KEY) {
+  const activeStripeKey = await getStripeSecretKey();
+  if (activeStripeKey) {
     if (!paymentIntentId) {
       return res.status(402).json({ error: 'Payment authorization required' });
     }
     try {
-      const stripe = getStripe();
+      const stripe = await getStripe();
       const pi = await stripe.paymentIntents.retrieve(paymentIntentId);
 
       if (pi.status !== 'requires_capture') {

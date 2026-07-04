@@ -6,7 +6,7 @@
 //   2. QStash follow-up email — scheduled 30 min after call end (skipped for very short calls).
 
 const https = require('https');
-const { sql, calcPerCallDonationCents, updateDonationLedger } = require('./_db');
+const { sql, calcPerCallDonationCents, updateDonationLedger, getStripeSecretKey } = require('./_db');
 
 const ASSISTANT_NAMES = {
   'b98cec95-47a4-455d-92c8-3a08aacb556d': 'Albert Einstein',
@@ -32,8 +32,8 @@ function calcChargeAmountCents(durationSeconds) {
   return 399 + (minutes - 5) * 100;
 }
 
-function getStripe() {
-  const key = process.env.STRIPE_SECRET_KEY;
+async function getStripe() {
+  const key = await getStripeSecretKey();
   if (!key) throw new Error('STRIPE_SECRET_KEY is not configured');
   return require('stripe')(key);
 }
@@ -72,9 +72,9 @@ module.exports = async function handler(req, res) {
   const paymentMethodId  = call.metadata?.paymentMethodId;
   const stripeCustomerId = call.metadata?.stripeCustomerId;
 
-  if (paymentIntentId && process.env.STRIPE_SECRET_KEY) {
+  if (paymentIntentId) {
     try {
-      const stripe       = getStripe();
+      const stripe       = await getStripe();
       const chargeAmount = calcChargeAmountCents(durationSeconds);
       const durationMins = Math.ceil(durationSeconds / 60);
 

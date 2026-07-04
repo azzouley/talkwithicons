@@ -70,6 +70,43 @@ async function updateDonationLedger(donationCents) {
   `;
 }
 
+// ── Test mode helpers ─────────────────────────────────────────────────────────
+let _testModeCache = { value: null, at: 0 };
+
+async function getTestMode() {
+  const now = Date.now();
+  if (_testModeCache.value !== null && now - _testModeCache.at < 30000) {
+    return _testModeCache.value;
+  }
+  try {
+    const result = await sql`SELECT value FROM app_settings WHERE key = 'test_mode'`;
+    const val = result.rows[0]?.value === 'true';
+    _testModeCache = { value: val, at: now };
+    return val;
+  } catch (err) {
+    console.error('getTestMode error:', err.message);
+    return false;
+  }
+}
+
+function invalidateTestModeCache() {
+  _testModeCache = { value: null, at: 0 };
+}
+
+async function getStripeSecretKey() {
+  const testMode = await getTestMode();
+  return testMode
+    ? process.env.STRIPE_SECRET_KEY_TEST
+    : process.env.STRIPE_SECRET_KEY;
+}
+
+async function getStripePublicKey() {
+  const testMode = await getTestMode();
+  return testMode
+    ? process.env.STRIPE_PUBLIC_KEY_TEST
+    : process.env.STRIPE_PUBLIC_KEY;
+}
+
 function normalizePhone(raw) {
   const digits = (raw || '').replace(/\D/g, '');
   if (digits.length === 10) return '+1' + digits;
@@ -93,6 +130,10 @@ module.exports = {
   updateDonationLedger,
   normalizePhone,
   checkAdminAuth,
+  getTestMode,
+  invalidateTestModeCache,
+  getStripeSecretKey,
+  getStripePublicKey,
   GRAND_TOUR_MINUTES,
   GRAND_TOUR_PRICE_CENTS,
   GRAND_TOUR_DONATION_CENTS,

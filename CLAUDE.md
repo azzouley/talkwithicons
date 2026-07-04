@@ -297,3 +297,24 @@ When creating any new character (new Vapi assistant + system prompt), the creati
 Do not treat "create the character" and "apply the current standard patches" as two separate steps performed in two separate sessions. If a patch is standard enough to be applied to all existing characters, it is standard enough to be in the prompt before the character ever goes live.
 
 Background: Sitting Bull was created June 28, 2026 after the Tier 1-3 beat-delivery rewrites had already been applied to all 11 other characters to fix the Vapi mid-sentence cutoff bug. His prompt did not include it. This wasn't caught until a status report check on June 29, requiring a separate Tier 4 patch session to fix something that should have been correct on day one.
+
+### Rule 10: Beat-Delivery Cap — No single AI response may exceed ~380 tokens on any topic, ever
+This is a permanent, global, non-negotiable constraint on every character prompt.
+
+**Why:** Vapi's GPT-4o streaming pipeline aborts at approximately 4.25 seconds of continuous generation. At typical verbosity this corresponds to ~380–400 tokens. The stream stops mid-word, TTS cuts off mid-sentence, and the caller hears silence and hangs up. The bug is in Vapi's pipeline — it cannot be fixed from this codebase — so the only mitigation is ensuring no character ever generates a single response that long.
+
+**The fix is Beat 1 / Beat 2 delivery structure:**
+- **Beat 1:** deliver the first part of a long answer (biography, philosophy, historical event, technical knowledge) — substantive but under ~300 tokens
+- **Pause:** ask the caller a real check-in question before continuing — this is mandatory, not optional flavor
+- **Beat 2** (gated): deliver the rest, only if the caller invites it
+
+**This applies to all characters on all topics without exception.** Every biographical section, historical event description, philosophical explanation, and technical knowledge dump must have an explicit mid-point check-in gate. If a section can produce a response exceeding ~380 tokens, it is a bug regardless of how well-written it is.
+
+**When writing or auditing any prompt:**
+- Read every knowledge/biography/history section and estimate token length (~4.5 chars per token)
+- Any section whose full content exceeds ~1700 characters without an explicit Beat 1 / Beat 2 gate must be fixed before it goes live
+- The gate question must be a real question that hands the floor to the caller — not a decorative pause
+
+**Diagnosed incidents:** Da Vinci cut at 227 tokens (Turn 7, 2026-06-27), Houdini at 239 tokens (Turn 7, same date), Nostradamus at ~388 tokens (Turn 7, 2026-07-04). All were biographical sections with no beat gate.
+
+**Applied globally 2026-07-04:** Beat 1/2 gates added to all high-risk monologue sections across all 12 characters via `patch-global-beat-audit.js`. Characters already patched at creation time: none — this has always been a retrofit. Going forward, Rule 9 already requires new characters include current standard fixes at creation; Rule 10 means Beat 1/2 gating on all dense sections is one of those required fixes.

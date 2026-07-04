@@ -63,7 +63,7 @@ module.exports = async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(204).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
-  const { firstName: firstNameRaw, phoneNumber, character, language, paymentIntentId, stripeCustomerId, tourCode } = req.body || {};
+  const { firstName: firstNameRaw, phoneNumber, character, language, paymentIntentId, stripeCustomerId, tourCode, giftCode } = req.body || {};
   const firstName = (firstNameRaw || '').trim();
   if (!firstName || !phoneNumber || !character) {
     return res.status(400).json({ error: 'firstName, phoneNumber, and character are required' });
@@ -131,6 +131,79 @@ module.exports = async function handler(req, res) {
       return res.status(200).json({ success: true, callId: vapiData.id });
     } catch (err) {
       console.error('start-call-basic [Grand Tour] error:', err);
+      return res.status(500).json({ error: 'Internal server error' });
+    }
+  }
+
+  // ── Gift code path (bypasses Stripe entirely) ─────────────────────────────────
+  if (giftCode) {
+    const code  = giftCode.trim().toUpperCase();
+    const phone = normalizePhone(phoneNumber);
+    try {
+      const result = await sql`
+        SELECT access_code, character_key, phone_locked_to, minutes_remaining, expires_at
+        FROM gift_balances WHERE access_code = ${code}
+      `;
+      if (result.rows.length === 0) {
+        return res.status(403).json({ error: 'Gift code not found' });
+      }
+      const row = result.rows[0];
+      if (row.character_key !== character.toLowerCase()) {
+        return res.status(403).json({ error: 'This gift code is not valid for this character' });
+      }
+      if (new Date(row.expires_at) < new Date()) {
+        return res.status(403).json({ error: 'This gift code has expired' });
+      }
+      if (row.phone_locked_to && row.phone_locked_to !== phone) {
+        return res.status(403).json({ error: 'Phone number does not match this gift code' });
+      }
+      if (row.minutes_remaining < 5) {
+        return res.status(403).json({
+          error:            'Insufficient minutes remaining on this gift code',
+          minutesRemaining: row.minutes_remaining,
+        });
+      }
+      // Lock to phone on first use
+      if (!row.phone_locked_to) {
+        await sql`
+          UPDATE gift_balances
+          SET phone_locked_to = ${phone}, updated_at = NOW()
+          WHERE access_code = ${code}
+        `;
+      }
+    } catch (dbErr) {
+      console.error('Gift code validation error:', dbErr.message);
+      return res.status(500).json({ error: 'Gift code validation failed' });
+    }
+
+    const vapiPayload = {
+      phoneNumberId: PHONE_NUMBER_IDS[character.toLowerCase()],
+      customer:      { number: normalizePhone(phoneNumber), name: firstName },
+      assistantId,
+      assistantOverrides: {
+        variableValues: { callerName: firstName, language: lang },
+      },
+      metadata: { giftCode: code, language: lang },
+    };
+
+    console.log('start-call-basic [Gift]:', character, '| callerName:', firstName, '| code:', code);
+    try {
+      const vapiRes  = await fetch('https://api.vapi.ai/call', {
+        method:  'POST',
+        headers: {
+          Authorization:  `Bearer ${VAPI_API_KEY}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(vapiPayload),
+      });
+      const vapiData = await vapiRes.json();
+      if (!vapiRes.ok) {
+        console.error('Vapi error:', vapiData);
+        return res.status(502).json({ error: 'Call service error', detail: vapiData });
+      }
+      return res.status(200).json({ success: true, callId: vapiData.id });
+    } catch (err) {
+      console.error('start-call-basic [Gift] error:', err);
       return res.status(500).json({ error: 'Internal server error' });
     }
   }

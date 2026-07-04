@@ -59,6 +59,40 @@ module.exports = async function handler(req, res) {
     results.push('grand_tour_call_log: ok');
 
     await sql`
+      CREATE TABLE IF NOT EXISTS gift_balances (
+        access_code       TEXT PRIMARY KEY,
+        package_slug      TEXT NOT NULL,
+        character_key     TEXT NOT NULL,
+        minutes_total     INTEGER NOT NULL,
+        minutes_remaining INTEGER NOT NULL,
+        gifter_name       TEXT,
+        gifter_email      TEXT,
+        recipient_email   TEXT,
+        stripe_payment_id TEXT UNIQUE NOT NULL,
+        phone_locked_to   TEXT,
+        created_at        TIMESTAMPTZ DEFAULT NOW(),
+        updated_at        TIMESTAMPTZ DEFAULT NOW(),
+        expires_at        TIMESTAMPTZ NOT NULL
+      )
+    `;
+    results.push('gift_balances: ok');
+
+    await sql`
+      CREATE TABLE IF NOT EXISTS gift_call_log (
+        id                      SERIAL PRIMARY KEY,
+        access_code             TEXT NOT NULL REFERENCES gift_balances(access_code),
+        caller_phone            TEXT,
+        character_name          TEXT,
+        duration_seconds        INTEGER,
+        minutes_deducted        INTEGER,
+        minutes_remaining_after INTEGER,
+        vapi_call_id            TEXT,
+        created_at              TIMESTAMPTZ DEFAULT NOW()
+      )
+    `;
+    results.push('gift_call_log: ok');
+
+    await sql`
       CREATE TABLE IF NOT EXISTS donation_ledger (
         period                      TEXT PRIMARY KEY,
         total_donations_accrued     INTEGER NOT NULL DEFAULT 0,

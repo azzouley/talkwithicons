@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gift a Call — TalkWithIcons</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #0d0b09;
+      color: #e8e0d0;
+      font-family: Georgia, 'Times New Roman', serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px 80px;
+    }
+
+    .back {
+      align-self: flex-start;
+      color: #9e8c7a;
+      text-decoration: none;
+      font-size: 14px;
+      letter-spacing: 0.05em;
+      margin-bottom: 40px;
+    }
+    .back:hover { color: #e8e0d0; }
+
+    header {
+      text-align: center;
+      margin-bottom: 48px;
+      max-width: 600px;
+    }
+
+    header h1 {
+      font-size: clamp(26px, 5vw, 38px);
+      font-weight: normal;
+      letter-spacing: 0.08em;
+      color: #f0e6d0;
+      margin-bottom: 12px;
+    }
+
+    header .subtitle {
+      font-size: 15px;
+      color: #9e8c7a;
+      line-height: 1.6;
+      font-style: italic;
+    }
+
+    .price-badge {
+      display: inline-block;
+      margin: 20px auto 0;
+      background: #1e1a14;
+      border: 1px solid #3a3020;
+      padding: 10px 24px;
+      font-size: 22px;
+      letter-spacing: 0.04em;
+      color: #d4b870;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 480px;
+      background: #14110d;
+      border: 1px solid #2a2318;
+      padding: 36px 32px;
+    }
+
+    label {
+      display: block;
+      font-size: 12px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #9e8c7a;
+      margin-bottom: 8px;
+      margin-top: 20px;
+    }
+
+    label:first-child { margin-top: 0; }
+
+    input[type="text"],
+    input[type="email"] {
+      width: 100%;
+      background: #0d0b09;
+      border: 1px solid #2a2318;
+      color: #e8e0d0;
+      padding: 12px 14px;
+      font-family: Georgia, serif;
+      font-size: 15px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    input[type="text"]:focus,
+    input[type="email"]:focus {
+      border-color: #5a4e3a;
+    }
+
+    .stripe-field {
+      background: #0d0b09;
+      border: 1px solid #2a2318;
+      padding: 13px 14px;
+      margin-top: 0;
+    }
+
+    .stripe-field.StripeElement--focus {
+      border-color: #5a4e3a;
+    }
+
+    .donation-note {
+      margin-top: 24px;
+      padding: 14px 16px;
+      background: #0d0b09;
+      border-left: 2px solid #3a3020;
+      font-size: 13px;
+      color: #9e8c7a;
+      line-height: 1.6;
+    }
+
+    .submit-btn {
+      margin-top: 28px;
+      width: 100%;
+      background: #2a2318;
+      border: 1px solid #4a3e2e;
+      color: #f0e6d0;
+      font-family: Georgia, serif;
+      font-size: 16px;
+      letter-spacing: 0.06em;
+      padding: 16px;
+      cursor: pointer;
+      transition: background 0.2s, border-color 0.2s;
+    }
+
+    .submit-btn:hover:not(:disabled) {
+      background: #3a3020;
+      border-color: #6a5e4e;
+    }
+
+    .submit-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    #error-msg {
+      margin-top: 16px;
+      color: #c0504a;
+      font-size: 14px;
+      min-height: 20px;
+    }
+
+    #success-screen {
+      display: none;
+      text-align: center;
+      max-width: 480px;
+    }
+
+    #success-screen h2 {
+      font-size: 24px;
+      font-weight: normal;
+      color: #f0e6d0;
+      margin-bottom: 16px;
+    }
+
+    #success-screen p {
+      color: #9e8c7a;
+      font-size: 15px;
+      line-height: 1.7;
+      margin-bottom: 16px;
+    }
+
+    .code-display {
+      background: #1e1a14;
+      border: 1px solid #4a3e2e;
+      padding: 24px;
+      margin: 20px 0 32px;
+    }
+
+    .code-display .code-label {
+      font-size: 12px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #9e8c7a;
+      margin-bottom: 12px;
+    }
+
+    .code-display .code-value {
+      font-size: 36px;
+      letter-spacing: 6px;
+      color: #d4b870;
+      font-family: 'Courier New', monospace;
+    }
+
+    .instructions {
+      text-align: left;
+      font-size: 14px;
+      color: #9e8c7a;
+      line-height: 1.7;
+      list-style: decimal;
+      padding-left: 20px;
+    }
+
+    .instructions li { margin-bottom: 8px; }
+
+    .home-link {
+      display: inline-block;
+      margin-top: 32px;
+      color: #9e8c7a;
+      text-decoration: none;
+      font-size: 14px;
+      letter-spacing: 0.05em;
+      border-bottom: 1px solid #3a3020;
+      padding-bottom: 2px;
+    }
+
+    .home-link:hover { color: #e8e0d0; }
+
+    .spinner {
+      display: inline-block;
+      width: 14px; height: 14px;
+      border: 2px solid #4a3e2e;
+      border-top-color: #d4b870;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      vertical-align: middle;
+      margin-right: 8px;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    #not-found {
+      display: none;
+      text-align: center;
+      max-width: 480px;
+      color: #9e8c7a;
+    }
+  </style>
+</head>
+<body>
+
+  <a class="back" href="/#gifts">← Back to TalkWithIcons</a>
+
+  <div id="not-found">
+    <h2 style="color:#f0e6d0;font-size:22px;font-weight:normal;margin-bottom:12px">Package not found</h2>
+    <p>Please choose a gift package from the <a href="/#gifts" style="color:#d4b870">gifts section</a>.</p>
+  </div>
+
+  <header id="page-header" style="display:none">
+    <h1 id="pkg-title">—</h1>
+    <p class="subtitle" id="pkg-desc">—</p>
+    <div class="price-badge" id="pkg-price">—</div>
+  </header>
+
+  <div class="card" id="purchase-form" style="display:none">
+    <label for="gifterName">Your name</label>
+    <input type="text" id="gifterName" placeholder="First name" autocomplete="given-name">
+
+    <label for="gifterEmail">Your email <span style="color:#5a4e3a">(we'll send you a copy of the code)</span></label>
+    <input type="email" id="gifterEmail" placeholder="you@example.com" autocomplete="email">
+
+    <label for="recipientEmail">Recipient's email <span style="color:#5a4e3a">(we'll send the code directly to them)</span></label>
+    <input type="email" id="recipientEmail" placeholder="them@example.com">
+
+    <label>Card</label>
+    <div id="card-element" class="stripe-field"></div>
+
+    <div class="donation-note">
+      Every gift includes a $0.50 donation to rescue dogs — split between the ASPCA and Rochester Animal Services.
+    </div>
+
+    <button class="submit-btn" id="submit-btn" disabled>Loading...</button>
+    <div id="error-msg"></div>
+  </div>
+
+  <div id="success-screen">
+    <h2>Gift sent.</h2>
+    <p id="success-intro">Keep this code safe — it's the key to the conversation.</p>
+
+    <div class="code-display">
+      <div class="code-label">Access Code</div>
+      <div class="code-value" id="access-code-display">—</div>
+    </div>
+
+    <p id="email-note" style="display:none"></p>
+
+    <ol class="instructions" id="success-instructions">
+      <li>Share this code with your recipient (or let us do it — we've already emailed them).</li>
+      <li>They go to the character's page on TalkWithIcons.</li>
+      <li>They enter their name and phone number.</li>
+      <li>They click "Have a gift code?" and enter the code above.</li>
+      <li>Click Call — no card needed. The code expires in 90 days.</li>
+    </ol>
+
+    <a id="character-link" href="/" class="home-link">View the character page →</a>
+  </div>
+
+  <script src="https://js.stripe.com/v3/"></script>
+  <script>
+    const PACKAGES = {
+      'einstein-evening':    { character: 'einstein',   minutes: 15, priceCents: 1199, label: 'The Einstein Evening',       desc: '15 minutes with Albert Einstein',           charDisplay: 'Albert Einstein' },
+      'holmes-consultation': { character: 'holmes',     minutes: 20, priceCents: 1699, label: 'A Consultation with Holmes', desc: '20 minutes at 221B Baker Street',            charDisplay: 'Sherlock Holmes' },
+      'evangeline-reading':  { character: 'evangeline', minutes: 20, priceCents: 1699, label: 'A Reading with Evangeline',  desc: '20 minutes with Evangeline Adams',           charDisplay: 'Evangeline Adams' },
+      'aela-evening':        { character: 'aela',       minutes: 30, priceCents: 2699, label: 'An Evening with Aela',       desc: '30 minutes with the Pleiadian Liaison',     charDisplay: 'Aela' },
+    };
+
+    const params      = new URLSearchParams(window.location.search);
+    const packageSlug = params.get('package') || '';
+    const pkg         = PACKAGES[packageSlug];
+
+    let stripe, cardElement;
+
+    if (!pkg) {
+      document.getElementById('not-found').style.display = 'block';
+    } else {
+      document.getElementById('page-header').style.display = 'block';
+      document.getElementById('purchase-form').style.display = 'block';
+      document.getElementById('pkg-title').textContent = pkg.label;
+      document.getElementById('pkg-desc').textContent  = pkg.desc + '. Fully pre-paid. 90-day expiry.';
+      document.getElementById('pkg-price').textContent = '$' + (pkg.priceCents / 100).toFixed(2);
+      document.getElementById('character-link').href   = '/' + pkg.character + '.html';
+      document.getElementById('character-link').textContent = 'See the ' + pkg.charDisplay + ' page →';
+      init();
+    }
+
+    async function init() {
+      try {
+        const cfg = await fetch('/api/config').then(r => r.json());
+        if (!cfg.stripePublicKey) {
+          document.getElementById('submit-btn').textContent = 'Payment not yet available';
+          return;
+        }
+        stripe = Stripe(cfg.stripePublicKey);
+        const elements = stripe.elements({
+          fonts: [{ cssSrc: 'https://fonts.googleapis.com/css2?family=IM+Fell+English' }],
+        });
+        cardElement = elements.create('card', {
+          style: {
+            base: {
+              color: '#e8e0d0',
+              fontFamily: 'Georgia, serif',
+              fontSize: '15px',
+              '::placeholder': { color: '#5a4e3a' },
+              iconColor: '#9e8c7a',
+            },
+            invalid: { color: '#c0504a' },
+          },
+        });
+        cardElement.mount('#card-element');
+        cardElement.on('change', evt => {
+          document.getElementById('error-msg').textContent = evt.error ? evt.error.message : '';
+        });
+        const btn = document.getElementById('submit-btn');
+        btn.disabled    = false;
+        btn.textContent = 'Send Gift — $' + (pkg.priceCents / 100).toFixed(2);
+      } catch (err) {
+        console.error('init error:', err);
+        document.getElementById('error-msg').textContent = 'Unable to load payment form. Please refresh.';
+      }
+    }
+
+    document.getElementById('submit-btn').addEventListener('click', async () => {
+      const gifterName    = document.getElementById('gifterName').value.trim();
+      const gifterEmail   = document.getElementById('gifterEmail').value.trim();
+      const recipientEmail = document.getElementById('recipientEmail').value.trim();
+      const errorEl       = document.getElementById('error-msg');
+      const btn           = document.getElementById('submit-btn');
+
+      errorEl.textContent = '';
+
+      if (!gifterName) { errorEl.textContent = 'Please enter your name.'; return; }
+
+      btn.disabled  = true;
+      btn.innerHTML = '<span class="spinner"></span>Processing...';
+
+      try {
+        // Step 1: create PaymentIntent
+        const purchaseRes = await fetch('/api/gift-purchase', {
+          method:  'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body:    JSON.stringify({ packageSlug, gifterName, gifterEmail, recipientEmail }),
+        });
+        const purchaseData = await purchaseRes.json();
+        if (!purchaseRes.ok) {
+          errorEl.textContent = purchaseData.error || 'Purchase setup failed.';
+          btn.disabled    = false;
+          btn.textContent = 'Send Gift — $' + (pkg.priceCents / 100).toFixed(2);
+          return;
+        }
+
+        // Step 2: confirm with Stripe Elements
+        const { error: stripeError, paymentIntent } = await stripe.confirmCardPayment(
+          purchaseData.clientSecret,
+          { payment_method: { card: cardElement } }
+        );
+        if (stripeError) {
+          errorEl.textContent = stripeError.message;
+          btn.disabled    = false;
+          btn.textContent = 'Send Gift — $' + (pkg.priceCents / 100).toFixed(2);
+          return;
+        }
+
+        // Step 3: confirm with server → get access code
+        btn.innerHTML = '<span class="spinner"></span>Generating code...';
+        const confirmRes = await fetch('/api/gift-confirm', {
+          method:  'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body:    JSON.stringify({
+            paymentIntentId: paymentIntent.id,
+            packageSlug,
+            gifterName,
+            gifterEmail,
+            recipientEmail,
+          }),
+        });
+        const confirmData = await confirmRes.json();
+        if (!confirmRes.ok) {
+          errorEl.textContent = confirmData.error || 'Payment succeeded but code generation failed. Please contact support.';
+          btn.disabled    = false;
+          btn.textContent = 'Retry code generation';
+          return;
+        }
+
+        // Step 4: show success
+        document.getElementById('purchase-form').style.display = 'none';
+        document.getElementById('page-header').style.display   = 'none';
+        const successEl = document.getElementById('success-screen');
+        successEl.style.display = 'block';
+        document.getElementById('access-code-display').textContent = confirmData.accessCode;
+
+        const emailNote = document.getElementById('email-note');
+        if (recipientEmail && gifterEmail) {
+          emailNote.textContent  = `A copy has been sent to you at ${gifterEmail} and to ${recipientEmail}.`;
+          emailNote.style.display = 'block';
+        } else if (recipientEmail) {
+          emailNote.textContent  = `A copy has been sent to ${recipientEmail}.`;
+          emailNote.style.display = 'block';
+        } else if (gifterEmail) {
+          emailNote.textContent  = `A copy has been sent to ${gifterEmail}.`;
+          emailNote.style.display = 'block';
+        }
+      } catch (err) {
+        console.error('purchase error:', err);
+        errorEl.textContent = 'Something went wrong. Please try again.';
+        btn.disabled    = false;
+        btn.textContent = 'Send Gift — $' + (pkg.priceCents / 100).toFixed(2);
+      }
+    });
+  </script>
+
+</body>
+</html>

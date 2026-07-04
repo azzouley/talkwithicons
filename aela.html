@@ -178,6 +178,13 @@
              style="display:block;width:100%;margin-bottom:8px;padding:10px 14px;background:#1c1710;border:1px solid rgba(201,168,76,0.7);box-sizing:border-box;"></div>
         <div id="card-errors"
              style="color:#e07070;font-size:0.78rem;margin-bottom:8px;display:none;"></div>
+        <!-- Gift code toggle -->
+        <div id="gift-toggle-row" style="margin-bottom:8px;font-size:0.78rem;color:rgba(201,168,76,0.7);cursor:pointer;text-align:right;" onclick="toggleGiftMode()">Have a gift code? →</div>
+        <div id="gift-code-row" style="display:none;margin-bottom:8px;">
+          <input id="f-gift-code" type="text" placeholder="Gift Code (e.g. AB3XKWPN)"
+                 style="display:block;width:100%;padding:10px 14px;background:#1c1710;border:1px solid rgba(201,168,76,0.7);color:#f5f0e8;font-family:'Space Mono',monospace;font-size:0.82rem;outline:none;text-transform:uppercase;letter-spacing:0.1em;" />
+          <div style="margin-top:4px;font-size:0.78rem;color:rgba(201,168,76,0.7);cursor:pointer;" onclick="toggleGiftMode()">← Pay by card instead</div>
+        </div>
         <!-- Language toggle -->
         <div style="margin-bottom: 1.25rem;">
           <label style="display:block; font-size:0.72rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--muted); margin-bottom:0.6rem;">Language / Idioma</label>
@@ -272,6 +279,25 @@
 <script>
 let stripe, cardElement;
 
+function toggleGiftMode() {
+  const cardEl     = document.getElementById('card-element');
+  const cardErrors = document.getElementById('card-errors');
+  const giftRow    = document.getElementById('gift-code-row');
+  const toggleRow  = document.getElementById('gift-toggle-row');
+  const isGiftMode = giftRow.style.display !== 'none';
+  if (isGiftMode) {
+    cardEl.style.display     = '';
+    cardErrors.style.display = 'none';
+    giftRow.style.display    = 'none';
+    toggleRow.style.display  = '';
+  } else {
+    cardEl.style.display     = 'none';
+    cardErrors.style.display = 'none';
+    giftRow.style.display    = '';
+    toggleRow.style.display  = 'none';
+  }
+}
+
 async function initStripe() {
   if (stripe) return;
   try {
@@ -309,12 +335,39 @@ async function handleCall(e) {
   const firstName   = document.getElementById('f-name').value.trim();
   const phoneNumber = document.getElementById('f-phone').value.trim();
 
+  const giftCodeInput = (document.getElementById('f-gift-code')?.value || '').trim().toUpperCase();
+  const giftMode      = document.getElementById('gift-code-row')?.style.display !== 'none';
+  const giftCode      = (giftMode && giftCodeInput) ? giftCodeInput : null;
+
   btn.disabled     = true;
-  btn.textContent  = 'Authorizing...';
+  btn.textContent  = giftCode ? 'Connecting...' : 'Authorizing...';
   msg.style.display    = 'none';
   errDiv.style.display = 'none';
 
   try {
+    if (giftCode) {
+      const callRes  = await fetch(window.location.origin + '/api/start-call-basic', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify({
+          firstName, phoneNumber,
+          character: 'aela',
+          language:  document.querySelector('input[name="language"]:checked').value,
+          giftCode,
+        }),
+      });
+      const callData = await callRes.json();
+      if (callRes.ok) {
+        msg.textContent   = 'Your call is connecting — pick up within 30 seconds.';
+        msg.style.color   = '#6dbf8a';
+        msg.style.display = 'block';
+        btn.textContent   = 'Call Placed ✓';
+      } else {
+        throw new Error(callData.error || 'Something went wrong.');
+      }
+      return;
+    }
+
     const piRes  = await fetch(window.location.origin + '/api/create-payment-intent', {
       method:  'POST',
       headers: { 'Content-Type': 'application/json' },

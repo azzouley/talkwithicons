@@ -358,6 +358,15 @@
           <div id="card-errors"
                style="color:#e07070;font-size:0.78rem;margin-top:6px;display:none;"></div>
         </div>
+        <!-- Gift code toggle -->
+        <div class="form-field">
+          <div id="gift-toggle-row" style="font-size:0.78rem;color:rgba(201,168,76,0.7);cursor:pointer;text-align:right;margin-bottom:8px;" onclick="toggleGiftMode()">Have a gift code? →</div>
+          <div id="gift-code-row" style="display:none;">
+            <input id="f-gift-code" type="text" class="form-input" placeholder="Gift Code (e.g. AB3XKWPN)"
+                   style="text-transform:uppercase;letter-spacing:0.1em;" />
+            <div style="margin-top:4px;font-size:0.78rem;color:rgba(201,168,76,0.7);cursor:pointer;" onclick="toggleGiftMode()">← Pay by card instead</div>
+          </div>
+        </div>
         <!-- Language toggle -->
         <div style="margin-bottom: 1.25rem;">
           <label style="display:block; font-size:0.72rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--muted); margin-bottom:0.6rem;">Language / Idioma</label>
@@ -525,6 +534,25 @@
 
 let stripe, cardElement;
 
+function toggleGiftMode() {
+  const cardField  = document.getElementById('card-element').closest('.form-field');
+  const cardErrors = document.getElementById('card-errors');
+  const giftRow    = document.getElementById('gift-code-row');
+  const toggleRow  = document.getElementById('gift-toggle-row');
+  const isGiftMode = giftRow.style.display !== 'none';
+  if (isGiftMode) {
+    if (cardField) cardField.style.display = '';
+    cardErrors.style.display = 'none';
+    giftRow.style.display    = 'none';
+    toggleRow.style.display  = '';
+  } else {
+    if (cardField) cardField.style.display = 'none';
+    cardErrors.style.display = 'none';
+    giftRow.style.display    = '';
+    toggleRow.style.display  = 'none';
+  }
+}
+
 async function initStripe() {
   if (stripe) return;
   try {
@@ -592,10 +620,38 @@ document.addEventListener('DOMContentLoaded', initStripe);
         return;
       }
 
-      btn.textContent = 'Authorizing...';
+      const giftCodeInput = (document.getElementById('f-gift-code')?.value || '').trim().toUpperCase();
+      const giftMode      = document.getElementById('gift-code-row')?.style.display !== 'none';
+      const giftCode      = (giftMode && giftCodeInput) ? giftCodeInput : null;
+
+      btn.textContent = giftCode ? 'Connecting...' : 'Authorizing...';
       btn.disabled    = true;
 
       try {
+        if (giftCode) {
+          const payload = {
+            name, phoneNumber, birthDate, birthTime, birthCity, birthCountry,
+            language: document.querySelector('input[name="language"]:checked').value,
+            giftCode,
+          };
+          const res  = await fetch(window.location.origin + '/api/start-call', {
+            method:  'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body:    JSON.stringify(payload),
+          });
+          const data = await res.json();
+          if (data.success) {
+            document.getElementById('call-form').style.display = 'none';
+            successEl.style.display = 'block';
+          } else {
+            errorMsg.textContent = data.error || 'Something went wrong. Please try again.';
+            errorEl.style.display = 'block';
+            btn.textContent = 'Call Me Now →';
+            btn.disabled    = false;
+          }
+          return;
+        }
+
         const piRes  = await fetch(window.location.origin + '/api/create-payment-intent', {
           method:  'POST',
           headers: { 'Content-Type': 'application/json' },

@@ -162,6 +162,37 @@ module.exports = async function handler(req, res) {
     }
   }
 
+  // ── Gift code minute deduction ────────────────────────────────────────────────
+  const giftCode = call.metadata?.giftCode;
+  if (giftCode && durationSeconds > 0) {
+    const giftMins = Math.ceil(durationSeconds / 60);
+    if (giftMins > 4) {
+      try {
+        await sql`
+          UPDATE gift_balances
+          SET minutes_remaining = GREATEST(0, minutes_remaining - ${giftMins}),
+              updated_at        = NOW()
+          WHERE access_code = ${giftCode}
+        `;
+        const updated = await sql`
+          SELECT minutes_remaining FROM gift_balances WHERE access_code = ${giftCode}
+        `;
+        const remaining = updated.rows[0]?.minutes_remaining ?? 0;
+        await sql`
+          INSERT INTO gift_call_log
+            (access_code, caller_phone, character_name, duration_seconds,
+             minutes_deducted, minutes_remaining_after, vapi_call_id)
+          VALUES
+            (${giftCode}, ${callerPhone || ''}, ${characterName}, ${durationSeconds},
+             ${giftMins}, ${remaining}, ${call.id || null})
+        `;
+        console.log(`Gift: deducted ${giftMins} min from ${giftCode} — ${remaining} min remaining`);
+      } catch (giftErr) {
+        console.error('Gift minute deduction error:', giftErr.message);
+      }
+    }
+  }
+
   // ── Skip follow-up for very short calls ───────────────────────────────────────
   if (!callerPhone || durationSeconds < 60) {
     return res.status(200).json({ ok: true, skipped: 'too short or no phone' });

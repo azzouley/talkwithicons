@@ -50,6 +50,7 @@ try {
 }
 
 const { lookupCity } = require('./cities');
+const { sql, normalizePhone: dbNormalizePhone } = require('./_db');
 
 // ── Constants ─────────────────────────────────────────────────────────────────
 const SIGNS = [
@@ -327,7 +328,7 @@ module.exports = async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(204).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
-  const { name: nameRaw, phoneNumber, birthDate, birthTime, birthCity, language, paymentIntentId, stripeCustomerId } = req.body || {};
+  const { name: nameRaw, phoneNumber, birthDate, birthTime, birthCity, language, paymentIntentId, stripeCustomerId, giftCode } = req.body || {};
   const name = (nameRaw || '').trim();
   console.log('birthTime received:', birthTime, 'type:', typeof birthTime, 'length:', birthTime?.length);
   if (!name || !phoneNumber || !birthDate || !birthCity) {
@@ -335,30 +336,74 @@ module.exports = async function handler(req, res) {
   }
   const lang = (language === 'es') ? 'es' : 'en';
 
+  // ── Gift code path (bypasses Stripe entirely) ─────────────────────────────────
+  let resolvedGiftCode = null;
+  if (giftCode) {
+    const code  = giftCode.trim().toUpperCase();
+    const phone = dbNormalizePhone(phoneNumber);
+    try {
+      const result = await sql`
+        SELECT access_code, character_key, phone_locked_to, minutes_remaining, expires_at
+        FROM gift_balances WHERE access_code = ${code}
+      `;
+      if (result.rows.length === 0) {
+        return res.status(403).json({ error: 'Gift code not found' });
+      }
+      const row = result.rows[0];
+      if (row.character_key !== 'evangeline') {
+        return res.status(403).json({ error: 'This gift code is not valid for Evangeline' });
+      }
+      if (new Date(row.expires_at) < new Date()) {
+        return res.status(403).json({ error: 'This gift code has expired' });
+      }
+      if (row.phone_locked_to && row.phone_locked_to !== phone) {
+        return res.status(403).json({ error: 'Phone number does not match this gift code' });
+      }
+      if (row.minutes_remaining < 5) {
+        return res.status(403).json({
+          error: 'Insufficient minutes remaining on this gift code',
+          minutesRemaining: row.minutes_remaining,
+        });
+      }
+      if (!row.phone_locked_to) {
+        await sql`
+          UPDATE gift_balances SET phone_locked_to = ${phone}, updated_at = NOW()
+          WHERE access_code = ${code}
+        `;
+      }
+      resolvedGiftCode = code;
+    } catch (dbErr) {
+      console.error('start-call gift code validation error:', dbErr.message);
+      return res.status(500).json({ error: 'Gift code validation failed' });
+    }
+  }
+
   // ── Stripe auth hold verification (same flow as start-call-basic) ────────────
   let paymentMethodId = null;
 
-  if (process.env.STRIPE_SECRET_KEY) {
-    if (!paymentIntentId) {
-      return res.status(402).json({ error: 'Payment authorization required' });
-    }
-    try {
-      const stripe = getStripe();
-      const pi = await stripe.paymentIntents.retrieve(paymentIntentId);
-
-      if (pi.status !== 'requires_capture') {
-        return res.status(402).json({
-          error: 'Payment authorization not confirmed',
-          status: pi.status,
-        });
+  if (!resolvedGiftCode) {
+    if (process.env.STRIPE_SECRET_KEY) {
+      if (!paymentIntentId) {
+        return res.status(402).json({ error: 'Payment authorization required' });
       }
+      try {
+        const stripe = getStripe();
+        const pi = await stripe.paymentIntents.retrieve(paymentIntentId);
 
-      paymentMethodId = typeof pi.payment_method === 'string'
-        ? pi.payment_method
-        : pi.payment_method?.id || null;
-    } catch (err) {
-      console.error('Stripe PI verification error:', err.message);
-      return res.status(502).json({ error: 'Payment verification failed', detail: err.message });
+        if (pi.status !== 'requires_capture') {
+          return res.status(402).json({
+            error: 'Payment authorization not confirmed',
+            status: pi.status,
+          });
+        }
+
+        paymentMethodId = typeof pi.payment_method === 'string'
+          ? pi.payment_method
+          : pi.payment_method?.id || null;
+      } catch (err) {
+        console.error('Stripe PI verification error:', err.message);
+        return res.status(502).json({ error: 'Payment verification failed', detail: err.message });
+      }
     }
   }
 
@@ -381,12 +426,13 @@ module.exports = async function handler(req, res) {
         language:   lang,
       },
     },
-    metadata: paymentIntentId ? {
-      paymentIntentId,
-      paymentMethodId:  paymentMethodId || '',
-      stripeCustomerId: stripeCustomerId || '',
-      language:         lang,
-    } : { language: lang },
+    metadata: resolvedGiftCode ? { giftCode: resolvedGiftCode, language: lang } :
+              paymentIntentId  ? {
+                paymentIntentId,
+                paymentMethodId:  paymentMethodId || '',
+                stripeCustomerId: stripeCustomerId || '',
+                language:         lang,
+              } : { language: lang },
   };
 
   console.log('start-call:', 'callerName:', name, '| lang:', lang, '| birthDate:', birthDate);

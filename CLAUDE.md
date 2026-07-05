@@ -318,3 +318,20 @@ This is a permanent, global, non-negotiable constraint on every character prompt
 **Diagnosed incidents:** Da Vinci cut at 227 tokens (Turn 7, 2026-06-27), Houdini at 239 tokens (Turn 7, same date), Nostradamus at ~388 tokens (Turn 7, 2026-07-04). All were biographical sections with no beat gate.
 
 **Applied globally 2026-07-04:** Beat 1/2 gates added to all high-risk monologue sections across all 12 characters via `patch-global-beat-audit.js`. Characters already patched at creation time: none — this has always been a retrofit. Going forward, Rule 9 already requires new characters include current standard fixes at creation; Rule 10 means Beat 1/2 gating on all dense sections is one of those required fixes.
+
+### Rule 11: Rule 3 escape hatches are permanently banned — every character must have an explicit 120-word-per-turn ceiling
+Every character's CRITICAL RULES section must contain a hard ceiling in Rule 3: **no more than 120 words in a single turn.** No exceptions, no escape hatches.
+
+**Banned language (any phrasing that implies "go longer when the topic warrants it"):**
+- "go as long as it needs"
+- "when it requires the full explanation, give it"
+- "give it that depth"
+- "give it that weight"
+- "a thought worth beginning is worth completing"
+- Any sentence that begins "When a question warrants..." and ends with an invitation to elaborate
+
+**Required replacement:** `No more than 120 words in a single turn — depth earns more turns, not a longer monologue.`
+
+**Why:** Escape hatches let the LLM generate 350–500+ tokens on topics it judges "worth the full explanation." At ~4.25s of generation the Vapi stream aborts mid-sentence, TTS cuts off, and the caller hears silence. This was the confirmed root cause of the Aela and Nostradamus stream aborts (2026-07-04). The 120-word ceiling is the per-turn companion to Rule 10's Beat 1/2 structure: Rule 10 controls how long information sections are structured; Rule 11 controls the per-turn cap that prevents any single response from running long enough to trigger the abort.
+
+**Applied 2026-07-04/05:** All 12 characters audited. Original 9 patched 2026-07-04; Houdini, Frankenstein, Sitting Bull patched 2026-07-05 via `patch-rule3-remaining.js`. New characters must include this ceiling in Rule 3 from creation (Rule 9).

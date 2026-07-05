@@ -10,7 +10,7 @@ TalkWithIcons is a paid voice phone call service. Users call AI versions of hist
 
 ---
 
-## The 12 Active Characters
+## The 11 Active Characters
 
 | # | Name | Era/Location | Type |
 |---|------|-------------|------|
@@ -23,11 +23,12 @@ TalkWithIcons is a paid voice phone call service. Users call AI versions of hist
 | 07 | Elizabeth Bennet | Longbourn, 1813 | Fictional |
 | 08 | James Baldwin | Harlem, 1963 | Historical |
 | 09 | Evangeline Adams | New York City, 1930s | Historical |
-| 10 | La Llorona | — | Legend |
-| 11 | Houdini | New York City, 1920s | Historical |
-| 12 | Frankenstein's Creature | — | Fictional |
+| 10 | Houdini | New York City, 1920s | Historical |
+| 11 | Frankenstein's Creature | — | Fictional |
 
 Tesla and Curie were removed and replaced by Bruce Lee and Baldwin respectively. Evangeline Adams was added as a 9th character with a specialised natal chart flow. La Llorona, Houdini, and Frankenstein's Creature were added to expand the roster to 12.
+
+**La Llorona — RETIRED (2026-07):** Removed from the active roster. Vapi assistant ID `a30672aa-7bbb-4cff-91ed-7a2f01b5823a`, phone number `+15854073097` (record `confirmed in Vercel`). Per the Twain lesson: ensure `VAPI_ASSISTANT_ID_LLORONA` and `VAPI_PHONE_NUMBER_ID_LLORONA` are removed from Vercel env vars and the phone number's inbound routing is cleared or reassigned. Her front-end page (if any) should be unlinked.
 
 **Mark Twain — RETIRED (2026-06):** Twain (Vapi assistant ID `3a6a8107`) was replaced by Da Vinci as Character 03. His front-end page was unlinked from the live site. However, his Vapi assistant remained fully live and callable in the backend for weeks after removal — patched in every single maxTokens and prompt update run against the active roster. Discovered 2026-06-27 when a roster-wide script accidentally included him. Root cause: the Vapi assistant was renamed "Da Vinci" in the Vapi dashboard (confusing it with the real Da Vinci assistant `23ef91d2`), and the phone number `af4c55a0` still had his assistantId for inbound routing. **Lesson: when retiring a character, the backend/Vapi state must be cleaned up explicitly — unlink from the front-end site is not enough. Any assistant still in ASSISTANTS arrays in scripts or in Vercel env vars remains callable.** Twain's assistant was permanently deleted 2026-06-27. Phone number `af4c55a0` inbound routing updated to real Da Vinci (`23ef91d2`). VAPI_ASSISTANT_ID_TWAIN and VAPI_PHONE_NUMBER_ID_TWAIN removed from Vercel.
 
@@ -144,7 +145,7 @@ Live on homepage (index.html #gifts section). Fully pre-paid named experiences w
 | Bennet | 0560582f-8258-4803-8f2b-78b364fa23ca | +15854073507 (phone record 895248b7-4aba-452a-b248-eb891feaaae2) |
 | Baldwin | 2f0047c1-eeb7-412d-b455-f8f731bdd232 | +15853781304 (phone record 19e49174-4ad9-4665-9c34-5fd36d68d213) |
 | Evangeline Adams | 7fd88fa7-f013-4693-9b52-ab8937e4225d | +15853121359 |
-| La Llorona | a30672aa-7bbb-4cff-91ed-7a2f01b5823a | +15854073097 |
+| ~~La Llorona~~ | ~~a30672aa-7bbb-4cff-91ed-7a2f01b5823a~~ | ~~+15854073097~~ (RETIRED 2026-07) |
 | Houdini | ca384c56-f276-4940-b20b-1ae939bef23b | (confirm in Vercel) |
 | Frankenstein | f96bb0a5-6e8f-4153-8bee-6b76fa14f881 | (confirm in Vercel) |
 

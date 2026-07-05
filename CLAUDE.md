@@ -10,7 +10,7 @@ TalkWithIcons is a paid voice phone call service. Users call AI versions of hist
 
 ---
 
-## The 11 Active Characters
+## The 12 Active Characters
 
 | # | Name | Era/Location | Type |
 |---|------|-------------|------|
@@ -25,6 +25,7 @@ TalkWithIcons is a paid voice phone call service. Users call AI versions of hist
 | 09 | Evangeline Adams | New York City, 1930s | Historical |
 | 10 | Houdini | New York City, 1920s | Historical |
 | 11 | Frankenstein's Creature | — | Fictional |
+| 12 | Sitting Bull | Standing Rock, 1870s–1890 | Historical |
 
 Tesla and Curie were removed and replaced by Bruce Lee and Baldwin respectively. Evangeline Adams was added as a 9th character with a specialised natal chart flow. La Llorona, Houdini, and Frankenstein's Creature were added to expand the roster to 12.
 

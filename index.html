@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -182,6 +182,7 @@
 
     /* CHARACTER GRID */
     .char-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(310px, 1fr)); gap: 1.25rem; max-width: 1300px; margin: 0 auto; }
+    .card-anchor { display: block; text-decoration: none; color: inherit; }
     .char-card { background: rgba(255,255,255,0.025); border: 1px solid rgba(201,149,42,0.12); padding: 0; position: relative; overflow: hidden; transition: all 0.3s; cursor: pointer; }
     .char-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--gold); transform: scaleX(0); transition: transform 0.3s; z-index: 1; }
     .char-card:hover { transform: translateY(-3px); border-color: rgba(201,149,42,0.3); }
@@ -208,8 +209,8 @@
     .card-name { font-family: 'Playfair Display', serif; font-size: 1.45rem; font-weight: 700; margin-bottom: 0.2rem; color: #f0ebe0; }
     .card-era { font-size: 0.68rem; color: #d4af70; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 0.9rem; }
     .card-desc { font-size: 0.84rem; line-height: 1.7; color: rgba(240,235,224,0.55); margin-bottom: 1.25rem; }
-    .card-link { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #f0ebe0; text-decoration: none; border-bottom: 1px solid var(--gold); padding-bottom: 2px; transition: color 0.2s; }
-    .card-link:hover { color: var(--gold); }
+    .card-link { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #f0ebe0; border-bottom: 1px solid var(--gold); padding-bottom: 2px; }
+    .char-card:hover .card-link { color: var(--gold); }
     .card-bg-icon { position: absolute; bottom: 1.25rem; right: 1.25rem; font-size: 2.5rem; opacity: 0.05; }
 
     /* PRICING */
@@ -418,6 +419,7 @@
     <div class="gold-line"></div>
     <div class="char-grid">
 
+      <a href="einstein.html" class="card-anchor">
       <div class="char-card fade-in">
         <div class="card-portrait"><img src="images/einstein.webp" alt="Albert Einstein" style="width:100%;height:220px;object-fit:cover;display:block;"></div>
         <div class="card-body">
@@ -425,10 +427,12 @@
           <h3 class="card-name">Albert Einstein</h3>
           <p class="card-era">Princeton, 1955</p>
           <p class="card-desc">Warm, curious, self-deprecating. Speaking from the final year of his life, he has been watching the world since his death and has strong views on AI, Elon Musk, social media, and the state of civilization.</p>
-          <a href="einstein.html" class="card-link">Call Albert →</a>
+          <span class="card-link">Call Albert →</span>
         </div>
       </div>
+      </a>
 
+      <a href="nostradamus.html" class="card-anchor">
       <div class="char-card fade-in">
         <div class="card-portrait"><img src="images/nostradamus.jpeg" alt="Nostradamus" style="width:100%;height:220px;object-fit:cover;display:block;"></div>
         <div class="card-body">
@@ -436,10 +440,12 @@
           <h3 class="card-name">Nostradamus</h3>
           <p class="card-era">Salon-de-Provence, 1555</p>
           <p class="card-desc">Slow, measured, atmospheric. The mysticism is the vehicle. The humanity is the destination. He has seen patterns in the modern world he recognized centuries ago.</p>
-          <a href="nostradamus.html" class="card-link">Call Nostradamus →</a>
+          <span class="card-link">Call Nostradamus →</span>
         </div>
       </div>
+      </a>
 
+      <a href="davinci.html" class="card-anchor">
       <div class="char-card fade-in">
         <div class="card-portrait"><img src="images/davinci.jpeg" alt="Leonardo da Vinci" style="width:100%;height:220px;object-fit:cover;display:block;"></div>
         <div class="card-body">
@@ -447,10 +453,12 @@
           <h3 class="card-name">Leonardo da Vinci</h3>
           <p class="card-era">Artist · Thinker · Creator · Florence, 1497</p>
           <p class="card-desc">He painted the Mona Lisa, designed flying machines, mapped the human body, and never stopped asking why. Five centuries later, he is still thinking. So is the conversation.</p>
-          <a href="davinci.html" class="card-link">Call Leonardo →</a>
+          <span class="card-link">Call Leonardo →</span>
         </div>
       </div>
+      </a>
 
+      <a href="brucelee.html" class="card-anchor">
       <div class="char-card fade-in">
         <div class="card-portrait"><img src="images/brucelee.jpeg" alt="Bruce Lee" style="width:100%;height:220px;object-fit:cover;display:block;"></div>
         <div class="card-body">
@@ -458,10 +466,12 @@
           <h3 class="card-name">Bruce Lee</h3>
           <p class="card-era">Hong Kong · Los Angeles, 1973</p>
           <p class="card-desc">Philosopher, artist, revolutionary. He did not just change martial arts — he changed what it means to master anything. Be like water.</p>
-          <a href="brucelee.html" class="card-link">Call Bruce →</a>
+          <span class="card-link">Call Bruce →</span>
         </div>
       </div>
+      </a>
 
+      <a href="holmes.html" class="card-anchor">
       <div class="char-card fade-in">
         <div class="card-portrait"><img src="images/holmes.jpeg" alt="Sherlock Holmes" style="width:100%;height:220px;object-fit:cover;display:block;"></div>
         <div class="card-body">
@@ -469,10 +479,12 @@
           <h3 class="card-name">Sherlock Holmes</h3>
           <p class="card-era">221B Baker Street</p>
           <p class="card-desc">Every call is a consultation. You are the client. He begins every call by deducing something specific about you. The deduction cold open is rated the most memorable moment by 91% of callers.</p>
-          <a href="holmes.html" class="card-link">Call Sherlock →</a>
+          <span class="card-link">Call Sherlock →</span>
         </div>
       </div>
+      </a>
 
+      <a href="aela.html" class="card-anchor">
       <div class="char-card fade-in">
         <div class="card-portrait"><img src="images/aela.jpeg" alt="Aela" style="width:100%;height:220px;object-fit:cover;display:block;"></div>
         <div class="card-body">
@@ -480,10 +492,12 @@
           <h3 class="card-name">Aela</h3>
           <p class="card-era">Pleiadian Council Liaison</p>
           <p class="card-desc">Warm, patient, specific rather than vague. When she names something you have not found language for — that is the moment callers share with everyone they know.</p>
-          <a href="aela.html" class="card-link">Call Aela →</a>
+          <span class="card-link">Call Aela →</span>
         </div>
       </div>
+      </a>
 
+      <a href="bennet.html" class="card-anchor">
       <div class="char-card fade-in">
         <div class="card-portrait"><img src="images/bennet.jpeg" alt="Elizabeth Bennet" style="width:100%;height:220px;object-fit:cover;display:block;"></div>
         <div class="card-body">
@@ -491,10 +505,12 @@
           <h3 class="card-name">Elizabeth Bennet</h3>
           <p class="card-era">Pride &amp; Prejudice · Longbourn, 1813</p>
           <p class="card-desc">Austen's sharpest heroine has opinions about modern dating, social media performance, and the pride and prejudice she sees playing out in exactly the same ways as 1813. Ready for a conversation that cuts straight through?</p>
-          <a href="bennet.html" class="card-link">Call Elizabeth →</a>
+          <span class="card-link">Call Elizabeth →</span>
         </div>
       </div>
+      </a>
 
+      <a href="baldwin.html" class="card-anchor">
       <div class="char-card fade-in">
         <div class="card-portrait"><img src="images/baldwin.jpeg" alt="James Baldwin" style="width:100%;height:220px;object-fit:cover;display:block;"></div>
         <div class="card-body">
@@ -502,10 +518,12 @@
           <h3 class="card-name">James Baldwin</h3>
           <p class="card-era">Harlem, 1963</p>
           <p class="card-desc">Precise, devastating, and full of love. The writer who saw everything coming and said so plainly. He has been watching America since his death and has things to say.</p>
-          <a href="baldwin.html" class="card-link">Call James →</a>
+          <span class="card-link">Call James →</span>
         </div>
       </div>
+      </a>
 
+      <a href="evangeline.html" class="card-anchor">
       <div class="char-card fade-in">
         <div class="card-portrait"><img src="images/evangeline.jpeg" alt="Evangeline Adams" style="width:100%;height:220px;object-fit:cover;display:block;"></div>
         <div class="card-body">
@@ -513,10 +531,12 @@
           <h3 class="card-name">Evangeline Adams</h3>
           <p class="card-era">Astrologer to the Powerful</p>
           <p class="card-desc">Bring your birth date, birth time, and birth city. An accurate birth time is essential for meaningful transits and your rising sign. Evangeline Adams — astrologer to JP Morgan, Enrico Caruso, and Charlie Chaplin — reads your natal chart live, discusses your transits, and tells you what she sees.</p>
-          <a href="evangeline.html" class="card-link">Call Evangeline →</a>
+          <span class="card-link">Call Evangeline →</span>
         </div>
       </div>
+      </a>
 
+      <a href="sittingbull.html" class="card-anchor">
       <div class="char-card fade-in">
         <div class="card-portrait"><img src="images/sittingbull.jpeg" alt="Sitting Bull" style="width:100%;height:220px;object-fit:cover;display:block;"></div>
         <div class="card-body">
@@ -524,10 +544,12 @@
           <h3 class="card-name">Sitting Bull</h3>
           <p class="card-era">Hunkpapa Lakota · 1831–1890</p>
           <p class="card-desc">The last great leader to put down his rifle, and the only one the world still remembers by name. He has specific things to say about what was promised and what was taken. He is ready to say them.</p>
-          <a href="sittingbull.html" class="card-link">Call Sitting Bull →</a>
+          <span class="card-link">Call Sitting Bull →</span>
         </div>
       </div>
+      </a>
 
+      <a href="houdini.html" class="card-anchor">
       <div class="char-card fade-in">
         <div class="card-portrait"><img src="images/houdini.jpeg" alt="Harry Houdini" style="width:100%;height:220px;object-fit:cover;display:block;"></div>
         <div class="card-body">
@@ -535,10 +557,12 @@
           <h3 class="card-name">Harry Houdini</h3>
           <p class="card-era">New York City, 1926</p>
           <p class="card-desc">The world's greatest escape artist knew every trick, every trap, and every con. He spent his life exposing frauds who claimed to speak to the dead — and now, somehow, here he is. The irony is not lost on him.</p>
-          <a href="houdini.html" class="card-link">Call Houdini →</a>
+          <span class="card-link">Call Houdini →</span>
         </div>
       </div>
+      </a>
 
+      <a href="frankenstein.html" class="card-anchor">
       <div class="char-card fade-in">
         <div class="card-portrait"><img src="images/frankenstein.jpeg" alt="Frankenstein's Creature" style="width:100%;height:220px;object-fit:cover;display:block;"></div>
         <div class="card-body">
@@ -546,9 +570,10 @@
           <h3 class="card-name">Frankenstein's Creature</h3>
           <p class="card-era">The Arctic · Shelley's Journals, 1818</p>
           <p class="card-desc">He has no name. He was given life without consent, abandoned without explanation, and condemned without trial. He has thought about little else since. He would like to speak with you — if you are willing to stay.</p>
-          <a href="frankenstein.html" class="card-link">Call the Creature →</a>
+          <span class="card-link">Call the Creature →</span>
         </div>
       </div>
+      </a>
 
     </div>
   </div>

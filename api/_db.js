@@ -19,7 +19,7 @@ const GIFT_PACKAGES = {
   // Time-based packages — recipient's choice of any character
   'gift-15':             { character: null,          minutesTotal: 15, priceCents: 1295, label: '15-Minute Gift Call',        description: '15 minutes with the icon of their choice' },
   'gift-20':             { character: null,          minutesTotal: 20, priceCents: 1895, label: '20-Minute Gift Call',        description: '20 minutes with the icon of their choice' },
-  'gift-30':             { character: null,          minutesTotal: 30, priceCents: 2799, label: '30-Minute Gift Call',        description: '30 minutes with the icon of their choice' },
+  'gift-30':             { character: null,          minutesTotal: 30, priceCents: 2795, label: '30-Minute Gift Call',        description: '30 minutes with the icon of their choice' },
 };
 const GIFT_DONATION_CENTS = 50; // $0.50 flat per gift purchase
 

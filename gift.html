@@ -4,324 +4,147 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Gift a Call — TalkWithIcons</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    body {
-      background: #0d0b09;
-      color: #e8e0d0;
-      font-family: Georgia, 'Times New Roman', serif;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 40px 20px 80px;
-    }
-
-    .back {
-      align-self: flex-start;
-      color: #9e8c7a;
-      text-decoration: none;
-      font-size: 14px;
-      letter-spacing: 0.05em;
-      margin-bottom: 40px;
-    }
-    .back:hover { color: #e8e0d0; }
-
-    header {
-      text-align: center;
-      margin-bottom: 48px;
-      max-width: 600px;
-    }
-
-    header h1 {
-      font-size: clamp(26px, 5vw, 38px);
-      font-weight: normal;
-      letter-spacing: 0.08em;
-      color: #f0e6d0;
-      margin-bottom: 12px;
-    }
-
-    header .subtitle {
-      font-size: 15px;
-      color: #9e8c7a;
-      line-height: 1.6;
-      font-style: italic;
-    }
-
-    .price-badge {
-      display: inline-block;
-      margin: 20px auto 0;
-      background: #1e1a14;
-      border: 1px solid #3a3020;
-      padding: 10px 24px;
-      font-size: 22px;
-      letter-spacing: 0.04em;
-      color: #d4b870;
-    }
-
-    .card {
-      width: 100%;
-      max-width: 480px;
-      background: #14110d;
-      border: 1px solid #2a2318;
-      padding: 36px 32px;
-    }
-
-    label {
-      display: block;
-      font-size: 12px;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: #9e8c7a;
-      margin-bottom: 8px;
-      margin-top: 20px;
-    }
-
-    label:first-child { margin-top: 0; }
-
-    input[type="text"],
-    input[type="email"] {
-      width: 100%;
-      background: #0d0b09;
-      border: 1px solid #2a2318;
-      color: #e8e0d0;
-      padding: 12px 14px;
-      font-family: Georgia, serif;
-      font-size: 15px;
-      outline: none;
-      transition: border-color 0.2s;
-    }
-
-    input[type="text"]:focus,
-    input[type="email"]:focus {
-      border-color: #5a4e3a;
-    }
-
-    .stripe-field {
-      background: #0d0b09;
-      border: 1px solid #2a2318;
-      padding: 13px 14px;
-      margin-top: 0;
-    }
-
-    .stripe-field.StripeElement--focus {
-      border-color: #5a4e3a;
-    }
-
-    .donation-note {
-      margin-top: 24px;
-      padding: 14px 16px;
-      background: #0d0b09;
-      border-left: 2px solid #3a3020;
-      font-size: 13px;
-      color: #9e8c7a;
-      line-height: 1.6;
-    }
-
-    .submit-btn {
-      margin-top: 28px;
-      width: 100%;
-      background: #2a2318;
-      border: 1px solid #4a3e2e;
-      color: #f0e6d0;
-      font-family: Georgia, serif;
-      font-size: 16px;
-      letter-spacing: 0.06em;
-      padding: 16px;
-      cursor: pointer;
-      transition: background 0.2s, border-color 0.2s;
-    }
-
-    .submit-btn:hover:not(:disabled) {
-      background: #3a3020;
-      border-color: #6a5e4e;
-    }
-
-    .submit-btn:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
-
-    #error-msg {
-      margin-top: 16px;
-      color: #c0504a;
-      font-size: 14px;
-      min-height: 20px;
-    }
-
-    #success-screen {
-      display: none;
-      text-align: center;
-      max-width: 480px;
-    }
-
-    #success-screen h2 {
-      font-size: 24px;
-      font-weight: normal;
-      color: #f0e6d0;
-      margin-bottom: 16px;
-    }
-
-    #success-screen p {
-      color: #9e8c7a;
-      font-size: 15px;
-      line-height: 1.7;
-      margin-bottom: 16px;
-    }
-
-    .code-display {
-      background: #1e1a14;
-      border: 1px solid #4a3e2e;
-      padding: 24px;
-      margin: 20px 0 32px;
-    }
-
-    .code-display .code-label {
-      font-size: 12px;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: #9e8c7a;
-      margin-bottom: 12px;
-    }
-
-    .code-display .code-value {
-      font-size: 36px;
-      letter-spacing: 6px;
-      color: #d4b870;
-      font-family: 'Courier New', monospace;
-    }
-
-    .instructions {
-      text-align: left;
-      font-size: 14px;
-      color: #9e8c7a;
-      line-height: 1.7;
-      list-style: decimal;
-      padding-left: 20px;
-    }
-
-    .instructions li { margin-bottom: 8px; }
-
-    .home-link {
-      display: inline-block;
-      margin-top: 32px;
-      color: #9e8c7a;
-      text-decoration: none;
-      font-size: 14px;
-      letter-spacing: 0.05em;
-      border-bottom: 1px solid #3a3020;
-      padding-bottom: 2px;
-    }
-
-    .home-link:hover { color: #e8e0d0; }
-
-    .spinner {
-      display: inline-block;
-      width: 14px; height: 14px;
-      border: 2px solid #4a3e2e;
-      border-top-color: #d4b870;
-      border-radius: 50%;
-      animation: spin 0.7s linear infinite;
-      vertical-align: middle;
-      margin-right: 8px;
-    }
-
     @keyframes spin { to { transform: rotate(360deg); } }
-
-    #not-found {
-      display: none;
-      text-align: center;
-      max-width: 480px;
-      color: #9e8c7a;
-    }
+    .photo-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+    @media (max-width: 520px) { .photo-grid { grid-template-columns: repeat(3, 1fr); } }
+    .pkg-card { cursor: pointer; transition: border-color 0.2s, background 0.2s; }
+    .pkg-card:hover { border-color: rgba(201,168,76,0.5) !important; }
+    .pkg-card.selected { border-color: #c9a84c !important; background: #1a160e !important; }
+    input[type="text"]:focus, input[type="email"]:focus { border-color: #5a4e3a !important; outline: none; }
+    .submit-btn:hover:not(:disabled) { background: #3a3020 !important; border-color: #c9a84c !important; }
+    .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
   </style>
 </head>
-<body>
+<body style="background:#0d0b09;color:#e8e0d0;font-family:Georgia,'Times New Roman',serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:40px 20px 80px;">
 
-  <a class="back" href="/#gifts">← Back to TalkWithIcons</a>
+  <a href="/" style="align-self:flex-start;color:#9e8c7a;text-decoration:none;font-size:13px;letter-spacing:0.08em;font-family:'Space Mono',monospace;text-transform:uppercase;margin-bottom:52px;">← Back to TalkWithIcons</a>
 
-  <div id="not-found">
-    <h2 style="color:#f0e6d0;font-size:22px;font-weight:normal;margin-bottom:12px">Package not found</h2>
-    <p>Please choose a gift package from the <a href="/#gifts" style="color:#d4b870">gifts section</a>.</p>
+  <!-- COPY BLOCK -->
+  <div style="text-align:center;max-width:600px;width:100%;margin-bottom:44px;">
+    <h1 style="font-family:'Playfair Display',Georgia,serif;font-size:clamp(26px,5vw,40px);font-weight:700;font-style:italic;color:#c9a84c;line-height:1.2;margin-bottom:18px;">You've tried it. You loved it. Now give it.</h1>
+    <p style="font-size:18px;color:#f0e6d0;margin-bottom:14px;line-height:1.5;font-family:Georgia,serif;">The most unexpected gift they'll ever get.</p>
+    <p style="font-size:15px;color:#9e8c7a;line-height:1.75;font-family:Georgia,serif;">A live voice call with a historical or fictional icon — Einstein, Sherlock Holmes, Frankenstein, and more. They choose who they want to talk with. You give them the time.</p>
   </div>
 
-  <header id="page-header" style="display:none">
-    <h1 id="pkg-title">—</h1>
-    <p class="subtitle" id="pkg-desc">—</p>
-    <div class="price-badge" id="pkg-price">—</div>
-  </header>
+  <!-- CHARACTER PHOTO GRID -->
+  <div class="photo-grid" style="max-width:580px;width:100%;margin-bottom:52px;">
+    <div style="aspect-ratio:1;overflow:hidden;border-radius:3px;"><img src="images/einstein.webp"     alt="" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;filter:grayscale(20%) contrast(1.05);"></div>
+    <div style="aspect-ratio:1;overflow:hidden;border-radius:3px;"><img src="images/nostradamus.jpeg" alt="" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;filter:grayscale(20%) contrast(1.05);"></div>
+    <div style="aspect-ratio:1;overflow:hidden;border-radius:3px;"><img src="images/brucelee.jpeg"    alt="" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;filter:grayscale(20%) contrast(1.05);"></div>
+    <div style="aspect-ratio:1;overflow:hidden;border-radius:3px;"><img src="images/holmes.jpeg"      alt="" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;filter:grayscale(20%) contrast(1.05);"></div>
+    <div style="aspect-ratio:1;overflow:hidden;border-radius:3px;"><img src="images/aela.jpeg"        alt="" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;filter:grayscale(20%) contrast(1.05);"></div>
+    <div style="aspect-ratio:1;overflow:hidden;border-radius:3px;"><img src="images/bennet.jpeg"      alt="" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;filter:grayscale(20%) contrast(1.05);"></div>
+    <div style="aspect-ratio:1;overflow:hidden;border-radius:3px;"><img src="images/baldwin.jpeg"     alt="" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;filter:grayscale(20%) contrast(1.05);"></div>
+    <div style="aspect-ratio:1;overflow:hidden;border-radius:3px;"><img src="images/sittingbull.jpeg" alt="" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;filter:grayscale(20%) contrast(1.05);"></div>
+    <div style="aspect-ratio:1;overflow:hidden;border-radius:3px;"><img src="images/houdini.jpeg"     alt="" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;filter:grayscale(20%) contrast(1.05);"></div>
+    <div style="aspect-ratio:1;overflow:hidden;border-radius:3px;"><img src="images/frankenstein.jpeg" alt="" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;filter:grayscale(20%) contrast(1.05);"></div>
+    <div style="aspect-ratio:1;overflow:hidden;border-radius:3px;"><img src="images/davinci.jpeg"     alt="" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;filter:grayscale(20%) contrast(1.05);"></div>
+    <div style="aspect-ratio:1;overflow:hidden;border-radius:3px;"><img src="images/evangeline.jpeg"  alt="" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;filter:grayscale(20%) contrast(1.05);"></div>
+  </div>
 
-  <div class="card" id="purchase-form" style="display:none">
-    <label for="gifterName">Your name</label>
-    <input type="text" id="gifterName" placeholder="First name" autocomplete="given-name">
+  <!-- PACKAGE CARDS -->
+  <div id="packages" style="display:flex;flex-direction:column;gap:12px;max-width:480px;width:100%;margin-bottom:28px;">
+    <div class="pkg-card" id="card-gift-15" onclick="selectPackage('gift-15')"
+         style="background:#14110d;border:1px solid rgba(201,168,76,0.2);padding:22px 26px;display:flex;justify-content:space-between;align-items:center;">
+      <div>
+        <div style="font-family:'Space Mono',monospace;font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;color:#9a8f7a;margin-bottom:6px;">15 Minutes</div>
+        <div style="font-family:Georgia,serif;font-size:14px;color:#b0a898;line-height:1.5;">Your choice of any icon. Fully pre-paid. 90-day expiry.</div>
+      </div>
+      <div style="font-family:'Space Mono',monospace;font-size:1.2rem;color:#c9a84c;white-space:nowrap;margin-left:24px;">$12.95</div>
+    </div>
+    <div class="pkg-card" id="card-gift-20" onclick="selectPackage('gift-20')"
+         style="background:#14110d;border:1px solid rgba(201,168,76,0.2);padding:22px 26px;display:flex;justify-content:space-between;align-items:center;">
+      <div>
+        <div style="font-family:'Space Mono',monospace;font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;color:#9a8f7a;margin-bottom:6px;">20 Minutes</div>
+        <div style="font-family:Georgia,serif;font-size:14px;color:#b0a898;line-height:1.5;">Your choice of any icon. Fully pre-paid. 90-day expiry.</div>
+      </div>
+      <div style="font-family:'Space Mono',monospace;font-size:1.2rem;color:#c9a84c;white-space:nowrap;margin-left:24px;">$18.95</div>
+    </div>
+    <div class="pkg-card" id="card-gift-30" onclick="selectPackage('gift-30')"
+         style="background:#14110d;border:1px solid rgba(201,168,76,0.2);padding:22px 26px;display:flex;justify-content:space-between;align-items:center;">
+      <div>
+        <div style="font-family:'Space Mono',monospace;font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;color:#9a8f7a;margin-bottom:6px;">30 Minutes</div>
+        <div style="font-family:Georgia,serif;font-size:14px;color:#b0a898;line-height:1.5;">Your choice of any icon. Fully pre-paid. 90-day expiry.</div>
+      </div>
+      <div style="font-family:'Space Mono',monospace;font-size:1.2rem;color:#c9a84c;white-space:nowrap;margin-left:24px;">$27.99</div>
+    </div>
+  </div>
 
-    <label for="gifterEmail">Your email <span style="color:#5a4e3a">(we'll send you a copy of the code)</span></label>
-    <input type="email" id="gifterEmail" placeholder="you@example.com" autocomplete="email">
+  <!-- DELIVERY LINE -->
+  <p id="delivery-line" style="font-style:italic;font-family:Georgia,serif;font-size:14px;color:#9e8c7a;text-align:center;max-width:400px;margin-bottom:48px;line-height:1.65;">Delivered instantly by email. No app. No account. Just a phone call unlike anything else.</p>
 
-    <label for="recipientEmail">Recipient's email <span style="color:#5a4e3a">(we'll send the code directly to them)</span></label>
-    <input type="email" id="recipientEmail" placeholder="them@example.com">
+  <!-- PURCHASE FORM -->
+  <div id="purchase-form" style="display:none;width:100%;max-width:480px;background:#14110d;border:1px solid #2a2318;padding:36px 32px;">
+    <div style="text-align:center;margin-bottom:28px;padding-bottom:20px;border-bottom:1px solid #2a2318;">
+      <div id="selected-pkg-label" style="font-family:'Space Mono',monospace;font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;color:#9a8f7a;margin-bottom:8px;"></div>
+      <div id="selected-pkg-price" style="font-family:'Space Mono',monospace;font-size:1.5rem;color:#c9a84c;"></div>
+    </div>
 
-    <label>Card</label>
-    <div id="card-element" class="stripe-field"></div>
+    <label style="display:block;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#9e8c7a;margin-bottom:8px;font-family:'Space Mono',monospace;">Your name</label>
+    <input type="text" id="gifterName" placeholder="First name" autocomplete="given-name"
+           style="width:100%;background:#0d0b09;border:1px solid #2a2318;color:#e8e0d0;padding:12px 14px;font-family:Georgia,serif;font-size:15px;display:block;margin-bottom:20px;">
 
-    <div class="donation-note">
+    <label style="display:block;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#9e8c7a;margin-bottom:8px;font-family:'Space Mono',monospace;">Your email <span style="color:#5a4e3a;text-transform:none;letter-spacing:0;">(you'll get a copy)</span></label>
+    <input type="email" id="gifterEmail" placeholder="you@example.com" autocomplete="email"
+           style="width:100%;background:#0d0b09;border:1px solid #2a2318;color:#e8e0d0;padding:12px 14px;font-family:Georgia,serif;font-size:15px;display:block;margin-bottom:20px;">
+
+    <label style="display:block;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#9e8c7a;margin-bottom:8px;font-family:'Space Mono',monospace;">Recipient's email <span style="color:#5a4e3a;text-transform:none;letter-spacing:0;">(we'll send the code directly)</span></label>
+    <input type="email" id="recipientEmail" placeholder="them@example.com"
+           style="width:100%;background:#0d0b09;border:1px solid #2a2318;color:#e8e0d0;padding:12px 14px;font-family:Georgia,serif;font-size:15px;display:block;margin-bottom:20px;">
+
+    <label style="display:block;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#9e8c7a;margin-bottom:8px;font-family:'Space Mono',monospace;">Card</label>
+    <div id="card-element" style="background:#0d0b09;border:1px solid #2a2318;padding:13px 14px;margin-bottom:20px;"></div>
+
+    <div style="padding:14px 16px;background:#0d0b09;border-left:2px solid #3a3020;font-size:13px;color:#9e8c7a;line-height:1.6;font-family:Georgia,serif;">
       Every gift includes a $0.50 donation to rescue dogs — split between the ASPCA and Rochester Animal Services.
     </div>
 
-    <button class="submit-btn" id="submit-btn" disabled>Loading...</button>
-    <div id="error-msg"></div>
+    <button class="submit-btn" id="submit-btn" disabled
+            style="margin-top:20px;width:100%;background:#2a2318;border:1px solid #4a3e2e;color:#f0e6d0;font-family:'Space Mono',monospace;font-size:0.78rem;letter-spacing:0.1em;text-transform:uppercase;padding:18px;cursor:pointer;transition:background 0.2s,border-color 0.2s;">
+      Loading...
+    </button>
+    <div id="error-msg" style="margin-top:16px;color:#c0504a;font-size:14px;min-height:20px;font-family:Georgia,serif;"></div>
   </div>
 
-  <div id="success-screen">
-    <h2>Gift sent.</h2>
-    <p id="success-intro">Keep this code safe — it's the key to the conversation.</p>
+  <!-- SUCCESS SCREEN -->
+  <div id="success-screen" style="display:none;text-align:center;max-width:480px;width:100%;">
+    <h2 style="font-size:24px;font-weight:normal;color:#f0e6d0;margin-bottom:16px;font-family:Georgia,serif;">Gift sent.</h2>
+    <p style="color:#9e8c7a;font-size:15px;line-height:1.7;margin-bottom:20px;font-family:Georgia,serif;">Keep this code safe — it's the key to the conversation.</p>
 
-    <div class="code-display">
-      <div class="code-label">Access Code</div>
-      <div class="code-value" id="access-code-display">—</div>
+    <div style="background:#1e1a14;border:1px solid #4a3e2e;padding:24px;margin:0 0 28px;">
+      <div style="font-family:'Space Mono',monospace;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:#9e8c7a;margin-bottom:12px;">Access Code</div>
+      <div id="access-code-display" style="font-size:36px;letter-spacing:6px;color:#d4b870;font-family:'Space Mono',monospace;">—</div>
     </div>
 
-    <p id="email-note" style="display:none"></p>
+    <p id="email-note" style="display:none;color:#9e8c7a;font-size:15px;line-height:1.7;margin-bottom:20px;font-family:Georgia,serif;"></p>
 
-    <ol class="instructions" id="success-instructions">
-      <li>Share this code with your recipient (or let us do it — we've already emailed them).</li>
-      <li>They go to the character's page on TalkWithIcons.</li>
-      <li>They enter their name and phone number.</li>
-      <li>They click "Have a gift code?" and enter the code above.</li>
-      <li>Click Call — no card needed. The code expires in 90 days.</li>
+    <ol style="text-align:left;font-size:14px;color:#9e8c7a;line-height:1.7;list-style:decimal;padding-left:20px;font-family:Georgia,serif;">
+      <li style="margin-bottom:8px;">Share this code with your recipient (or let us do it — we've already emailed them).</li>
+      <li style="margin-bottom:8px;">They go to TalkWithIcons and pick any character they'd like to speak with.</li>
+      <li style="margin-bottom:8px;">They enter their name and phone number.</li>
+      <li style="margin-bottom:8px;">They click "Have a gift code?" and enter the code above.</li>
+      <li style="margin-bottom:8px;">Click Call — no card needed. The code expires in 90 days.</li>
     </ol>
 
-    <a id="character-link" href="/" class="home-link">View the character page →</a>
+    <a href="/" style="display:inline-block;margin-top:32px;color:#9e8c7a;text-decoration:none;font-size:14px;letter-spacing:0.05em;border-bottom:1px solid #3a3020;padding-bottom:2px;font-family:Georgia,serif;">← Back to TalkWithIcons</a>
   </div>
 
   <script src="https://js.stripe.com/v3/"></script>
   <script>
     const PACKAGES = {
-      'einstein-evening':    { character: 'einstein',   minutes: 15, priceCents: 1199, label: 'The Einstein Evening',       desc: '15 minutes with Albert Einstein',           charDisplay: 'Albert Einstein' },
-      'holmes-consultation': { character: 'holmes',     minutes: 20, priceCents: 1699, label: 'A Consultation with Holmes', desc: '20 minutes at 221B Baker Street',            charDisplay: 'Sherlock Holmes' },
-      'evangeline-reading':  { character: 'evangeline', minutes: 20, priceCents: 1699, label: 'A Reading with Evangeline',  desc: '20 minutes with Evangeline Adams',           charDisplay: 'Evangeline Adams' },
-      'aela-evening':        { character: 'aela',       minutes: 30, priceCents: 2699, label: 'An Evening with Aela',       desc: '30 minutes with the Pleiadian Liaison',     charDisplay: 'Aela' },
+      'gift-15': { minutes: 15, priceCents: 1295 },
+      'gift-20': { minutes: 20, priceCents: 1895 },
+      'gift-30': { minutes: 30, priceCents: 2799 },
     };
 
-    const params      = new URLSearchParams(window.location.search);
-    const packageSlug = params.get('package') || '';
-    const pkg         = PACKAGES[packageSlug];
-
+    let selectedSlug = null;
+    let pkg          = null;
     let stripe, cardElement;
-
-    if (!pkg) {
-      document.getElementById('not-found').style.display = 'block';
-    } else {
-      document.getElementById('page-header').style.display = 'block';
-      document.getElementById('purchase-form').style.display = 'block';
-      document.getElementById('pkg-title').textContent = pkg.label;
-      document.getElementById('pkg-desc').textContent  = pkg.desc + '. Fully pre-paid. 90-day expiry.';
-      document.getElementById('pkg-price').textContent = '$' + (pkg.priceCents / 100).toFixed(2);
-      document.getElementById('character-link').href   = '/' + pkg.character + '.html';
-      document.getElementById('character-link').textContent = 'See the ' + pkg.charDisplay + ' page →';
-      init();
-    }
+    let stripeReady  = false;
 
     function showTestModeBanner() {
       if (document.getElementById('test-mode-banner')) return;
@@ -330,10 +153,25 @@
       b.style.cssText = 'position:fixed;top:0;left:0;right:0;z-index:9999;background:#c0392b;color:#fff;text-align:center;padding:10px 16px;font-family:-apple-system,sans-serif;font-size:13px;font-weight:700;letter-spacing:0.08em;';
       b.textContent = 'TEST MODE ACTIVE — NO REAL CHARGES';
       document.body.prepend(b);
-      document.body.style.paddingTop = (parseInt(document.body.style.paddingTop || '0') + 44) + 'px';
     }
 
-    async function init() {
+    function fmt(cents) {
+      return '$' + (cents / 100).toFixed(2);
+    }
+
+    function updateSubmitBtn() {
+      const btn = document.getElementById('submit-btn');
+      if (!pkg || !stripeReady) {
+        btn.disabled    = true;
+        btn.textContent = pkg ? 'Loading...' : 'Select a package above';
+        return;
+      }
+      btn.disabled    = false;
+      btn.textContent = 'Give a Call as a Gift — ' + fmt(pkg.priceCents) + ' →';
+    }
+
+    async function initStripe() {
+      if (stripeReady) { updateSubmitBtn(); return; }
       try {
         const cfg = await fetch('/api/config').then(r => r.json());
         if (cfg.testMode) showTestModeBanner();
@@ -343,7 +181,7 @@
         }
         stripe = Stripe(cfg.stripePublicKey);
         const elements = stripe.elements({
-          fonts: [{ cssSrc: 'https://fonts.googleapis.com/css2?family=IM+Fell+English' }],
+          fonts: [{ cssSrc: 'https://fonts.googleapis.com/css2?family=Space+Mono&display=swap' }],
         });
         cardElement = elements.create('card', {
           style: {
@@ -361,41 +199,63 @@
         cardElement.on('change', evt => {
           document.getElementById('error-msg').textContent = evt.error ? evt.error.message : '';
         });
-        const btn = document.getElementById('submit-btn');
-        btn.disabled    = false;
-        btn.textContent = 'Send Gift — $' + (pkg.priceCents / 100).toFixed(2);
+        stripeReady = true;
+        updateSubmitBtn();
       } catch (err) {
-        console.error('init error:', err);
+        console.error('Stripe init error:', err);
         document.getElementById('error-msg').textContent = 'Unable to load payment form. Please refresh.';
       }
     }
 
+    function selectPackage(slug) {
+      document.querySelectorAll('.pkg-card').forEach(el => el.classList.remove('selected'));
+      document.getElementById('card-' + slug).classList.add('selected');
+      selectedSlug = slug;
+      pkg          = PACKAGES[slug];
+
+      document.getElementById('selected-pkg-label').textContent = pkg.minutes + ' Minutes';
+      document.getElementById('selected-pkg-price').textContent = fmt(pkg.priceCents);
+
+      const form     = document.getElementById('purchase-form');
+      const wasHidden = form.style.display === 'none';
+      form.style.display = 'block';
+
+      if (wasHidden) {
+        initStripe();
+        setTimeout(() => form.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
+      } else {
+        updateSubmitBtn();
+      }
+    }
+
+    const SPINNER = '<span style="display:inline-block;width:14px;height:14px;border:2px solid #4a3e2e;border-top-color:#d4b870;border-radius:50%;animation:spin 0.7s linear infinite;vertical-align:middle;margin-right:8px;"></span>';
+
     document.getElementById('submit-btn').addEventListener('click', async () => {
-      const gifterName    = document.getElementById('gifterName').value.trim();
-      const gifterEmail   = document.getElementById('gifterEmail').value.trim();
+      const gifterName     = document.getElementById('gifterName').value.trim();
+      const gifterEmail    = document.getElementById('gifterEmail').value.trim();
       const recipientEmail = document.getElementById('recipientEmail').value.trim();
-      const errorEl       = document.getElementById('error-msg');
-      const btn           = document.getElementById('submit-btn');
+      const errorEl        = document.getElementById('error-msg');
+      const btn            = document.getElementById('submit-btn');
 
       errorEl.textContent = '';
-
-      if (!gifterName) { errorEl.textContent = 'Please enter your name.'; return; }
+      if (!pkg)         { errorEl.textContent = 'Please select a package.'; return; }
+      if (!gifterName)  { errorEl.textContent = 'Please enter your name.'; return; }
 
       btn.disabled  = true;
-      btn.innerHTML = '<span class="spinner"></span>Processing...';
+      btn.innerHTML = SPINNER + 'Processing...';
 
       try {
         // Step 1: create PaymentIntent
         const purchaseRes = await fetch('/api/gift-purchase', {
           method:  'POST',
           headers: { 'Content-Type': 'application/json' },
-          body:    JSON.stringify({ packageSlug, gifterName, gifterEmail, recipientEmail }),
+          body:    JSON.stringify({ packageSlug: selectedSlug, gifterName, gifterEmail, recipientEmail }),
         });
         const purchaseData = await purchaseRes.json();
         if (!purchaseRes.ok) {
           errorEl.textContent = purchaseData.error || 'Purchase setup failed.';
           btn.disabled    = false;
-          btn.textContent = 'Send Gift — $' + (pkg.priceCents / 100).toFixed(2);
+          btn.textContent = 'Give a Call as a Gift — ' + fmt(pkg.priceCents) + ' →';
           return;
         }
 
@@ -407,18 +267,18 @@
         if (stripeError) {
           errorEl.textContent = stripeError.message;
           btn.disabled    = false;
-          btn.textContent = 'Send Gift — $' + (pkg.priceCents / 100).toFixed(2);
+          btn.textContent = 'Give a Call as a Gift — ' + fmt(pkg.priceCents) + ' →';
           return;
         }
 
         // Step 3: confirm with server → get access code
-        btn.innerHTML = '<span class="spinner"></span>Generating code...';
+        btn.innerHTML = SPINNER + 'Generating code...';
         const confirmRes = await fetch('/api/gift-confirm', {
           method:  'POST',
           headers: { 'Content-Type': 'application/json' },
           body:    JSON.stringify({
             paymentIntentId: paymentIntent.id,
-            packageSlug,
+            packageSlug:     selectedSlug,
             gifterName,
             gifterEmail,
             recipientEmail,
@@ -434,27 +294,27 @@
 
         // Step 4: show success
         document.getElementById('purchase-form').style.display = 'none';
-        document.getElementById('page-header').style.display   = 'none';
-        const successEl = document.getElementById('success-screen');
-        successEl.style.display = 'block';
+        document.getElementById('packages').style.display      = 'none';
+        document.getElementById('delivery-line').style.display = 'none';
+        document.getElementById('success-screen').style.display = 'block';
         document.getElementById('access-code-display').textContent = confirmData.accessCode;
 
         const emailNote = document.getElementById('email-note');
         if (recipientEmail && gifterEmail) {
-          emailNote.textContent  = `A copy has been sent to you at ${gifterEmail} and to ${recipientEmail}.`;
+          emailNote.textContent   = `A copy has been sent to you at ${gifterEmail} and to ${recipientEmail}.`;
           emailNote.style.display = 'block';
         } else if (recipientEmail) {
-          emailNote.textContent  = `A copy has been sent to ${recipientEmail}.`;
+          emailNote.textContent   = `A copy has been sent to ${recipientEmail}.`;
           emailNote.style.display = 'block';
         } else if (gifterEmail) {
-          emailNote.textContent  = `A copy has been sent to ${gifterEmail}.`;
+          emailNote.textContent   = `A copy has been sent to ${gifterEmail}.`;
           emailNote.style.display = 'block';
         }
       } catch (err) {
         console.error('purchase error:', err);
         errorEl.textContent = 'Something went wrong. Please try again.';
         btn.disabled    = false;
-        btn.textContent = 'Send Gift — $' + (pkg.priceCents / 100).toFixed(2);
+        btn.textContent = 'Give a Call as a Gift — ' + fmt(pkg.priceCents) + ' →';
       }
     });
   </script>

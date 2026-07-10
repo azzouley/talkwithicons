@@ -33,7 +33,7 @@ module.exports = async function handler(req, res) {
 
     const row = result.rows[0];
 
-    if (character && row.character_key !== character.toLowerCase()) {
+    if (character && row.character_key && row.character_key !== character.toLowerCase()) {
       return res.status(200).json({ valid: false, reason: 'This code is for a different character' });
     }
 

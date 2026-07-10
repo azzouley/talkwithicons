@@ -38,8 +38,10 @@ async function sendGifterEmail(gifterEmail, gifterName, pkg, accessCode, recipie
   const transporter = createTransporter();
   if (!transporter) return;
 
-  const charDisplay = CHARACTER_DISPLAY[pkg.character] || pkg.character;
-  const siteUrl     = process.env.SITE_URL || 'https://talkwithicons.vercel.app';
+  const siteUrl    = process.env.SITE_URL || 'https://talkwithicons.vercel.app';
+  const redeemNote = pkg.character
+    ? `The recipient enters this code on the ${CHARACTER_DISPLAY[pkg.character] || pkg.character} page at TalkWithIcons.`
+    : `The recipient goes to TalkWithIcons, picks any icon they'd like to speak with, and enters this code. No card needed.`;
 
   await transporter.sendMail({
     from:    `"TalkWithIcons" <${process.env.GMAIL_USER}>`,
@@ -54,8 +56,8 @@ async function sendGifterEmail(gifterEmail, gifterName, pkg, accessCode, recipie
                     background:#f5f0e8;padding:16px 24px;border-radius:8px;
                     text-align:center;margin:24px 0">${accessCode}</div>
         <p><strong>${pkg.description}.</strong><br>
-        The recipient enters this code on the ${charDisplay} page at TalkWithIcons.
-        No card needed. The code expires in 90 days.</p>
+        ${redeemNote}
+        The code expires in 90 days.</p>
         <p style="font-size:13px;color:#666">
           Your purchase included a $0.50 donation to rescue dogs — thank you.<br>
           Questions? Reply to this email.
@@ -69,9 +71,10 @@ async function sendRecipientEmail(recipientEmail, gifterName, pkg, accessCode) {
   const transporter = createTransporter();
   if (!transporter) return;
 
-  const charDisplay  = CHARACTER_DISPLAY[pkg.character] || pkg.character;
-  const siteUrl      = process.env.SITE_URL || 'https://talkwithicons.vercel.app';
-  const characterUrl = `${siteUrl}/${pkg.character}.html`;
+  const siteUrl = process.env.SITE_URL || 'https://talkwithicons.vercel.app';
+  const step1   = pkg.character
+    ? `Go to <a href="${siteUrl}/${pkg.character}.html">${CHARACTER_DISPLAY[pkg.character] || pkg.character} on TalkWithIcons</a>`
+    : `Go to <a href="${siteUrl}">TalkWithIcons</a> and pick any icon you'd like to speak with`;
 
   await transporter.sendMail({
     from:    `"TalkWithIcons" <${process.env.GMAIL_USER}>`,
@@ -86,7 +89,7 @@ async function sendRecipientEmail(recipientEmail, gifterName, pkg, accessCode) {
                     text-align:center;margin:24px 0">${accessCode}</div>
         <p><strong>How to use it:</strong></p>
         <ol style="padding-left:20px;line-height:1.8">
-          <li>Go to <a href="${characterUrl}">${charDisplay} on TalkWithIcons</a></li>
+          <li>${step1}</li>
           <li>Enter your name and phone number</li>
           <li>Click "Have a gift code?" and enter the code above</li>
           <li>Click Call — no card needed</li>

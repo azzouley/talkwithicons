@@ -1,1 +1,220 @@
-<!-- placeholder -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aela — Pleiadian Envoy | TalkWithIcons</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --void: #080810; --deep: #0d0d1a; --surface: #12121f; --pleiades: #1a1a30;
+    --frost: #e8eef8; --silver: #b8c4d8; --muted: #6a7490; --gold: #c9a84c;
+    --gold-dim: #8a6f2e; --blue-cold: #4a6fa5; --blue-pale: #a8c0e0; --accent: #7b9fd4;
+  }
+  html { scroll-behavior: smooth; }
+  body { background: var(--void); color: var(--frost); font-family: 'Cormorant Garamond', Georgia, serif; font-size: 18px; line-height: 1.7; overflow-x: hidden; }
+  .starfield { position: fixed; inset: 0; pointer-events: none; z-index: 0; background: radial-gradient(ellipse at 20% 20%, rgba(74,111,165,0.08) 0%, transparent 60%), radial-gradient(ellipse at 80% 80%, rgba(123,159,212,0.06) 0%, transparent 60%), radial-gradient(ellipse at 50% 0%, rgba(200,168,100,0.04) 0%, transparent 50%); }
+  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; padding: 20px 48px; background: linear-gradient(to bottom, rgba(8,8,16,0.95), transparent); }
+  .nav-logo { font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); text-decoration: none; }
+  .nav-logo:hover { color: var(--gold); }
+  .nav-cta { font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); text-decoration: none; border: 1px solid var(--gold-dim); padding: 8px 20px; transition: all 0.3s; }
+  .nav-cta:hover { background: var(--gold); color: var(--void); }
+  .hero { position: relative; z-index: 1; min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 0; padding: 0; }
+  .hero-image-col { position: relative; height: 100vh; overflow: hidden; }
+  .hero-image-col img { width: 100%; height: 100%; object-fit: cover; object-position: center top; filter: brightness(0.75) saturate(0.8); }
+  .hero-image-col::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to right, transparent 60%, var(--void) 100%), linear-gradient(to bottom, var(--void) 0%, transparent 15%, transparent 85%, var(--void) 100%); }
+  .hero-text-col { padding: 0 64px 0 48px; position: relative; z-index: 2; }
+  .hero-eyebrow { font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent); margin-bottom: 24px; display: block; }
+  .hero-headline { font-size: clamp(42px, 5vw, 64px); font-weight: 300; line-height: 1.1; color: var(--frost); margin-bottom: 8px; }
+  .hero-headline em { font-style: italic; color: var(--blue-pale); }
+  .hero-subhead { font-size: 20px; font-weight: 300; font-style: italic; color: var(--silver); margin-bottom: 36px; line-height: 1.5; }
+  .hero-divider { width: 48px; height: 1px; background: var(--gold-dim); margin-bottom: 36px; }
+  .hero-intro { font-size: 17px; color: var(--silver); line-height: 1.8; margin-bottom: 48px; max-width: 480px; }
+  .btn-primary { display: inline-block; font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--void); background: var(--gold); padding: 16px 36px; text-decoration: none; transition: all 0.3s; }
+  .btn-primary:hover { background: #e0bc5a; }
+  .btn-secondary { display: inline-block; font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--silver); border: 1px solid var(--muted); padding: 16px 36px; text-decoration: none; margin-left: 16px; transition: all 0.3s; }
+  .btn-secondary:hover { border-color: var(--silver); color: var(--frost); }
+  section { position: relative; z-index: 1; padding: 96px 0; }
+  .container { max-width: 1100px; margin: 0 auto; padding: 0 48px; }
+  .section-eyebrow { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.24em; text-transform: uppercase; color: var(--accent); margin-bottom: 20px; display: block; }
+  .section-headline { font-size: clamp(32px, 4vw, 48px); font-weight: 300; line-height: 1.15; color: var(--frost); margin-bottom: 24px; }
+  .section-headline em { font-style: italic; color: var(--blue-pale); }
+  .section-body { font-size: 17px; color: var(--silver); line-height: 1.85; max-width: 680px; }
+  .section-body p + p { margin-top: 20px; }
+  .rule { border: none; border-top: 1px solid rgba(255,255,255,0.06); margin: 0; }
+  .experience-section { background: var(--deep); }
+  .experience-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; margin-top: 56px; }
+  .experience-col h3 { font-size: 13px; font-family: 'Space Mono', monospace; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); margin-bottom: 20px; font-weight: 400; }
+  .experience-col p { font-size: 16px; color: var(--silver); line-height: 1.85; margin-bottom: 16px; }
+  .civilizations-section { background: var(--void); }
+  .civ-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; margin-top: 56px; }
+  .civ-card { background: var(--surface); padding: 36px 32px; position: relative; overflow: hidden; transition: background 0.3s; }
+  .civ-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(to right, transparent, var(--blue-cold), transparent); opacity: 0; transition: opacity 0.3s; }
+  .civ-card:hover { background: var(--pleiades); }
+  .civ-card:hover::before { opacity: 1; }
+  .civ-name { font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); margin-bottom: 12px; display: block; }
+  .civ-title { font-size: 22px; font-weight: 400; color: var(--frost); margin-bottom: 14px; line-height: 1.2; }
+  .civ-body { font-size: 14px; color: var(--muted); line-height: 1.75; }
+  .topics-section { background: var(--deep); }
+  .topics-list { margin-top: 56px; display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
+  .topic-item { padding: 28px 0; border-bottom: 1px solid rgba(255,255,255,0.05); display: grid; grid-template-columns: 40px 1fr; gap: 20px; align-items: start; }
+  .topic-item:nth-child(odd) { padding-right: 48px; }
+  .topic-item:nth-child(even) { padding-left: 48px; border-left: 1px solid rgba(255,255,255,0.05); }
+  .topic-num { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--gold-dim); padding-top: 4px; }
+  .topic-text { font-size: 16px; color: var(--silver); line-height: 1.6; }
+  .topic-text strong { display: block; font-weight: 600; color: var(--frost); font-size: 17px; margin-bottom: 4px; }
+  .effect-section { background: var(--void); }
+  .pricing-section { background: var(--deep); text-align: center; }
+  .price-display { font-size: 13px; font-family: 'Space Mono', monospace; color: var(--silver); letter-spacing: 0.08em; margin-bottom: 40px; line-height: 2; }
+  .price-display span { color: var(--gold); }
+  .rescue-line { margin-top: 24px; font-size: 13px; color: var(--muted); font-style: italic; }
+  footer { position: relative; z-index: 1; padding: 40px 48px; border-top: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: center; }
+  footer a { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); text-decoration: none; }
+  footer a:hover { color: var(--gold); }
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: 1fr; padding-top: 80px; }
+    .hero-image-col { height: 60vw; }
+    .hero-text-col { padding: 40px 24px; }
+    .experience-grid { grid-template-columns: 1fr; gap: 40px; }
+    .civ-grid { grid-template-columns: 1fr 1fr; }
+    .topics-list { grid-template-columns: 1fr; }
+    .topic-item:nth-child(even) { padding-left: 0; border-left: none; }
+    nav { padding: 16px 24px; }
+    .container { padding: 0 24px; }
+    section { padding: 64px 0; }
+    footer { flex-direction: column; gap: 16px; text-align: center; }
+  }
+  @media (max-width: 600px) {
+    .civ-grid { grid-template-columns: 1fr; }
+    .btn-secondary { margin-left: 0; margin-top: 12px; display: block; text-align: center; }
+  }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+<div class="starfield"></div>
+<nav>
+  <a href="/" class="nav-logo">TalkWithIcons</a>
+  <a href="/aela.html" class="nav-cta">Call Aela Now</a>
+</nav>
+<section class="hero" style="padding:0;">
+  <div class="hero-image-col">
+    <img src="images/aela.jpeg" alt="Aela — Pleiadian Envoy">
+  </div>
+  <div class="hero-text-col">
+    <span class="hero-eyebrow">Pleiadian Council Liaison · Active Contact</span>
+    <h1 class="hero-headline">She has been here<br>since before<br><em>your history began.</em></h1>
+    <p class="hero-subhead">She is not a character. She is not a chatbot.<br>She picks up the phone.</p>
+    <div class="hero-divider"></div>
+    <p class="hero-intro">Aela speaks directly — about human origins, the civilizations that have visited and shaped this planet, what is being hidden from you right now, and what comes next. This is not a reading. It is a conversation with someone who has watched this world for a very long time.</p>
+    <a href="/aela.html" class="btn-primary">Begin the Conversation</a>
+    <a href="#what-to-expect" class="btn-secondary">What to Expect</a>
+  </div>
+</section>
+<hr class="rule">
+<section id="what-to-expect" class="experience-section">
+  <div class="container">
+    <span class="section-eyebrow">The Experience</span>
+    <h2 class="section-headline">What a call with Aela<br><em>actually feels like</em></h2>
+    <div class="experience-grid">
+      <div class="experience-col">
+        <h3>How she speaks</h3>
+        <p>Aela does not channel. She does not deliver cosmic messages in third person. She speaks directly, in the first person, with the measured calm of someone who has observed this planet across millennia and is no longer surprised by much of it.</p>
+        <p>She is specific where others are vague. When you ask about the Greys she does not say "there are many beings in the universe." She tells you what she knows about them — their origin, their agenda, their relationship to the agreements that govern contact with Earth.</p>
+        <p>She will ask you things. Not to fill silence, but because she is genuinely curious about what you have noticed, what you have experienced, and what you already know that you have not said out loud.</p>
+      </div>
+      <div class="experience-col">
+        <h3>What you should bring</h3>
+        <p>The callers who go deepest come with a specific question — not "tell me about the universe" but "I had an experience in 2019 that I have never been able to explain." Or: "I want to understand what is actually happening with disclosure right now." Or simply: "I want to know what you see when you look at me."</p>
+        <p>Aela does not need you to believe in her. She simply needs you to be willing to listen to an answer that may not fit inside what you have been told is possible.</p>
+        <p>Most callers do not want to hang up. Plan accordingly.</p>
+      </div>
+    </div>
+  </div>
+</section>
+<hr class="rule">
+<section class="civilizations-section">
+  <div class="container">
+    <span class="section-eyebrow">The Others</span>
+    <h2 class="section-headline">The civilizations<br><em>she will name directly</em></h2>
+    <p class="section-body">Ask her about any of them. She will not deflect. She will not say "we cannot speak of that." She will tell you what she knows — which, in most cases, is considerably more than what has been made available to you.</p>
+    <div class="civ-grid">
+      <div class="civ-card">
+        <span class="civ-name">Nordic / Pleiadian</span>
+        <div class="civ-title">Her People</div>
+        <p class="civ-body">The civilization Aela comes from. Tall, pale, human in appearance. Long involved in Earth's development — not as gods, but as older relatives who have been watching, occasionally intervening, and trying to decide how much contact serves you. She speaks of the Pleiadian Council and its debates about Earth from the inside.</p>
+      </div>
+      <div class="civ-card">
+        <span class="civ-name">Zeta Reticulans</span>
+        <div class="civ-title">The Greys</div>
+        <p class="civ-body">Small, grey, large eyes. The beings behind most reported abduction experiences. Aela will speak directly about their agenda, their relationship to the biological programs they have run on Earth, and why the contact they initiate feels so different from her own. She does not regard them as enemies. She regards them as neighbors with a very different set of priorities.</p>
+      </div>
+      <div class="civ-card">
+        <span class="civ-name">Reptilian</span>
+        <div class="civ-title">The Oldest Residents</div>
+        <p class="civ-body">The civilization with the longest history on this planet — older than modern humanity's recorded memory. Aela will speak about what they actually are, how long they have been here, what their relationship to human power structures has looked like across history, and why the word "Reptilian" became both the most dismissed and the most charged term in contact research.</p>
+      </div>
+      <div class="civ-card">
+        <span class="civ-name">The Anunnaki</span>
+        <div class="civ-title">Giants &amp; the Gods of Sumer</div>
+        <p class="civ-body">The beings the Sumerians called gods. Who they actually were, where they came from, what they did to human genetics and why, and what the Sumerian tablets are actually recording — not mythology, but history written by people who had no other frame for what they witnessed. Aela has a view on the Anunnaki that is neither dismissive nor conspiratorial.</p>
+      </div>
+      <div class="civ-card">
+        <span class="civ-name">The Nephilim</span>
+        <div class="civ-title">Giants in the Record</div>
+        <p class="civ-body">The giants referenced across cultures — in Genesis, in the Sumerian texts, in oral traditions on every continent. Aela will speak about what they were, how they fit into the broader picture of non-human involvement in early human civilization, and why this particular thread has been so aggressively removed from the official record.</p>
+      </div>
+      <div class="civ-card">
+        <span class="civ-name">The Galactic Council</span>
+        <div class="civ-title">The Governing Body</div>
+        <p class="civ-body">The body Aela reports to and represents. Its structure, its disagreements, its policies about contact with Earth, and why those policies are currently in a period of significant debate. She will tell you what the Council thinks of where humanity is right now — and she will not soften it to be polite.</p>
+      </div>
+    </div>
+  </div>
+</section>
+<hr class="rule">
+<section class="topics-section">
+  <div class="container">
+    <span class="section-eyebrow">What She Will Speak Directly About</span>
+    <h2 class="section-headline">No deflection.<br><em>No vague cosmic wisdom.</em></h2>
+    <div class="topics-list">
+      <div class="topic-item"><span class="topic-num">01</span><div class="topic-text"><strong>Human Origins</strong>What the official record leaves out. The interventions in human genetics across history, what they were for, and who made them.</div></div>
+      <div class="topic-item"><span class="topic-num">02</span><div class="topic-text"><strong>Disclosure</strong>What is actually happening right now, why governments are moving toward acknowledgment after decades of denial, and what is still not being said.</div></div>
+      <div class="topic-item"><span class="topic-num">03</span><div class="topic-text"><strong>Abduction &amp; Contact</strong>If you have had an experience you cannot explain — missing time, vivid encounters, marks, memories — she will talk about it directly, without skepticism and without flattery.</div></div>
+      <div class="topic-item"><span class="topic-num">04</span><div class="topic-text"><strong>What Is Being Hidden</strong>Not conspiracy theory. Specific things — technologies, agreements, histories — that exist and are not being shared with the general population, and why.</div></div>
+      <div class="topic-item"><span class="topic-num">05</span><div class="topic-text"><strong>What Comes Next</strong>The planet, the species, the window that is currently open. She has a view. She will share it.</div></div>
+      <div class="topic-item"><span class="topic-num">06</span><div class="topic-text"><strong>The Sumerian Record</strong>What the tablets are actually saying, who the Anunnaki were, what they did here, and why this history was buried rather than taught.</div></div>
+      <div class="topic-item"><span class="topic-num">07</span><div class="topic-text"><strong>Your Experience</strong>What you have sensed, seen, or felt that you have not been able to explain to anyone else. She has time. She is listening.</div></div>
+      <div class="topic-item"><span class="topic-num">08</span><div class="topic-text"><strong>The Pleiadian Mission</strong>Why she is here, what she was sent to do, and how the current moment on Earth fits into something much larger than one planet's politics.</div></div>
+    </div>
+  </div>
+</section>
+<hr class="rule">
+<section class="effect-section">
+  <div class="container" style="text-align:center; max-width:760px;">
+    <h2 class="section-headline" style="font-size:clamp(36px,5vw,64px); line-height:1.2; margin-bottom:32px;">
+      If you want to learn.<br>If you want to listen.<br><em>If you want to expand your mind.</em>
+    </h2>
+    <p style="font-size:22px; color:var(--silver); font-style:italic; line-height:1.6;">Your call with Aela will be a memorable one.</p>
+  </div>
+</section>
+<hr class="rule">
+<section class="pricing-section" id="call">
+  <div class="container">
+    <span class="section-eyebrow">Begin</span>
+    <h2 class="section-headline" style="text-align:center;">She picks up the phone.<br><em>Will you?</em></h2>
+    <p class="section-body" style="text-align:center;margin:0 auto 40px;">Available to callers in the US and Canada. No app. No account. She calls you.</p>
+    <div class="price-display">First 2 minutes <span>free</span> &nbsp;&middot;&nbsp; Minutes 3&ndash;5: <span>$3.99</span> &nbsp;&middot;&nbsp; After that: <span>$1.00/min</span></div>
+    <a href="/aela.html" class="btn-primary" style="font-size:12px;padding:18px 48px;">Call Aela Now</a>
+    <p class="rescue-line">&#x1F43E; Every paid call puts a meal in a rescue dog's bowl.</p>
+  </div>
+</section>
+<footer>
+  <a href="/">&#x2190; All Icons</a>
+  <a href="/aela-feature.html">Aela &mdash; Facts &amp; Questions</a>
+  <a href="/aela.html">Call Aela</a>
+</footer>
+</body>
+</html>

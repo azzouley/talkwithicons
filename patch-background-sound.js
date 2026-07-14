@@ -20,7 +20,7 @@ const ASSISTANTS = [
   { name: 'brucelee',     id: '099b6a90-1fa9-4e6a-bc4d-8c127c6b1141' },
   { name: 'holmes',       id: 'b65fb3ab-df3c-4a5b-8a96-3e865d9315b6' },
   { name: 'aela',         id: '9647119e-7cf6-4d22-968d-25f3f455a834' },
-  { name: 'bennet',       id: '0560582f-8258-4803-8f2b-78b364fa23ca' },
+  { name: 'celeste',      id: '0560582f-8258-4803-8f2b-78b364fa23ca' },
   { name: 'baldwin',      id: '2f0047c1-eeb7-412d-b455-f8f731bdd232' },
   { name: 'evangeline',   id: '7fd88fa7-f013-4693-9b52-ab8937e4225d' },
   { name: 'houdini',      id: 'ca384c56-f276-4940-b20b-1ae939bef23b' },

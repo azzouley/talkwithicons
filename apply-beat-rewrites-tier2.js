@@ -18,7 +18,7 @@ const ASSISTANTS = [
   { name: 'einstein', id: 'b98cec95-47a4-455d-92c8-3a08aacb556d' },
   { name: 'holmes',   id: 'b65fb3ab-df3c-4a5b-8a96-3e865d9315b6' },
   { name: 'brucelee', id: '099b6a90-1fa9-4e6a-bc4d-8c127c6b1141' },
-  { name: 'bennet',   id: '0560582f-8258-4803-8f2b-78b364fa23ca' },
+  { name: 'celeste',  id: '0560582f-8258-4803-8f2b-78b364fa23ca' },
   { name: 'llorona',  id: 'a30672aa-7bbb-4cff-91ed-7a2f01b5823a' },
 ];
 

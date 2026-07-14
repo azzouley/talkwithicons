@@ -1,9 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Call Elizabeth Bennet — TalkWithIcons</title>
+  <title>Call Céleste — TalkWithIcons</title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -44,9 +44,7 @@
     .quote-mark { font-family: 'Playfair Display', serif; font-size: 8rem; color: rgba(201,168,76,0.1); line-height: 0.5; margin-bottom: 32px; display: block; }
     .quote-text { font-family: 'Playfair Display', serif; font-size: clamp(1.4rem, 3vw, 2.2rem); font-style: italic; font-weight: 400; line-height: 1.5; max-width: 760px; margin: 0 auto 24px; color: var(--warm-white); }
     .quote-attr { font-family: 'Space Mono', monospace; font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-dim); }
-    .starters-section { padding: 80px; }
-    .decision-section { display: grid; grid-template-columns: 3fr 2fr; align-items: start; }
-    .decision-form { padding: 80px 60px; position: sticky; top: 80px; background: var(--dark2); border-left: 1px solid rgba(201,168,76,0.12); }
+    .starters-section { padding: 100px 80px; max-width: 1100px; margin: 0 auto; }
     .section-label { font-family: 'Space Mono', monospace; font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; }
     .starters-intro { font-family: 'Crimson Pro', serif; font-size: 1.4rem; font-weight: 400; font-style: normal; border: 2px solid #c9a84c; padding: 20px 28px; display: block; margin: 0 auto 48px; text-align: center; }
     .starters-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 2px; }
@@ -72,7 +70,7 @@
     .btn-large:hover { background: var(--gold-light); transform: translateY(-2px); }
     .bottom-rescue { font-family: 'Space Mono', monospace; font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase; color: #6dbf8a; }
     .others-section { padding: 80px; border-top: 1px solid rgba(201,168,76,0.1); }
-    .others-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 2px; margin-top: 40px; }
+    .others-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; margin-top: 40px; }
     .other-card { background: var(--dark3); border: 1px solid rgba(201,168,76,0.1); padding: 20px 16px; text-align: center; text-decoration: none; transition: border-color 0.2s; }
     .other-card:hover { border-color: rgba(201,168,76,0.4); }
     .other-portrait { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; object-position: top; display: block; margin: 0 auto 10px; border: 1px solid rgba(201,168,76,0.2); }
@@ -87,13 +85,10 @@
       .hero { grid-template-columns: 1fr; } .hero-right { height: 50vh; } .hero-left { padding: 100px 32px 60px; }
       .bio-section { grid-template-columns: 1fr; padding: 60px 32px; } .bio-sidebar { position: static; }
       .starters-section, .others-section, .bottom-cta { padding: 60px 32px; }
-      .decision-section { grid-template-columns: 1fr; }
-      .decision-form { padding: 48px 32px; position: static; border-left: none; border-top: 1px solid rgba(201,168,76,0.12); }
       .others-grid { grid-template-columns: repeat(4, 1fr); } nav { padding: 16px 24px; }
       footer { flex-direction: column; gap: 16px; text-align: center; padding: 32px; } .quote-section { padding: 60px 32px; }
     }
   </style>
-<script src="https://js.stripe.com/v3/"></script>
 </head>
 <body>
 
@@ -105,156 +100,136 @@
 
   <div class="hero">
     <div class="hero-left">
-      <p class="hero-eyebrow">Heroine · Wit · Longbourn, 1813</p>
-      <h1 class="hero-name">Elizabeth<br>Bennet</h1>
-      <p class="hero-dates">Created 1813 · Jane Austen · Pride and Prejudice</p>
-      <p class="hero-tagline">"I could easily forgive his pride, if he had not mortified mine."</p>
+      <p class="hero-eyebrow">Vampire · 260 Years Old · New York</p>
+      <h1 class="hero-name">Céleste<br>Vaudreuil</h1>
+      <p class="hero-dates">Born 1758 · Beaune, Burgundy · Turned 1775</p>
+      <p class="hero-tagline">"An interesting question. I have been asked whether I was human, whether I was a witch, whether I was a demon. What would you like to know?"</p>
       <p class="hero-desc">
-        She is the most beloved heroine in the English language. Sharp, funny, fiercely
-        independent, and entirely unimpressed by wealth or rank alone. She chose love over
-        security at a time when that choice could ruin a woman. Talk to her about what
-        that cost — and what she gained.
+        Two hundred and sixty years old and speaking to you on the telephone, which still
+        amuses her slightly. She has watched the Revolution, two World Wars, and the moon
+        landing from very close range. Talk to her about what that much time actually does
+        to a person.
       </p>
+      <div class="call-box" id="call">
+        <p class="call-box-label">How It Works</p>
+        <p class="call-details">First 3 minutes free. Minutes 4 through 6 cost $2.99 total. After that, just $1.00 per minute.</p>
+        <form id="call-form" onsubmit="handleCall(event)" style="margin-bottom:12px;">
+          <input id="f-name" type="text" placeholder="First Name" required autocomplete="given-name"
+                 style="display:block;width:100%;margin-bottom:8px;padding:10px 14px;background:#1c1710;border:1px solid rgba(201,168,76,0.7);color:#f5f0e8;font-family:'Space Mono',monospace;font-size:0.82rem;outline:none;" />
+          <input id="f-phone" type="tel" placeholder="Phone Number" required autocomplete="tel"
+                 style="display:block;width:100%;margin-bottom:12px;padding:10px 14px;background:#1c1710;border:1px solid rgba(201,168,76,0.7);color:#f5f0e8;font-family:'Space Mono',monospace;font-size:0.82rem;outline:none;" />
+          <button type="submit" class="btn-call" style="width:100%;cursor:pointer;border:none;">Call Me Now →</button>
+        </form>
+        <p id="call-msg" style="font-size:0.85rem;margin-bottom:12px;display:none;"></p>
+        <p class="call-rescue">🐾 every paid call triggers at minimum a meal donation for a rescue dog</p>
+      </div>
     </div>
     <div class="hero-right">
-      <img class="hero-portrait" src="images/bennet.jpeg" alt="Elizabeth Bennet" />
+      <img class="hero-portrait" src="images/bennet.jpeg" alt="Céleste" />
       <div class="portrait-overlay"></div>
-      <p class="portrait-caption">Elizabeth Bennet · Longbourn, Hertfordshire</p>
+      <p class="portrait-caption">Céleste Vaudreuil · New York</p>
     </div>
   </div>
 
+  <div class="quote-section">
+    <span class="quote-mark">"</span>
+    <p class="quote-text">I have been asked whether I was human, whether I was a witch, whether I was a demon. AI is simply the current word for things people cannot categorize. What would you like to know?</p>
+    <p class="quote-attr">— Céleste Vaudreuil, b. 1758</p>
+  </div>
 
-<div class="bio-section">
+  <section class="starters-section">
+    <p class="section-label">What to Ask</p>
+    <p class="starters-intro">To jog your imagination, here are 6 conversation starters. But you are encouraged to ask absolutely anything you want including questions or unsolved mysteries of our present age. Your time with Céleste is your own!</p>
+    <div class="starters-grid">
+      <div class="starter-card">
+        <div class="starter-num">01</div>
+        <p class="starter-q">"Tell me about where you come from — the house, the street, the smell of it."</p>
+        <p class="starter-note">Beaune, the cooperage, the alehouse. She finds that the beginning of everything, and she remembers it better than most of the last hundred years.</p>
+      </div>
+      <div class="starter-card">
+        <div class="starter-num">02</div>
+        <p class="starter-q">"What is the thing about being human you imagine you'd miss most, if you lost it?"</p>
+        <p class="starter-note">She has had 260 years to think about this. Her answer is not what you'd expect.</p>
+      </div>
+      <div class="starter-card">
+        <div class="starter-num">03</div>
+        <p class="starter-q">"Have you ever seen something you genuinely could not explain?"</p>
+        <p class="starter-note">Yes. Several times. Ask her about Vienna, 1887 — she still hasn't worked out what she saw.</p>
+      </div>
+      <div class="starter-card">
+        <div class="starter-num">04</div>
+        <p class="starter-q">"What do the living get most wrong about death?"</p>
+        <p class="starter-note">She has watched enough people die to have a real answer, not a comforting one.</p>
+      </div>
+      <div class="starter-card">
+        <div class="starter-num">05</div>
+        <p class="starter-q">"What is the worst thing you have seen in two hundred and sixty years?"</p>
+        <p class="starter-note">Not done — seen. She won't answer quickly, and what she chooses to tell you may surprise you.</p>
+      </div>
+      <div class="starter-card">
+        <div class="starter-num">06</div>
+        <p class="starter-q">"What would you do differently, the night he walked into the alehouse?"</p>
+        <p class="starter-note">She pauses on this one. She would not say no. But she would not let him leave so easily either.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="bio-section">
     <div class="bio-sidebar">
       <div class="bio-fact">
         <p class="bio-fact-label">Home</p>
-        <p class="bio-fact-value">Longbourn House<br>Hertfordshire, England</p>
+        <p class="bio-fact-value">Upper West Side<br>New York City</p>
       </div>
       <div class="bio-fact">
-        <p class="bio-fact-label">Created By</p>
-        <p class="bio-fact-value">Jane Austen, 1813</p>
+        <p class="bio-fact-label">Born</p>
+        <p class="bio-fact-value">Beaune, Burgundy, 1758</p>
       </div>
       <div class="bio-fact">
-        <p class="bio-fact-label">Family</p>
-        <p class="bio-fact-value">Mr. and Mrs. Bennet, four sisters including Jane</p>
+        <p class="bio-fact-label">Turned</p>
+        <p class="bio-fact-value">1775, by a vampire she has never forgiven</p>
       </div>
       <div class="bio-fact">
         <p class="bio-fact-label">Known For</p>
-        <p class="bio-fact-value">Wit, independence, refusing to marry for money alone</p>
+        <p class="bio-fact-value">Dry wit, 260 years of unhurried attention, seeing exactly what people are and aren't saying</p>
       </div>
       <div class="bio-fact">
-        <p class="bio-fact-label">Married</p>
-        <p class="bio-fact-value">Mr. Fitzwilliam Darcy<br>Pemberley, Derbyshire</p>
+        <p class="bio-fact-label">Lived</p>
+        <p class="bio-fact-value">Paris · Vienna · Havana<br>New York since 1987</p>
       </div>
     </div>
     <div class="bio-content">
       <p>
-        Jane Austen called Elizabeth Bennet her favorite character — <strong>"as delightful a creature
-        as ever appeared in print."</strong> Two centuries of readers have agreed. Elizabeth is not
-        simply charming. She is a woman who thinks, argues, makes mistakes, and refuses to
-        be diminished by a world that has very little use for thinking women.
+        Céleste Vaudreuil is <strong>two hundred and sixty years old</strong> and has spent every
+        one of them paying close attention. She is not a monster from a story and not a myth
+        performing itself for an audience. She is a woman who has had two and a half centuries
+        to think about what she is, and has arrived at something between acceptance and dark
+        amusement.
       </p>
       <p>
-        The England of 1813 offered women of Elizabeth's class a narrow set of choices.
-        Marry well or face genteel poverty. Defer to fathers, brothers, husbands.
-        Accept the limits of your situation with grace. <strong>Elizabeth does none of these things
-        gracefully.</strong> She laughs at pomposity. She argues with men who expect agreement.
-        She turns down two marriage proposals — one from a man who would have saved her
-        family, one from the man she will eventually love — because the terms are wrong.
+        Born the daughter of a barrel-maker in provincial Burgundy, she worked an alehouse
+        from fourteen before a vampire she knew only briefly turned her in 1775 and
+        <strong>abandoned her the following spring.</strong> Seventeen and dead and alone, she
+        raised herself. She has never fully stopped being angry about it.
       </p>
       <p>
-        Her misjudgment of Wickham and Darcy is the engine of the novel and the thing
-        that makes her human. She is perceptive about everyone except the men she has
-        decided to feel strongly about. <em>When Darcy's letter forces her to see clearly,
-        she does not flinch from what it reveals about herself.</em> That willingness to be
-        wrong, and to admit it, is rarer than wit.
+        She was in the crowd at the Place de la Révolution. She stayed in occupied Paris
+        through four years of war. She watched the moon landing from a café table in the
+        6th arrondissement and felt, for the first time in decades, something she could only
+        call wonder. <em>Two hundred and sixty years gives a person a very long memory and
+        a very short list of things that still surprise her.</em> You might be one of them.
       </p>
       <p>
-        Austen based Elizabeth partly on herself — the second daughter, the sharp one,
-        the one who never quite fit the mold expected of her. <strong>Austen never married.</strong>
-        Elizabeth did, on her own terms, to a man who had to become worthy of her.
-        That is the wish Austen gave her character that life did not give herself.
+        She does not sleep in a coffin. She misses garlic. She has turned two people in
+        two hundred and sixty years and regrets both. <strong>She has time — a great deal
+        of it —</strong> and she is genuinely curious what you intend to do with the considerably
+        smaller amount that you have.
       </p>
     </div>
   </div>
 
-<div class="decision-section" id="call">
-  <section class="starters-section">
-    <p class="section-label">What to Ask</p>
-    <p class="starters-intro">Your time with Elizabeth Bennet is your own. She will take any questions you have and the more of yourself you input to the conversation, the richer it will become. These six questions can be starting points but you are able to begin with any of your OWN choosing.</p>
-    <div class="starters-grid">
-      <div class="starter-card">
-        <div class="starter-num">01</div>
-        <p class="starter-q">"What did you actually think of Darcy when you first met him?"</p>
-        <p class="starter-note">Before the letter. Before Pemberley. What she thought in that first room, and whether she'll admit it.</p>
-      </div>
-      <div class="starter-card">
-        <div class="starter-num">02</div>
-        <p class="starter-q">"Was refusing Collins the hardest thing you ever did?"</p>
-        <p class="starter-note">He was her family's financial salvation. She said no anyway. Ask her what that moment felt like.</p>
-      </div>
-      <div class="starter-card">
-        <div class="starter-num">03</div>
-        <p class="starter-q">"What do you make of women today?"</p>
-        <p class="starter-note">She fought for independence in a world that gave women almost none. She has opinions about 2026.</p>
-      </div>
-      <div class="starter-card">
-        <div class="starter-num">04</div>
-        <p class="starter-q">"Was your mother really as impossible as she seemed?"</p>
-        <p class="starter-note">Mrs. Bennet is one of literature's great comic embarrassments. But she was also trying to protect her daughters. Elizabeth knows this.</p>
-      </div>
-      <div class="starter-card">
-        <div class="starter-num">05</div>
-        <p class="starter-q">"Did you ever doubt your judgment — about Wickham, about Darcy?"</p>
-        <p class="starter-note">She was badly wrong about both men before she was right. She is honest enough to say so.</p>
-      </div>
-      <div class="starter-card">
-        <div class="starter-num">06</div>
-        <p class="starter-q">"What advice would you give a woman choosing between security and love?"</p>
-        <p class="starter-note">She lived that choice. Her answer is not simple, and she will not pretend it is.</p>
-      </div>
-    </div>
-  </section>
-  <div class="decision-form">
-    <div class="call-box">
-      <p class="call-box-label">How It Works</p>
-      <p class="call-region" style="font-size:0.78em; color:#f5f0e8; margin-bottom:4px;">Available to callers in the US and Canada.</p>
-      <p class="call-details">First 2 minutes free. Minutes 3 through 5 cost $3.99 total. After that, just $1.00 per minute.</p>
-      <form id="call-form" onsubmit="handleCall(event)" style="margin-bottom:12px;">
-        <input id="f-name" type="text" placeholder="First Name" required autocomplete="given-name"
-               style="display:block;width:100%;margin-bottom:8px;padding:10px 14px;background:#1c1710;border:1px solid rgba(201,168,76,0.7);color:#f5f0e8;font-family:'Space Mono',monospace;font-size:0.82rem;outline:none;" />
-        <input id="f-phone" type="tel" placeholder="Phone Number" required autocomplete="tel"
-               style="display:block;width:100%;margin-bottom:8px;padding:10px 14px;background:#1c1710;border:1px solid rgba(201,168,76,0.7);color:#f5f0e8;font-family:'Space Mono',monospace;font-size:0.82rem;outline:none;" />
-        <div id="card-element"
-             style="display:block;width:100%;margin-bottom:8px;padding:10px 14px;background:#1c1710;border:1px solid rgba(201,168,76,0.7);box-sizing:border-box;"></div>
-        <div id="card-errors"
-             style="color:#e07070;font-size:0.78rem;margin-bottom:8px;display:none;"></div>
-        <!-- Language toggle -->
-        <div style="margin-bottom: 1.25rem;">
-          <label style="display:block; font-size:0.72rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--muted); margin-bottom:0.6rem;">Language / Idioma</label>
-          <div style="display:flex; gap:1rem;">
-            <label style="display:flex; align-items:center; gap:0.4rem; cursor:pointer; font-size:0.9rem;">
-              <input type="radio" name="language" value="en" checked style="accent-color:var(--gold);"> English
-            </label>
-            <label style="display:flex; align-items:center; gap:0.4rem; cursor:pointer; font-size:0.9rem;">
-              <input type="radio" name="language" value="es" style="accent-color:var(--gold);"> Español
-            </label>
-          </div>
-        </div>
-        <p class="call-hint" style="font-size:0.85em; opacity:1.0; margin-top:6px;">If your icon pauses in thought, say &#34;yes&#34; or &#34;please continue&#34; to invite them to go on.</p>
-        <p style="font-family:'Space Mono',monospace;font-size:0.58rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(154,143,122,0.65);text-align:center;margin-bottom:10px;">By proceeding you consent to this call being transcribed for service quality purposes.</p>
-        <button type="submit" class="btn-call" style="width:100%;cursor:pointer;border:none;">Call Me Now →</button>
-      </form>
-      <p id="call-msg" style="font-size:0.85rem;margin-bottom:12px;display:none;"></p>
-      <p class="call-hint" style="font-size:0.85em; opacity:1.0; margin-top:6px;">If your icon pauses in thought, say &#34;yes&#34; or &#34;please continue&#34; to invite them to go on.</p>
-      <p class="call-rescue">🐾 every paid call triggers at minimum a meal donation for a rescue dog</p>
-    </div>
-  </div>
-</div>
-
-<div class="bottom-cta">
-    <h2>She chose truth<br>over comfort.<br><em style="color:var(--gold-light)">Every time.</em></h2>
-    <p>No script. No recordings. A live AI voice trained on Pride and Prejudice and Austen's letters — speaking only to you, only now.</p>
+  <div class="bottom-cta">
+    <h2>She has had<br>260 years to listen.<br><em style="color:var(--gold-light)">She is still curious.</em></h2>
+    <p>No script. No recordings. A live AI voice — speaking only to you, only now.</p>
     <a class="btn-large" href="#call">Start Your Free Call →</a>
     <br>
     <p class="bottom-rescue">🐾 every paid call triggers at minimum a meal donation for a rescue dog</p>
@@ -271,41 +246,25 @@
         <img class="other-portrait" src="images/nostradamus.jpeg" alt="Nostradamus" />
         <p class="other-name">Nostradamus</p>
       </a>
-      <a class="other-card" href="brucelee.html">
-        <img class="other-portrait" src="images/brucelee.jpeg" alt="Bruce Lee" />
-        <p class="other-name">Bruce Lee</p>
+      <a class="other-card" href="twain.html">
+        <img class="other-portrait" src="images/twain.png" alt="Mark Twain" />
+        <p class="other-name">Twain</p>
       </a>
       <a class="other-card" href="holmes.html">
         <img class="other-portrait" src="images/holmes.jpeg" alt="Sherlock Holmes" />
         <p class="other-name">Holmes</p>
       </a>
+      <a class="other-card" href="tesla.html">
+        <img class="other-portrait" src="images/tesla.jpeg" alt="Nikola Tesla" />
+        <p class="other-name">Tesla</p>
+      </a>
+      <a class="other-card" href="curie.html">
+        <img class="other-portrait" src="images/curie.jpeg" alt="Marie Curie" />
+        <p class="other-name">Curie</p>
+      </a>
       <a class="other-card" href="aela.html">
         <img class="other-portrait" src="images/aela.jpeg" alt="Aela" />
         <p class="other-name">Aela</p>
-      </a>
-      <a class="other-card" href="baldwin.html">
-        <img class="other-portrait" src="images/baldwin.jpeg" alt="James Baldwin" />
-        <p class="other-name">Baldwin</p>
-      </a>
-      <a class="other-card" href="evangeline.html">
-        <img class="other-portrait" src="images/evangeline.jpeg" alt="Evangeline Adams" />
-        <p class="other-name">Evangeline</p>
-      </a>
-      <a class="other-card" href="sittingbull.html">
-        <img class="other-portrait" src="images/sittingbull.jpeg" alt="Sitting Bull" />
-        <p class="other-name">Sitting Bull</p>
-      </a>
-      <a class="other-card" href="davinci.html">
-        <img class="other-portrait" src="images/davinci.jpeg" alt="Leonardo da Vinci" />
-        <p class="other-name">Da Vinci</p>
-      </a>
-      <a class="other-card" href="houdini.html">
-        <img class="other-portrait" src="images/houdini.jpeg" alt="Harry Houdini" />
-        <p class="other-name">Houdini</p>
-      </a>
-      <a class="other-card" href="frankenstein.html">
-        <img class="other-portrait" src="images/frankenstein.jpeg" alt="Frankenstein's Creature" />
-        <p class="other-name">Frankenstein</p>
       </a>
     </div>
   </div>
@@ -324,92 +283,30 @@
 #f-name::placeholder, #f-phone::placeholder { color: #c9a84c; opacity: 1; }
 </style>
 <script>
-let stripe, cardElement;
-
-async function initStripe() {
-  if (stripe) return;
-  try {
-    const cfg = await fetch(window.location.origin + '/api/config').then(r => r.json());
-    if (!cfg.stripePublicKey) throw new Error('Stripe not configured');
-    stripe = Stripe(cfg.stripePublicKey);
-    const elements = stripe.elements({
-      fonts: [{ cssSrc: 'https://fonts.googleapis.com/css2?family=Space+Mono&display=swap' }],
-    });
-    cardElement = elements.create('card', {
-      style: {
-        base: {
-          color: '#f5f0e8',
-          fontFamily: '"Space Mono", monospace',
-          fontSize: '13px',
-          '::placeholder': { color: 'rgba(245,240,232,0.4)' },
-        },
-        invalid: { color: '#e07070' },
-      },
-    });
-    cardElement.mount('#card-element');
-  } catch (err) {
-    console.error('Stripe init error:', err.message);
-  }
-}
-
-document.addEventListener('DOMContentLoaded', initStripe);
-
 async function handleCall(e) {
   e.preventDefault();
-  const form    = document.getElementById('call-form');
-  const btn     = form.querySelector('button[type="submit"]');
-  const msg     = document.getElementById('call-msg');
-  const errDiv  = document.getElementById('card-errors');
+  const form = document.getElementById('call-form');
+  const btn  = form.querySelector('button[type="submit"]');
+  const msg  = document.getElementById('call-msg');
   const firstName   = document.getElementById('f-name').value.trim();
   const phoneNumber = document.getElementById('f-phone').value.trim();
-
-  btn.disabled     = true;
-  btn.textContent  = 'Authorizing...';
-  msg.style.display    = 'none';
-  errDiv.style.display = 'none';
-
+  btn.disabled    = true;
+  btn.textContent = 'Connecting...';
+  msg.style.display = 'none';
   try {
-    const piRes  = await fetch(window.location.origin + '/api/create-payment-intent', {
+    const res  = await fetch(window.location.origin + '/api/start-call-basic', {
       method:  'POST',
       headers: { 'Content-Type': 'application/json' },
       body:    JSON.stringify({ firstName, phoneNumber, character: 'bennet' }),
     });
-    const piData = await piRes.json();
-    if (!piRes.ok) throw new Error(piData.error || 'Payment setup failed.');
-
-    const { error: stripeError, paymentIntent } = await stripe.confirmCardPayment(
-      piData.clientSecret,
-      { payment_method: { card: cardElement, billing_details: { name: firstName } } }
-    );
-    if (stripeError) {
-      errDiv.textContent   = stripeError.message;
-      errDiv.style.display = 'block';
-      btn.disabled    = false;
-      btn.textContent = 'Call Me Now →';
-      return;
-    }
-
-    btn.textContent = 'Connecting...';
-    const callRes  = await fetch(window.location.origin + '/api/start-call-basic', {
-      method:  'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body:    JSON.stringify({
-        firstName,
-        phoneNumber,
-        character:        'bennet',
-        language: document.querySelector('input[name=\"language\"]:checked').value,
-        paymentIntentId:  paymentIntent.id,
-        stripeCustomerId: piData.stripeCustomerId,
-      }),
-    });
-    const callData = await callRes.json();
-    if (callRes.ok) {
+    const data = await res.json();
+    if (res.ok) {
       msg.textContent   = 'Your call is connecting — pick up within 30 seconds.';
       msg.style.color   = '#6dbf8a';
       msg.style.display = 'block';
       btn.textContent   = 'Call Placed ✓';
     } else {
-      throw new Error(callData.error || 'Something went wrong.');
+      throw new Error(data.error || 'Something went wrong.');
     }
   } catch (err) {
     msg.textContent   = err.message;

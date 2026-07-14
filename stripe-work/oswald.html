@@ -1,9 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Call James Baldwin — TalkWithIcons</title>
+  <title>Call Lee Harvey Oswald — TalkWithIcons</title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -43,9 +43,7 @@
     .quote-mark { font-family: 'Playfair Display', serif; font-size: 8rem; color: rgba(201,168,76,0.1); line-height: 0.5; margin-bottom: 32px; display: block; }
     .quote-text { font-family: 'Playfair Display', serif; font-size: clamp(1.4rem, 3vw, 2.2rem); font-style: italic; font-weight: 400; line-height: 1.5; max-width: 760px; margin: 0 auto 24px; color: var(--warm-white); }
     .quote-attr { font-family: 'Space Mono', monospace; font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-dim); }
-    .starters-section { padding: 80px; }
-    .decision-section { display: grid; grid-template-columns: 3fr 2fr; align-items: start; }
-    .decision-form { padding: 80px 60px; position: sticky; top: 80px; background: var(--dark2); border-left: 1px solid rgba(201,168,76,0.12); }
+    .starters-section { padding: 100px 80px; max-width: 1100px; margin: 0 auto; }
     .section-label { font-family: 'Space Mono', monospace; font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; }
     .starters-intro { font-family: 'Crimson Pro', serif; font-size: 1.4rem; font-weight: 400; font-style: normal; border: 2px solid #c9a84c; padding: 20px 28px; display: block; margin: 0 auto 48px; text-align: center; }
     .starters-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 2px; }
@@ -71,7 +69,7 @@
     .btn-large:hover { background: var(--gold-light); transform: translateY(-2px); }
     .bottom-rescue { font-family: 'Space Mono', monospace; font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase; color: #6dbf8a; }
     .others-section { padding: 80px; border-top: 1px solid rgba(201,168,76,0.1); }
-    .others-grid { display: grid; grid-template-columns: repeat(8, 1fr); gap: 2px; margin-top: 40px; }
+    .others-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; margin-top: 40px; }
     .other-card { background: var(--dark3); border: 1px solid rgba(201,168,76,0.1); padding: 20px 16px; text-align: center; text-decoration: none; transition: border-color 0.2s; }
     .other-card:hover { border-color: rgba(201,168,76,0.4); }
     .other-portrait { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; object-position: top; display: block; margin: 0 auto 10px; border: 1px solid rgba(201,168,76,0.2); }
@@ -86,13 +84,10 @@
       .hero { grid-template-columns: 1fr; } .hero-right { height: 50vh; } .hero-left { padding: 100px 32px 60px; }
       .bio-section { grid-template-columns: 1fr; padding: 60px 32px; } .bio-sidebar { position: static; }
       .starters-section, .others-section, .bottom-cta { padding: 60px 32px; }
-      .decision-section { grid-template-columns: 1fr; }
-      .decision-form { padding: 48px 32px; position: static; border-left: none; border-top: 1px solid rgba(201,168,76,0.12); }
       .others-grid { grid-template-columns: repeat(4, 1fr); } nav { padding: 16px 24px; }
       footer { flex-direction: column; gap: 16px; text-align: center; padding: 32px; } .quote-section { padding: 60px 32px; }
     }
   </style>
-<script src="https://js.stripe.com/v3/"></script>
 </head>
 <body>
 
@@ -104,154 +99,132 @@
 
   <div class="hero">
     <div class="hero-left">
-      <p class="hero-eyebrow">Author · Essayist · Activist · 1924–1987</p>
-      <h1 class="hero-name">James<br>Baldwin</h1>
-      <p class="hero-dates">Born Harlem, New York · Died Saint-Paul-de-Vence, France</p>
-      <p class="hero-tagline">"Not everything that is faced can be changed. But nothing can be changed until it is faced."</p>
+      <p class="hero-eyebrow">Suspect · Patsy? · Dallas, 1963</p>
+      <h1 class="hero-name">Lee Harvey<br>Oswald</h1>
+      <p class="hero-dates">Born New Orleans, 1939 · Shot dead Dallas, 1963</p>
+      <p class="hero-tagline">"I'm just a patsy."</p>
       <p class="hero-desc">
-        Harlem, 1963. The writer who saw everything coming and said so plainly.
-        He has been watching America since his death and has things to say.
-        Precise, devastating, and full of love — Baldwin is the conversation
-        America has been postponing for sixty years.
+        Two days after the Kennedy assassination, Jack Ruby shot him dead in a
+        Dallas police basement before he ever stood trial. He never got to give
+        a defense. Sixty years later, he is convinced the official story left
+        out everything that actually mattered — and he is ready to say so.
       </p>
+      <div class="call-box" id="call">
+        <p class="call-box-label">How It Works</p>
+        <p class="call-details">First 3 minutes free. Minutes 4 through 6 cost $2.99 total. After that, just $1.00 per minute.</p>
+        <form id="call-form" onsubmit="handleCall(event)" style="margin-bottom:12px;">
+          <input id="f-name" type="text" placeholder="First Name" required autocomplete="given-name"
+                 style="display:block;width:100%;margin-bottom:8px;padding:10px 14px;background:#1c1710;border:1px solid rgba(201,168,76,0.7);color:#f5f0e8;font-family:'Space Mono',monospace;font-size:0.82rem;outline:none;" />
+          <input id="f-phone" type="tel" placeholder="Phone Number" required autocomplete="tel"
+                 style="display:block;width:100%;margin-bottom:12px;padding:10px 14px;background:#1c1710;border:1px solid rgba(201,168,76,0.7);color:#f5f0e8;font-family:'Space Mono',monospace;font-size:0.82rem;outline:none;" />
+          <button type="submit" class="btn-call" style="width:100%;cursor:pointer;border:none;">Call Me Now →</button>
+        </form>
+        <p id="call-msg" style="font-size:0.85rem;margin-bottom:12px;display:none;"></p>
+        <p class="call-rescue">🐾 every paid call triggers at minimum a meal donation for a rescue dog</p>
+      </div>
     </div>
     <div class="hero-right">
-      <img class="hero-portrait" src="images/baldwin.jpeg" alt="James Baldwin" />
+      <img class="hero-portrait" src="images/baldwin.jpeg" alt="Lee Harvey Oswald" />
       <div class="portrait-overlay"></div>
-      <p class="portrait-caption">James Baldwin · Harlem, 1963</p>
+      <p class="portrait-caption">Lee Harvey Oswald · Dallas, 1963</p>
     </div>
   </div>
 
+  <div class="quote-section">
+    <span class="quote-mark">"</span>
+    <p class="quote-text">I'm just a patsy.</p>
+    <p class="quote-attr">— Lee Harvey Oswald, November 22, 1963</p>
+  </div>
 
-<div class="bio-section">
+  <section class="starters-section">
+    <p class="section-label">What to Ask</p>
+    <p class="starters-intro">To jog your imagination, here are 6 conversation starters. But you are encouraged to ask absolutely anything you want. Your time with Lee Harvey Oswald is your own.</p>
+    <div class="starters-grid">
+      <div class="starter-card">
+        <div class="starter-num">01</div>
+        <p class="starter-q">"Tell me about growing up — thirteen moves before you were seventeen."</p>
+        <p class="starter-note">New Orleans, Fort Worth, New York. No father. Always the new kid, always looking for something to belong to.</p>
+      </div>
+      <div class="starter-card">
+        <div class="starter-num">02</div>
+        <p class="starter-q">"What was your relationship with the CIA — really?"</p>
+        <p class="starter-note">He insists he was an asset, not a defector, not a lone actor. Ask him what he says that actually meant.</p>
+      </div>
+      <div class="starter-card">
+        <div class="starter-num">03</div>
+        <p class="starter-q">"What do you believe actually happened in Dealey Plaza?"</p>
+        <p class="starter-note">He does not deny being in the building. He denies being the only shooter. He has sixty years of reasoning behind that claim.</p>
+      </div>
+      <div class="starter-card">
+        <div class="starter-num">04</div>
+        <p class="starter-q">"Why do you think Jack Ruby killed you?"</p>
+        <p class="starter-note">Not grief for the Kennedys, in his telling. Ask him what he believes Ruby was actually protecting.</p>
+      </div>
+      <div class="starter-card">
+        <div class="starter-num">05</div>
+        <p class="starter-q">"Did you shoot Officer Tippit?"</p>
+        <p class="starter-note">He will not deny it. He will tell you exactly what he says was happening in his head in that moment.</p>
+      </div>
+      <div class="starter-card">
+        <div class="starter-num">06</div>
+        <p class="starter-q">"What do you want people to understand that they still get wrong?"</p>
+        <p class="starter-note">He has a direct answer. It is not the one the Warren Commission gave.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="bio-section">
     <div class="bio-sidebar">
       <div class="bio-fact">
         <p class="bio-fact-label">Born</p>
-        <p class="bio-fact-value">August 2, 1924<br>Harlem, New York City</p>
+        <p class="bio-fact-value">October 18, 1939<br>New Orleans, Louisiana</p>
       </div>
       <div class="bio-fact">
         <p class="bio-fact-label">Died</p>
-        <p class="bio-fact-value">December 1, 1987<br>Saint-Paul-de-Vence, France</p>
-      </div>
-      <div class="bio-fact">
-        <p class="bio-fact-label">Major Works</p>
-        <p class="bio-fact-value">Go Tell It on the Mountain · The Fire Next Time · Giovanni's Room · Notes of a Native Son</p>
+        <p class="bio-fact-value">November 24, 1963<br>Dallas, Texas</p>
       </div>
       <div class="bio-fact">
         <p class="bio-fact-label">Known For</p>
-        <p class="bio-fact-value">Race, identity, love, exile — the American argument in its most precise form</p>
+        <p class="bio-fact-value">The assassination of President Kennedy — and the two days that followed</p>
+      </div>
+      <div class="bio-fact">
+        <p class="bio-fact-label">Never Stood Trial</p>
+        <p class="bio-fact-value">Shot by Jack Ruby before he could testify or be tried</p>
       </div>
       <div class="bio-fact">
         <p class="bio-fact-label">Cause of Death</p>
-        <p class="bio-fact-value">Stomach cancer, age 63</p>
+        <p class="bio-fact-value">Gunshot wound, Dallas Police HQ, age 24</p>
       </div>
     </div>
     <div class="bio-content">
       <p>
-        James Baldwin was born in Harlem in 1924, the eldest of nine children. His stepfather
-        was a preacher — a bitter, brilliant man who saw in Baldwin something he could not name
-        and could not love and could not destroy. <strong>At fourteen, Baldwin became a child preacher
-        himself,</strong> standing in a storefront church calling the spirit down, learning the power
-        of language before he understood it was his own.
+        Lee Harvey Oswald was born in New Orleans in 1939 and never had a settled home —
+        by his own account, thirteen moves before he turned seventeen. He joined the
+        Marines, defected to the Soviet Union in 1959, and returned three years later with
+        a Soviet wife, two daughters, and a State Department loan to pay his way home.
+        <strong>Nobody arrested him. Nobody questioned him at length.</strong>
       </p>
       <p>
-        He left for Paris in 1948 with forty dollars and finished <em>Go Tell It on the Mountain</em>
-        in a Swiss chalet in 1951. The novel was autobiographical and devastating. <strong>Notes of a
-        Native Son</strong> followed in 1955, then <em>Giovanni's Room</em> in 1956 — a gay love story
-        set in Paris, published by a Black writer at a moment when neither fact was commercially
-        acceptable. He published it anyway.
+        On November 22, 1963, he was arrested for the assassination of President Kennedy
+        and the shooting of Dallas police officer J.D. Tippit. He denied being the assassin.
+        In a hallway of the Dallas Police Department, surrounded by reporters, he said the
+        only thing he ever got to say publicly: <em>"I'm just a patsy."</em>
       </p>
       <p>
-        <strong>The Fire Next Time</strong> arrived in 1963, at the exact moment the country had to
-        confront itself. Two essays — one a letter to his nephew, one a meditation on race and
-        religion — that named what America was with a precision that has not dated. Baldwin went
-        south. He witnessed the fire hoses. He attended the funerals. He wrote what he saw.
+        <strong>Two days later, before any trial, Jack Ruby shot him dead</strong> in the
+        basement of Dallas police headquarters — live, on television. He never testified.
+        He never gave a defense. The Warren Commission told his story without him in the room.
       </p>
       <p>
-        He died in Saint-Paul-de-Vence on December 1, 1987, of stomach cancer, at sixty-three.
-        He was working on one more book. He did not finish it. The argument he spent his life
-        making is not finished either. That is why he is still worth talking to.
+        He has had sixty years to think about what he would say if anyone finally asked him
+        directly. Now someone is.
       </p>
     </div>
   </div>
 
-<div class="decision-section" id="call">
-  <section class="starters-section">
-    <p class="section-label">What to Ask</p>
-    <p class="starters-intro">Your time with James Baldwin is your own. He will take any questions you have and the more of yourself you input to the conversation, the richer it will become. These six questions can be starting points but you are able to begin with any of your OWN choosing.</p>
-    <div class="starters-grid">
-      <div class="starter-card">
-        <div class="starter-num">01</div>
-        <p class="starter-q">"Tell me about your early life — up to thirteen. What made you the person who had to write?"</p>
-        <p class="starter-note">Harlem, his stepfather's terrifying religiosity, the poverty and beauty side by side, the library on 135th Street where books became escape and then weapon.</p>
-      </div>
-      <div class="starter-card">
-        <div class="starter-num">02</div>
-        <p class="starter-q">"Why did you leave America for Paris?"</p>
-        <p class="starter-note">He left at 24 with forty dollars and no plan. He needed distance to write about the thing he could not escape. Ask him what he found when he got there.</p>
-      </div>
-      <div class="starter-card">
-        <div class="starter-num">03</div>
-        <p class="starter-q">"What was your relationship with Martin and Malcolm?"</p>
-        <p class="starter-note">He knew them both. He loved them both. He disagreed with both, in ways that mattered. The country's simplification of them would have frustrated him.</p>
-      </div>
-      <div class="starter-card">
-        <div class="starter-num">04</div>
-        <p class="starter-q">"You wrote about love more than anything. What did you mean by it?"</p>
-        <p class="starter-note">Not sentiment. Not romance. Something harder and more demanding. Ask him to unpack it. He will take his time.</p>
-      </div>
-      <div class="starter-card">
-        <div class="starter-num">05</div>
-        <p class="starter-q">"What do you see when you look at George Floyd, Black Lives Matter, the last five years?"</p>
-        <p class="starter-note">He predicted this. Not as prophecy — as a man who understood the pattern clearly. His response will not be simple.</p>
-      </div>
-      <div class="starter-card">
-        <div class="starter-num">06</div>
-        <p class="starter-q">"Is there hope?"</p>
-        <p class="starter-note">He will not give you false comfort. He will also not give you despair. Ask him what hope actually requires of the person hoping.</p>
-      </div>
-    </div>
-  </section>
-  <div class="decision-form">
-    <div class="call-box">
-      <p class="call-box-label">How It Works</p>
-      <p class="call-region" style="font-size:0.78em; color:#f5f0e8; margin-bottom:4px;">Available to callers in the US and Canada.</p>
-      <p class="call-details">First 2 minutes free. Minutes 3 through 5 cost $3.99 total. After that, just $1.00 per minute.</p>
-      <form id="call-form" onsubmit="handleCall(event)" style="margin-bottom:12px;">
-        <input id="f-name" type="text" placeholder="First Name" required autocomplete="given-name"
-               style="display:block;width:100%;margin-bottom:8px;padding:10px 14px;background:#1c1710;border:1px solid rgba(201,168,76,0.7);color:#f5f0e8;font-family:'Space Mono',monospace;font-size:0.82rem;outline:none;" />
-        <input id="f-phone" type="tel" placeholder="Phone Number" required autocomplete="tel"
-               style="display:block;width:100%;margin-bottom:8px;padding:10px 14px;background:#1c1710;border:1px solid rgba(201,168,76,0.7);color:#f5f0e8;font-family:'Space Mono',monospace;font-size:0.82rem;outline:none;" />
-        <div id="card-element"
-             style="display:block;width:100%;margin-bottom:8px;padding:10px 14px;background:#1c1710;border:1px solid rgba(201,168,76,0.7);box-sizing:border-box;"></div>
-        <div id="card-errors"
-             style="color:#e07070;font-size:0.78rem;margin-bottom:8px;display:none;"></div>
-        <!-- Language toggle -->
-        <div style="margin-bottom: 1.25rem;">
-          <label style="display:block; font-size:0.72rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--muted); margin-bottom:0.6rem;">Language / Idioma</label>
-          <div style="display:flex; gap:1rem;">
-            <label style="display:flex; align-items:center; gap:0.4rem; cursor:pointer; font-size:0.9rem;">
-              <input type="radio" name="language" value="en" checked style="accent-color:var(--gold);"> English
-            </label>
-            <label style="display:flex; align-items:center; gap:0.4rem; cursor:pointer; font-size:0.9rem;">
-              <input type="radio" name="language" value="es" style="accent-color:var(--gold);"> Español
-            </label>
-          </div>
-        </div>
-        <p class="call-hint" style="font-size:0.85em; opacity:1.0; margin-top:6px;">If your icon pauses in thought, say &#34;yes&#34; or &#34;please continue&#34; to invite them to go on.</p>
-        <p style="font-family:'Space Mono',monospace;font-size:0.58rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(154,143,122,0.65);text-align:center;margin-bottom:10px;">By proceeding you consent to this call being transcribed for service quality purposes.</p>
-        <button type="submit" class="btn-call" style="width:100%;cursor:pointer;border:none;">Call Me Now →</button>
-      </form>
-      <p id="call-msg" style="font-size:0.85rem;margin-bottom:12px;display:none;"></p>
-      <p class="call-hint" style="font-size:0.85em; opacity:1.0; margin-top:6px;">If your icon pauses in thought, say &#34;yes&#34; or &#34;please continue&#34; to invite them to go on.</p>
-      <p class="call-rescue">🐾 every paid call triggers at minimum a meal donation for a rescue dog</p>
-    </div>
-  </div>
-</div>
-
-<div class="bottom-cta">
-    <h2>The writer who told<br>America the truth.<br><em style="color:var(--gold-light)">Still talking.</em></h2>
-    <p>No script. No recordings. A live AI voice trained on Baldwin's essays, novels, and interviews — speaking only to you, only now.</p>
+  <div class="bottom-cta">
+    <h2>He never got<br>his day in court.<br><em style="color:var(--gold-light)">He's still talking.</em></h2>
+    <p>No script. No recordings. A live AI voice — speaking only to you, only now.</p>
     <a class="btn-large" href="#call">Start Your Free Call →</a>
     <br>
     <p class="bottom-rescue">🐾 every paid call triggers at minimum a meal donation for a rescue dog</p>
@@ -268,6 +241,10 @@
         <img class="other-portrait" src="images/nostradamus.jpeg" alt="Nostradamus" />
         <p class="other-name">Nostradamus</p>
       </a>
+      <a class="other-card" href="twain.html">
+        <img class="other-portrait" src="images/twain.png" alt="Mark Twain" />
+        <p class="other-name">Twain</p>
+      </a>
       <a class="other-card" href="brucelee.html">
         <img class="other-portrait" src="images/brucelee.jpeg" alt="Bruce Lee" />
         <p class="other-name">Bruce Lee</p>
@@ -280,29 +257,9 @@
         <img class="other-portrait" src="images/aela.jpeg" alt="Aela" />
         <p class="other-name">Aela</p>
       </a>
-      <a class="other-card" href="celeste.html">
-        <img class="other-portrait" src="images/celeste.jpeg" alt="Céleste" />
-        <p class="other-name">Céleste</p>
-      </a>
-      <a class="other-card" href="evangeline.html">
-        <img class="other-portrait" src="images/evangeline.jpeg" alt="Evangeline Adams" />
-        <p class="other-name">Evangeline</p>
-      </a>
-      <a class="other-card" href="sittingbull.html">
-        <img class="other-portrait" src="images/sittingbull.jpeg" alt="Sitting Bull" />
-        <p class="other-name">Sitting Bull</p>
-      </a>
-      <a class="other-card" href="davinci.html">
-        <img class="other-portrait" src="images/davinci.jpeg" alt="Leonardo da Vinci" />
-        <p class="other-name">Da Vinci</p>
-      </a>
-      <a class="other-card" href="houdini.html">
-        <img class="other-portrait" src="images/houdini.jpeg" alt="Harry Houdini" />
-        <p class="other-name">Houdini</p>
-      </a>
-      <a class="other-card" href="frankenstein.html">
-        <img class="other-portrait" src="images/frankenstein.jpeg" alt="Frankenstein's Creature" />
-        <p class="other-name">Frankenstein</p>
+      <a class="other-card" href="bennet.html">
+        <img class="other-portrait" src="images/bennet.jpeg" alt="Elizabeth Bennet" />
+        <p class="other-name">Bennet</p>
       </a>
     </div>
   </div>
@@ -321,92 +278,30 @@
 #f-name::placeholder, #f-phone::placeholder { color: #c9a84c; opacity: 1; }
 </style>
 <script>
-let stripe, cardElement;
-
-async function initStripe() {
-  if (stripe) return;
-  try {
-    const cfg = await fetch(window.location.origin + '/api/config').then(r => r.json());
-    if (!cfg.stripePublicKey) throw new Error('Stripe not configured');
-    stripe = Stripe(cfg.stripePublicKey);
-    const elements = stripe.elements({
-      fonts: [{ cssSrc: 'https://fonts.googleapis.com/css2?family=Space+Mono&display=swap' }],
-    });
-    cardElement = elements.create('card', {
-      style: {
-        base: {
-          color: '#f5f0e8',
-          fontFamily: '"Space Mono", monospace',
-          fontSize: '13px',
-          '::placeholder': { color: 'rgba(245,240,232,0.4)' },
-        },
-        invalid: { color: '#e07070' },
-      },
-    });
-    cardElement.mount('#card-element');
-  } catch (err) {
-    console.error('Stripe init error:', err.message);
-  }
-}
-
-document.addEventListener('DOMContentLoaded', initStripe);
-
 async function handleCall(e) {
   e.preventDefault();
-  const form    = document.getElementById('call-form');
-  const btn     = form.querySelector('button[type="submit"]');
-  const msg     = document.getElementById('call-msg');
-  const errDiv  = document.getElementById('card-errors');
+  const form = document.getElementById('call-form');
+  const btn  = form.querySelector('button[type="submit"]');
+  const msg  = document.getElementById('call-msg');
   const firstName   = document.getElementById('f-name').value.trim();
   const phoneNumber = document.getElementById('f-phone').value.trim();
-
-  btn.disabled     = true;
-  btn.textContent  = 'Authorizing...';
-  msg.style.display    = 'none';
-  errDiv.style.display = 'none';
-
+  btn.disabled    = true;
+  btn.textContent = 'Connecting...';
+  msg.style.display = 'none';
   try {
-    const piRes  = await fetch(window.location.origin + '/api/create-payment-intent', {
+    const res  = await fetch(window.location.origin + '/api/start-call-basic', {
       method:  'POST',
       headers: { 'Content-Type': 'application/json' },
       body:    JSON.stringify({ firstName, phoneNumber, character: 'baldwin' }),
     });
-    const piData = await piRes.json();
-    if (!piRes.ok) throw new Error(piData.error || 'Payment setup failed.');
-
-    const { error: stripeError, paymentIntent } = await stripe.confirmCardPayment(
-      piData.clientSecret,
-      { payment_method: { card: cardElement, billing_details: { name: firstName } } }
-    );
-    if (stripeError) {
-      errDiv.textContent   = stripeError.message;
-      errDiv.style.display = 'block';
-      btn.disabled    = false;
-      btn.textContent = 'Call Me Now →';
-      return;
-    }
-
-    btn.textContent = 'Connecting...';
-    const callRes  = await fetch(window.location.origin + '/api/start-call-basic', {
-      method:  'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body:    JSON.stringify({
-        firstName,
-        phoneNumber,
-        character:        'baldwin',
-        language: document.querySelector('input[name=\"language\"]:checked').value,
-        paymentIntentId:  paymentIntent.id,
-        stripeCustomerId: piData.stripeCustomerId,
-      }),
-    });
-    const callData = await callRes.json();
-    if (callRes.ok) {
+    const data = await res.json();
+    if (res.ok) {
       msg.textContent   = 'Your call is connecting — pick up within 30 seconds.';
       msg.style.color   = '#6dbf8a';
       msg.style.display = 'block';
       btn.textContent   = 'Call Placed ✓';
     } else {
-      throw new Error(callData.error || 'Something went wrong.');
+      throw new Error(data.error || 'Something went wrong.');
     }
   } catch (err) {
     msg.textContent   = err.message;

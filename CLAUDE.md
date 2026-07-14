@@ -21,7 +21,7 @@ TalkWithIcons is a paid voice phone call service. Users call AI versions of hist
 | 05 | Sherlock Holmes | 221B Baker Street | Fictional |
 | 06 | Aela | Pleiadian Council Liaison | Original |
 | 07 | Céleste Vaudreuil | Beaune, 1758 → New York, present day | Original |
-| 08 | James Baldwin | Harlem, 1963 | Historical |
+| 08 | Lee Harvey Oswald | Dallas, 1963 | Historical |
 | 09 | Evangeline Adams | New York City, 1930s | Historical |
 | 10 | Sitting Bull | Standing Rock, 1870s–1890 | Historical |
 | 11 | Houdini | New York City, 1920s | Historical |
@@ -102,7 +102,7 @@ Live on homepage (index.html #gifts section). Fully pre-paid named experiences w
 
 - ✅ Home page (index.html) — live
 - ✅ CLAUDE.md — this file
-- ✅ Character pages: einstein.html, holmes.html, baldwin.html, brucelee.html (confirmed complete)
+- ✅ Character pages: einstein.html, holmes.html, oswald.html, brucelee.html (confirmed complete)
 - ⚠️ Character pages: nostradamus.html, twain.html, aela.html, celeste.html, evangeline.html (exist but need audit — Other Icons grids still link to old tesla.html and curie.html)
 - ✅ /api/start-call-basic.js — outbound call trigger for 8 non-Evangeline characters
 - ✅ /api/start-call.js — outbound call trigger for Evangeline (includes natal chart calculation)
@@ -144,7 +144,7 @@ Live on homepage (index.html #gifts section). Fully pre-paid named experiences w
 | Holmes | b65fb3ab-df3c-4a5b-8a96-3e865d9315b6 | +15854073131 |
 | Aela | 9647119e-7cf6-4d22-968d-25f3f455a834 | +15854073813 (phone record 1a9e7507-9a7d-4931-b364-45943393d83d) |
 | Céleste | 0560582f-8258-4803-8f2b-78b364fa23ca | +15854073507 (phone record 895248b7-4aba-452a-b248-eb891feaaae2) |
-| Baldwin | 2f0047c1-eeb7-412d-b455-f8f731bdd232 | +15853781304 (phone record 19e49174-4ad9-4665-9c34-5fd36d68d213) |
+| Oswald | 2f0047c1-eeb7-412d-b455-f8f731bdd232 | +15853781304 (phone record 19e49174-4ad9-4665-9c34-5fd36d68d213) |
 | Evangeline Adams | 7fd88fa7-f013-4693-9b52-ab8937e4225d | +15853121359 |
 | ~~La Llorona~~ | ~~a30672aa-7bbb-4cff-91ed-7a2f01b5823a~~ | ~~+15854073097~~ (RETIRED 2026-07) |
 | Houdini | ca384c56-f276-4940-b20b-1ae939bef23b | (confirm in Vercel) |

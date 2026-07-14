@@ -1,6 +1,6 @@
 // patch-escape-hatch-fix.js
 // Adds escape hatch rule to 5 characters that failed in patch-escape-hatch.js:
-//   einstein, brucelee, holmes, baldwin — prose CRITICAL RULES, sep = \n\n\n\n---\n
+//   einstein, brucelee, holmes, oswald — prose CRITICAL RULES, sep = \n\n\n\n---\n
 //   sittingbull                         — numbered rules 1-8, sep = \n\n---\n
 // Idempotency guard: checks for "reset the count — do not append again"
 // Run: node --use-system-ca patch-escape-hatch-fix.js
@@ -19,7 +19,7 @@ const ASSISTANTS = [
   { name: 'einstein',    id: 'b98cec95-47a4-455d-92c8-3a08aacb556d' },
   { name: 'brucelee',   id: '099b6a90-1fa9-4e6a-bc4d-8c127c6b1141' },
   { name: 'holmes',     id: 'b65fb3ab-df3c-4a5b-8a96-3e865d9315b6' },
-  { name: 'baldwin',    id: '2f0047c1-eeb7-412d-b455-f8f731bdd232' },
+  { name: 'oswald',     id: '2f0047c1-eeb7-412d-b455-f8f731bdd232' },
   { name: 'sittingbull',id: 'b1f66c71-a2d6-4ae9-9ea1-7b72d4a423d0' },
 ];
 
@@ -82,7 +82,7 @@ function getPrompt(data) {
 
 // Find the separator that ends the CRITICAL RULES section.
 // Returns { idx, sep } or null.
-// Handles: \n\n---\n\n (standard), \n\n\n\n---\n (Einstein/Lee/Holmes/Baldwin), \n\n---\n (SittingBull)
+// Handles: \n\n---\n\n (standard), \n\n\n\n---\n (Einstein/Lee/Holmes/Oswald), \n\n---\n (SittingBull)
 function findCritSeparator(prompt) {
   const critIdx = prompt.indexOf('CRITICAL RULES');
   if (critIdx === -1) return null;

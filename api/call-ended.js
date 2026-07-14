@@ -17,7 +17,6 @@ const ASSISTANT_NAMES = {
   '0560582f-8258-4803-8f2b-78b364fa23ca': 'Céleste',
   '2f0047c1-eeb7-412d-b455-f8f731bdd232': 'James Baldwin',
   '7fd88fa7-f013-4693-9b52-ab8937e4225d': 'Evangeline Adams',
-  'a30672aa-7bbb-4cff-91ed-7a2f01b5823a': 'La Llorona',
 };
 
 const SITE_URL = process.env.SITE_URL || 'https://talkwithicons.vercel.app';

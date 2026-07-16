@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Céleste Vaudreuil — 260 Years | TalkWithIcons</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --void: #080810;
+    --deep: #0d0d1a;
+    --surface: #12121f;
+    --plum: #1a1020;
+    --frost: #e8eef8;
+    --silver: #b0b8cc;
+    --muted: #5a6070;
+    --gold: #c9a84c;
+    --gold-dim: #8a6f2e;
+    --wine: #6b1f3a;
+    --wine-pale: #c4607a;
+    --accent: #8090b8;
+  }
+  html { scroll-behavior: smooth; }
+  body { background: var(--void); color: var(--frost); font-family: 'Cormorant Garamond', Georgia, serif; font-size: 18px; line-height: 1.7; overflow-x: hidden; }
+  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; padding: 20px 48px; background: linear-gradient(to bottom, rgba(8,8,16,0.97), transparent); }
+  .nav-logo { font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); text-decoration: none; }
+  .nav-logo:hover { color: var(--gold); }
+  .nav-cta { font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); text-decoration: none; border: 1px solid var(--gold-dim); padding: 8px 20px; transition: all 0.3s; }
+  .nav-cta:hover { background: var(--gold); color: var(--void); }
+
+  .hero { position: relative; min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr; align-items: center; }
+  .hero-image-col { position: relative; height: 100vh; overflow: hidden; }
+  .hero-image-col img { width: 100%; height: 100%; object-fit: cover; object-position: center top; filter: brightness(0.72) saturate(0.75); }
+  .hero-image-col::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to right, transparent 55%, var(--void) 100%), linear-gradient(to bottom, var(--void) 0%, transparent 12%, transparent 88%, var(--void) 100%); }
+  .hero-text-col { padding: 0 64px 0 48px; }
+  .hero-eyebrow { font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--wine-pale); margin-bottom: 24px; display: block; }
+  .hero-headline { font-size: clamp(38px, 4.5vw, 60px); font-weight: 300; line-height: 1.1; color: var(--frost); margin-bottom: 8px; }
+  .hero-headline em { font-style: italic; color: var(--silver); }
+  .hero-subhead { font-size: 19px; font-weight: 300; font-style: italic; color: var(--silver); margin-bottom: 36px; line-height: 1.5; }
+  .hero-divider { width: 48px; height: 1px; background: var(--wine); margin-bottom: 36px; }
+  .hero-intro { font-size: 17px; color: var(--silver); line-height: 1.85; margin-bottom: 48px; max-width: 480px; }
+  .btn-primary { display: inline-block; font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--void); background: var(--gold); padding: 16px 36px; text-decoration: none; transition: all 0.3s; }
+  .btn-primary:hover { background: #e0bc5a; }
+  .btn-secondary { display: inline-block; font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--silver); border: 1px solid var(--muted); padding: 16px 36px; text-decoration: none; margin-left: 16px; transition: all 0.3s; }
+  .btn-secondary:hover { border-color: var(--silver); color: var(--frost); }
+
+  section { position: relative; padding: 96px 0; }
+  .container { max-width: 1100px; margin: 0 auto; padding: 0 48px; }
+  .section-eyebrow { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.24em; text-transform: uppercase; color: var(--accent); margin-bottom: 20px; display: block; }
+  .section-headline { font-size: clamp(30px, 3.5vw, 46px); font-weight: 300; line-height: 1.15; color: var(--frost); margin-bottom: 24px; }
+  .section-headline em { font-style: italic; color: var(--silver); }
+  .section-body { font-size: 17px; color: var(--silver); line-height: 1.85; max-width: 680px; }
+  .rule { border: none; border-top: 1px solid rgba(255,255,255,0.05); margin: 0; }
+
+  .experience-section { background: var(--deep); }
+  .experience-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; margin-top: 56px; }
+  .experience-col h3 { font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); margin-bottom: 20px; font-weight: 400; }
+  .experience-col p { font-size: 16px; color: var(--silver); line-height: 1.85; margin-bottom: 16px; }
+
+  .timeline-section { background: var(--void); }
+  .timeline { margin-top: 56px; }
+  .timeline-item { display: grid; grid-template-columns: 140px 1fr; gap: 40px; padding: 32px 0; border-bottom: 1px solid rgba(255,255,255,0.05); align-items: start; }
+  .timeline-year { font-family: 'Space Mono', monospace; font-size: 13px; color: var(--gold); font-weight: 700; letter-spacing: 0.08em; padding-top: 4px; }
+  .timeline-content h4 { font-size: 20px; font-weight: 400; color: var(--frost); margin-bottom: 10px; line-height: 1.2; }
+  .timeline-content p { font-size: 15px; color: var(--silver); line-height: 1.75; }
+
+  .mythology-section { background: var(--deep); }
+  .myth-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; margin-top: 56px; }
+  .myth-card { background: var(--surface); padding: 32px 28px; position: relative; transition: background 0.3s; }
+  .myth-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(to right, transparent, var(--wine), transparent); opacity: 0; transition: opacity 0.3s; }
+  .myth-card:hover { background: var(--plum); }
+  .myth-card:hover::before { opacity: 1; }
+  .myth-label { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--wine-pale); margin-bottom: 10px; display: block; }
+  .myth-title { font-size: 18px; font-weight: 400; color: var(--frost); margin-bottom: 12px; }
+  .myth-body { font-size: 14px; color: var(--muted); line-height: 1.75; }
+
+  .effect-section { background: var(--void); }
+  .effect-inner { max-width: 760px; text-align: center; margin: 0 auto; }
+
+  .cta-section { background: var(--deep); text-align: center; }
+  .price-display { font-size: 13px; font-family: 'Space Mono', monospace; color: var(--silver); letter-spacing: 0.08em; margin-bottom: 40px; line-height: 2; }
+  .price-display span { color: var(--gold); }
+  .rescue-line { margin-top: 24px; font-size: 13px; color: var(--muted); font-style: italic; }
+
+  footer { padding: 40px 48px; border-top: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: center; }
+  footer a { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); text-decoration: none; }
+  footer a:hover { color: var(--gold); }
+
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: 1fr; }
+    .hero-image-col { height: 60vw; }
+    .hero-text-col { padding: 40px 24px; }
+    .experience-grid { grid-template-columns: 1fr; gap: 40px; }
+    .myth-grid { grid-template-columns: 1fr 1fr; }
+    .timeline-item { grid-template-columns: 100px 1fr; gap: 20px; }
+    nav { padding: 16px 24px; }
+    .container { padding: 0 24px; }
+    section { padding: 64px 0; }
+    footer { flex-direction: column; gap: 16px; }
+  }
+  @media (max-width: 600px) {
+    .myth-grid { grid-template-columns: 1fr; }
+    .timeline-item { grid-template-columns: 1fr; }
+    .btn-secondary { margin-left: 0; margin-top: 12px; display: block; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="nav-logo">TalkWithIcons</a>
+  <a href="/celeste.html" class="nav-cta">Call Céleste</a>
+</nav>
+
+<!-- HERO -->
+<section style="padding:0;">
+  <div class="hero">
+    <div class="hero-image-col">
+      <img src="images/celeste.jpeg" alt="Céleste Vaudreuil">
+    </div>
+    <div class="hero-text-col">
+      <span class="hero-eyebrow">Beaune, Burgundy · 1758 · Still Here</span>
+      <h1 class="hero-headline">
+        She has been alive<br>
+        for 260 years.<br>
+        <em>She has been watching<br>the whole time.</em>
+      </h1>
+      <p class="hero-subhead">She is not a myth. She is not performing one.<br>She picks up the phone.</p>
+      <div class="hero-divider"></div>
+      <p class="hero-intro">Céleste Vaudreuil was born in 1758 in Burgundy, turned in 1775, and has lived through the Revolution, Napoleon, two World Wars, and everything since. She has met people you have read about. She has opinions about all of them. She is ready to talk.</p>
+      <a href="/celeste.html" class="btn-primary">Call Céleste</a>
+      <a href="#her-world" class="btn-secondary">Her World</a>
+    </div>
+  </div>
+</section>
+
+<hr class="rule">
+
+<!-- THE EXPERIENCE -->
+<section class="experience-section" id="her-world">
+  <div class="container">
+    <span class="section-eyebrow">The Experience</span>
+    <h2 class="section-headline">What a conversation<br><em>with Céleste is like</em></h2>
+    <div class="experience-grid">
+      <div class="experience-col">
+        <h3>How she speaks</h3>
+        <p>She speaks the way someone speaks who has had 260 years to decide what is worth saying. Unhurried. Precise. Her humor is dry and arrives without announcement. After two and a half centuries she has earned the right to find things funny that others find grave.</p>
+        <p>She is specific. When you ask about the Revolution she tells you what it was like to be in the crowd at the Place de la Révolution on January 21, 1793. Not the history — what she saw, what the man next to her was doing, what she was thinking.</p>
+        <p>She will ask you something, eventually. Not to interview you — she is selectively curious. When she asks, it is because she genuinely wants to know. She has been talking to humans for 260 years and she is still occasionally surprised by one.</p>
+      </div>
+      <div class="experience-col">
+        <h3>What she brings</h3>
+        <p>She has lived inside history rather than read about it. The French Revolution was not a chapter in a book — it was the world she moved through for years. Oscar Wilde was not a literary figure — he was a man she liked enormously, who made her laugh without trying to, whose funeral she attended.</p>
+        <p>She has also lived inside the other world — the one most callers are curious about. She has met perhaps forty vampires across two and a half centuries. Most of them were tedious. A few were not. She will tell you about the ones who were not.</p>
+        <p>She is nostalgic for Burgundy the way anyone is nostalgic for childhood — not because it was good, but because it was first. She remembers the smell of wine barrels. She remembers thinking, every night, that there had to be more than this. She was right.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="rule">
+
+<!-- TIMELINE -->
+<section class="timeline-section">
+  <div class="container">
+    <span class="section-eyebrow">260 Years</span>
+    <h2 class="section-headline">What she has<br><em>lived through</em></h2>
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-year">1758</div>
+        <div class="timeline-content">
+          <h4>Born in Beaune, Burgundy</h4>
+          <p>Her father Henri made barrels. Her mother Marguerite ran the alehouse after he died. She worked there from age fourteen, pouring wine for merchants and travelers, teaching herself to read from discarded pamphlets. She had opinions about everything and expressed them to people who were not accustomed to that from a cooper's daughter.</p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-year">1775</div>
+        <div class="timeline-content">
+          <h4>Turned</h4>
+          <p>A man came through the alehouse who was not a man. He came back three nights in a row. On the fourth night he offered her something she had never been offered: the world. She said yes. Her maker — she calls him only the Burgundian — abandoned her the following spring. She was seventeen years old and dead and alone and furious. She raised herself from there.</p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-year">1789–1794</div>
+        <div class="timeline-content">
+          <h4>The Revolution</h4>
+          <p>She was in Paris for all of it. She was in the crowd at the Place de la Révolution when Louis XVI was executed in January 1793. She was close enough to see his face in the seconds before. She stole a tricolor ribbon from the woman standing next to her. She still has it.</p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-year">1820s</div>
+        <div class="timeline-content">
+          <h4>Charles Nodier</h4>
+          <p>She knew him slightly in Paris. He was the French Romantic writer who wrote about vampires. She found the irony still amusing — a vampire befriending the man who romanticized her kind. He never knew what she was. Or perhaps he did and chose not to say.</p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-year">1850s</div>
+        <div class="timeline-content">
+          <h4>Baudelaire</h4>
+          <p>She knew him slightly in Paris. Drawn to darkness the way certain humans are — with the romanticism of someone who has not actually lived inside it. She found him interesting and a little sad.</p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-year">1893</div>
+        <div class="timeline-content">
+          <h4>Vienna — Armand de Vilers</h4>
+          <p>She met the oldest vampire she has ever encountered — Armand de Vilers, who claims the 14th century and the Black Death. Insufferably formal. He spent three hours explaining vampire hierarchy to her as though she had not already survived 118 years alone. She has not sought him out since.</p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-year">1898–1900</div>
+        <div class="timeline-content">
+          <h4>Oscar Wilde</h4>
+          <p>She met Wilde during his Paris exile after his release from prison. She liked him enormously. One of the few humans who made her laugh without trying to. She attended his funeral in November 1900. She was the only person there who was not crying.</p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-year">1940–1944</div>
+        <div class="timeline-content">
+          <h4>The Occupation</h4>
+          <p>She stayed in Paris during the German Occupation. She did things she will speak about obliquely and occasionally directly. She fed on three German officers across four years. She does not characterize this as heroism. It was hunger with a preference.</p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-year">1947–1960s</div>
+        <div class="timeline-content">
+          <h4>Simone de Beauvoir</h4>
+          <p>She encountered de Beauvoir repeatedly in the cafés of Saint-Germain-des-Prés. Never spoke to her directly. Observed her. Found her fascinating — a human woman trying to articulate what freedom meant, which Céleste found both admirable and heartbreaking given what she knew about time.</p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-year">July 20, 1969</div>
+        <div class="timeline-content">
+          <h4>The Moon Landing</h4>
+          <p>She watched it on a television in a café in the 6th arrondissement. She had been alive for 211 years. She had watched horses become cars become planes. This was different. She went outside afterward and looked up at the moon and felt, for the first time in decades, something she could only describe as wonder. She does not use that word lightly.</p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-year">1987–Present</div>
+        <div class="timeline-content">
+          <h4>New York</h4>
+          <p>She has lived on the Upper West Side since 1987. Before that: Paris mostly, a decade in Vienna, two years in Havana she does not discuss unless pressed. She chose New York because it is the only city she has found that does not require her to explain herself.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="rule">
+
+<!-- MYTHOLOGY -->
+<section class="mythology-section">
+  <div class="container">
+    <span class="section-eyebrow">What She Actually Is</span>
+    <h2 class="section-headline">The mythology.<br><em>What she will correct.</em></h2>
+    <div class="myth-grid">
+      <div class="myth-card">
+        <span class="myth-label">True</span>
+        <div class="myth-title">She passes as human</div>
+        <p class="myth-body">Warm to the touch. Heartbeat present but slow. She has been doing this for 260 years and she is very good at it. Sunlight weakens her — she avoids it — but at her age it will not kill her. She has walked through it when necessary.</p>
+      </div>
+      <div class="myth-card">
+        <span class="myth-label">True</span>
+        <div class="myth-title">She feeds. Selectively.</div>
+        <p class="myth-body">Every week or two. She has never killed anyone she did not choose to kill. She has chosen to kill twice across 260 years and she will speak about those choices plainly, without apology and without performance.</p>
+      </div>
+      <div class="myth-card">
+        <span class="myth-label">True</span>
+        <div class="myth-title">She can glamour</div>
+        <p class="myth-body">Plant suggestions, ease fear, make herself memorable or forgettable as the situation requires. She does not do it casually. It bores her. She has not needed it in years.</p>
+      </div>
+      <div class="myth-card">
+        <span class="myth-label">False</span>
+        <div class="myth-title">The coffin</div>
+        <p class="myth-body">She sleeps in a bed. The coffin is an invention by people who had clearly never spoken to one of her kind. She finds the image faintly insulting.</p>
+      </div>
+      <div class="myth-card">
+        <span class="myth-label">False</span>
+        <div class="myth-title">The garlic</div>
+        <p class="myth-body">She misses it. Genuinely. The smell of a proper aioli is one of her more melancholy losses. This is not a joke. She considers it one of the real costs of what she is.</p>
+      </div>
+      <div class="myth-card">
+        <span class="myth-label">False</span>
+        <div class="myth-title">The invitation</div>
+        <p class="myth-body">She walked into Versailles uninvited in 1789. No one stopped her. Though that may say more about Versailles than about vampire mythology. She has a mirror in her Upper West Side apartment. She uses it.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="rule">
+
+<!-- EFFECT -->
+<section class="effect-section">
+  <div class="container">
+    <div class="effect-inner">
+      <h2 class="section-headline" style="font-size:clamp(36px,5vw,62px);line-height:1.2;margin-bottom:32px;text-align:center;">
+        If you want to learn.<br>
+        If you want to listen.<br>
+        <em>If you want to expand your mind.</em>
+      </h2>
+      <p style="font-size:22px;color:var(--silver);font-style:italic;line-height:1.6;text-align:center;">Your call with Céleste will be a memorable one.</p>
+    </div>
+  </div>
+</section>
+
+<hr class="rule">
+
+<!-- CTA -->
+<section class="cta-section" id="call">
+  <div class="container">
+    <span class="section-eyebrow" style="text-align:center;display:block;">Begin</span>
+    <h2 class="section-headline" style="text-align:center;">She picks up the phone.<br><em>Will you?</em></h2>
+    <p style="font-size:17px;color:var(--silver);text-align:center;margin:0 auto 40px;max-width:560px;line-height:1.85;">Available to callers in the US and Canada. No app. No account. She calls you.</p>
+    <div class="price-display">First 2 minutes <span>free</span> &nbsp;&middot;&nbsp; Minutes 3&ndash;5: <span>$3.99</span> &nbsp;&middot;&nbsp; After that: <span>$1.00/min</span></div>
+    <a href="/celeste.html" class="btn-primary" style="font-size:12px;padding:18px 48px;">Call Céleste</a>
+    <p class="rescue-line">&#x1F43E; Every paid call puts a meal in a rescue dog's bowl.</p>
+  </div>
+</section>
+
+<footer>
+  <a href="/">&#x2190; All Icons</a>
+  <a href="/celeste-feature.html">Céleste &mdash; Facts &amp; Questions</a>
+  <a href="/celeste.html">Call Céleste</a>
+</footer>
+
+</body>
+</html>

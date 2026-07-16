@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lee Harvey Oswald — His Side | TalkWithIcons</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --void: #0a0a0a;
+    --deep: #111111;
+    --surface: #1a1a1a;
+    --frost: #e8e4dc;
+    --silver: #b0a89a;
+    --muted: #6a6058;
+    --gold: #c9a84c;
+    --gold-dim: #8a6f2e;
+    --red: #8b1a1a;
+    --red-pale: #c4453a;
+    --accent: #9aaa8c;
+  }
+  html { scroll-behavior: smooth; }
+  body { background: var(--void); color: var(--frost); font-family: 'Cormorant Garamond', Georgia, serif; font-size: 18px; line-height: 1.7; overflow-x: hidden; }
+  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; padding: 20px 48px; background: linear-gradient(to bottom, rgba(10,10,10,0.97), transparent); }
+  .nav-logo { font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); text-decoration: none; }
+  .nav-logo:hover { color: var(--gold); }
+  .nav-cta { font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); text-decoration: none; border: 1px solid var(--gold-dim); padding: 8px 20px; transition: all 0.3s; }
+  .nav-cta:hover { background: var(--gold); color: var(--void); }
+
+  /* HERO */
+  .hero { position: relative; min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr; align-items: center; }
+  .hero-image-col { position: relative; height: 100vh; overflow: hidden; }
+  .hero-image-col img { width: 100%; height: 100%; object-fit: cover; object-position: center top; filter: brightness(0.7) saturate(0.6); }
+  .hero-image-col::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to right, transparent 50%, var(--void) 100%), linear-gradient(to bottom, var(--void) 0%, transparent 12%, transparent 88%, var(--void) 100%); }
+  .hero-text-col { padding: 0 64px 0 48px; }
+  .hero-eyebrow { font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--red-pale); margin-bottom: 24px; display: block; }
+  .hero-headline { font-size: clamp(38px, 4.5vw, 60px); font-weight: 300; line-height: 1.1; color: var(--frost); margin-bottom: 8px; }
+  .hero-headline em { font-style: italic; color: var(--silver); }
+  .hero-subhead { font-size: 19px; font-weight: 300; font-style: italic; color: var(--silver); margin-bottom: 36px; line-height: 1.5; }
+  .hero-divider { width: 48px; height: 1px; background: var(--red); margin-bottom: 36px; }
+  .hero-intro { font-size: 17px; color: var(--silver); line-height: 1.85; margin-bottom: 48px; max-width: 480px; }
+  .btn-primary { display: inline-block; font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--void); background: var(--gold); padding: 16px 36px; text-decoration: none; transition: all 0.3s; }
+  .btn-primary:hover { background: #e0bc5a; }
+  .btn-secondary { display: inline-block; font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--silver); border: 1px solid var(--muted); padding: 16px 36px; text-decoration: none; margin-left: 16px; transition: all 0.3s; }
+  .btn-secondary:hover { border-color: var(--silver); color: var(--frost); }
+
+  /* SECTIONS */
+  section { position: relative; padding: 96px 0; }
+  .container { max-width: 1100px; margin: 0 auto; padding: 0 48px; }
+  .section-eyebrow { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.24em; text-transform: uppercase; color: var(--accent); margin-bottom: 20px; display: block; }
+  .section-headline { font-size: clamp(30px, 3.5vw, 46px); font-weight: 300; line-height: 1.15; color: var(--frost); margin-bottom: 24px; }
+  .section-headline em { font-style: italic; color: var(--silver); }
+  .section-body { font-size: 17px; color: var(--silver); line-height: 1.85; max-width: 680px; }
+  .section-body p + p { margin-top: 20px; }
+  .rule { border: none; border-top: 1px solid rgba(255,255,255,0.05); margin: 0; }
+
+  /* VOICE SECTION */
+  .voice-section { background: var(--deep); }
+  .voice-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; margin-top: 56px; }
+  .voice-col h3 { font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold); margin-bottom: 20px; font-weight: 400; }
+  .voice-col p { font-size: 16px; color: var(--silver); line-height: 1.85; margin-bottom: 16px; }
+
+  /* WHAT HE SAYS — key claims */
+  .claims-section { background: var(--void); }
+  .claims-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; margin-top: 56px; }
+  .claim-card { background: var(--surface); padding: 36px 32px; position: relative; overflow: hidden; transition: background 0.3s; }
+  .claim-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(to right, transparent, var(--red), transparent); opacity: 0; transition: opacity 0.3s; }
+  .claim-card:hover { background: #1f1a1a; }
+  .claim-card:hover::before { opacity: 1; }
+  .claim-label { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--red-pale); margin-bottom: 12px; display: block; }
+  .claim-title { font-size: 20px; font-weight: 400; color: var(--frost); margin-bottom: 14px; line-height: 1.25; }
+  .claim-body { font-size: 14px; color: var(--muted); line-height: 1.75; }
+
+  /* DEAD WITNESSES */
+  .witnesses-section { background: var(--deep); }
+  .witness-list { margin-top: 56px; }
+  .witness-item { display: grid; grid-template-columns: 200px 1fr; gap: 40px; padding: 28px 0; border-bottom: 1px solid rgba(255,255,255,0.05); align-items: start; }
+  .witness-name { font-family: 'Space Mono', monospace; font-size: 11px; color: var(--frost); font-weight: 700; letter-spacing: 0.06em; }
+  .witness-detail { font-size: 15px; color: var(--silver); line-height: 1.7; }
+  .witness-date { font-family: 'Space Mono', monospace; font-size: 9px; color: var(--red-pale); letter-spacing: 0.14em; margin-top: 6px; display: block; }
+
+  /* THE VOICE CLONE */
+  .voice-clone-section { background: var(--void); }
+  .voice-clone-inner { max-width: 760px; text-align: center; margin: 0 auto; }
+
+  /* QUESTIONS */
+  .questions-section { background: var(--deep); }
+  .questions-list { margin-top: 56px; display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
+  .question-item { padding: 28px 0; border-bottom: 1px solid rgba(255,255,255,0.05); display: grid; grid-template-columns: 40px 1fr; gap: 20px; align-items: start; }
+  .question-item:nth-child(odd) { padding-right: 48px; }
+  .question-item:nth-child(even) { padding-left: 48px; border-left: 1px solid rgba(255,255,255,0.05); }
+  .question-num { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--gold-dim); padding-top: 4px; }
+  .question-text { font-size: 16px; color: var(--silver); line-height: 1.6; font-style: italic; }
+
+  /* CTA */
+  .cta-section { background: var(--deep); text-align: center; }
+  .price-display { font-size: 13px; font-family: 'Space Mono', monospace; color: var(--silver); letter-spacing: 0.08em; margin-bottom: 40px; line-height: 2; }
+  .price-display span { color: var(--gold); }
+  .rescue-line { margin-top: 24px; font-size: 13px; color: var(--muted); font-style: italic; }
+
+  footer { padding: 40px 48px; border-top: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: center; }
+  footer a { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); text-decoration: none; }
+  footer a:hover { color: var(--gold); }
+
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: 1fr; }
+    .hero-image-col { height: 60vw; }
+    .hero-text-col { padding: 40px 24px; }
+    .voice-grid { grid-template-columns: 1fr; gap: 40px; }
+    .claims-grid { grid-template-columns: 1fr 1fr; }
+    .witness-item { grid-template-columns: 1fr; gap: 8px; }
+    .questions-list { grid-template-columns: 1fr; }
+    .question-item:nth-child(even) { padding-left: 0; border-left: none; }
+    nav { padding: 16px 24px; }
+    .container { padding: 0 24px; }
+    section { padding: 64px 0; }
+    footer { flex-direction: column; gap: 16px; }
+  }
+  @media (max-width: 600px) {
+    .claims-grid { grid-template-columns: 1fr; }
+    .btn-secondary { margin-left: 0; margin-top: 12px; display: block; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="nav-logo">TalkWithIcons</a>
+  <a href="/oswald.html" class="nav-cta">Talk to Oswald</a>
+</nav>
+
+<!-- HERO -->
+<section style="padding:0;">
+  <div class="hero">
+    <div class="hero-image-col">
+      <img src="images/oswald.jpeg" alt="Lee Harvey Oswald — Dallas Police, November 23, 1963">
+    </div>
+    <div class="hero-text-col">
+      <span class="hero-eyebrow">Dallas Police · November 23, 1963 · Never Tried</span>
+      <h1 class="hero-headline">
+        He said he was<br>
+        a patsy.<br>
+        <em>Two days later,<br>Ruby made sure<br>he couldn't explain.</em>
+      </h1>
+      <p class="hero-subhead">This is the conversation he never got to have.</p>
+      <div class="hero-divider"></div>
+      <p class="hero-intro">Lee Harvey Oswald was shot dead in the basement of the Dallas Police Department before he could stand trial. He told reporters he was a patsy. He never got to say what he meant. Now he does — in his own voice, cloned from his 1963 radio interviews.</p>
+      <a href="/oswald.html" class="btn-primary">Talk to Oswald</a>
+      <a href="#what-he-says" class="btn-secondary">What He Claims</a>
+    </div>
+  </div>
+</section>
+
+<hr class="rule">
+
+<!-- THE VOICE -->
+<section class="voice-clone-section">
+  <div class="container">
+    <div class="voice-clone-inner">
+      <span class="section-eyebrow">The Voice</span>
+      <h2 class="section-headline" style="text-align:center;">His actual voice.<br><em>Cloned from 1963.</em></h2>
+      <p style="font-size:17px; color:var(--silver); line-height:1.85; text-align:center;">On August 17 and 21, 1963, Oswald debated anti-Castro Cuban exiles on WDSU radio in New Orleans — three months before the assassination. His voice was recorded. Those recordings still exist. The voice you hear when you call is cloned directly from that audio. This is not an impression. This is his actual voice, speaking words he never got to say.</p>
+    </div>
+  </div>
+</section>
+
+<hr class="rule">
+
+<!-- WHAT HE SAYS -->
+<section id="what-he-says" class="claims-section">
+  <div class="container">
+    <span class="section-eyebrow">What He Claims</span>
+    <h2 class="section-headline">His position.<br><em>In his own words.</em></h2>
+    <p class="section-body">He does not deny everything. He admits what he believes is true and denies what he believes is false. That is a more interesting conversation than either full confession or full denial.</p>
+    <div class="claims-grid">
+      <div class="claim-card">
+        <span class="claim-label">Admits</span>
+        <div class="claim-title">He was in the building</div>
+        <p class="claim-body">He does not deny being at the Texas School Book Depository on November 22. He does not deny owning a rifle. He does not deny the Walker attempt. He does not deny shooting Tippit — and he explains why, in the panicked terms of a man who knew he was being set up and was running out of time.</p>
+      </div>
+      <div class="claim-card">
+        <span class="claim-label">Denies</span>
+        <div class="claim-title">That he acted alone</div>
+        <p class="claim-body">He was not the only shooter. His position in the Depository was behind the motorcade. The fatal head shot drove Kennedy forward and to the left — toward the shooter, not away from him. He may have fired. He did not fire the shot that killed the president.</p>
+      </div>
+      <div class="claim-card">
+        <span class="claim-label">Believes</span>
+        <div class="claim-title">He was a CIA asset</div>
+        <p class="claim-body">At least 35 CIA employees tracked his movements between 1959 and 1963. His Soviet defection was a dangle — not genuine. He came back with a State Department loan. Nobody arrested him. He was run as an asset in New Orleans, his pro-Castro identity deliberately constructed for purposes he was not fully told.</p>
+      </div>
+      <div class="claim-card">
+        <span class="claim-label">On Walker</span>
+        <div class="claim-title">He missed at 30 yards</div>
+        <p class="claim-body">Stationary target, lit window, 30 yards, and he missed. Walker called him a lousy shot. The Warren Commission then asks people to believe the same man took three shots in under six seconds at a moving target in a motorcade from 88 yards and hit twice. The Dallas police found a steel-jacketed bullet. His rifle uses copper-jacketed ammunition. The FBI later declared the police were wrong.</p>
+      </div>
+      <div class="claim-card">
+        <span class="claim-label">On Ruby</span>
+        <div class="claim-title">Ruby knew too much</div>
+        <p class="claim-body">Jack Ruby was connected to Sam Giancana and Carlos Marcello — two of the most powerful Mafia bosses in America. He begged investigators to take him out of Dallas and he would tell them everything. They left him there. He died in 1967 still waiting to talk. Consider what that means about what he knew.</p>
+      </div>
+      <div class="claim-card">
+        <span class="claim-label">On Tippit</span>
+        <div class="claim-title">He panicked</div>
+        <p class="claim-body">He shot Tippit. He will not deny it. By the time he was walking in Oak Cliff he already knew something had gone completely wrong. He knew he was the only loose end they hadn't finished yet. He panicked. It was not a decision. It was panic. A Dallas police officer is dead because of him and that is the truest, most straightforward thing in this entire story.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="rule">
+
+<!-- DEAD WITNESSES -->
+<section class="witnesses-section">
+  <div class="container">
+    <span class="section-eyebrow">The Dead Witnesses</span>
+    <h2 class="section-headline">In the three years after<br><em>the assassination.</em></h2>
+    <p class="section-body">Eighteen material witnesses died in the three years following November 22, 1963. Six by gunfire, three in motor accidents, two by suicide, one from a cut throat, one from a karate chop to the throat. The deaths clustered around the Warren Commission hearings and again around the House Select Committee on Assassinations in the 1970s, precisely when investigations were getting close to something real. Oswald will name them.</p>
+    <div class="witness-list">
+      <div class="witness-item">
+        <div>
+          <div class="witness-name">Dorothy Kilgallen</div>
+          <span class="witness-date">November 1965</span>
+        </div>
+        <div class="witness-detail">Journalist who interviewed Jack Ruby privately and vowed to crack the case open. Found dead in her home. Ruled overdose. Her notes were never found.</div>
+      </div>
+      <div class="witness-item">
+        <div>
+          <div class="witness-name">David Ferrie</div>
+          <span class="witness-date">February 1967</span>
+        </div>
+        <div class="witness-detail">CIA pilot connected to anti-Castro operations in New Orleans — the same world Oswald was operating in. Jim Garrison was about to arrest him. Found dead with two typed suicide notes.</div>
+      </div>
+      <div class="witness-item">
+        <div>
+          <div class="witness-name">Sam Giancana</div>
+          <span class="witness-date">June 1975</span>
+        </div>
+        <div class="witness-detail">Mafia boss connected to Jack Ruby and the CIA's plots to kill Castro. Shot dead the night before he was scheduled to testify before the Senate Intelligence Committee.</div>
+      </div>
+      <div class="witness-item">
+        <div>
+          <div class="witness-name">Johnny Roselli</div>
+          <span class="witness-date">August 1976</span>
+        </div>
+        <div class="witness-detail">Involved in CIA-Mafia plots against Castro, had testified partially to the Senate committee. Found in an oil drum in Miami Bay.</div>
+      </div>
+      <div class="witness-item">
+        <div>
+          <div class="witness-name">George de Mohrenschildt</div>
+          <span class="witness-date">March 1977</span>
+        </div>
+        <div class="witness-detail">The man who introduced Oswald to the network around him after the Soviet return. Shot dead on the day a House Select Committee investigator arrived at his home to interview him.</div>
+      </div>
+      <div class="witness-item">
+        <div>
+          <div class="witness-name">William Sullivan</div>
+          <span class="witness-date">November 1977</span>
+        </div>
+        <div class="witness-detail">FBI's main figure in the Executive Action project. Shot dead. Scheduled to testify before the House Select Committee.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="rule">
+
+<!-- QUESTIONS -->
+<section class="questions-section">
+  <div class="container">
+    <span class="section-eyebrow">What People Ask Him</span>
+    <h2 class="section-headline">He has answers.<br><em>Real ones.</em></h2>
+    <div class="questions-list">
+      <div class="question-item"><span class="question-num">01</span><div class="question-text">"Were you actually a CIA asset?"</div></div>
+      <div class="question-item"><span class="question-num">02</span><div class="question-text">"What actually happened on November 22?"</div></div>
+      <div class="question-item"><span class="question-num">03</span><div class="question-text">"Why did Ruby kill you?"</div></div>
+      <div class="question-item"><span class="question-num">04</span><div class="question-text">"Did you shoot Kennedy?"</div></div>
+      <div class="question-item"><span class="question-num">05</span><div class="question-text">"Who do you think was behind it?"</div></div>
+      <div class="question-item"><span class="question-num">06</span><div class="question-text">"Why did you shoot Tippit?"</div></div>
+      <div class="question-item"><span class="question-num">07</span><div class="question-text">"What did you mean by 'I'm just a patsy'?"</div></div>
+      <div class="question-item"><span class="question-num">08</span><div class="question-text">"What happened in New Orleans in 1963?"</div></div>
+    </div>
+  </div>
+</section>
+
+<hr class="rule">
+
+<!-- CTA -->
+<section class="cta-section" id="call">
+  <div class="container">
+    <span class="section-eyebrow" style="text-align:center;display:block;">The Conversation</span>
+    <h2 class="section-headline" style="text-align:center;">They gave him two days.<br><em>You have more time than that.</em></h2>
+    <p style="font-size:17px;color:var(--silver);text-align:center;margin:0 auto 40px;max-width:560px;line-height:1.85;">Available to callers in the US and Canada. His voice, cloned from 1963. His side of the story, finally told.</p>
+    <div class="price-display">First 2 minutes <span>free</span> &nbsp;&middot;&nbsp; Minutes 3&ndash;5: <span>$3.99</span> &nbsp;&middot;&nbsp; After that: <span>$1.00/min</span></div>
+    <a href="/oswald.html" class="btn-primary" style="font-size:12px;padding:18px 48px;">Talk to Oswald</a>
+    <p class="rescue-line">&#x1F43E; Every paid call puts a meal in a rescue dog's bowl.</p>
+  </div>
+</section>
+
+<footer>
+  <a href="/">&#x2190; All Icons</a>
+  <a href="/oswald-feature.html">Oswald &mdash; Facts &amp; Questions</a>
+  <a href="/oswald.html">Talk to Oswald</a>
+</footer>
+
+</body>
+</html>

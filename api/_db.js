@@ -13,7 +13,7 @@ const GRAND_TOUR_DONATION_CENTS = 800;  // flat $8.00
 const GIFT_PACKAGES = {
   // Legacy character-specific packages (kept for idempotency of existing codes)
   'einstein-evening':    { character: 'einstein',   minutesTotal: 15, priceCents: 1199, label: 'The Einstein Evening',       description: '15 minutes with Albert Einstein' },
-  'holmes-consultation': { character: 'holmes',     minutesTotal: 20, priceCents: 1699, label: 'A Consultation with Holmes', description: '20 minutes at 221B Baker Street' },
+  'holmes-consultation': { character: 'holmes',     minutesTotal: 20, priceCents: 1699, label: 'An Hour with Dr. Watson',    description: '20 minutes at 221B Baker Street' },
   'evangeline-reading':  { character: 'evangeline', minutesTotal: 20, priceCents: 1699, label: 'A Reading with Evangeline',  description: '20 minutes with Evangeline Adams' },
   'aela-evening':        { character: 'aela',       minutesTotal: 30, priceCents: 2699, label: 'An Evening with Aela',       description: '30 minutes with the Pleiadian Liaison' },
   // Time-based packages — recipient's choice of any character

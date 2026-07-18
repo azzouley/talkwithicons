@@ -29,7 +29,7 @@ function createTransporter() {
 
 const CHARACTER_DISPLAY = {
   einstein:   'Albert Einstein',
-  holmes:     'Sherlock Holmes',
+  holmes:     'Dr. John H. Watson',
   evangeline: 'Evangeline Adams',
   aela:       'Aela',
 };

@@ -8,7 +8,7 @@
 
 const fs = require('fs');
 
-const STANDARD = ['einstein','nostradamus','davinci','brucelee','holmes','aela','celeste',
+const STANDARD = ['einstein','nostradamus','davinci','brucelee','watson','aela','celeste',
                    'oswald','houdini','frankenstein','sittingbull'];
 
 const OLD_TEXT = 'If your icon pauses in thought, say &#34;yes&#34; or &#34;please continue&#34; to invite them to go on.';

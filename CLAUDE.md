@@ -18,7 +18,7 @@ TalkWithIcons is a paid voice phone call service. Users call AI versions of hist
 | 02 | Nostradamus | Salon-de-Provence, 1555 | Historical |
 | 03 | Da Vinci | Florence/Milan/France, 1500s | Historical |
 | 04 | Bruce Lee | Hong Kong · Los Angeles, 1973 | Historical |
-| 05 | Sherlock Holmes | 221B Baker Street | Fictional |
+| 05 | Dr. John H. Watson | 221B Baker Street | Fictional |
 | 06 | Aela | Pleiadian Council Liaison | Original |
 | 07 | Céleste Vaudreuil | Beaune, 1758 → New York, present day | Original |
 | 08 | Lee Harvey Oswald | Dallas, 1963 | Historical |
@@ -28,6 +28,8 @@ TalkWithIcons is a paid voice phone call service. Users call AI versions of hist
 | 12 | Frankenstein's Creature | — | Fictional |
 
 Tesla and Curie were removed and replaced by Bruce Lee and Baldwin respectively. Evangeline Adams was added as a 9th character with a specialised natal chart flow. La Llorona, Houdini, and Frankenstein's Creature were added to expand the roster to 12.
+
+**Holmes → Dr. John H. Watson swap (2026-07-18):** Sherlock Holmes's Vapi assistant (`b65fb3ab-df3c-4a5b-8a96-3e865d9315b6`, phone `+15854073131`) was repurposed in place for Dr. John H. Watson — narrator of the stories, Afghanistan veteran, the man who managed Holmes and shaped how he was perceived. Same assistant ID/phone/voice/model — only name, firstMessage, and system prompt changed. Backup at `C:\talkwithicons\vapi-backup\holmes-pre-watson.json`. Full cleanup done same day: this table, holmes.html + holmes-feature.html renamed to watson.html/watson-feature.html, index.html card, all 11 sibling character/feature pages' cross-links, stripe-work/stripe-output holmes.html renamed to watson.html, api/call-ended.js display-name map, and global patch scripts relabeled. Internal `character` slug/key (`'holmes'` in watson.html's own call handler, payment.html's icons object key, api/start-call-basic.js) deliberately left unchanged, same reasoning as Céleste and Oswald — display name and backend routing key are intentionally decoupled. No portrait image yet — still using the placeholder Holmes image (images/holmes.jpeg) pending a real Watson portrait.
 
 **La Llorona — RETIRED (2026-07):** Removed from the active roster. Vapi assistant ID `a30672aa-7bbb-4cff-91ed-7a2f01b5823a`, phone number `+15854073097` (record `confirmed in Vercel`). Per the Twain lesson: ensure `VAPI_ASSISTANT_ID_LLORONA` and `VAPI_PHONE_NUMBER_ID_LLORONA` are removed from Vercel env vars and the phone number's inbound routing is cleared or reassigned. Her front-end page (if any) should be unlinked.
 
@@ -75,7 +77,7 @@ Live on homepage (index.html #gifts section). Fully pre-paid named experiences w
 | Name | Duration | Price |
 |------|----------|-------|
 | The Einstein Evening | 15 min with Albert Einstein | $11.99 |
-| A Consultation with Holmes | 20 min at 221B Baker Street | $16.99 |
+| An Hour with Dr. Watson | 20 min at 221B Baker Street | $16.99 |
 | A Reading with Evangeline | 20 min with Evangeline Adams | $16.99 |
 | An Evening with Aela | 30 min with the Pleiadian Liaison | $26.99 |
 | The Grand Tour | 100 min, any characters, any split | $79 |
@@ -92,7 +94,7 @@ Live on homepage (index.html #gifts section). Fully pre-paid named experiences w
 | ElevenLabs | Voice synthesis — all characters have voices | ✅ Active |
 | QStash (Upstash) | Post-call follow-up queue (30-min delay) | ✅ Active |
 | nodemailer | Gmail SMTP for follow-up emails | ✅ In package.json — needs GMAIL_USER/GMAIL_PASS in Vercel |
-| Brave Search | Web search for Holmes (via /api/tavily-search.js) | ✅ Active |
+| Brave Search | Web search for Watson (via /api/tavily-search.js) | ✅ Active |
 | Stripe | Payments | ⬜ Pending — blocked on DBA + business checking account |
 | Twilio | SMS | ❌ Removed |
 
@@ -131,7 +133,7 @@ Live on homepage (index.html #gifts section). Fully pre-paid named experiences w
 - **maxTokens: 250** (set 2026-06-27, lowered progressively throughout the night — stopgap for confirmed Vapi streaming-abort bug; Vapi aborts GPT-4o stream after ~4.25s of continuous generation causing mid-sentence cutoffs. History: 150 too clipped → raised to 300 → 300 hit cutoff in live test → lowered to 275 → 275 hit cutoff 1:48 into a Houdini answer → lowered to 250. Root cause: the actual trigger is generation TIME (~4.25s), not token count directly. Token count is only a rough proxy for generation time and varies by how verbose a character's response style is — a verbose character hits the abort window at fewer tokens than a terse one. No token cap is fully reliable as a workaround. 250 reduces cutoff frequency further but is not guaranteed to eliminate it. Known tradeoff: shorter answers than uncapped. Remove or adjust once Vapi resolves the underlying bug.)
 - First message: always begins with `...Mm....` to prevent audio cutoff
 - Server URL: `https://www.talkwithicons.com/api/call-ended` (set on all assistants)
-- Holmes — sonar-pro, built-in search, deduction, optional self-description field at registration for cold open
+- Watson — sonar-pro, built-in search (inherited from the pre-swap Holmes assistant; the "deduction cold open" self-description field no longer applies to Watson's character)
 - La Llorona — GPT 4.1, Brave web search tool (searchWeb → /api/tavily-search), ElevenLabs voice (Rachel placeholder — update in Vapi dashboard)
 
 **Assistant IDs:**
@@ -141,7 +143,7 @@ Live on homepage (index.html #gifts section). Fully pre-paid named experiences w
 | Nostradamus | bca7797f-d4c5-4b67-b22c-7506a0b045b9 | +15853162339 (phone record 4c6793f2-4f89-421b-9662-38d2b01792c0) |
 | Da Vinci | 23ef91d2-fc8f-4fee-9c2e-25e93b51c331 | +15858009390 (phone record af4c55a0; inbound routing updated to real Da Vinci 2026-06-27) |
 | Bruce Lee | 099b6a90-1fa9-4e6a-bc4d-8c127c6b1141 | +15854073450 (phone record e858bf94-1801-47ac-9bd5-14d6bbf13673) |
-| Holmes | b65fb3ab-df3c-4a5b-8a96-3e865d9315b6 | +15854073131 |
+| Watson | b65fb3ab-df3c-4a5b-8a96-3e865d9315b6 | +15854073131 |
 | Aela | 9647119e-7cf6-4d22-968d-25f3f455a834 | +15854073813 (phone record 1a9e7507-9a7d-4931-b364-45943393d83d) |
 | Céleste | 0560582f-8258-4803-8f2b-78b364fa23ca | +15854073507 (phone record 895248b7-4aba-452a-b248-eb891feaaae2) |
 | Oswald | 2f0047c1-eeb7-412d-b455-f8f731bdd232 | +15853781304 (phone record 19e49174-4ad9-4665-9c34-5fd36d68d213) |
@@ -204,7 +206,7 @@ California Civil Code §3344.1 covers voice *likeness* not just exact reproducti
 
 - **Einstein:** "Our free introduction is nearly finished — but I find I'm not quite ready to stop. Should we continue?"
 - **Twain:** "Well, we've used up the free portion of this conversation, and I was just getting warmed up. The question is whether you were too."
-- **Holmes:** "Three minutes. Barely enough time to establish the facts. We haven't even begun. I assume you wish to proceed?"
+- **Watson:** "Three minutes free, and I've barely gotten past Afghanistan. There's a great deal more account left to give. Shall I continue?"
 - **Nostradamus:** "What has passed between us was written. What comes next — that depends on you."
 - **Bruce Lee:** "Three minutes. That's enough time to warm up — nothing more. The real work hasn't started yet. Are you staying?"
 - **Bennet:** "I confess I had formed quite a low opinion of how this conversation would go. I was wrong. Shall we see where it leads?"
@@ -218,7 +220,7 @@ California Civil Code §3344.1 covers voice *likeness* not just exact reproducti
 
 - **Einstein:** "Ah — you called. I wondered if anyone would..." (no name used)
 - **Twain:** "Well. I wasn't expecting you to sound like that, [name]..."
-- **Holmes:** "Don't tell me anything yet, [name]. You've had a difficult week..."
+- **Watson:** "You were expecting Holmes, perhaps. He's indisposed — I won't say with what, you can probably guess. I'm Watson. I've been writing him up for thirty years and I think it's time I said a few things on my own account. What would you like to know?" (actual live firstMessage, verbatim)
 - **Nostradamus:** "I have been expecting someone..." (no name used)
 - **Bruce Lee:** "...Hm. So you found me. Good. That means you were looking. What do you want to know?"
 - **Bennet:** "I must warn you immediately — I have very little patience for people who ask me about Mr. Darcy within the first thirty seconds... Surprise me, [name]."
@@ -232,7 +234,7 @@ California Civil Code §3344.1 covers voice *likeness* not just exact reproducti
 
 1. Card never charged until call ends
 2. First 2 minutes always free — no exceptions
-3. Holmes registration has optional self-description field (for deduction cold open)
+3. ~~Holmes registration has optional self-description field (for deduction cold open)~~ — N/A since Watson swap; field may still exist in the form but no longer serves a cold-open purpose
 4. Post-call follow-up email sends 30 minutes after call ends (requires email collection + Gmail creds)
 5. Rescue counter displays meals not dollars
 6. One free call per phone number per character

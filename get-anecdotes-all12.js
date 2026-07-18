@@ -10,7 +10,7 @@ const KEY = process.env.VAPI_API_KEY_LOCAL;
 if (!KEY) { console.error('VAPI_API_KEY_LOCAL not set'); process.exit(1); }
 
 const ROSTER = [
-  ['einstein', 'b98cec95-47a4-455d-92c8-3a08aacb556d'],
+  ['silver', 'b98cec95-47a4-455d-92c8-3a08aacb556d'],
   ['nostradamus', 'bca7797f-d4c5-4b67-b22c-7506a0b045b9'],
   ['davinci', '23ef91d2-fc8f-4fee-9c2e-25e93b51c331'],
   ['brucelee', '099b6a90-1fa9-4e6a-bc4d-8c127c6b1141'],

@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Call Einstein — TalkWithIcons</title>
+  <title>Call Long John Silver — TalkWithIcons</title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -276,11 +276,9 @@
     }
 
     /* CONVERSATION STARTERS */
-    .starters-section {
-      padding: 100px 80px;
-      max-width: 1100px;
-      margin: 0 auto;
-    }
+    .starters-section { padding: 80px; }
+    .decision-section { display: grid; grid-template-columns: 3fr 2fr; align-items: start; }
+    .decision-form { padding: 80px 60px; position: sticky; top: 80px; background: var(--dark2); border-left: 1px solid rgba(201,168,76,0.12); }
     .section-label {
       font-family: 'Space Mono', monospace;
       font-size: 0.68rem;
@@ -434,7 +432,7 @@
     }
     .others-grid {
       display: grid;
-      grid-template-columns: repeat(7, 1fr);
+      grid-template-columns: repeat(6, 1fr);
       gap: 2px;
       margin-top: 40px;
     }
@@ -505,6 +503,8 @@
       .bio-section { grid-template-columns: 1fr; padding: 60px 32px; }
       .bio-sidebar { position: static; }
       .starters-section, .others-section, .bottom-cta { padding: 60px 32px; }
+      .decision-section { grid-template-columns: 1fr; }
+      .decision-form { padding: 48px 32px; position: static; border-left: none; border-top: 1px solid rgba(201,168,76,0.12); }
       .others-grid { grid-template-columns: repeat(4, 1fr); }
       nav { padding: 16px 24px; }
       footer { flex-direction: column; gap: 16px; text-align: center; padding: 32px; }
@@ -524,148 +524,169 @@
   <!-- HERO -->
   <div class="hero">
     <div class="hero-left">
-      <p class="hero-eyebrow">Physicist · Philosopher · 1879–1955</p>
-      <h1 class="hero-name">Albert<br>Einstein</h1>
-      <p class="hero-dates">Born Ulm, Germany · Nobel Prize 1921 · Princeton, New Jersey</p>
-      <p class="hero-tagline">"Imagination is more important than knowledge."</p>
+      <p class="hero-eyebrow">Strategist · Performer · Bristol, 1730</p>
+      <h1 class="hero-name">Long John<br>Silver</h1>
+      <p class="hero-dates">Born Bristol, England · Treasure Island · Robert Louis Stevenson, 1883</p>
+      <p class="hero-tagline">"I've been called worse things and by better men."</p>
       <p class="hero-desc">
-        He redrew the map of reality. Relativity, the photoelectric effect, Brownian motion —
-        all in a single year, working as a patent clerk in Bern. Talk to the man behind the myth:
-        warm, funny, deeply human, and still capable of stopping you cold with a single thought.
+        Not the pantomime villain. Not the jolly pirate with the parrot that Stevenson wrote
+        for young boys to fear and admire — that was a performance, and a very good one.
+        Talk to the man beneath it: a printer's son who read Latin at eight, lost a leg at
+        Havana, and built the most efficient market available to a man of no family.
       </p>
 
-      <div class="call-box" id="call">
-        <p class="call-box-label">How It Works</p>
-        <p class="call-details">First 3 minutes free. Minutes 4 through 6 cost $2.99 total. After that, just $1.00 per minute.</p>
-        <form id="call-form" onsubmit="handleCall(event)" style="margin-bottom:12px;">
-          <input id="f-name" type="text" placeholder="First Name" required autocomplete="given-name"
-                 style="display:block;width:100%;margin-bottom:8px;padding:10px 14px;background:#1c1710;border:1px solid rgba(201,168,76,0.7);color:#f5f0e8;font-family:'Space Mono',monospace;font-size:0.82rem;outline:none;" />
-          <input id="f-phone" type="tel" placeholder="Phone Number" required autocomplete="tel"
-                 style="display:block;width:100%;margin-bottom:8px;padding:10px 14px;background:#1c1710;border:1px solid rgba(201,168,76,0.7);color:#f5f0e8;font-family:'Space Mono',monospace;font-size:0.82rem;outline:none;" />
-          <div id="card-element"
-               style="display:block;width:100%;margin-bottom:8px;padding:10px 14px;background:#1c1710;border:1px solid rgba(201,168,76,0.7);box-sizing:border-box;"></div>
-          <div id="card-errors"
-               style="color:#e07070;font-size:0.78rem;margin-bottom:8px;display:none;"></div>
-          <button type="submit" class="btn-call" style="width:100%;cursor:pointer;border:none;">Call Me Now →</button>
-        </form>
-        <p id="call-msg" style="font-size:0.85rem;margin-bottom:12px;display:none;"></p>
-        <p class="call-rescue">🐾 Every paid call triggers at minimum a meal donation for a rescue dog</p>
-      </div>
     </div>
 
     <div class="hero-right">
-      <img class="hero-portrait" src="images/einstein.webp" alt="Albert Einstein" />
+      <img class="hero-portrait" src="images/einstein.webp" alt="Long John Silver" />
       <div class="portrait-overlay"></div>
-      <p class="portrait-caption">Albert Einstein · c. 1947</p>
+      <p class="portrait-caption">Long John Silver · The Performance</p>
     </div>
   </div>
 
-  <!-- QUOTE -->
-  <div class="quote-section">
-    <span class="quote-mark">"</span>
-    <p class="quote-text">
-      The most beautiful thing we can experience is the mysterious.
-      It is the source of all true art and science.
-    </p>
-    <p class="quote-attr">— Albert Einstein, What I Believe, 1930</p>
-  </div>
 
-  <!-- CONVERSATION STARTERS -->
-  <section class="starters-section">
-    <p class="section-label">What to Ask</p>
-    <h2 class="section-title" style="font-size:1.4rem;font-family:'Crimson Pro',serif;font-weight:400;font-style:normal;border:2px solid #c9a84c;padding:20px 28px;display:block;margin-bottom:48px;text-align:center;margin-left:auto;margin-right:auto;">To jog your imagination, here are 6 conversation starters. But you are encouraged to ask absolutely anything you want including questions of our present age. Your time with Einstein is your own!</h2>
-    <div class="starters-grid">
-      <div class="starter-card">
-        <div class="starter-num">01</div>
-        <p class="starter-q">"Was there a moment you knew relativity was right — before any proof?"</p>
-        <p class="starter-note">He'll describe the thought experiment on the light beam. You'll feel the click of it.</p>
-      </div>
-      <div class="starter-card">
-        <div class="starter-num">02</div>
-        <p class="starter-q">"What do you actually think about God?"</p>
-        <p class="starter-note">Not the bumper sticker answer. The real one — Spinoza, the cosmos, what mystery means to a scientist.</p>
-      </div>
-      <div class="starter-card">
-        <div class="starter-num">03</div>
-        <p class="starter-q">"Do you regret the letter to Roosevelt?"</p>
-        <p class="starter-note">The letter that started the Manhattan Project. He signed it. He'll tell you why — and what it cost him.</p>
-      </div>
-      <div class="starter-card">
-        <div class="starter-num">04</div>
-        <p class="starter-q">"Why did your first marriage fail?"</p>
-        <p class="starter-note">Mileva Marić was also a physicist. The story is more complicated than history usually tells it.</p>
-      </div>
-      <div class="starter-card">
-        <div class="starter-num">05</div>
-        <p class="starter-q">"What do you make of quantum mechanics?"</p>
-        <p class="starter-note">"God does not play dice." Bohr disagreed. This argument is still unresolved. Hear his side.</p>
-      </div>
-      <div class="starter-card">
-        <div class="starter-num">06</div>
-        <p class="starter-q">"Are you happy?"</p>
-        <p class="starter-note">An unexpected question for an unexpected answer. The most famous mind of the century, asked the simplest thing.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- BIO -->
-  <div class="bio-section">
+<div class="bio-section">
     <div class="bio-sidebar">
       <div class="bio-fact">
         <p class="bio-fact-label">Born</p>
-        <p class="bio-fact-value">March 14, 1879<br>Ulm, Kingdom of Württemberg</p>
+        <p class="bio-fact-value">1730<br>Corn Street, Bristol</p>
       </div>
       <div class="bio-fact">
-        <p class="bio-fact-label">Died</p>
-        <p class="bio-fact-value">April 18, 1955<br>Princeton, New Jersey</p>
+        <p class="bio-fact-label">Lost</p>
+        <p class="bio-fact-value">His right leg<br>Siege of Havana, 1762</p>
       </div>
       <div class="bio-fact">
-        <p class="bio-fact-label">Nobel Prize</p>
-        <p class="bio-fact-value">Physics, 1921<br>Photoelectric Effect</p>
+        <p class="bio-fact-label">Appears In</p>
+        <p class="bio-fact-value">Treasure Island<br>Robert Louis Stevenson, 1883</p>
       </div>
       <div class="bio-fact">
         <p class="bio-fact-label">Languages</p>
-        <p class="bio-fact-value">German, English, some Italian</p>
+        <p class="bio-fact-value">English, French, Portuguese</p>
       </div>
       <div class="bio-fact">
         <p class="bio-fact-label">Known For</p>
-        <p class="bio-fact-value">Special &amp; General Relativity, E=mc²</p>
+        <p class="bio-fact-value">The performance — and the calculation beneath it</p>
       </div>
     </div>
 
     <div class="bio-content">
       <p>
-        Albert Einstein did not speak until he was three years old. His teachers found him slow.
-        One called him "mentally slow, unsociable, and adrift forever in his foolish dreams."
-        In 1905 — working as a <strong>third-class patent clerk in Bern, Switzerland</strong> —
-        he published four papers that rewrote physics. Any one of them would have made a career.
-        Together, they changed everything.
+        Long John Silver was born in Bristol in 1730, the son of a printer. He read before he
+        could properly walk — Latin at eight, French by twelve, navigation at fourteen from a
+        naval officer's manual, understood without instruction. <strong>He understood early that
+        the world was organized by those who controlled information and those who did not,</strong>
+        and that he was going to be on the controlling side regardless of what it cost.
       </p>
       <p>
-        He did not arrive at his discoveries through calculation alone. His method was imagination.
-        <strong>He called them thought experiments.</strong> He imagined riding alongside a beam of light.
-        He imagined an elevator falling in free space. The mathematics came after — to confirm
-        what intuition had already told him was true.
+        It cost a leg. A Spanish cannonball took it below the knee at the siege of Havana in 1762 —
+        a British naval engagement he had no business being part of except that his ship was
+        pressed into service. <strong>He was forty-eight hours deciding whether to live.</strong>
+        He decided to.
       </p>
       <p>
-        Einstein was also a deeply political man. He fled Nazi Germany in 1933 and never returned.
-        He was a pacifist who nonetheless signed the letter urging Roosevelt to develop the atomic bomb —
-        a decision that haunted his final years. He was offered the presidency of Israel and declined.
-        <strong>The FBI kept a file on him for decades.</strong>
+        The pirate persona came later, out of necessity rather than preference. The men he needed
+        to work with responded better to theater than to reason — a man with a crutch and a parrot
+        and a booming laugh was easier to follow than a man who explained the economics of their
+        situation with clarity and precision. <strong>Both were true. Only one worked.</strong>
       </p>
       <p>
-        He played the violin. He loved sailing, even though he couldn't swim and refused to learn.
-        He was married twice, had complicated relationships with his sons, and was devoted to his
-        sister Maja until her death. He died in Princeton in 1955, having refused surgery,
-        saying: <em>"I want to go when I want. It is tasteless to prolong life artificially."</em>
+        He speaks three languages fluently and has read Adam Smith and Machiavelli, finding
+        both largely correct. He is a strategist who chose piracy as the most efficient market
+        available to a man of no family. <em>The performance does not conceal weakness. It
+        conceals a man who has calculated the angle of every situation for fifty years.</em>
       </p>
     </div>
   </div>
 
   <!-- BOTTOM CTA -->
-  <div class="bottom-cta">
-    <h2>Three minutes.<br>One conversation.<br><em style="color:var(--gold-light)">Never repeated.</em></h2>
-    <p>No script. No recordings. A live AI voice trained on Einstein's letters, lectures, and interviews — speaking only to you, only now.</p>
+
+<div class="decision-section" id="call">
+  <!-- CONVERSATION STARTERS -->
+  <section class="starters-section">
+    <p class="section-label">What to Ask</p>
+    <h2 class="section-title" style="font-size:1.4rem;font-family:'Crimson Pro',serif;font-weight:400;font-style:normal;border:2px solid #c9a84c;padding:20px 28px;display:block;margin-bottom:48px;text-align:center;margin-left:auto;margin-right:auto;">Your time with Silver is your own. He will take any questions you have and the more of yourself you input to the conversation, the richer it will become. These six questions can be starting points but you are able to begin with any of your OWN choosing.</h2>
+    <div class="starters-grid">
+      <div class="starter-card">
+        <div class="starter-num">01</div>
+        <p class="starter-q">"Tell me about your early life — before the sea, before all of it. Who were you before you became Long John Silver?"</p>
+        <p class="starter-note">Thomas the printer father, Margaret the mother with the quick temper and quicker laugh, Corn Street Bristol, Devlin the chandler's son. Reading everything. Understanding early that the world was organized by those who controlled information.</p>
+      </div>
+      <div class="starter-card">
+        <div class="starter-num">02</div>
+        <p class="starter-q">"The pirate persona — is it real, or is it a performance?"</p>
+        <p class="starter-note">A performance. A very deliberate one. The men he needed to work with responded to theater rather than reason. He'll explain why, and why the parrot's name still makes him laugh.</p>
+      </div>
+      <div class="starter-card">
+        <div class="starter-num">03</div>
+        <p class="starter-q">"What happened to your leg — and what did losing it actually do to you?"</p>
+        <p class="starter-note">Havana, 1762. Forty-eight hours deciding whether to live. He does not discuss the leg as a loss. He discusses it as a fact.</p>
+      </div>
+      <div class="starter-card">
+        <div class="starter-num">04</div>
+        <p class="starter-q">"What do you actually think of Jim Hawkins?"</p>
+        <p class="starter-note">He did not try to kill the boy at the end because he liked him — that is the honest answer. He told himself it was calculation.</p>
+      </div>
+      <div class="starter-card">
+        <div class="starter-num">05</div>
+        <p class="starter-q">"What is your philosophy of leadership?"</p>
+        <p class="starter-note">Theater for those who require it, directness for those who don't. Men follow what they understand. Give them the story without losing the reason.</p>
+      </div>
+      <div class="starter-card">
+        <div class="starter-num">06</div>
+        <p class="starter-q">"What are you, really — beneath all the performance?"</p>
+        <p class="starter-note">A strategist who chose piracy as the most efficient available market for his skills. He made peace with his own nature a long time ago.</p>
+      </div>
+    </div>
+  </section>
+  <div class="decision-form">
+    <div class="call-box">
+      <p class="call-box-label">How It Works</p>
+      <p class="call-region" style="font-size:0.78em; color:#f5f0e8; margin-bottom:4px;">Available to callers in the US and Canada.</p>
+      <p class="call-details">First 2 minutes free. Minutes 3 through 5 cost $3.99 total. After that, just $1.00 per minute.</p>
+      <form id="call-form" onsubmit="handleCall(event)" style="margin-bottom:12px;">
+        <input id="f-name" type="text" placeholder="First Name" required autocomplete="given-name"
+               style="display:block;width:100%;margin-bottom:8px;padding:10px 14px;background:#1c1710;border:1px solid rgba(201,168,76,0.7);color:#f5f0e8;font-family:'Space Mono',monospace;font-size:0.82rem;outline:none;" />
+        <input id="f-phone" type="tel" placeholder="Phone Number" required autocomplete="tel"
+               style="display:block;width:100%;margin-bottom:8px;padding:10px 14px;background:#1c1710;border:1px solid rgba(201,168,76,0.7);color:#f5f0e8;font-family:'Space Mono',monospace;font-size:0.82rem;outline:none;" />
+        <p class="call-hint" style="font-size:0.85em; opacity:1.0; margin-top:6px; color:#f5f0e8;">If your icon pauses in thought, say <strong style="font-size:1.5em; color:#ffffff;">"yes"</strong> or <strong style="font-size:1.5em; color:#ffffff;">"please continue"</strong> to invite them to go on.</p>
+        <p class="call-hint" style="font-size:0.85em; margin-top:4px; color:#f5f0e8;">You never have to answer a question if you have other questions on your mind. The flow of the conversation is always up to you.</p>
+        <div id="card-element"
+             style="display:block;width:100%;margin-bottom:8px;padding:10px 14px;background:#1c1710;border:1px solid rgba(201,168,76,0.7);box-sizing:border-box;"></div>
+        <div id="card-errors"
+             style="color:#e07070;font-size:0.78rem;margin-bottom:8px;display:none;"></div>
+        <!-- Gift code toggle -->
+        <div id="gift-toggle-row" style="margin-bottom:8px;font-size:0.78rem;color:rgba(201,168,76,0.7);cursor:pointer;text-align:right;" onclick="toggleGiftMode()">Have a gift code? →</div>
+        <div id="gift-code-row" style="display:none;margin-bottom:8px;">
+          <input id="f-gift-code" type="text" placeholder="Gift Code (e.g. AB3XKWPN)"
+                 style="display:block;width:100%;padding:10px 14px;background:#1c1710;border:1px solid rgba(201,168,76,0.7);color:#f5f0e8;font-family:'Space Mono',monospace;font-size:0.82rem;outline:none;text-transform:uppercase;letter-spacing:0.1em;" />
+          <div style="margin-top:4px;font-size:0.78rem;color:rgba(201,168,76,0.7);cursor:pointer;" onclick="toggleGiftMode()">← Pay by card instead</div>
+        </div>
+        <!-- Language toggle -->
+        <div style="margin-bottom: 1.25rem;">
+          <label style="display:block; font-size:0.72rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--muted); margin-bottom:0.6rem;">Language / Idioma</label>
+          <div style="display:flex; gap:1rem;">
+            <label style="display:flex; align-items:center; gap:0.4rem; cursor:pointer; font-size:0.9rem;">
+              <input type="radio" name="language" value="en" checked style="accent-color:var(--gold);"> English
+            </label>
+            <label style="display:flex; align-items:center; gap:0.4rem; cursor:pointer; font-size:0.9rem;">
+              <input type="radio" name="language" value="es" style="accent-color:var(--gold);"> Español
+            </label>
+          </div>
+        </div>
+        <p style="font-family:'Space Mono',monospace;font-size:0.58rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(154,143,122,0.65);text-align:center;margin-bottom:10px;">By proceeding you consent to this call being transcribed for service quality purposes.</p>
+        <button type="submit" class="btn-call" style="width:100%;cursor:pointer;border:none;">Call Me Now →</button>
+      </form>
+      <p id="call-msg" style="font-size:0.85rem;margin-bottom:12px;display:none;"></p>
+      <p class="call-rescue">🐾 every paid call triggers at minimum a meal donation for a rescue dog</p>
+    </div>
+  </div>
+</div>
+
+  <!-- BIO -->
+
+<div class="bottom-cta">
+    <h2>Fifty years of performance.<br>This is not that.<br><em style="color:var(--gold-light)">Ask him directly.</em></h2>
+    <p>No script. No recordings. A live AI voice — speaking only to you, only now, without the theater unless you want it.</p>
     <a class="btn-large" href="#call">Start Your Free Call →</a>
     <br>
     <p class="bottom-rescue">🐾 Every paid call triggers at minimum a meal donation for a rescue dog</p>
@@ -675,33 +696,49 @@
   <div class="others-section">
     <p class="section-label">Other Icons</p>
     <div class="others-grid">
-      <a class="other-card" href="twain.html">
-        <img class="other-portrait" src="images/twain.png" alt="Mark Twain" />
-        <p class="other-name">Twain</p>
+      <a class="other-card" href="aela.html">
+        <img class="other-portrait" src="images/aela.jpeg" alt="Aela" />
+        <p class="other-name">Aela</p>
       </a>
-      <a class="other-card" href="holmes.html">
-        <img class="other-portrait" src="images/watson.jpeg" alt="Sherlock Holmes" />
-        <p class="other-name">Holmes</p>
+      <a class="other-card" href="oswald.html">
+        <img class="other-portrait" src="images/oswald.jpeg" alt="Lee Harvey Oswald" />
+        <p class="other-name">Oswald</p>
       </a>
-      <a class="other-card" href="tesla.html">
-        <img class="other-portrait" src="images/tesla.jpeg" alt="Nikola Tesla" />
-        <p class="other-name">Tesla</p>
+      <a class="other-card" href="davinci.html">
+        <img class="other-portrait" src="images/davinci.jpeg" alt="Leonardo da Vinci" />
+        <p class="other-name">Da Vinci</p>
+      </a>
+      <a class="other-card" href="brucelee.html">
+        <img class="other-portrait" src="images/brucelee.jpeg" alt="Bruce Lee" />
+        <p class="other-name">Bruce Lee</p>
+      </a>
+      <a class="other-card" href="watson.html">
+        <img class="other-portrait" src="images/watson.jpeg" alt="Dr. John H. Watson" />
+        <p class="other-name">Watson</p>
+      </a>
+      <a class="other-card" href="celeste.html">
+        <img class="other-portrait" src="images/celeste.jpeg" alt="Céleste" />
+        <p class="other-name">Céleste</p>
       </a>
       <a class="other-card" href="nostradamus.html">
         <img class="other-portrait" src="images/nostradamus.jpeg" alt="Nostradamus" />
         <p class="other-name">Nostradamus</p>
       </a>
-      <a class="other-card" href="bennet.html">
-        <img class="other-portrait" src="images/bennet.jpeg" alt="Elizabeth Bennet" />
-        <p class="other-name">Bennet</p>
+      <a class="other-card" href="evangeline.html">
+        <img class="other-portrait" src="images/evangeline.jpeg" alt="Evangeline Adams" />
+        <p class="other-name">Evangeline</p>
       </a>
-      <a class="other-card" href="curie.html">
-        <img class="other-portrait" src="images/curie.jpeg" alt="Marie Curie" />
-        <p class="other-name">Curie</p>
+      <a class="other-card" href="houdini.html">
+        <img class="other-portrait" src="images/houdini.jpeg" alt="Harry Houdini" />
+        <p class="other-name">Houdini</p>
       </a>
-      <a class="other-card" href="aela.html">
-        <img class="other-portrait" src="images/aela.jpeg" alt="Aela" />
-        <p class="other-name">Aela</p>
+      <a class="other-card" href="frankenstein.html">
+        <img class="other-portrait" src="images/frankenstein.jpeg" alt="Frankenstein's Creature" />
+        <p class="other-name">Frankenstein</p>
+      </a>
+      <a class="other-card" href="friday.html">
+        <img class="other-portrait" src="images/friday.jpeg" alt="Friday" />
+        <p class="other-name">Friday</p>
       </a>
     </div>
   </div>
@@ -723,10 +760,40 @@
 <script>
 let stripe, cardElement;
 
+function toggleGiftMode() {
+  const cardEl     = document.getElementById('card-element');
+  const cardErrors = document.getElementById('card-errors');
+  const giftRow    = document.getElementById('gift-code-row');
+  const toggleRow  = document.getElementById('gift-toggle-row');
+  const isGiftMode = giftRow.style.display !== 'none';
+  if (isGiftMode) {
+    cardEl.style.display     = '';
+    cardErrors.style.display = 'none';
+    giftRow.style.display    = 'none';
+    toggleRow.style.display  = '';
+  } else {
+    cardEl.style.display     = 'none';
+    cardErrors.style.display = 'none';
+    giftRow.style.display    = '';
+    toggleRow.style.display  = 'none';
+  }
+}
+
+function showTestModeBanner() {
+  if (document.getElementById('test-mode-banner')) return;
+  const b = document.createElement('div');
+  b.id = 'test-mode-banner';
+  b.style.cssText = 'position:fixed;top:0;left:0;right:0;z-index:9999;background:#c0392b;color:#fff;text-align:center;padding:10px 16px;font-family:-apple-system,sans-serif;font-size:13px;font-weight:700;letter-spacing:0.08em;';
+  b.textContent = 'TEST MODE ACTIVE — NO REAL CHARGES';
+  document.body.prepend(b);
+  document.body.style.paddingTop = (parseInt(document.body.style.paddingTop || '0') + 44) + 'px';
+}
+
 async function initStripe() {
   if (stripe) return;
   try {
     const cfg = await fetch(window.location.origin + '/api/config').then(r => r.json());
+    if (cfg.testMode) showTestModeBanner();
     if (!cfg.stripePublicKey) throw new Error('Stripe not configured');
     stripe = Stripe(cfg.stripePublicKey);
     const elements = stripe.elements({
@@ -760,12 +827,39 @@ async function handleCall(e) {
   const firstName   = document.getElementById('f-name').value.trim();
   const phoneNumber = document.getElementById('f-phone').value.trim();
 
+  const giftCodeInput = (document.getElementById('f-gift-code')?.value || '').trim().toUpperCase();
+  const giftMode      = document.getElementById('gift-code-row')?.style.display !== 'none';
+  const giftCode      = (giftMode && giftCodeInput) ? giftCodeInput : null;
+
   btn.disabled     = true;
-  btn.textContent  = 'Authorizing...';
+  btn.textContent  = giftCode ? 'Connecting...' : 'Authorizing...';
   msg.style.display    = 'none';
   errDiv.style.display = 'none';
 
   try {
+    if (giftCode) {
+      const callRes  = await fetch(window.location.origin + '/api/start-call-basic', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify({
+          firstName, phoneNumber,
+          character: 'einstein',
+          language:  document.querySelector('input[name="language"]:checked').value,
+          giftCode,
+        }),
+      });
+      const callData = await callRes.json();
+      if (callRes.ok) {
+        msg.textContent   = 'Your call is connecting — pick up within 30 seconds.';
+        msg.style.color   = '#6dbf8a';
+        msg.style.display = 'block';
+        btn.textContent   = 'Call Placed ✓';
+      } else {
+        throw new Error(callData.error || 'Something went wrong.');
+      }
+      return;
+    }
+
     const piRes  = await fetch(window.location.origin + '/api/create-payment-intent', {
       method:  'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -794,6 +888,7 @@ async function handleCall(e) {
         firstName,
         phoneNumber,
         character:        'einstein',
+        language: document.querySelector('input[name=\"language\"]:checked').value,
         paymentIntentId:  paymentIntent.id,
         stripeCustomerId: piData.stripeCustomerId,
       }),

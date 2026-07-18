@@ -14,20 +14,22 @@ TalkWithIcons is a paid voice phone call service. Users call AI versions of hist
 
 | # | Name | Era/Location | Type |
 |---|------|-------------|------|
-| 01 | Albert Einstein | Princeton, 1955 | Historical |
-| 02 | Nostradamus | Salon-de-Provence, 1555 | Historical |
+| 01 | Aela | Pleiadian Council Liaison | Original |
+| 02 | Lee Harvey Oswald | Dallas, 1963 | Historical |
 | 03 | Da Vinci | Florence/Milan/France, 1500s | Historical |
 | 04 | Bruce Lee | Hong Kong · Los Angeles, 1973 | Historical |
 | 05 | Dr. John H. Watson | 221B Baker Street | Fictional |
-| 06 | Aela | Pleiadian Council Liaison | Original |
+| 06 | Long John Silver | Bristol, 1730 · Treasure Island, 1883 | Fictional |
 | 07 | Céleste Vaudreuil | Beaune, 1758 → New York, present day | Original |
-| 08 | Lee Harvey Oswald | Dallas, 1963 | Historical |
+| 08 | Nostradamus | Salon-de-Provence, 1555 | Historical |
 | 09 | Evangeline Adams | New York City, 1930s | Historical |
-| 10 | Friday | Robinson Crusoe's island, 1719 | Fictional |
-| 11 | Houdini | New York City, 1920s | Historical |
-| 12 | Frankenstein's Creature | — | Fictional |
+| 10 | Houdini | New York City, 1920s | Historical |
+| 11 | Frankenstein's Creature | — | Fictional |
+| 12 | Friday | Robinson Crusoe's island, 1719 | Fictional |
 
 Tesla and Curie were removed and replaced by Bruce Lee and Baldwin respectively. Evangeline Adams was added as a 9th character with a specialised natal chart flow. La Llorona, Houdini, and Frankenstein's Creature were added to expand the roster to 12.
+
+**Einstein → Long John Silver swap (2026-07-18):** Einstein's Vapi assistant (`b98cec95-47a4-455d-92c8-3a08aacb556d`, phone `+15853162340`) was repurposed in place for Long John Silver — the man beneath Stevenson's pirate performance, a Bristol printer's son who lost a leg at Havana. Same assistant ID/phone/voice/model — only name, firstMessage, and system prompt changed (full replacement, prompt shrank from 31,588 to 17,147 chars). Backup at `C:\talkwithicons\vapi-backup\einstein-pre-silver.json`. The Silver prompt was supplied pre-written via base64 file, decoded and reviewed before use. **Einstein was the site's most prominently-featured character** (homepage hero tagline, char-circle preview, gift package table, grand-tour list) — much larger footprint than the Holmes or Sitting Bull swaps, so this cleanup touched more files than either. Full cleanup done same day: this file's roster/assistant/gate-line/opening-line tables, einstein.html + einstein-feature.html renamed to silver.html/silver-feature.html, index.html (hero tagline, char-circle, character card, "Other Icons" order), payment.html icons object, gift.html prose (also fixed a stale "Sherlock Holmes" mention left over from the Watson swap), grand-tour.html character list (that list is independently very stale — still shows Sherlock Holmes/Elizabeth Bennet/Mark Twain/James Baldwin and is missing half the current roster; only the Einstein line item was fixed, the rest left as pre-existing drift, out of scope for this task), stripe-work/stripe-output einstein.html renamed to silver.html, api/call-ended.js ASSISTANT_NAMES map, and the 2 currently-reusable global scripts relabeled. **Also executed in the same pass: a full site-wide character reorder** to the new agreed rotation (Aela, Oswald, Da Vinci, Bruce Lee, Watson, Silver, Céleste, Nostradamus, Evangeline, Houdini, Frankenstein, Friday) — applied to index.html's main character grid (renumbered Character 01–12) and every page's "Other Icons"/"Also available" cross-link section (24 pages: 12 main + 12 feature, each reordered to the master rotation minus its own character). Internal `character` slug/key (`'einstein'` in api/start-call-basic.js, payment.html icons key) deliberately left unchanged, same reasoning as prior swaps. No portrait image yet — still using the placeholder Einstein image (images/einstein.webp on the main page, images/einstein.jpeg on the feature page — two different placeholder filenames pre-existed this swap and were left as-is), pending a real Silver portrait from Ruby.
 
 **Sitting Bull → Friday swap (2026-07-18):** Sitting Bull's Vapi assistant (`b1f66c71-a2d6-4ae9-9ea1-7b72d4a423d0`, phone `+15854073097`) was repurposed in place for Friday — the man Defoe called Friday in Robinson Crusoe, reframed as Naso (Teribe), correcting the record on what he actually did versus what the novel credited to Crusoe. Same assistant ID/phone/voice/model — only name, firstMessage, and system prompt changed (full replacement, not an append — the prompt shrank from 31,442 to 21,614 chars). Backup at `C:\talkwithicons\vapi-backup\sittingbull-pre-friday.json`. Unlike the Céleste/Oswald/Watson swaps, this retires a specific historical Indigenous leader in favor of a fictional character — flagged to the user before the site cleanup began; user confirmed intent to proceed. Full cleanup done same day: this file's roster/assistant tables (Assistant IDs table gained a Friday row — Sitting Bull had never actually been in that table), sittingbull.html + sittingbull-feature.html renamed to friday.html/friday-feature.html, index.html card, all 11 sibling character/feature pages' cross-links, api/call-ended.js ASSISTANT_NAMES map (also previously missing a Sitting Bull entry — added fresh as Friday). payment.html and stripe-work/stripe-output never had Sitting Bull entries/pages to begin with, so nothing to update there. Internal `character` slug/key (`'sittingbull'` in api/start-call-basic.js) deliberately left unchanged, same reasoning as prior swaps. No portrait image yet — still using the placeholder Sitting Bull image (images/sittingbull.jpeg) pending a real Friday portrait from Ruby.
 
@@ -78,7 +80,7 @@ Live on homepage (index.html #gifts section). Fully pre-paid named experiences w
 
 | Name | Duration | Price |
 |------|----------|-------|
-| The Einstein Evening | 15 min with Albert Einstein | $11.99 |
+| An Hour with Long John Silver | 15 min with Long John Silver | $11.99 |
 | An Hour with Dr. Watson | 20 min at 221B Baker Street | $16.99 |
 | A Reading with Evangeline | 20 min with Evangeline Adams | $16.99 |
 | An Evening with Aela | 30 min with the Pleiadian Liaison | $26.99 |
@@ -141,7 +143,7 @@ Live on homepage (index.html #gifts section). Fully pre-paid named experiences w
 **Assistant IDs:**
 | Character | Assistant ID | Phone Number |
 |-----------|-------------|--------------|
-| Einstein | b98cec95-47a4-455d-92c8-3a08aacb556d | +15853162340 |
+| Silver | b98cec95-47a4-455d-92c8-3a08aacb556d | +15853162340 |
 | Nostradamus | bca7797f-d4c5-4b67-b22c-7506a0b045b9 | +15853162339 (phone record 4c6793f2-4f89-421b-9662-38d2b01792c0) |
 | Da Vinci | 23ef91d2-fc8f-4fee-9c2e-25e93b51c331 | +15858009390 (phone record af4c55a0; inbound routing updated to real Da Vinci 2026-06-27) |
 | Bruce Lee | 099b6a90-1fa9-4e6a-bc4d-8c127c6b1141 | +15854073450 (phone record e858bf94-1801-47ac-9bd5-14d6bbf13673) |
@@ -207,7 +209,7 @@ California Civil Code §3344.1 covers voice *likeness* not just exact reproducti
 
 ## Character Gate Lines (Minute 3 — said in character)
 
-- **Einstein:** "Our free introduction is nearly finished — but I find I'm not quite ready to stop. Should we continue?"
+- **Silver:** "Well now — you've had your free taste. The rest of the story costs a bit more, same as everything worth having. Shall we continue?"
 - **Twain:** "Well, we've used up the free portion of this conversation, and I was just getting warmed up. The question is whether you were too."
 - **Watson:** "Three minutes free, and I've barely gotten past Afghanistan. There's a great deal more account left to give. Shall I continue?"
 - **Nostradamus:** "What has passed between us was written. What comes next — that depends on you."
@@ -221,7 +223,7 @@ California Civil Code §3344.1 covers voice *likeness* not just exact reproducti
 
 ## Character Opening Lines (First thing said when call connects)
 
-- **Einstein:** "Ah — you called. I wondered if anyone would..." (no name used)
+- **Silver:** "Ah, a caller. Sit down — or don't, I'm not particular. The name's Silver. Long John Silver, if you're being formal, though I've answered to worse. What is it you want to know?" (actual live firstMessage, verbatim)
 - **Twain:** "Well. I wasn't expecting you to sound like that, [name]..."
 - **Watson:** "You were expecting Holmes, perhaps. He's indisposed — I won't say with what, you can probably guess. I'm Watson. I've been writing him up for thirty years and I think it's time I said a few things on my own account. What would you like to know?" (actual live firstMessage, verbatim)
 - **Nostradamus:** "I have been expecting someone..." (no name used)

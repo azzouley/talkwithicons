@@ -28,7 +28,7 @@ function createTransporter() {
 }
 
 const CHARACTER_DISPLAY = {
-  einstein:   'Albert Einstein',
+  einstein:   'Long John Silver',
   holmes:     'Dr. John H. Watson',
   evangeline: 'Evangeline Adams',
   aela:       'Aela',

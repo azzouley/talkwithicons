@@ -165,8 +165,11 @@ Live on homepage (index.html #gifts section). Fully pre-paid named experiences w
 
 | Character | Voice | Notes |
 |-----------|-------|-------|
-| James Baldwin | Voice ID: 3W2XyWxiiSb9Oj5yL3lv | Instant clone from archive.org audio ("Living and Growing in a White World") |
+| James Baldwin | Voice ID: 3W2XyWxiiSb9Oj5yL3lv | Instant clone from archive.org audio ("Living and Growing in a White World"). Still in use by Oswald's assistant (voice not swapped when Baldwin's prompt was repurposed for Oswald). |
 | Bruce Lee | San Chi | Shared Chinese-accented voice — cloning rejected permanently (see below) |
+| Long John Silver | Voice ID: SSIn0rIMGHiQH7TrsfZd | Voice Design voice, purpose-built 2026-07-18 ("older English man, late 50s, Bristol-born, decades at sea"). Replaced the borrowed Einstein voice (b55itjSk74Uz10WTB5BL). |
+| Dr. John H. Watson | Voice ID: nOUfIzE775HrCJ36dNjT | Voice Design voice, purpose-built 2026-07-18 ("British army doctor, mid-40s, Victorian era, officer-class"). Replaced the borrowed Holmes voice (TTmUgRoiAUdn043OgRax). |
+| Friday | Voice ID: lcw5rkvXHtALye2alb6e | Voice Design voice, purpose-built 2026-07-18 ("man in his mid-20s, steady, unhurried intonation"). Replaced the borrowed Sitting Bull voice (b0MVcl7XgFDtakyF6rxT). |
 | Others | Various ElevenLabs voices | Set in Vapi dashboard |
 
 **Bruce Lee voice cloning — decided against, permanently:**

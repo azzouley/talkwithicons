@@ -740,26 +740,47 @@
   }, { threshold: 0.1 });
   document.querySelectorAll('.fade-in').forEach(el => obs.observe(el));
 
-  // Meal counter animation
+  // Meal counter animation — target fetched live from /api/meals-count
   let counted = false;
+  let mealsTarget = null;
   const counterEl = document.getElementById('meal-counter');
+
+  fetch(window.location.origin + '/api/meals-count')
+    .then(r => r.json())
+    .then(data => { mealsTarget = data.meals || 0; })
+    .catch(() => { mealsTarget = 0; });
+
+  function runCounterAnimation() {
+    const target = mealsTarget;
+    const duration = 2000;
+    const increment = target / (duration / 16);
+    let current = 0;
+    const timer = setInterval(() => {
+      current += increment;
+      if (current >= target) {
+        counterEl.textContent = target.toLocaleString();
+        clearInterval(timer);
+      } else {
+        counterEl.textContent = Math.floor(current).toLocaleString();
+      }
+    }, 16);
+  }
+
   const counterObs = new IntersectionObserver(entries => {
     entries.forEach(entry => {
       if (entry.isIntersecting && !counted) {
         counted = true;
-        const target = 1247;
-        const duration = 2000;
-        const increment = target / (duration / 16);
-        let current = 0;
-        const timer = setInterval(() => {
-          current += increment;
-          if (current >= target) {
-            counterEl.textContent = target.toLocaleString();
-            clearInterval(timer);
-          } else {
-            counterEl.textContent = Math.floor(current).toLocaleString();
-          }
-        }, 16);
+        if (mealsTarget !== null) {
+          runCounterAnimation();
+        } else {
+          // Fetch hasn't resolved yet — wait for it, then animate.
+          const waitForTarget = setInterval(() => {
+            if (mealsTarget !== null) {
+              clearInterval(waitForTarget);
+              runCounterAnimation();
+            }
+          }, 50);
+        }
       }
     });
   }, { threshold: 0.3 });

@@ -23,11 +23,13 @@ TalkWithIcons is a paid voice phone call service. Users call AI versions of hist
 | 07 | Céleste Vaudreuil | Beaune, 1758 → New York, present day | Original |
 | 08 | Lee Harvey Oswald | Dallas, 1963 | Historical |
 | 09 | Evangeline Adams | New York City, 1930s | Historical |
-| 10 | Sitting Bull | Standing Rock, 1870s–1890 | Historical |
+| 10 | Friday | Robinson Crusoe's island, 1719 | Fictional |
 | 11 | Houdini | New York City, 1920s | Historical |
 | 12 | Frankenstein's Creature | — | Fictional |
 
 Tesla and Curie were removed and replaced by Bruce Lee and Baldwin respectively. Evangeline Adams was added as a 9th character with a specialised natal chart flow. La Llorona, Houdini, and Frankenstein's Creature were added to expand the roster to 12.
+
+**Sitting Bull → Friday swap (2026-07-18):** Sitting Bull's Vapi assistant (`b1f66c71-a2d6-4ae9-9ea1-7b72d4a423d0`, phone `+15854073097`) was repurposed in place for Friday — the man Defoe called Friday in Robinson Crusoe, reframed as Naso (Teribe), correcting the record on what he actually did versus what the novel credited to Crusoe. Same assistant ID/phone/voice/model — only name, firstMessage, and system prompt changed (full replacement, not an append — the prompt shrank from 31,442 to 21,614 chars). Backup at `C:\talkwithicons\vapi-backup\sittingbull-pre-friday.json`. Unlike the Céleste/Oswald/Watson swaps, this retires a specific historical Indigenous leader in favor of a fictional character — flagged to the user before the site cleanup began; user confirmed intent to proceed. Full cleanup done same day: this file's roster/assistant tables (Assistant IDs table gained a Friday row — Sitting Bull had never actually been in that table), sittingbull.html + sittingbull-feature.html renamed to friday.html/friday-feature.html, index.html card, all 11 sibling character/feature pages' cross-links, api/call-ended.js ASSISTANT_NAMES map (also previously missing a Sitting Bull entry — added fresh as Friday). payment.html and stripe-work/stripe-output never had Sitting Bull entries/pages to begin with, so nothing to update there. Internal `character` slug/key (`'sittingbull'` in api/start-call-basic.js) deliberately left unchanged, same reasoning as prior swaps. No portrait image yet — still using the placeholder Sitting Bull image (images/sittingbull.jpeg) pending a real Friday portrait from Ruby.
 
 **Holmes → Dr. John H. Watson swap (2026-07-18):** Sherlock Holmes's Vapi assistant (`b65fb3ab-df3c-4a5b-8a96-3e865d9315b6`, phone `+15854073131`) was repurposed in place for Dr. John H. Watson — narrator of the stories, Afghanistan veteran, the man who managed Holmes and shaped how he was perceived. Same assistant ID/phone/voice/model — only name, firstMessage, and system prompt changed. Backup at `C:\talkwithicons\vapi-backup\holmes-pre-watson.json`. Full cleanup done same day: this table, holmes.html + holmes-feature.html renamed to watson.html/watson-feature.html, index.html card, all 11 sibling character/feature pages' cross-links, stripe-work/stripe-output holmes.html renamed to watson.html, api/call-ended.js display-name map, and global patch scripts relabeled. Internal `character` slug/key (`'holmes'` in watson.html's own call handler, payment.html's icons object key, api/start-call-basic.js) deliberately left unchanged, same reasoning as Céleste and Oswald — display name and backend routing key are intentionally decoupled. No portrait image yet — still using the placeholder Holmes image (images/holmes.jpeg) pending a real Watson portrait.
 
@@ -151,6 +153,7 @@ Live on homepage (index.html #gifts section). Fully pre-paid named experiences w
 | ~~La Llorona~~ | ~~a30672aa-7bbb-4cff-91ed-7a2f01b5823a~~ | ~~+15854073097~~ (RETIRED 2026-07) |
 | Houdini | ca384c56-f276-4940-b20b-1ae939bef23b | (confirm in Vercel) |
 | Frankenstein | f96bb0a5-6e8f-4153-8bee-6b76fa14f881 | (confirm in Vercel) |
+| Friday | b1f66c71-a2d6-4ae9-9ea1-7b72d4a423d0 | +15854073097 (was missing from this table entirely pre-swap; added 2026-07-18) |
 
 ---
 

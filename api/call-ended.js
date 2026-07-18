@@ -17,6 +17,7 @@ const ASSISTANT_NAMES = {
   '0560582f-8258-4803-8f2b-78b364fa23ca': 'Céleste',
   '2f0047c1-eeb7-412d-b455-f8f731bdd232': 'Lee Harvey Oswald',
   '7fd88fa7-f013-4693-9b52-ab8937e4225d': 'Evangeline Adams',
+  'b1f66c71-a2d6-4ae9-9ea1-7b72d4a423d0': 'Friday',
 };
 
 const SITE_URL = process.env.SITE_URL || 'https://talkwithicons.vercel.app';

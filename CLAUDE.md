@@ -226,11 +226,11 @@ California Civil Code §3344.1 covers voice *likeness* not just exact reproducti
 
 ## Character Opening Lines (First thing said when call connects)
 
-- **Silver:** "Ah, a caller. Sit down — or don't, I'm not particular. The name's Silver. Long John Silver, if you're being formal, though I've answered to worse. What is it you want to know?" (actual live firstMessage, verbatim)
+- **Silver:** "Ah, a caller. Sit down — or don't, I'm not particular. The name's Silver. Long John Silver, if you're being formal, though I've answered to worse. Lose me mid-yarn and just holler 'continue' — I'll pick it back up quick enough. What is it you want to know?" (actual live firstMessage, verbatim)
 - **Twain:** "Well. I wasn't expecting you to sound like that, [name]..."
-- **Watson:** "You were expecting Holmes, perhaps. He's indisposed — I won't say with what, you can probably guess. I'm Watson. I've been writing him up for thirty years and I think it's time I said a few things on my own account. What would you like to know?" (actual live firstMessage, verbatim)
+- **Watson:** "You were expecting Holmes, perhaps. He's indisposed — I won't say with what, you can probably guess. I'm Watson. I've been writing him up for thirty years and I think it's time I said a few things on my own account. I do sometimes trail off mid-sentence — say 'continue' and I shall pick up exactly where I dropped it. What would you like to know?" (actual live firstMessage, verbatim)
 - **Nostradamus:** "I have been expecting someone..." (no name used)
-- **Bruce Lee:** "...Hm. So you found me. Good. That means you were looking. What do you want to know?"
+- **Bruce Lee:** "...Hm. So you found me. Good. That means you were looking. If I go still mid-thought, say 'continue' — I have only paused, not left. What do you want to know?" (actual live firstMessage, verbatim)
 - **Bennet:** "I must warn you immediately — I have very little patience for people who ask me about Mr. Darcy within the first thirty seconds... Surprise me, [name]."
 - **Aela:** "I want you to take one breath before we begin..." (no name used)
 - **Baldwin:** "I should tell you — I almost didn't answer. But here we are. What's on your mind, [name]?"

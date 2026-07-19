@@ -19,6 +19,18 @@
       "schedule": "*/30 * * * *"
     }
   ],
+  "redirects": [
+    {
+      "source": "/silver.html",
+      "destination": "/rocca.html",
+      "permanent": true
+    },
+    {
+      "source": "/silver-feature.html",
+      "destination": "/rocca-feature.html",
+      "permanent": true
+    }
+  ],
   "headers": [
     {
       "source": "/api/(.*)",

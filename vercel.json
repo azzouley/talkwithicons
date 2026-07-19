@@ -8,8 +8,17 @@
       "regions": [
         "all"
       ]
+    },
+    "api/reconcile-payment-intents.js": {
+      "maxDuration": 30
     }
   },
+  "crons": [
+    {
+      "path": "/api/reconcile-payment-intents",
+      "schedule": "*/30 * * * *"
+    }
+  ],
   "headers": [
     {
       "source": "/api/(.*)",

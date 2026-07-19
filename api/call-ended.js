@@ -47,7 +47,37 @@ module.exports = async function handler(req, res) {
 
   const msg = req.body?.message;
 
-  if (!msg || msg.type !== 'end-of-call-report') {
+  if (!msg) {
+    return res.status(200).json({ ok: true });
+  }
+
+  // ── Early auth-hold release ───────────────────────────────────────────────────
+  // Safety net for calls that never connect (e.g. a Twilio provider auth failure —
+  // see "call.start.error-get-transport"). Those calls end before Vapi ever fires
+  // end-of-call-report, so the $1 hold created in create-payment-intent.js would
+  // otherwise sit unresolved forever. Vapi always sends a status-update with
+  // status "ended" when a call terminates, connected or not, so release the hold
+  // here as soon as that arrives. Idempotent: only acts if the hold is still open,
+  // so it can't conflict with the normal cancel/charge below if end-of-call-report
+  // also arrives for the same call.
+  if (msg.type === 'status-update' && msg.status === 'ended') {
+    const earlyPaymentIntentId = msg.call?.metadata?.paymentIntentId;
+    if (earlyPaymentIntentId) {
+      try {
+        const stripe = await getStripe();
+        const pi = await stripe.paymentIntents.retrieve(earlyPaymentIntentId);
+        if (pi.status === 'requires_capture') {
+          await stripe.paymentIntents.cancel(earlyPaymentIntentId);
+          console.log(`Stripe: call ended without ever billing — auth hold released early. PI=${earlyPaymentIntentId} endedReason=${msg.endedReason || 'unknown'}`);
+        }
+      } catch (err) {
+        console.error('Early auth-hold release error:', err.message, { paymentIntentId: earlyPaymentIntentId });
+      }
+    }
+    return res.status(200).json({ ok: true });
+  }
+
+  if (msg.type !== 'end-of-call-report') {
     return res.status(200).json({ ok: true });
   }
 

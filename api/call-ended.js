@@ -10,6 +10,7 @@ const { sql, calcPerCallDonationCents, updateDonationLedger, getStripeSecretKey 
 
 const ASSISTANT_NAMES = {
   'b98cec95-47a4-455d-92c8-3a08aacb556d': 'Long John Silver',
+  'd8a4ad09-882c-41b1-a48f-ceceb3e5ee27': 'Father Elia Rocca',
   'bca7797f-d4c5-4b67-b22c-7506a0b045b9': 'Nostradamus',
 '099b6a90-1fa9-4e6a-bc4d-8c127c6b1141': 'Bruce Lee',
   'b65fb3ab-df3c-4a5b-8a96-3e865d9315b6': 'Dr. John H. Watson',

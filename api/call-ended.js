@@ -160,37 +160,6 @@ module.exports = async function handler(req, res) {
     }
   }
 
-  // ── Grand Tour minute deduction ───────────────────────────────────────────────
-  const tourCode = call.metadata?.tourCode;
-  if (tourCode && durationSeconds > 0) {
-    const gtMins = Math.ceil(durationSeconds / 60);
-    if (gtMins > 4) {
-      try {
-        await sql`
-          UPDATE grand_tour_balances
-          SET minutes_remaining = GREATEST(0, minutes_remaining - ${gtMins}),
-              updated_at        = NOW()
-          WHERE access_code = ${tourCode}
-        `;
-        const updated = await sql`
-          SELECT minutes_remaining FROM grand_tour_balances WHERE access_code = ${tourCode}
-        `;
-        const remaining = updated.rows[0]?.minutes_remaining ?? 0;
-        await sql`
-          INSERT INTO grand_tour_call_log
-            (access_code, caller_phone, character_name, duration_seconds,
-             minutes_deducted, minutes_remaining_after, vapi_call_id)
-          VALUES
-            (${tourCode}, ${callerPhone || ''}, ${characterName}, ${durationSeconds},
-             ${gtMins}, ${remaining}, ${call.id || null})
-        `;
-        console.log(`Grand Tour: deducted ${gtMins} min from ${tourCode} — ${remaining} min remaining`);
-      } catch (gtErr) {
-        console.error('Grand Tour minute deduction error:', gtErr.message);
-      }
-    }
-  }
-
   // ── Gift code minute deduction ────────────────────────────────────────────────
   const giftCode = call.metadata?.giftCode;
   if (giftCode && durationSeconds > 0) {

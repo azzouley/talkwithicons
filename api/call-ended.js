@@ -21,6 +21,9 @@ const ASSISTANT_NAMES = {
   '2f0047c1-eeb7-412d-b455-f8f731bdd232': 'Lee Harvey Oswald',
   '7fd88fa7-f013-4693-9b52-ab8937e4225d': 'Evangeline Adams',
   'b1f66c71-a2d6-4ae9-9ea1-7b72d4a423d0': 'Friday',
+  '23ef91d2-fc8f-4fee-9c2e-25e93b51c331': 'Leonardo da Vinci',
+  'ca384c56-f276-4940-b20b-1ae939bef23b': 'Harry Houdini',
+  'f96bb0a5-6e8f-4153-8bee-6b76fa14f881': "Frankenstein's Creature",
 };
 
 const SITE_URL = process.env.SITE_URL || 'https://talkwithicons.vercel.app';

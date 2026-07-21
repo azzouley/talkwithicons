@@ -88,14 +88,18 @@ function verifyQStash(rawBody, sigHeader, keys) {
 }
 
 const CHARACTER_HOOKS = {
-  'Albert Einstein':   'The questions that conversation opened — those belong to you now.',
-'Sherlock Holmes':   'Holmes has filed the case. The deduction stands.',
-  'Nostradamus':       'What was said was written. What you do with it is not.',
-  'Bruce Lee':         'Be water. You know what that means now.',
-  'James Baldwin':     'The witness has spoken. What you carry forward is yours.',
-  'Aela':             'The signal was received. Trust what you heard.',
-  'Elizabeth Bennet':  'Bennet had strong opinions. The ones that stuck — keep those.',
-  'Evangeline Adams':  'The chart has been read. The transits are already in motion.',
+  'Nostradamus':             'What was said was written. What you do with it is not.',
+  'Aela':                    'The signal was received. Trust what you heard.',
+  'Evangeline Adams':        'The chart has been read. The transits are already in motion.',
+  'Lee Harvey Oswald':       'Sixty years of being told to stay quiet. This is what it sounds like when someone finally lets you finish.',
+  'Leonardo da Vinci':       'The question stays open — that is exactly how I would want to leave it.',
+  'Zhou Han':                'What you tested tonight, keep testing. That is the only tradition worth keeping.',
+  'Dr. John H. Watson':      'You have had more time than most of my readers ever got. Put it to good use.',
+  'Father Elia Rocca':       'Restraint, not theater — same as always. Carry the real thing forward, not the performance.',
+  'Céleste':                 'Two hundred and sixty years, and that still felt like something. Go carefully out there.',
+  'Harry Houdini':           'I spent my life exposing the trick behind the wonder. Go find out which one this was.',
+  "Frankenstein's Creature": 'You judged me by what I said, not by what you had heard about me. That is more than most ever gave me.',
+  'Friday':                  'A story paused is not a story ended. This one is not, either.',
 };
 
 function buildEmail(firstName, characterName, minutes, hook, site) {

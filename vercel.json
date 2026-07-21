@@ -29,6 +29,16 @@
       "source": "/silver-feature.html",
       "destination": "/rocca-feature.html",
       "permanent": true
+    },
+    {
+      "source": "/brucelee.html",
+      "destination": "/zhouhan.html",
+      "permanent": true
+    },
+    {
+      "source": "/brucelee-feature.html",
+      "destination": "/zhouhan-feature.html",
+      "permanent": true
     }
   ],
   "headers": [

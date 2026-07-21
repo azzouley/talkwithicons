@@ -1,11 +1,8 @@
 // api/call-ended.js
 // Vapi webhook receiver — fires on every call event; only acts on end-of-call-report.
-// Handles two jobs:
-//   1. Stripe billing — cancel auth hold (free calls) or charge correct amount (paid calls).
-//      Runs for ALL calls including short ones so the auth hold is never left dangling.
-//   2. QStash follow-up email — scheduled 30 min after call end (skipped for very short calls).
+// Handles Stripe billing — cancel auth hold (free calls) or charge correct amount (paid calls).
+// Runs for ALL calls including short ones so the auth hold is never left dangling.
 
-const https = require('https');
 const { sql, calcPerCallDonationCents, updateDonationLedger, getStripeSecretKey } = require('./_db');
 
 const ASSISTANT_NAMES = {
@@ -25,8 +22,6 @@ const ASSISTANT_NAMES = {
   'ca384c56-f276-4940-b20b-1ae939bef23b': 'Harry Houdini',
   'f96bb0a5-6e8f-4153-8bee-6b76fa14f881': "Frankenstein's Creature",
 };
-
-const SITE_URL = process.env.SITE_URL || 'https://talkwithicons.vercel.app';
 
 // ── Billing calculation ───────────────────────────────────────────────────────
 // Minutes 1–2: free | Minutes 3–5: $3.99 gate | Minute 6+: $1.00/min
@@ -90,7 +85,6 @@ module.exports = async function handler(req, res) {
   const call            = msg.call || {};
   const callerPhone     = call.customer?.number;
   const callerName      = call.customer?.name  || '';
-  const callerEmail     = call.customer?.email || null;
   const assistantId     = call.assistantId;
   const characterName   = ASSISTANT_NAMES[assistantId] || 'one of our icons';
   const durationSeconds = Math.round(
@@ -100,10 +94,9 @@ module.exports = async function handler(req, res) {
       ? (new Date(call.endedAt) - new Date(call.startedAt)) / 1000
       : 0)
   );
-  const transcript = (msg.transcript || '').slice(0, 3000);
 
   // ── Stripe billing ────────────────────────────────────────────────────────────
-  // Runs before the short-call guard so auth holds are always resolved.
+  // Runs for every call regardless of duration, so auth holds are always resolved.
   const paymentIntentId  = call.metadata?.paymentIntentId;
   const paymentMethodId  = call.metadata?.paymentMethodId;
   const stripeCustomerId = call.metadata?.stripeCustomerId;
@@ -158,7 +151,7 @@ module.exports = async function handler(req, res) {
         );
       }
     } catch (stripeErr) {
-      // Log but don't fail the webhook — QStash follow-up must still be attempted
+      // Log but don't fail the webhook — the rest of the handler must still run
       console.error('Stripe billing error:', stripeErr.message, {
         paymentIntentId,
         chargeAmount: calcChargeAmountCents(durationSeconds),
@@ -229,60 +222,5 @@ module.exports = async function handler(req, res) {
     }
   }
 
-  // ── Skip follow-up for very short calls ───────────────────────────────────────
-  if (!callerPhone || durationSeconds < 60) {
-    return res.status(200).json({ ok: true, skipped: 'too short or no phone' });
-  }
-
-  // ── Schedule follow-up via QStash ────────────────────────────────────────────
-  const qstashBase  = (process.env.QSTASH_URL || 'https://qstash.upstash.io').replace(/\/$/, '');
-  const qstashToken = process.env.QSTASH_TOKEN;
-
-  if (!qstashToken) {
-    console.error('QSTASH_TOKEN not set');
-    return res.status(200).json({ ok: true, warning: 'QStash not configured' });
-  }
-
-  const destination = encodeURIComponent(SITE_URL + '/api/send-followup');
-  const qstashHost  = new URL(qstashBase).hostname;
-  const publishPath = '/v2/publish/' + destination;
-
-  const payload = JSON.stringify({
-    callerPhone,
-    callerName,
-    callerEmail,
-    characterName,
-    durationSeconds,
-    transcript,
-  });
-
-  await new Promise((resolve) => {
-    const opts = {
-      hostname: qstashHost,
-      path:     publishPath,
-      method:   'POST',
-      headers:  {
-        'Authorization':  'Bearer ' + qstashToken,
-        'Content-Type':   'application/json',
-        'Upstash-Delay':  '1800s',
-        'Content-Length': Buffer.byteLength(payload),
-      },
-    };
-    const r = https.request(opts, res2 => {
-      let d = '';
-      res2.on('data', c => d += c);
-      res2.on('end', () => {
-        console.log('QStash queued follow-up:', res2.statusCode, callerPhone, characterName);
-        resolve();
-      });
-    });
-    r.on('error', err => {
-      console.error('QStash publish error:', err.message);
-      resolve();
-    });
-    r.write(payload);
-    r.end();
-  });
-
-  return res.status(200).json({ ok: true, followUpScheduled: true });
+  return res.status(200).json({ ok: true });
 };

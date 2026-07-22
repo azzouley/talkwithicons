@@ -39,6 +39,16 @@
       "source": "/brucelee-feature.html",
       "destination": "/zhouhan-feature.html",
       "permanent": true
+    },
+    {
+      "source": "/friday.html",
+      "destination": "/kadevoss.html",
+      "permanent": true
+    },
+    {
+      "source": "/friday-feature.html",
+      "destination": "/kadevoss-feature.html",
+      "permanent": true
     }
   ],
   "headers": [

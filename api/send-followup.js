@@ -100,6 +100,7 @@ const CHARACTER_HOOKS = {
   'Harry Houdini':           'I spent my life exposing the trick behind the wonder. Go find out which one this was.',
   "Frankenstein's Creature": 'You judged me by what I said, not by what you had heard about me. That is more than most ever gave me.',
   'Friday':                  'A story paused is not a story ended. This one is not, either.',
+  'Nikola Tesla':            'The present is theirs. The future, for which I really worked, is mine. Go build some of it.',
 };
 
 function buildEmail(firstName, characterName, minutes, hook, site) {

@@ -49,6 +49,16 @@
       "source": "/friday-feature.html",
       "destination": "/kadevoss-feature.html",
       "permanent": true
+    },
+    {
+      "source": "/frankenstein.html",
+      "destination": "/tesla.html",
+      "permanent": true
+    },
+    {
+      "source": "/frankenstein-feature.html",
+      "destination": "/tesla-feature.html",
+      "permanent": true
     }
   ],
   "headers": [

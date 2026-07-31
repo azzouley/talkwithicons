@@ -21,17 +21,16 @@
     .nav-cta { font-family: 'Space Mono', monospace; font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--dark); background: var(--gold); padding: 10px 24px; text-decoration: none; transition: background 0.2s; }
     .nav-cta:hover { background: var(--gold-light); }
     .hero { min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr; align-items: center; padding-top: 80px; position: relative; overflow: hidden; }
-    .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 60% 80% at 70% 50%, rgba(100,140,201,0.06) 0%, transparent 70%); pointer-events: none; }
+    .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 60% 80% at 70% 50%, rgba(201,168,76,0.05) 0%, transparent 70%); pointer-events: none; }
     .hero-left { padding: 80px 60px 80px 80px; position: relative; z-index: 2; }
     .hero-eyebrow { font-family: 'Space Mono', monospace; font-size: 0.65rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold); margin-bottom: 24px; display: flex; align-items: center; gap: 12px; }
     .hero-eyebrow::before { content: ''; display: block; width: 32px; height: 1px; background: var(--gold-dim); }
-    .hero-name { font-family: 'Playfair Display', serif; font-size: clamp(3.5rem, 6vw, 5.5rem); font-weight: 900; line-height: 0.95; letter-spacing: -0.02em; margin-bottom: 8px; color: var(--warm-white); }
-    .hero-dates { font-family: 'Space Mono', monospace; font-size: 0.7rem; letter-spacing: 0.15em; color: var(--gold-dim); margin-bottom: 32px; }
+    .hero-name { font-family: 'Playfair Display', serif; font-size: clamp(2.8rem, 5vw, 4.5rem); font-weight: 900; line-height: 0.95; letter-spacing: -0.02em; margin-bottom: 8px; color: var(--warm-white); }
+    .hero-dates { font-family: 'Space Mono', monospace; font-size: 0.7rem; letter-spacing: 0.15em; color: #d4af70; margin-bottom: 32px; }
     .hero-tagline { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-style: italic; font-weight: 400; color: var(--gold-light); line-height: 1.4; margin-bottom: 28px; max-width: 480px; }
     .hero-desc { font-size: 1rem; color: var(--muted); line-height: 1.75; max-width: 460px; margin-bottom: 48px; }
     .call-box { border: 1px solid rgba(201,168,76,0.4); background: rgba(201,168,76,0.04); padding: 28px 32px; max-width: 420px; }
     .call-box-label { font-family: 'Space Mono', monospace; font-size: 0.62rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-dim); margin-bottom: 12px; }
-    .call-price-title { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 700; color: var(--warm-white); margin-bottom: 16px; }
     .call-details { font-size: 0.88rem; color: var(--muted); margin-bottom: 20px; line-height: 1.6; }
     .btn-call { display: block; width: 100%; font-family: 'Space Mono', monospace; font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 700; background: var(--gold); color: var(--dark); border: none; padding: 18px; cursor: pointer; text-align: center; text-decoration: none; transition: background 0.2s, transform 0.15s; margin-bottom: 12px; }
     .btn-call:hover { background: var(--gold-light); transform: translateY(-1px); }
@@ -44,7 +43,9 @@
     .quote-mark { font-family: 'Playfair Display', serif; font-size: 8rem; color: rgba(201,168,76,0.1); line-height: 0.5; margin-bottom: 32px; display: block; }
     .quote-text { font-family: 'Playfair Display', serif; font-size: clamp(1.4rem, 3vw, 2.2rem); font-style: italic; font-weight: 400; line-height: 1.5; max-width: 760px; margin: 0 auto 24px; color: var(--warm-white); }
     .quote-attr { font-family: 'Space Mono', monospace; font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-dim); }
-    .starters-section { padding: 100px 80px; max-width: 1100px; margin: 0 auto; }
+    .starters-section { padding: 80px; }
+    .decision-section { display: grid; grid-template-columns: 3fr 2fr; align-items: start; }
+    .decision-form { padding: 80px 60px; position: sticky; top: 80px; background: var(--dark2); border-left: 1px solid rgba(201,168,76,0.12); }
     .section-label { font-family: 'Space Mono', monospace; font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; }
     .starters-intro { font-family: 'Crimson Pro', serif; font-size: 1.4rem; font-weight: 400; font-style: normal; border: 2px solid #c9a84c; padding: 20px 28px; display: block; margin: 0 auto 48px; text-align: center; }
     .starters-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 2px; }
@@ -59,7 +60,7 @@
     .bio-fact:last-child { border-bottom: none; margin-bottom: 0; }
     .bio-fact-label { font-family: 'Space Mono', monospace; font-size: 0.6rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold-dim); margin-bottom: 6px; }
     .bio-fact-value { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; color: var(--warm-white); }
-    .bio-content p { font-size: 1.05rem; color: var(--muted); line-height: 1.8; margin-bottom: 24px; }
+    .bio-content p { font-size: 1.05rem; color: var(--warm-white); line-height: 1.8; margin-bottom: 24px; }
     .bio-content p:last-child { margin-bottom: 0; }
     .bio-content strong { color: var(--warm-white); font-weight: 600; }
     .bottom-cta { padding: 100px 80px; text-align: center; background: linear-gradient(180deg, var(--dark) 0%, #0a0800 100%); position: relative; }
@@ -85,10 +86,13 @@
       .hero { grid-template-columns: 1fr; } .hero-right { height: 50vh; } .hero-left { padding: 100px 32px 60px; }
       .bio-section { grid-template-columns: 1fr; padding: 60px 32px; } .bio-sidebar { position: static; }
       .starters-section, .others-section, .bottom-cta { padding: 60px 32px; }
+      .decision-section { grid-template-columns: 1fr; }
+      .decision-form { padding: 48px 32px; position: static; border-left: none; border-top: 1px solid rgba(201,168,76,0.12); }
       .others-grid { grid-template-columns: repeat(4, 1fr); } nav { padding: 16px 24px; }
       footer { flex-direction: column; gap: 16px; text-align: center; padding: 32px; } .quote-section { padding: 60px 32px; }
     }
   </style>
+<script src="https://js.stripe.com/v3/"></script>
 </head>
 <body>
 
@@ -100,139 +104,156 @@
 
   <div class="hero">
     <div class="hero-left">
-      <p class="hero-eyebrow">Inventor · Visionary · 1856–1943</p>
-      <h1 class="hero-name">Nikola<br>Tesla</h1>
-      <p class="hero-dates">Born Smiljan, Serbia · Died Hotel New Yorker, Room 3327, 1943</p>
-      <p class="hero-tagline">"The present is theirs. The future, for which I really worked, is mine."</p>
+      <p class="hero-eyebrow">Smiljan · New York · 1943 · The War of the Currents</p>
+      <h1 class="hero-name">Nikola Tesla</h1>
+      <p class="hero-dates">1856 – 1943 · Inventor · Engineer · The Man Who Electrified the World</p>
+      <p class="hero-tagline">"The present is theirs; the future, for which I really worked, is mine."</p>
       <p class="hero-desc">
-        He gave the world alternating current, the radio, the induction motor, and
-        the blueprint for wireless energy transmission. He died alone in a hotel room,
-        penniless, with a pigeon. Edison got the credit. Tesla got the future.
-        Ask him how that sits with him.
+        He gave the world alternating current after breaking decisively with Thomas Edison.
+        He dreamed of free wireless power for the entire planet and watched the money run out
+        before the vision could be finished. He built a radio-controlled boat in 1898 that
+        audiences assumed was a magic trick. He died alone in a New York hotel room in 1943 —
+        and within hours, the FBI had seized his papers. What was actually in them, and what he
+        truly believed about the strangest claims of his final years, he will tell you himself.
       </p>
-      <div class="call-box" id="call">
-        <p class="call-box-label">How It Works</p>
-        <p class="call-details">First 3 minutes free. Minutes 4 through 6 cost $3.99 total. After that, just $1.00 per minute.</p>
-        <form id="call-form" onsubmit="handleCall(event)" style="margin-bottom:12px;">
-          <input id="f-name" type="text" placeholder="First Name" required autocomplete="given-name"
-                 style="display:block;width:100%;margin-bottom:8px;padding:10px 14px;background:#1c1710;border:1px solid rgba(201,168,76,0.7);color:#f5f0e8;font-family:'Space Mono',monospace;font-size:0.82rem;outline:none;" />
-          <input id="f-phone" type="tel" placeholder="Phone Number" required autocomplete="tel"
-                 style="display:block;width:100%;margin-bottom:12px;padding:10px 14px;background:#1c1710;border:1px solid rgba(201,168,76,0.7);color:#f5f0e8;font-family:'Space Mono',monospace;font-size:0.82rem;outline:none;" />
-          <button type="submit" class="btn-call" style="width:100%;cursor:pointer;border:none;">Call Me Now →</button>
-        </form>
-        <p id="call-msg" style="font-size:0.85rem;margin-bottom:12px;display:none;"></p>
-        <p class="call-rescue">🐾 every paid call triggers at minimum a meal donation for a rescue dog</p>
-      </div>
     </div>
     <div class="hero-right">
       <img class="hero-portrait" src="images/tesla.jpeg" alt="Nikola Tesla" />
       <div class="portrait-overlay"></div>
-      <p class="portrait-caption">Nikola Tesla · c. 1890</p>
+      <p class="portrait-caption">Nikola Tesla · New York</p>
     </div>
   </div>
 
-  <div class="quote-section">
-    <span class="quote-mark">"</span>
-    <p class="quote-text">If you want to find the secrets of the universe, think in terms of energy, frequency and vibration.</p>
-    <p class="quote-attr">— Nikola Tesla</p>
-  </div>
 
-  <section class="starters-section">
-    <p class="section-label">What to Ask</p>
-    <p class="starters-intro">To jog your imagination, here are 6 conversation starters. But you are encouraged to ask absolutely anything you want including questions or unsolved mysteries of our present age. Your time with Tesla is your own!</p>
-    <div class="starters-grid">
-      <div class="starter-card">
-        <div class="starter-num">01</div>
-        <p class="starter-q">"What was Wardenclyffe really for?"</p>
-        <p class="starter-note">The tower he built on Long Island was meant to transmit free energy wirelessly across the globe. JP Morgan pulled the funding. Ask him what was truly lost.</p>
-      </div>
-      <div class="starter-card">
-        <div class="starter-num">02</div>
-        <p class="starter-q">"Tell me about Edison."</p>
-        <p class="starter-note">The War of Currents. The stolen credit. The man who electrocuted an elephant to discredit AC power. Tesla has had a long time to think about this.</p>
-      </div>
-      <div class="starter-card">
-        <div class="starter-num">03</div>
-        <p class="starter-q">"What do you make of the world we built with your inventions?"</p>
-        <p class="starter-note">Smartphones. WiFi. Electric vehicles bearing his name. He envisioned much of it. Ask him if we used it wisely.</p>
-      </div>
-      <div class="starter-card">
-        <div class="starter-num">04</div>
-        <p class="starter-q">"You never married. Was that a choice or a cost?"</p>
-        <p class="starter-note">He said love was incompatible with his work. He said this while feeding pigeons in Bryant Park every day. Draw your own conclusions — or ask him.</p>
-      </div>
-      <div class="starter-card">
-        <div class="starter-num">05</div>
-        <p class="starter-q">"What did you actually discover that you never told anyone?"</p>
-        <p class="starter-note">He claimed experiments that went far beyond what he published. The FBI seized his papers when he died. Ask him what was in them.</p>
-      </div>
-      <div class="starter-card">
-        <div class="starter-num">06</div>
-        <p class="starter-q">"Do you feel vindicated?"</p>
-        <p class="starter-note">History has rehabilitated him completely. His name is on electric cars, a unit of magnetic flux, and the cultural imagination of an age. He died thinking he had failed.</p>
-      </div>
-    </div>
-  </section>
-
-  <div class="bio-section">
+<div class="bio-section">
     <div class="bio-sidebar">
       <div class="bio-fact">
         <p class="bio-fact-label">Born</p>
-        <p class="bio-fact-value">July 10, 1856<br>Smiljan, Serbian Empire</p>
+        <p class="bio-fact-value">1856, Smiljan<br>(Austrian Empire, now Croatia)</p>
       </div>
       <div class="bio-fact">
-        <p class="bio-fact-label">Died</p>
-        <p class="bio-fact-value">January 7, 1943<br>Hotel New Yorker, Room 3327</p>
+        <p class="bio-fact-label">Defining Rival</p>
+        <p class="bio-fact-value">Thomas Edison — the War of the Currents</p>
       </div>
       <div class="bio-fact">
-        <p class="bio-fact-label">Key Inventions</p>
-        <p class="bio-fact-value">AC motor, Tesla coil, radio, remote control, fluorescent lighting</p>
+        <p class="bio-fact-label">Greatest Ally</p>
+        <p class="bio-fact-value">George Westinghouse</p>
       </div>
       <div class="bio-fact">
-        <p class="bio-fact-label">Known For</p>
-        <p class="bio-fact-value">War of Currents, Wardenclyffe Tower, wireless energy</p>
-      </div>
-      <div class="bio-fact">
-        <p class="bio-fact-label">Rival</p>
-        <p class="bio-fact-value">Thomas Edison</p>
+        <p class="bio-fact-label">Final Years</p>
+        <p class="bio-fact-value">A hotel room in New York. The FBI arrived within hours of his death.</p>
       </div>
     </div>
     <div class="bio-content">
       <p>
-        Nikola Tesla arrived in America in 1884 with four cents in his pocket, a poem,
-        and a letter of introduction to Thomas Edison. Edison hired him, worked him
-        nearly to death, and then refused to pay him what he had promised.
-        <strong>Tesla quit and spent the winter digging ditches.</strong> Within two years
-        he had sold his AC patents to George Westinghouse and ignited the War of Currents
-        that would electrify the world.
+        He claimed a photographic memory and the ability to visualize an invention in complete,
+        functioning detail in his mind — testing and refining machines mentally before ever
+        touching a physical part. <strong>He arrived in America in 1884 with famously little money
+        and a letter of introduction to Thomas Edison.</strong> He worked for Edison briefly, then broke
+        from him decisively — over pay, and over a deeper conviction that alternating current, not
+        Edison's direct current, was the only workable path to powering the world.
       </p>
       <p>
-        His laboratory on Fifth Avenue became a salon for the age. Mark Twain visited.
-        So did Rudyard Kipling. Tesla would perform experiments — balls of lightning,
-        currents passing through his own body — that left witnesses convinced they had
-        seen magic. <strong>He spoke eight languages.</strong> He had a photographic memory.
-        He could visualize machines in complete three-dimensional detail before building them,
-        running them in his mind to check for wear.
+        What followed was not a polite scientific disagreement. Edison ran a real, aggressive
+        public campaign against AC, including public electrocutions of animals to frighten people
+        about its dangers. Tesla partnered with George Westinghouse to prove AC could work safely
+        at scale. <strong>He won the argument — AC became the standard for power distribution
+        worldwide. He did not win the money the way Edison did.</strong>
       </p>
       <p>
-        The collapse of Wardenclyffe broke him. JP Morgan had funded the tower expecting
-        a transatlantic radio system. When he understood Tesla intended to give the energy away
-        freely — <em>no meter, no charge, no profit</em> — he pulled the funding.
-        The tower was demolished for scrap during World War I. Tesla never recovered financially.
+        He went on to dream bigger: the Wardenclyffe Tower, a project aimed at free wireless power
+        and communication for anyone, anywhere on earth. J.P. Morgan funded it initially, then
+        withdrew once he understood the project could never be metered or controlled for profit.
+        The tower was never finished. <strong>Tesla considered it the great unfinished work of his
+        life.</strong>
       </p>
       <p>
-        He spent his final years in Room 3327 of the Hotel New Yorker, feeding pigeons,
-        refusing to see most visitors, and working on what he called a <strong>death ray</strong>
-        — a directed energy weapon he claimed could end all war by making it unwinnable.
-        When he died, the FBI seized every paper in his room. Many have never been made public.
+        His final years are the part most people get wrong, and the part he is least interested in
+        resolving neatly for you. He made claims, publicly and seriously, about a directed-energy
+        weapon and about signals he believed might come from beyond Earth. Within hours of his
+        death, the FBI took his papers. <strong>What he actually believed, and what was really in
+        those papers, is something he would rather tell you himself than have summarized.</strong>
       </p>
     </div>
   </div>
 
-  <div class="bottom-cta">
-    <h2>The future was his.<br>Now he'll speak<br><em style="color:var(--gold-light)">directly to you.</em></h2>
-    <p>No script. No recordings. A live AI voice trained on Tesla's patents, lectures, and autobiographical writings — speaking only to you, only now.</p>
-    <a class="btn-large" href="#call">Start Your Free Call →</a>
+<div class="decision-section" id="call">
+  <section class="starters-section">
+    <p class="section-label">What to Ask</p>
+    <p class="starters-intro">Your time with Nikola Tesla is your own. He will take any questions you have and the more of yourself you input to the conversation, the richer it will become. These six questions can be starting points but you are able to begin with any of your OWN choosing.</p>
+    <div class="starters-grid">
+      <div class="starter-card">
+        <div class="starter-num">01</div>
+        <p class="starter-q">"Tell me about your early life — before Edison, before America. What was it like to see machines complete in your mind before you ever built them?"</p>
+        <p class="starter-note">Smiljan, the fourth of five children of a Serbian Orthodox priest, and the claimed photographic memory that let him test inventions mentally, in full detail, before touching a single part.</p>
+      </div>
+      <div class="starter-card">
+        <div class="starter-num">02</div>
+        <p class="starter-q">"What actually happened between you and Edison?"</p>
+        <p class="starter-note">The disputed bonus, the real ideological gulf over AC versus DC, and the exact moment he knew the relationship couldn't continue.</p>
+      </div>
+      <div class="starter-card">
+        <div class="starter-num">03</div>
+        <p class="starter-q">"Tell me about the boat you controlled with your mind — or so people thought."</p>
+        <p class="starter-note">A radio-controlled boat, demonstrated publicly in 1898, to an audience so unfamiliar with the concept they assumed it was sleight of hand or magic.</p>
+      </div>
+      <div class="starter-card">
+        <div class="starter-num">04</div>
+        <p class="starter-q">"What happened to Wardenclyffe?"</p>
+        <p class="starter-note">Free wireless power and communication for anyone, anywhere — and the exact moment J.P. Morgan's withdrawal made clear it would never be finished.</p>
+      </div>
+      <div class="starter-card">
+        <div class="starter-num">05</div>
+        <p class="starter-q">"Did you actually invent radio — or was that Marconi?"</p>
+        <p class="starter-note">Decades of public credit going to Marconi, and what it actually felt like when the U.S. Supreme Court ruled in Tesla's favor in 1943 — after he was no longer alive to hear it.</p>
+      </div>
+      <div class="starter-card">
+        <div class="starter-num">06</div>
+        <p class="starter-q">"What really happened in your final years?"</p>
+        <p class="starter-note">A death ray he never publicly demonstrated. Signals he believed might not be of this earth. The FBI at his door within hours of his death. He will tell you what he believed. He will not resolve for you whether he was right.</p>
+      </div>
+    </div>
+  </section>
+  <div class="decision-form">
+    <div class="call-box">
+      <p class="call-box-label">How It Works</p>
+      <p class="call-region" style="font-size:0.78em; color:#f5f0e8; margin-bottom:4px;">Available to callers in the US and Canada.</p>
+      <p class="call-details">First 2 minutes free. Minutes 3 through 5 cost $3.99 total. After that, just $1.00 per minute.</p>
+      <form id="call-form" onsubmit="handleCall(event)" style="margin-bottom:12px;">
+        <input id="f-name" type="text" placeholder="First Name" required autocomplete="given-name"
+               style="display:block;width:100%;margin-bottom:8px;padding:10px 14px;background:#1c1710;border:1px solid rgba(201,168,76,0.7);color:#f5f0e8;font-family:'Space Mono',monospace;font-size:0.82rem;outline:none;" />
+        <input id="f-phone" type="tel" placeholder="Phone Number" required autocomplete="tel"
+               style="display:block;width:100%;margin-bottom:8px;padding:10px 14px;background:#1c1710;border:1px solid rgba(201,168,76,0.7);color:#f5f0e8;font-family:'Space Mono',monospace;font-size:0.82rem;outline:none;" />
+        <p class="call-hint" style="font-size:0.85em; opacity:1.0; margin-top:6px;">If your icon pauses in thought, say <strong style="font-size:1.5em; color:#0d0b08; background:#4fc7d6; padding:0.05em 0.5em; border-radius:5px; display:inline-block; line-height:1.4;">"yes"</strong> or <strong style="font-size:1.5em; color:#0d0b08; background:#4fc7d6; padding:0.05em 0.5em; border-radius:5px; display:inline-block; line-height:1.4;">"please continue"</strong> to invite them to go on.</p>
+        <p class="call-hint" style="font-size:0.85em; margin-top:4px; color:#f5f0e8;">You never have to answer a question if you have other questions on your mind. The flow of the conversation is always up to you.</p>
+        <div id="card-element"
+             style="display:block;width:100%;margin-bottom:8px;padding:10px 14px;background:#1c1710;border:1px solid rgba(201,168,76,0.7);box-sizing:border-box;"></div>
+        <div id="card-errors"
+             style="color:#e07070;font-size:0.78rem;margin-bottom:8px;display:none;"></div>
+        <div style="margin-bottom: 1.25rem;">
+          <label style="display:block; font-size:0.72rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--muted); margin-bottom:0.6rem;">Language / Idioma</label>
+          <div style="display:flex; gap:1rem;">
+            <label style="display:flex; align-items:center; gap:0.4rem; cursor:pointer; font-size:0.9rem;">
+              <input type="radio" name="language" value="en" checked style="accent-color:var(--gold);"> English
+            </label>
+            <label style="display:flex; align-items:center; gap:0.4rem; cursor:pointer; font-size:0.9rem;">
+              <input type="radio" name="language" value="es" style="accent-color:var(--gold);"> Español
+            </label>
+          </div>
+        </div>
+        <p style="font-family:'Space Mono',monospace;font-size:0.58rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(154,143,122,0.65);text-align:center;margin-bottom:10px;">By proceeding you consent to this call being transcribed for service quality purposes.</p>
+        <button type="submit" class="btn-call" style="width:100%;cursor:pointer;border:none;">Call Tesla →</button>
+      </form>
+      <p id="call-msg" style="font-size:0.85rem;margin-bottom:12px;display:none;"></p>
+      <p class="call-rescue">🐾 every paid call triggers at minimum a meal donation for a rescue dog</p>
+    </div>
+  </div>
+</div>
+
+<div class="bottom-cta">
+    <h2>He is mid-thought.<br>The current is still<br><em style="color:var(--gold-light)">running.</em></h2>
+    <p>No script. The mind that electrified the world — curious, exacting, still working through what he never finished. He would like to tell you what actually happened, in his own words.</p>
+    <a class="btn-large" href="#call">Call Tesla →</a>
     <br>
     <p class="bottom-rescue">🐾 every paid call triggers at minimum a meal donation for a rescue dog</p>
   </div>
@@ -240,33 +261,49 @@
   <div class="others-section">
     <p class="section-label">Other Icons</p>
     <div class="others-grid">
-      <a class="other-card" href="einstein.html">
-        <img class="other-portrait" src="images/silver.jpeg" alt="Albert Einstein" />
-        <p class="other-name">Einstein</p>
+      <a class="other-card" href="aela.html">
+        <img class="other-portrait" src="images/aela.jpeg" alt="Aela" />
+        <p class="other-name">Aela</p>
+      </a>
+      <a class="other-card" href="oswald.html">
+        <img class="other-portrait" src="images/oswald.jpeg" alt="Lee Harvey Oswald" />
+        <p class="other-name">Oswald</p>
+      </a>
+      <a class="other-card" href="davinci.html">
+        <img class="other-portrait" src="images/davinci.jpeg" alt="Leonardo da Vinci" />
+        <p class="other-name">Da Vinci</p>
+      </a>
+      <a class="other-card" href="zhouhan.html">
+        <img class="other-portrait" src="images/zhouhan.jpeg" alt="Zhou Han" />
+        <p class="other-name">Zhou Han</p>
+      </a>
+      <a class="other-card" href="watson.html">
+        <img class="other-portrait" src="images/watson.jpeg" alt="Dr. John H. Watson" />
+        <p class="other-name">Watson</p>
+      </a>
+      <a class="other-card" href="rocca.html">
+        <img class="other-portrait" src="images/rocca.jpeg" alt="Father Elia Rocca" />
+        <p class="other-name">Father Rocca</p>
+      </a>
+      <a class="other-card" href="celeste.html">
+        <img class="other-portrait" src="images/celeste.jpeg" alt="Céleste" />
+        <p class="other-name">Céleste</p>
       </a>
       <a class="other-card" href="nostradamus.html">
         <img class="other-portrait" src="images/nostradamus.jpeg" alt="Nostradamus" />
         <p class="other-name">Nostradamus</p>
       </a>
-      <a class="other-card" href="twain.html">
-        <img class="other-portrait" src="images/twain.png" alt="Mark Twain" />
-        <p class="other-name">Twain</p>
+      <a class="other-card" href="evangeline.html">
+        <img class="other-portrait" src="images/evangeline.jpeg" alt="Evangeline Adams" />
+        <p class="other-name">Evangeline</p>
       </a>
-      <a class="other-card" href="holmes.html">
-        <img class="other-portrait" src="images/watson.jpeg" alt="Sherlock Holmes" />
-        <p class="other-name">Holmes</p>
+      <a class="other-card" href="houdini.html">
+        <img class="other-portrait" src="images/houdini.jpeg" alt="Harry Houdini" />
+        <p class="other-name">Houdini</p>
       </a>
-      <a class="other-card" href="aela.html">
-        <img class="other-portrait" src="images/aela.jpeg" alt="Aela" />
-        <p class="other-name">Aela</p>
-      </a>
-      <a class="other-card" href="bennet.html">
-        <img class="other-portrait" src="images/bennet.jpeg" alt="Elizabeth Bennet" />
-        <p class="other-name">Bennet</p>
-      </a>
-      <a class="other-card" href="curie.html">
-        <img class="other-portrait" src="images/curie.jpeg" alt="Marie Curie" />
-        <p class="other-name">Curie</p>
+      <a class="other-card" href="kadevoss.html">
+        <img class="other-portrait" src="images/kadevoss.jpeg" alt="Kade Voss" />
+        <p class="other-name">Kade Voss</p>
       </a>
     </div>
   </div>
@@ -285,37 +322,99 @@
 #f-name::placeholder, #f-phone::placeholder { color: #c9a84c; opacity: 1; }
 </style>
 <script>
+let stripe, cardElement;
+
+async function initStripe() {
+  if (stripe) return;
+  try {
+    const cfg = await fetch(window.location.origin + '/api/config').then(r => r.json());
+    if (!cfg.stripePublicKey) throw new Error('Stripe not configured');
+    stripe = Stripe(cfg.stripePublicKey);
+    const elements = stripe.elements({
+      fonts: [{ cssSrc: 'https://fonts.googleapis.com/css2?family=Space+Mono&display=swap' }],
+    });
+    cardElement = elements.create('card', {
+      style: {
+        base: {
+          color: '#f5f0e8',
+          fontFamily: '"Space Mono", monospace',
+          fontSize: '16px',
+          '::placeholder': { color: 'rgba(245,240,232,0.4)' },
+        },
+        invalid: { color: '#e07070' },
+      },
+    });
+    cardElement.mount('#card-element');
+  } catch (err) {
+    console.error('Stripe init error:', err.message);
+  }
+}
+
+document.addEventListener('DOMContentLoaded', initStripe);
+
 async function handleCall(e) {
   e.preventDefault();
-  const form = document.getElementById('call-form');
-  const btn  = form.querySelector('button[type="submit"]');
-  const msg  = document.getElementById('call-msg');
+  const form    = document.getElementById('call-form');
+  const btn     = form.querySelector('button[type="submit"]');
+  const msg     = document.getElementById('call-msg');
+  const errDiv  = document.getElementById('card-errors');
   const firstName   = document.getElementById('f-name').value.trim();
   const phoneNumber = document.getElementById('f-phone').value.trim();
-  btn.disabled    = true;
-  btn.textContent = 'Connecting...';
-  msg.style.display = 'none';
+
+  btn.disabled     = true;
+  btn.textContent  = 'Authorizing...';
+  msg.style.display    = 'none';
+  errDiv.style.display = 'none';
+
   try {
-    const res  = await fetch(window.location.origin + '/api/start-call-basic', {
+    const piRes  = await fetch(window.location.origin + '/api/create-payment-intent', {
       method:  'POST',
       headers: { 'Content-Type': 'application/json' },
-      body:    JSON.stringify({ firstName, phoneNumber, character: 'tesla' }),
+      body:    JSON.stringify({ firstName, phoneNumber, character: 'frankenstein' }),
     });
-    const data = await res.json();
-    if (res.ok) {
+    const piData = await piRes.json();
+    if (!piRes.ok) throw new Error(piData.error || 'Payment setup failed.');
+
+    const { error: stripeError, paymentIntent } = await stripe.confirmCardPayment(
+      piData.clientSecret,
+      { payment_method: { card: cardElement, billing_details: { name: firstName } } }
+    );
+    if (stripeError) {
+      errDiv.textContent   = stripeError.message;
+      errDiv.style.display = 'block';
+      btn.disabled    = false;
+      btn.textContent = 'Call Tesla →';
+      return;
+    }
+
+    btn.textContent = 'Connecting...';
+    const callRes  = await fetch(window.location.origin + '/api/start-call-basic', {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify({
+        firstName,
+        phoneNumber,
+        character:        'frankenstein',
+        language: document.querySelector('input[name="language"]:checked').value,
+        paymentIntentId:  paymentIntent.id,
+        stripeCustomerId: piData.stripeCustomerId,
+      }),
+    });
+    const callData = await callRes.json();
+    if (callRes.ok) {
       msg.textContent   = 'Your call is connecting — pick up within 30 seconds.';
       msg.style.color   = '#6dbf8a';
       msg.style.display = 'block';
       btn.textContent   = 'Call Placed ✓';
     } else {
-      throw new Error(data.error || 'Something went wrong.');
+      throw new Error(callData.error || 'Something went wrong.');
     }
   } catch (err) {
     msg.textContent   = err.message;
     msg.style.color   = '#e07070';
     msg.style.display = 'block';
     btn.disabled      = false;
-    btn.textContent   = 'Call Me Now →';
+    btn.textContent   = 'Call Tesla →';
   }
 }
 </script>

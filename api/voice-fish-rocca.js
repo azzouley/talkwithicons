@@ -40,7 +40,7 @@ module.exports = async (req, res) => {
         reference_id: FISH_VOICE_ID,
         format: 'pcm',
         sample_rate: sampleRate,
-        latency: 'normal',
+        latency: 'low',
       }),
     });
 
@@ -51,10 +51,11 @@ module.exports = async (req, res) => {
       return;
     }
 
-    const buf = Buffer.from(await fishRes.arrayBuffer());
+    res.statusCode = 200;
     res.setHeader('Content-Type', 'application/octet-stream');
-    res.setHeader('Content-Length', buf.length);
-    res.status(200).send(buf);
+    const { pipeline } = require('node:stream/promises');
+    const { Readable } = require('node:stream');
+    await pipeline(Readable.fromWeb(fishRes.body), res);
   } catch (err) {
     console.error('voice-fish-rocca error', err);
     res.status(500).json({ error: 'internal error' });

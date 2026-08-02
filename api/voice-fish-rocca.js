@@ -40,7 +40,7 @@ module.exports = async (req, res) => {
         reference_id: FISH_VOICE_ID,
         format: 'pcm',
         sample_rate: sampleRate,
-        latency: 'low',
+        latency: 'balanced',
       }),
     });
 

@@ -41,6 +41,7 @@ module.exports = async (req, res) => {
         format: 'pcm',
         sample_rate: sampleRate,
         latency: 'balanced',
+        temperature: 0.85, // raised from Fish Audio's 0.7 default for more expressive dynamic range
       }),
     });
 

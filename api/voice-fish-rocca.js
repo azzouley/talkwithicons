@@ -1,10 +1,15 @@
 // api/voice-fish-rocca.js
 // Vapi custom-voice TTS proxy for Rocca — forwards Vapi's voice-request to
-// Fish Audio's /v1/tts using the "Warm Italian Elder" voice, and returns raw
-// PCM in the exact format Vapi's custom-voice contract requires.
+// Fish Audio's /v1/tts, and returns raw PCM in the exact format Vapi's
+// custom-voice contract requires.
 
 const FISH_API_KEY = process.env.FISH_API_KEY;
-const FISH_VOICE_ID = 'f74dfbbaee68495c80572cf723cb74c7'; // "Warm Italian Elder"
+// TEMPORARY TEST 2026-08-04: swapped from "Warm Italian Elder" (f74dfbbaee68495c80572cf723cb74c7)
+// to "Dramatic Italian Elder" to test whether emotional range is voice-dependent -
+// acoustic testing showed this voice has real, measurable dynamic range that
+// Warm Italian Elder did not. Ruby does not like this voice's character fit,
+// this is purely to confirm the mechanism works before searching for a better match.
+const FISH_VOICE_ID = '96626afb7ee74823b09f7d5b5c0b1b3d'; // "Dramatic Italian Elder"
 const FISH_MODEL = 's2.1-pro-free'; // free tier through 2026-08-31, see fish.audio/blog/s2-1-pro-free-api
 
 module.exports = async (req, res) => {

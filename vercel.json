@@ -11,12 +11,26 @@
     },
     "api/reconcile-payment-intents.js": {
       "maxDuration": 30
+    },
+    "api/health-check.js": {
+      "maxDuration": 30
+    },
+    "api/synthetic-call-check.js": {
+      "maxDuration": 120
     }
   },
   "crons": [
     {
       "path": "/api/reconcile-payment-intents",
       "schedule": "*/30 * * * *"
+    },
+    {
+      "path": "/api/health-check",
+      "schedule": "0 * * * *"
+    },
+    {
+      "path": "/api/synthetic-call-check",
+      "schedule": "0 15 * * *"
     }
   ],
   "redirects": [

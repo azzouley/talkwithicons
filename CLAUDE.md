@@ -161,7 +161,7 @@ Live on homepage (index.html #gifts section). Fully pre-paid named experiences w
 
 ## ElevenLabs Voices
 
-**API Key:** `6f723f94682599cf1fecba2071951b0820943ec820a9524cfd3e94bfd480595c`
+**API Key:** `sk_43d17b711e3e5f3179314a0449d929ad4fd948ae625100f8`
 
 | Character | Voice | Notes |
 |-----------|-------|-------|

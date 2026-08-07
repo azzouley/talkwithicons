@@ -18,9 +18,12 @@ module.exports = async function handler(req, res) {
   }
 
   const key = process.env.VAPI_API_KEY;
-  const testNumber = process.env.ALERT_PHONE_NUMBER;
+  // A dedicated, unused Twilio number (+14639464699) reserved for this test only —
+  // deliberately NOT ALERT_PHONE_NUMBER (Ruby's real phone), which this test used to
+  // dial directly, ringing him for real every morning at the cron's scheduled time.
+  const testNumber = process.env.SYNTHETIC_CALL_TEST_NUMBER;
   if (!key) return res.status(500).json({ error: 'VAPI_API_KEY not configured' });
-  if (!testNumber) return res.status(500).json({ error: 'ALERT_PHONE_NUMBER not configured' });
+  if (!testNumber) return res.status(500).json({ error: 'SYNTHETIC_CALL_TEST_NUMBER not configured' });
 
   try {
     const placeRes = await fetch('https://api.vapi.ai/call', {

@@ -15,7 +15,7 @@ TalkWithIcons is a paid voice phone call service. Users call AI versions of hist
 | # | Name | Era/Location | Type |
 |---|------|-------------|------|
 | 01 | Aela | Pleiadian Council Liaison | Original |
-| 02 | Lee Harvey Oswald | Dallas, 1963 | Historical |
+| 02 | Walter Hobbs | Dealey Plaza, Dallas, 1963 | Fictional (Dealey Plaza composite witness, replaced Lee Harvey Oswald 2026-08 over real-person right-of-publicity/estate risk) |
 | 03 | Da Vinci | Florence/Milan/France, 1500s | Historical |
 | 04 | Bruce Lee | Hong Kong · Los Angeles, 1973 | Historical |
 | 05 | Dr. John H. Watson | 221B Baker Street | Fictional |
@@ -150,7 +150,7 @@ Live on homepage (index.html #gifts section). Fully pre-paid named experiences w
 | Watson | b65fb3ab-df3c-4a5b-8a96-3e865d9315b6 | +15854073131 |
 | Aela | 9647119e-7cf6-4d22-968d-25f3f455a834 | +15854073813 (phone record 1a9e7507-9a7d-4931-b364-45943393d83d) |
 | Céleste | 0560582f-8258-4803-8f2b-78b364fa23ca | +15854073507 (phone record 895248b7-4aba-452a-b248-eb891feaaae2) |
-| Oswald | 2f0047c1-eeb7-412d-b455-f8f731bdd232 | +15853781304 (phone record 19e49174-4ad9-4665-9c34-5fd36d68d213) |
+| Walter Hobbs | 2f0047c1-eeb7-412d-b455-f8f731bdd232 | +12407894866 (phone record c030efe2-5b9c-4c45-b563-ae1044567c4b) — corrected 2026-08-09; the phone number previously listed here (+15853781304) did not match what Vapi's own phone-number API actually reports for this assistant |
 | Evangeline Adams | 7fd88fa7-f013-4693-9b52-ab8937e4225d | +15853121359 |
 | ~~La Llorona~~ | ~~a30672aa-7bbb-4cff-91ed-7a2f01b5823a~~ | ~~+15854073097~~ (RETIRED 2026-07) |
 | Houdini | ca384c56-f276-4940-b20b-1ae939bef23b | (confirm in Vercel) |
@@ -165,7 +165,7 @@ Live on homepage (index.html #gifts section). Fully pre-paid named experiences w
 
 | Character | Voice | Notes |
 |-----------|-------|-------|
-| James Baldwin | Voice ID: 3W2XyWxiiSb9Oj5yL3lv | Instant clone from archive.org audio ("Living and Growing in a White World"). Still in use by Oswald's assistant (voice not swapped when Baldwin's prompt was repurposed for Oswald). |
+| Walter Hobbs | Voice ID: zFscvuaolMg0p94bAuDt | Correcting a stale entry: this table previously cited voice ID 3W2XyWxiiSb9Oj5yL3lv for this assistant, which did not match what the live assistant actually reports (confirmed via GET 2026-08-09). Kept unchanged during the Oswald->Walter Hobbs replacement per explicit decision (voice ID has no visible Oswald branding in its config). A separate "Walter Hobbs" ElevenLabs voice was reportedly recorded but the lookup/swap to it was interrupted mid-task and never completed — the assistant is still running this original voice as of 2026-08-09. |
 | Bruce Lee | San Chi | Shared Chinese-accented voice — cloning rejected permanently (see below) |
 | Long John Silver | Voice ID: SSIn0rIMGHiQH7TrsfZd | Voice Design voice, purpose-built 2026-07-18 ("older English man, late 50s, Bristol-born, decades at sea"). Replaced the borrowed Einstein voice (b55itjSk74Uz10WTB5BL). |
 | Dr. John H. Watson | Voice ID: nOUfIzE775HrCJ36dNjT | Voice Design voice, purpose-built 2026-07-18 ("British army doctor, mid-40s, Victorian era, officer-class"). Replaced the borrowed Holmes voice (TTmUgRoiAUdn043OgRax). |

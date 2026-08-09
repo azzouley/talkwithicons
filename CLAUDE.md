@@ -165,7 +165,7 @@ Live on homepage (index.html #gifts section). Fully pre-paid named experiences w
 
 | Character | Voice | Notes |
 |-----------|-------|-------|
-| Walter Hobbs | Voice ID: zFscvuaolMg0p94bAuDt | Correcting a stale entry: this table previously cited voice ID 3W2XyWxiiSb9Oj5yL3lv for this assistant, which did not match what the live assistant actually reports (confirmed via GET 2026-08-09). Kept unchanged during the Oswald->Walter Hobbs replacement per explicit decision (voice ID has no visible Oswald branding in its config). A separate "Walter Hobbs" ElevenLabs voice was reportedly recorded but the lookup/swap to it was interrupted mid-task and never completed — the assistant is still running this original voice as of 2026-08-09. |
+| Walter Hobbs | Voice ID: ftvdKQzVUj2wgRSdA2sd | Dedicated "Walter Hobbs" voice (ElevenLabs category: generated), swapped in 2026-08-09 — replaces the inherited Baldwin/Oswald-era voice (zFscvuaolMg0p94bAuDt, itself a correction of a previously stale entry that cited 3W2XyWxiiSb9Oj5yL3lv, which never matched what the live assistant actually had). Verified live: real test call confirmed the assistant speaking with the new voiceId, not just the API response. |
 | Bruce Lee | San Chi | Shared Chinese-accented voice — cloning rejected permanently (see below) |
 | Long John Silver | Voice ID: SSIn0rIMGHiQH7TrsfZd | Voice Design voice, purpose-built 2026-07-18 ("older English man, late 50s, Bristol-born, decades at sea"). Replaced the borrowed Einstein voice (b55itjSk74Uz10WTB5BL). |
 | Dr. John H. Watson | Voice ID: nOUfIzE775HrCJ36dNjT | Voice Design voice, purpose-built 2026-07-18 ("British army doctor, mid-40s, Victorian era, officer-class"). Replaced the borrowed Holmes voice (TTmUgRoiAUdn043OgRax). |

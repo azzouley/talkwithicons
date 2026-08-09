@@ -43,6 +43,9 @@
     .quote-mark { font-family: 'Playfair Display', serif; font-size: 8rem; color: rgba(201,168,76,0.1); line-height: 0.5; margin-bottom: 32px; display: block; }
     .quote-text { font-family: 'Playfair Display', serif; font-size: clamp(1.4rem, 3vw, 2.2rem); font-style: italic; font-weight: 400; line-height: 1.5; max-width: 760px; margin: 0 auto 24px; color: var(--warm-white); }
     .quote-attr { font-family: 'Space Mono', monospace; font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-dim); }
+    .editorial-photo-section { background: var(--dark2); }
+    .editorial-photo { width: 100%; max-height: 620px; object-fit: cover; object-position: center 35%; display: block; filter: grayscale(100%) contrast(1.08); }
+    .editorial-caption { font-family: 'Space Mono', monospace; font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold-dim); text-align: center; padding: 24px 32px; }
     .starters-section { padding: 80px; }
     .decision-section { display: grid; grid-template-columns: 3fr 2fr; align-items: start; }
     .decision-form { padding: 80px 60px; position: sticky; top: 80px; background: var(--dark2); border-left: 1px solid rgba(201,168,76,0.12); }
@@ -90,6 +93,7 @@
       .decision-form { padding: 48px 32px; position: static; border-left: none; border-top: 1px solid rgba(201,168,76,0.12); }
       .others-grid { grid-template-columns: repeat(4, 1fr); } nav { padding: 16px 24px; }
       footer { flex-direction: column; gap: 16px; text-align: center; padding: 32px; } .quote-section { padding: 60px 32px; }
+      .editorial-photo { max-height: 340px; }
     }
   </style>
 <script src="https://js.stripe.com/v3/"></script>
@@ -128,6 +132,11 @@
     <span class="quote-mark">"</span>
     <p class="quote-text">I was standing close enough to see it happen, not read about it happening. That's the part nobody can take from me, even when they take everything else.</p>
     <p class="quote-attr">— Walter Hobbs</p>
+  </div>
+
+  <div class="editorial-photo-section">
+    <img class="editorial-photo" src="images/walter-hobbs-young-elm-st.jpeg" alt="Walter Hobbs, fifteen years old, on the grass near Elm Street, Dealey Plaza, November 1963" />
+    <p class="editorial-caption">Elm Street, Dealey Plaza · November 22, 1963 · He was fifteen</p>
   </div>
 
 <div class="bio-section">

@@ -11,7 +11,7 @@ const ASSISTANT_NAMES = {
   'bead497f-38a2-4245-8a02-276ccaf9c5fa': 'Father Elia Rocca',
   'bca7797f-d4c5-4b67-b22c-7506a0b045b9': 'Nostradamus',
 '099b6a90-1fa9-4e6a-bc4d-8c127c6b1141': 'Bruce Lee', // retired 2026-07-21, replaced by Zhou Han
-  '0964cfaa-6059-4a55-b71f-1d8c74fe690f': 'Zhou Han',
+  '0964cfaa-6059-4a55-b71f-1d8c74fe690f': 'Ching Shih',
   'b65fb3ab-df3c-4a5b-8a96-3e865d9315b6': 'Dr. John H. Watson',
   '9647119e-7cf6-4d22-968d-25f3f455a834': 'Aela',
   '0560582f-8258-4803-8f2b-78b364fa23ca': 'Céleste',

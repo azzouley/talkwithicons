@@ -15,13 +15,14 @@ const ASSISTANT_NAMES = {
   'b65fb3ab-df3c-4a5b-8a96-3e865d9315b6': 'Dr. John H. Watson',
   '9647119e-7cf6-4d22-968d-25f3f455a834': 'Aela',
   '0560582f-8258-4803-8f2b-78b364fa23ca': 'Céleste',
-  '2f0047c1-eeb7-412d-b455-f8f731bdd232': 'Lee Harvey Oswald',
+  '2f0047c1-eeb7-412d-b455-f8f731bdd232': 'Walter Hobbs',
   '7fd88fa7-f013-4693-9b52-ab8937e4225d': 'Evangeline Adams',
   'b1f66c71-a2d6-4ae9-9ea1-7b72d4a423d0': 'Friday',
   '23ef91d2-fc8f-4fee-9c2e-25e93b51c331': 'Leonardo da Vinci',
   'ca384c56-f276-4940-b20b-1ae939bef23b': 'Harry Houdini',
   'f96bb0a5-6e8f-4153-8bee-6b76fa14f881': "Frankenstein's Creature", // retired 2026-07-31, replaced by ff48a258
   'ff48a258-0691-430a-a0ad-ada09b9022f9': 'Nikola Tesla',
+  '101718d5-fc95-462c-8ca8-a966aefed7b4': 'Giacomo Casanova',
 };
 
 // ── Billing calculation ───────────────────────────────────────────────────────

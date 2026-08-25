@@ -13,8 +13,8 @@ SELECT
   SUM(CASE WHEN converted THEN 1 ELSE 0 END)           AS paid_calls,
   ROUND(100.0 * SUM(CASE WHEN converted THEN 1 ELSE 0 END) / NULLIF(COUNT(*),0), 1)
                                                        AS conversion_pct,
-  ROUND(SUM(revenue_cents)  / 100.0, 2)                AS revenue_usd,
-  ROUND(SUM(donation_cents) / 100.0, 2)                AS donation_usd
+  ROUND(SUM(CASE WHEN converted THEN revenue_cents  ELSE 0 END) / 100.0, 2) AS revenue_usd,
+  ROUND(SUM(CASE WHEN converted THEN donation_cents ELSE 0 END) / 100.0, 2) AS donation_usd
 FROM calls
 WHERE call_type = 'standard'
 GROUP BY character_name
@@ -61,3 +61,9 @@ SELECT
   ROUND(SUM(revenue_cents)  / 100.0, 2)                AS total_revenue_usd,
   ROUND(SUM(donation_cents) / 100.0, 2)                AS total_donation_usd
 FROM calls;
+
+-- 6) INTEGRITY CHECK: money recorded but converted=false. Should return zero rows. Nonzero = write-path bug.
+SELECT id, character_name, ended_at, converted, revenue_cents, donation_cents
+FROM calls
+WHERE converted = false AND (revenue_cents <> 0 OR donation_cents <> 0)
+ORDER BY ended_at DESC;

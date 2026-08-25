@@ -36,6 +36,19 @@ function calcChargeAmountCents(durationSeconds) {
   return 399 + (minutes - 5) * 100;
 }
 
+// Cancels the $1 auth hold only if it's still open. Vapi can fire a
+// status-update("ended") event for a call in addition to end-of-call-report,
+// and the early-release handler above may have already canceled this same
+// PaymentIntent by the time this runs — an unconditional .cancel() call would
+// then throw "PaymentIntent ... has a status of canceled" and abort the whole
+// billing block before the real charge ever ran. Check-then-cancel avoids that.
+async function cancelHoldIfOpen(stripe, paymentIntentId) {
+  const pi = await stripe.paymentIntents.retrieve(paymentIntentId);
+  if (pi.status === 'requires_capture') {
+    await stripe.paymentIntents.cancel(paymentIntentId);
+  }
+}
+
 async function getStripe() {
   const key = await getStripeSecretKey();
   if (!key) throw new Error('STRIPE_SECRET_KEY is not configured');
@@ -116,15 +129,16 @@ module.exports = async function handler(req, res) {
       const stripe       = await getStripe();
       const chargeAmount = calcChargeAmountCents(durationSeconds);
       const durationMins = Math.ceil(durationSeconds / 60);
-      revenueCents = chargeAmount;
 
       if (chargeAmount === 0) {
-        // Free call — release the auth hold
-        await stripe.paymentIntents.cancel(paymentIntentId);
+        // Free call — release the auth hold if still open. revenueCents stays 0:
+        // correct, since no charge was ever attempted.
+        await cancelHoldIfOpen(stripe, paymentIntentId);
         console.log(`Stripe: free call — auth hold cancelled. PI=${paymentIntentId} phone=${callerPhone}`);
       } else {
-        // Paid call — cancel the $1 hold, create final charge against the saved PM
-        await stripe.paymentIntents.cancel(paymentIntentId);
+        // Paid call — release the $1 hold if still open, then create the final
+        // charge regardless (the hold's cancel status doesn't block a new charge).
+        await cancelHoldIfOpen(stripe, paymentIntentId);
 
         const charge = await stripe.paymentIntents.create({
           amount:         chargeAmount,
@@ -141,7 +155,8 @@ module.exports = async function handler(req, res) {
             character:     characterName,
           },
         });
-        converted = true;
+        converted    = true;
+        revenueCents = chargeAmount; // only counted as revenue once the charge actually succeeded
 
         console.log(
           `Stripe: charged $${(chargeAmount / 100).toFixed(2)} — ${charge.id}` +

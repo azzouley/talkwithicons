@@ -4,6 +4,7 @@
 // Runs for ALL calls including short ones so the auth hold is never left dangling.
 
 const { sql, calcPerCallDonationCents, updateDonationLedger, getStripeSecretKey } = require('./_db');
+const { logCall } = require('./_log-call');
 
 const ASSISTANT_NAMES = {
   'b98cec95-47a4-455d-92c8-3a08aacb556d': 'Long John Silver',
@@ -103,11 +104,19 @@ module.exports = async function handler(req, res) {
   const paymentMethodId  = call.metadata?.paymentMethodId;
   const stripeCustomerId = call.metadata?.stripeCustomerId;
 
+  // Hoisted for calls/_log-call.js — set at whichever real outcome below actually
+  // occurs, so a value always exists by the time logCall runs at the end of the
+  // handler (they were previously trapped inside the try/else block's own scope).
+  let converted    = false;
+  let revenueCents = 0;
+  let donationCentsLogged = 0;
+
   if (paymentIntentId) {
     try {
       const stripe       = await getStripe();
       const chargeAmount = calcChargeAmountCents(durationSeconds);
       const durationMins = Math.ceil(durationSeconds / 60);
+      revenueCents = chargeAmount;
 
       if (chargeAmount === 0) {
         // Free call — release the auth hold
@@ -132,6 +141,7 @@ module.exports = async function handler(req, res) {
             character:     characterName,
           },
         });
+        converted = true;
 
         console.log(
           `Stripe: charged $${(chargeAmount / 100).toFixed(2)} — ${charge.id}` +
@@ -139,6 +149,7 @@ module.exports = async function handler(req, res) {
         );
 
         const donationCents = calcPerCallDonationCents(durationSeconds);
+        donationCentsLogged = donationCents;
         sql`
           INSERT INTO transactions
             (stripe_charge_id, stripe_payment_intent_id, caller_phone, caller_name,
@@ -192,6 +203,28 @@ module.exports = async function handler(req, res) {
       }
     }
   }
+
+  // ── Durable per-call log ──────────────────────────────────────────────────────
+  // Runs last, after billing is fully resolved, so a logging failure can never
+  // affect the charge above. logCall never throws.
+  const FREE_WINDOW_SECONDS = 120; // 2-minute free window, matches calcChargeAmountCents
+  const reachedGate = durationSeconds >= FREE_WINDOW_SECONDS;
+
+  await logCall({
+    characterName,
+    assistantId: call.assistantId,
+    phoneNumberId: call.phoneNumberId,
+    vapiCallId: call.id,
+    durationSeconds,
+    reachedGate,
+    converted,
+    endedReason: msg.endedReason,
+    revenueCents,
+    donationCents: donationCentsLogged,
+    callType: 'standard',
+    transactionId: paymentIntentId || null,
+    raw: msg,
+  });
 
   return res.status(200).json({ ok: true });
 };

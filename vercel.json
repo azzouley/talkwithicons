@@ -78,6 +78,12 @@
       "permanent": true
     }
   ],
+  "rewrites": [
+    {
+      "source": "/hobbs",
+      "destination": "/oswald.html"
+    }
+  ],
   "headers": [
     {
       "source": "/api/(.*)",

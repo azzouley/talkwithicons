@@ -7,6 +7,7 @@
 // gen4.5 costs 60 credits per 5s clip = 12 credits/sec, confirmed via a real generation.
 
 const { sql, getCurrentPeriod } = require('./_db');
+const { put } = require('@vercel/blob');
 
 const RUNWAY_BASE = 'https://api.dev.runwayml.com';
 const RUNWAY_VERSION = '2024-11-06';
@@ -104,6 +105,88 @@ async function getTaskStatus(taskId) {
   return data; // {id, status, progress?, output?, cost?}
 }
 
+// ── Output persistence ────────────────────────────────────────────────────────
+// Runway's task output is a signed CloudFront URL that expires. Nothing
+// downstream (carousel assembly, Blotato scheduling, anything else) can rely
+// on it surviving past initial generation, so once a task completes we fetch
+// the file ourselves, server-side, and re-host it permanently in Vercel Blob.
+// The Blob URL — not Runway's URL — is what every caller should treat as the
+// canonical asset reference from this point forward.
+
+const EXT_BY_CONTENT_TYPE = {
+  'video/mp4': 'mp4',
+  'video/quicktime': 'mov',
+  'video/webm': 'webm',
+  'image/png': 'png',
+  'image/jpeg': 'jpg',
+  'image/webp': 'webp',
+};
+
+async function persistOutputToBlob({ taskId, outputUrl }) {
+  const fetchRes = await fetch(outputUrl);
+  if (!fetchRes.ok) {
+    throw new Error(`Fetching Runway output failed: HTTP ${fetchRes.status}`);
+  }
+  const contentType = fetchRes.headers.get('content-type') || 'application/octet-stream';
+  const mediaType = contentType.startsWith('video/') ? 'video'
+    : contentType.startsWith('image/') ? 'image'
+    : 'unknown';
+  const ext = EXT_BY_CONTENT_TYPE[contentType] || (mediaType === 'video' ? 'mp4' : 'bin');
+  const buffer = Buffer.from(await fetchRes.arrayBuffer());
+
+  const blob = await put(`runway/${taskId}.${ext}`, buffer, {
+    access: 'public',
+    contentType,
+    addRandomSuffix: false, // deterministic path per task — a re-poll of the same
+                             // completed task overwrites the same object, not a new one
+  });
+
+  return { blobUrl: blob.url, mediaType, bytes: buffer.length };
+}
+
+async function ensureGenerationsTable() {
+  // Belt-and-suspenders: migrations/002 already creates this, but a fresh
+  // environment that skipped the migration step shouldn't silently drop
+  // ledger writes.
+  await sql`
+    CREATE TABLE IF NOT EXISTS runway_generations (
+      id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+      task_id TEXT NOT NULL,
+      media_type TEXT NOT NULL,
+      blob_url TEXT,
+      runway_output_url_last_seen TEXT,
+      runway_status TEXT,
+      credits INTEGER,
+      created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+      updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
+    )
+  `;
+  await sql`CREATE UNIQUE INDEX IF NOT EXISTS runway_generations_task_id_uidx ON runway_generations (task_id)`;
+}
+
+async function upsertGeneration({ taskId, mediaType, blobUrl, runwayOutputUrl, status, credits }) {
+  await ensureGenerationsTable();
+  await sql`
+    INSERT INTO runway_generations
+      (task_id, media_type, blob_url, runway_output_url_last_seen, runway_status, credits, updated_at)
+    VALUES
+      (${taskId}, ${mediaType}, ${blobUrl}, ${runwayOutputUrl}, ${status}, ${credits ?? null}, NOW())
+    ON CONFLICT (task_id) DO UPDATE SET
+      media_type                  = EXCLUDED.media_type,
+      blob_url                    = EXCLUDED.blob_url,
+      runway_output_url_last_seen = EXCLUDED.runway_output_url_last_seen,
+      runway_status                = EXCLUDED.runway_status,
+      credits                      = COALESCE(EXCLUDED.credits, runway_generations.credits),
+      updated_at                   = NOW()
+  `;
+}
+
+async function getGenerationByTaskId(taskId) {
+  await ensureGenerationsTable();
+  const { rows } = await sql`SELECT * FROM runway_generations WHERE task_id = ${taskId}`;
+  return rows[0] || null;
+}
+
 module.exports = {
   estimateCredits,
   checkBudget,
@@ -111,6 +194,9 @@ module.exports = {
   recordCreditsUsed,
   submitImageToVideo,
   getTaskStatus,
+  persistOutputToBlob,
+  upsertGeneration,
+  getGenerationByTaskId,
   MONTHLY_CREDIT_CAP,
   CREDITS_PER_SECOND_GEN45,
 };

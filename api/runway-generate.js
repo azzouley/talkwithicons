@@ -15,6 +15,9 @@ const {
   recordCreditsUsed,
   submitImageToVideo,
   getTaskStatus,
+  persistOutputToBlob,
+  upsertGeneration,
+  getGenerationByTaskId,
 } = require('./_runway');
 
 module.exports = async function handler(req, res) {
@@ -45,6 +48,52 @@ module.exports = async function handler(req, res) {
       // Runway's own reported cost (authoritative, not the local estimate).
       if (task.status === 'SUCCEEDED' && task.cost?.credits) {
         await recordCreditsUsed(task.cost.credits);
+      }
+
+      // Runway's own output URL is a signed CloudFront link that expires.
+      // Re-host it in Vercel Blob and hand back the permanent URL instead —
+      // this is what every caller (carousel assembly, Blotato scheduling,
+      // anything else) should actually persist and rely on.
+      if (task.status === 'SUCCEEDED' && Array.isArray(task.output) && task.output[0]) {
+        try {
+          // Idempotent: if this exact task was already persisted on a prior
+          // poll, reuse the existing Blob URL instead of re-fetching and
+          // re-uploading the same file again.
+          const existing = await getGenerationByTaskId(taskId);
+          let blobUrl, mediaType;
+          if (existing?.blob_url) {
+            blobUrl = existing.blob_url;
+            mediaType = existing.media_type;
+          } else {
+            const persisted = await persistOutputToBlob({ taskId, outputUrl: task.output[0] });
+            blobUrl = persisted.blobUrl;
+            mediaType = persisted.mediaType;
+          }
+
+          await upsertGeneration({
+            taskId,
+            mediaType,
+            blobUrl,
+            runwayOutputUrl: task.output[0],
+            status: task.status,
+            credits: task.cost?.credits,
+          });
+
+          // Replace Runway's expiring URL(s) with the permanent one before
+          // returning, and add an explicit, unambiguous field too.
+          task.output = [blobUrl];
+          task.blobUrl = blobUrl;
+          task.mediaType = mediaType;
+        } catch (blobErr) {
+          // Don't silently hand back a signed URL that will expire with no
+          // durable record anywhere — surface this as a real failure.
+          console.error('runway-generate: Blob persistence failed for task', taskId, ':', blobErr.message);
+          return res.status(502).json({
+            error: 'Runway generation succeeded but persisting the output to Blob storage failed',
+            detail: blobErr.message,
+            taskId,
+          });
+        }
       }
 
       return res.status(200).json(task);

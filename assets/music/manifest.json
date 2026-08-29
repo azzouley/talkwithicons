@@ -1,0 +1,47 @@
+[
+  {
+    "key": "mystery-tension",
+    "file": "mystery-tension.mp3",
+    "title": "Mystery Tension",
+    "artist": "leberch",
+    "mood": "curiosity",
+    "source": "https://pixabay.com/music/orchestral-mystery-tension-578735/",
+    "license": "Pixabay Content License — free for commercial use, no attribution required"
+  },
+  {
+    "key": "tension-riser",
+    "file": "tension-riser.mp3",
+    "title": "Tension Riser",
+    "artist": "leberch",
+    "mood": "tension",
+    "source": "https://pixabay.com/music/ambient-tension-riser-590425/",
+    "license": "Pixabay Content License — free for commercial use, no attribution required"
+  },
+  {
+    "key": "dark-tension",
+    "file": "dark-tension.mp3",
+    "title": "Dark Tension",
+    "artist": "ARPMedia",
+    "mood": "tension",
+    "source": "https://pixabay.com/music/ambient-dark-tension-569513/",
+    "license": "Pixabay Content License — free for commercial use, no attribution required"
+  },
+  {
+    "key": "suspense-tension",
+    "file": "suspense-tension.mp3",
+    "title": "Suspense Tension",
+    "artist": "leberch",
+    "mood": "suspense",
+    "source": "https://pixabay.com/music/orchestral-suspense-tension-580864/",
+    "license": "Pixabay Content License — free for commercial use, no attribution required"
+  },
+  {
+    "key": "mystery-dark",
+    "file": "mystery-dark.mp3",
+    "title": "Mystery Dark",
+    "artist": "leberch",
+    "mood": "curiosity",
+    "source": "https://pixabay.com/music/ambient-mystery-dark-375266/",
+    "license": "Pixabay Content License — free for commercial use, no attribution required"
+  }
+]

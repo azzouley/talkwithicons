@@ -44,7 +44,7 @@ const CHARACTERS = [
     questionsIntro: 'Ask Einstein anything — he had a complicated life. Some directions you could go if you want…',
     pronoun:      'He',
     bottomHeadline: 'Your time with Einstein is your own.',
-    rescueBody:   "Your conversation with Einstein puts a meal in a rescue dog’s bowl — split between the ASPCA and rotating regional rescue partners. Some conversations do more than one good thing at a time.",
+    rescueBody:   "Your conversation with Einstein puts a meal in a rescue dog’s bowl — split between Paws of War and rotating regional rescue partners. Some conversations do more than one good thing at a time.",
     facts: [
       {
         num: '01',
@@ -95,7 +95,7 @@ const CHARACTERS = [
     questionsIntro: 'Ask Nostradamus anything — he saw a great deal. Some directions you could go if you want…',
     pronoun:      'He',
     bottomHeadline: 'Your time with Nostradamus is your own.',
-    rescueBody:   "Your conversation with Nostradamus puts a meal in a rescue dog’s bowl — split between the ASPCA and rotating regional rescue partners. Some conversations do more than one good thing at a time.",
+    rescueBody:   "Your conversation with Nostradamus puts a meal in a rescue dog’s bowl — split between Paws of War and rotating regional rescue partners. Some conversations do more than one good thing at a time.",
     facts: [
       {
         num: '01',
@@ -146,7 +146,7 @@ const CHARACTERS = [
     questionsIntro: 'Ask Leonardo anything — he worked on everything. Some directions you could go if you want…',
     pronoun:      'He',
     bottomHeadline: 'Your time with Leonardo is your own.',
-    rescueBody:   "Your conversation with Leonardo puts a meal in a rescue dog’s bowl — split between the ASPCA and rotating regional rescue partners. Some conversations do more than one good thing at a time.",
+    rescueBody:   "Your conversation with Leonardo puts a meal in a rescue dog’s bowl — split between Paws of War and rotating regional rescue partners. Some conversations do more than one good thing at a time.",
     facts: [
       {
         num: '01',
@@ -197,7 +197,7 @@ const CHARACTERS = [
     questionsIntro: 'Ask Bruce Lee anything — he lived at full speed. Some directions you could go if you want…',
     pronoun:      'He',
     bottomHeadline: 'Your time with Bruce Lee is your own.',
-    rescueBody:   "Your conversation with Bruce Lee puts a meal in a rescue dog’s bowl — split between the ASPCA and rotating regional rescue partners. Some conversations do more than one good thing at a time.",
+    rescueBody:   "Your conversation with Bruce Lee puts a meal in a rescue dog’s bowl — split between Paws of War and rotating regional rescue partners. Some conversations do more than one good thing at a time.",
     facts: [
       {
         num: '01',
@@ -248,7 +248,7 @@ const CHARACTERS = [
     questionsIntro: 'Ask Holmes anything — he has observed more than he has said. Some directions you could go if you want…',
     pronoun:      'He',
     bottomHeadline: 'Your time with Holmes is your own.',
-    rescueBody:   "Your conversation with Holmes puts a meal in a rescue dog’s bowl — split between the ASPCA and rotating regional rescue partners. Some conversations do more than one good thing at a time.",
+    rescueBody:   "Your conversation with Holmes puts a meal in a rescue dog’s bowl — split between Paws of War and rotating regional rescue partners. Some conversations do more than one good thing at a time.",
     facts: [
       {
         num: '01',
@@ -299,7 +299,7 @@ const CHARACTERS = [
     questionsIntro: 'Ask Aela anything — she sees further than we do. Some directions you could go if you want…',
     pronoun:      'She',
     bottomHeadline: 'Your time with Aela is your own.',
-    rescueBody:   "Your conversation with Aela puts a meal in a rescue dog’s bowl — split between the ASPCA and rotating regional rescue partners. Some conversations do more than one good thing at a time.",
+    rescueBody:   "Your conversation with Aela puts a meal in a rescue dog’s bowl — split between Paws of War and rotating regional rescue partners. Some conversations do more than one good thing at a time.",
     facts: [
       {
         num: '01',
@@ -350,7 +350,7 @@ const CHARACTERS = [
     questionsIntro: 'Ask Elizabeth Bennet anything — she has a great deal to say. Some directions you could go if you want…',
     pronoun:      'She',
     bottomHeadline: 'Your time with Elizabeth Bennet is your own.',
-    rescueBody:   "Your conversation with Elizabeth puts a meal in a rescue dog’s bowl — split between the ASPCA and rotating regional rescue partners. Some conversations do more than one good thing at a time.",
+    rescueBody:   "Your conversation with Elizabeth puts a meal in a rescue dog’s bowl — split between Paws of War and rotating regional rescue partners. Some conversations do more than one good thing at a time.",
     facts: [
       {
         num: '01',
@@ -401,7 +401,7 @@ const CHARACTERS = [
     questionsIntro: 'Ask Baldwin anything — he said what no one else would. Some directions you could go if you want…',
     pronoun:      'He',
     bottomHeadline: 'Your time with Baldwin is your own.',
-    rescueBody:   "Your conversation with Baldwin puts a meal in a rescue dog’s bowl — split between the ASPCA and rotating regional rescue partners. Some conversations do more than one good thing at a time.",
+    rescueBody:   "Your conversation with Baldwin puts a meal in a rescue dog’s bowl — split between Paws of War and rotating regional rescue partners. Some conversations do more than one good thing at a time.",
     facts: [
       {
         num: '01',
@@ -452,7 +452,7 @@ const CHARACTERS = [
     questionsIntro: 'Ask Evangeline anything — she read charts for 100,000 people. Some directions you could go if you want…',
     pronoun:      'She',
     bottomHeadline: 'Your time with Evangeline is your own.',
-    rescueBody:   "Your conversation with Evangeline puts a meal in a rescue dog’s bowl — split between the ASPCA and rotating regional rescue partners. Some conversations do more than one good thing at a time.",
+    rescueBody:   "Your conversation with Evangeline puts a meal in a rescue dog’s bowl — split between Paws of War and rotating regional rescue partners. Some conversations do more than one good thing at a time.",
     facts: [
       {
         num: '01',
@@ -503,7 +503,7 @@ const CHARACTERS = [
     questionsIntro: 'Ask the Creature anything — he has been waiting a long time. Some directions you could go if you want…',
     pronoun:      'He',
     bottomHeadline: "Your time with Frankenstein's Creature is your own.",
-    rescueBody:   "Your conversation with the Creature puts a meal in a rescue dog’s bowl — split between the ASPCA and rotating regional rescue partners. Some conversations do more than one good thing at a time.",
+    rescueBody:   "Your conversation with the Creature puts a meal in a rescue dog’s bowl — split between Paws of War and rotating regional rescue partners. Some conversations do more than one good thing at a time.",
     facts: [
       {
         num: '01',
@@ -554,7 +554,7 @@ const CHARACTERS = [
     questionsIntro: 'Ask Sitting Bull anything — he witnessed everything. Some directions you could go if you want…',
     pronoun:      'He',
     bottomHeadline: 'Your time with Sitting Bull is your own.',
-    rescueBody:   "Your conversation with Sitting Bull puts a meal in a rescue dog’s bowl — split between the ASPCA and rotating regional rescue partners. Some conversations do more than one good thing at a time.",
+    rescueBody:   "Your conversation with Sitting Bull puts a meal in a rescue dog’s bowl — split between Paws of War and rotating regional rescue partners. Some conversations do more than one good thing at a time.",
     facts: [
       {
         num: '01',

@@ -48,7 +48,7 @@ Tesla and Curie were removed and replaced by Bruce Lee and Baldwin respectively.
 
 - **$0.50 minimum** per completed paid call (= 1 rescue dog meal)
 - **$0.10 per additional paid minute** after the gate
-- **25%** to ASPCA (permanent national partner)
+- **25%** to Paws of War (permanent national partner)
 - **75%** split evenly among 2–3 rotating regional rescue partners
 - Regional partners rotate every 2 weeks
 - Current regional partner: **Rochester Animal Services, Rochester, New York**
@@ -223,7 +223,7 @@ California Civil Code §3344.1 covers voice *likeness* not just exact reproducti
 6. One free call per phone number per character
 7. Always say "rescue" not "shelter"
 8. The product is TalkWithIcons — rescue dogs are a result of usage, not the primary product
-9. Donation split: 25% ASPCA, 75% split among 2–3 regional partners
+9. Donation split: 25% Paws of War, 75% split among 2–3 regional partners
 10. Evangeline requires birth date, birth time, and birth city for meaningful reading
 
 ---

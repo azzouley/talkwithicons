@@ -5,6 +5,10 @@
 // POST /v1/image_to_video -> {id, estimatedCost:{credits}}
 // GET  /v1/tasks/{id}     -> {status:"RUNNING"|"SUCCEEDED"|"FAILED"|..., progress, output:[url], cost:{credits}}
 // gen4.5 costs 60 credits per 5s clip = 12 credits/sec, confirmed via a real generation.
+//
+// Verified directly against the live API on 2026-08-31 (Vincent portrait build):
+// POST /v1/text_to_image {model:"gen4_image", promptText, ratio} -> {id, estimatedCost:{credits}}
+// Same /v1/tasks/{id} polling as image_to_video. A 1024:1024 test probe cost 8 credits.
 
 const { sql, getCurrentPeriod } = require('./_db');
 const { put } = require('@vercel/blob');
@@ -84,6 +88,27 @@ async function submitImageToVideo({ promptImage, promptText, ratio, duration }) 
   const data = await res.json();
   if (!res.ok) {
     const err = new Error(`Runway task creation failed: HTTP ${res.status} ${JSON.stringify(data).slice(0, 200)}`);
+    err.status = res.status;
+    err.data = data;
+    throw err;
+  }
+  return data; // {id, estimatedCost:{credits}}
+}
+
+async function submitTextToImage({ promptText, ratio, referenceImages }) {
+  const res = await fetch(`${RUNWAY_BASE}/v1/text_to_image`, {
+    method: 'POST',
+    headers: runwayHeaders({ 'Content-Type': 'application/json' }),
+    body: JSON.stringify({
+      model: 'gen4_image',
+      promptText,
+      ratio: ratio || '1024:1024',
+      ...(referenceImages ? { referenceImages } : {}),
+    }),
+  });
+  const data = await res.json();
+  if (!res.ok) {
+    const err = new Error(`Runway text_to_image task creation failed: HTTP ${res.status} ${JSON.stringify(data).slice(0, 200)}`);
     err.status = res.status;
     err.data = data;
     throw err;
@@ -193,6 +218,7 @@ module.exports = {
   getMonthlyCreditsUsed,
   recordCreditsUsed,
   submitImageToVideo,
+  submitTextToImage,
   getTaskStatus,
   persistOutputToBlob,
   upsertGeneration,

@@ -101,6 +101,7 @@ const CHARACTER_HOOKS = {
   "Frankenstein's Creature": 'You judged me by what I said, not by what you had heard about me. That is more than most ever gave me.',
   'Friday':                  'A story paused is not a story ended. This one is not, either.',
   'Nikola Tesla':            'The present is theirs. The future, for which I really worked, is mine. Go build some of it.',
+  'Vincent van Gogh':        'Vincent is still at the easel in Auvers, working the light while it lasts. Real conversations feed real rescue dogs.',
 };
 
 function buildEmail(firstName, characterName, minutes, hook, site) {

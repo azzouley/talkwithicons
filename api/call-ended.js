@@ -24,6 +24,7 @@ const ASSISTANT_NAMES = {
   'f96bb0a5-6e8f-4153-8bee-6b76fa14f881': "Frankenstein's Creature", // retired 2026-07-31, replaced by ff48a258
   'ff48a258-0691-430a-a0ad-ada09b9022f9': 'Nikola Tesla',
   '101718d5-fc95-462c-8ca8-a966aefed7b4': 'Giacomo Casanova',
+  'ae3e744a-ebb7-47f8-bfdb-35093f66f4b0': 'Vincent van Gogh',
 };
 
 // ── Billing calculation ───────────────────────────────────────────────────────

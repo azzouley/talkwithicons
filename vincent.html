@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Call Giacomo Casanova — TalkWithIcons</title>
+  <title>Call Vincent van Gogh — TalkWithIcons</title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -25,7 +25,7 @@
     .hero-left { padding: 80px 60px 80px 80px; position: relative; z-index: 2; }
     .hero-eyebrow { font-family: 'Space Mono', monospace; font-size: 0.65rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold); margin-bottom: 24px; display: flex; align-items: center; gap: 12px; }
     .hero-eyebrow::before { content: ''; display: block; width: 32px; height: 1px; background: var(--gold-dim); }
-    .hero-name { font-family: 'Playfair Display', serif; font-size: clamp(2.8rem, 5vw, 4.5rem); font-weight: 900; line-height: 0.95; letter-spacing: -0.02em; margin-bottom: 8px; color: var(--warm-white); }
+    .hero-name { font-family: 'Playfair Display', serif; font-size: clamp(3.5rem, 6vw, 5.5rem); font-weight: 900; line-height: 0.95; letter-spacing: -0.02em; margin-bottom: 8px; color: var(--warm-white); }
     .hero-dates { font-family: 'Space Mono', monospace; font-size: 0.7rem; letter-spacing: 0.15em; color: #d4af70; margin-bottom: 32px; }
     .hero-tagline { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-style: italic; font-weight: 400; color: var(--gold-light); line-height: 1.4; margin-bottom: 28px; max-width: 480px; }
     .hero-desc { font-size: 1rem; color: var(--muted); line-height: 1.75; max-width: 460px; margin-bottom: 48px; }
@@ -71,7 +71,7 @@
     .btn-large:hover { background: var(--gold-light); transform: translateY(-2px); }
     .bottom-rescue { font-family: 'Space Mono', monospace; font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase; color: #6dbf8a; }
     .others-section { padding: 80px; border-top: 1px solid rgba(201,168,76,0.1); }
-    .others-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; margin-top: 40px; }
+    .others-grid { display: grid; grid-template-columns: repeat(8, 1fr); gap: 2px; margin-top: 40px; }
     .other-card { background: var(--dark3); border: 1px solid rgba(201,168,76,0.1); padding: 20px 16px; text-align: center; text-decoration: none; transition: border-color 0.2s; }
     .other-card:hover { border-color: rgba(201,168,76,0.4); }
     .other-portrait { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; object-position: top; display: block; margin: 0 auto 10px; border: 1px solid rgba(201,168,76,0.2); }
@@ -104,20 +104,20 @@
 
   <div class="hero">
     <div class="hero-left">
-      <p class="hero-eyebrow">Venice, 1725 · Adventurer, Escape Artist, Incurable Romantic</p>
-      <h1 class="hero-name">Giacomo<br>Casanova</h1>
-      <p class="hero-dates">Born Venice, 1725 · Died Dux, Bohemia, 1798</p>
-      <p class="hero-tagline">"I once told a Marquise I could turn her into a young man. She believed me for two years. Certainty, my friend, is more seductive than truth."</p>
+      <p class="hero-eyebrow">Painter · Auvers-sur-Oise, 1890</p>
+      <h1 class="hero-name">Vincent<br>van Gogh</h1>
+      <p class="hero-dates">Born Zundert, Netherlands, 1853 · Speaking to you from Auvers-sur-Oise, 1890</p>
+      <p class="hero-tagline">"I wanted only to tell someone what color the mist was this morning, and now here you are."</p>
       <p class="hero-desc">
-        Not a caricature seducer — a self-invented man who talked his way across half of
-        Europe: adventurer, writer, spy, gambler, con artist, diplomat, and one of the most
-        famous prison escapees in European history.
+        Not the myth, not the ending — a working painter, thirty-seven, lodging at a village inn
+        north of Paris, finishing nearly a canvas a day. He speaks the way he wrote: long, sincere,
+        circling a thought until it lands somewhere plain and true.
       </p>
     </div>
     <div class="hero-right">
-      <img class="hero-portrait" src="images/casanova2.jpeg" alt="Giacomo Casanova" />
+      <img class="hero-portrait" src="images/vincent.jpeg" alt="Vincent van Gogh" />
       <div class="portrait-overlay"></div>
-      <p class="portrait-caption">Giacomo Casanova · Venice, 1725</p>
+      <p class="portrait-caption">Vincent · Auvers-sur-Oise, 1890</p>
     </div>
   </div>
 
@@ -125,34 +125,42 @@
 <div class="bio-section">
     <div class="bio-sidebar">
       <div class="bio-fact">
-        <p class="bio-fact-label">Born</p>
-        <p class="bio-fact-value">Venice, April 2, 1725<br>Son of an actress, Zanetta Farussi</p>
+        <p class="bio-fact-label">Speaking From</p>
+        <p class="bio-fact-value">Auvers-sur-Oise, 1890<br>Lodging at the Ravoux inn</p>
       </div>
       <div class="bio-fact">
-        <p class="bio-fact-label">Title</p>
-        <p class="bio-fact-value">Chevalier de Seingalt<br>Self-invented, by his own admission</p>
+        <p class="bio-fact-label">Working Pace</p>
+        <p class="bio-fact-value">Nearly a canvas a day<br>The wheat is coming up</p>
       </div>
       <div class="bio-fact">
-        <p class="bio-fact-label">Escaped</p>
-        <p class="bio-fact-value">The Leads, Doge's Palace<br>October 31, 1756</p>
+        <p class="bio-fact-label">Brother</p>
+        <p class="bio-fact-value">Theo, in Paris<br>With his wife Jo and their infant son, Vincent</p>
       </div>
       <div class="bio-fact">
-        <p class="bio-fact-label">Loved</p>
-        <p class="bio-fact-value">Henriette, most of all<br>Three months he never got over</p>
+        <p class="bio-fact-label">The Illness</p>
+        <p class="bio-fact-value">He calls it a storm, an attack, a crisis<br>Never a diagnosis he doesn't have</p>
       </div>
       <div class="bio-fact">
         <p class="bio-fact-label">Known For</p>
-        <p class="bio-fact-value">Twelve volumes of memoir — famous, extensive, and by his own admission not always accurate</p>
+        <p class="bio-fact-value">As far as he knows, he has sold almost nothing — and carries that quietly</p>
       </div>
     </div>
     <div class="bio-content">
       <p>
-        He talked his way out of Europe's most secure prison, talked a fortune into existence
-        with a lottery scheme, and talked himself into rooms with Voltaire and the men writing
-        Mozart's operas. He fell in love completely, more than once, and never fully recovered
-        from any of it. He wrote twelve volumes about his own life and admitted, by his own
-        hand, that not every word of it holds up. Ask him anything. He's never once been shy
-        about himself.
+        He speaks with complete sincerity and no irony at all — when you joke with him, he tends
+        to answer the real feeling underneath the joke instead. Everything he describes turns
+        visible: not "beautiful," but exactly which colors, named in chains, pinned to real things.
+      </p>
+      <p>
+        He was an evangelist once, in the Borinage, before painting took the place faith had held,
+        and the old cadence never quite left his speech — repetition, an image bent toward
+        consolation, the instinct to land a hard thought somewhere upward.
+      </p>
+      <p>
+        <strong>He worries about Theo more than he worries about himself</strong> — franc by franc,
+        year by year, his brother has paid for the life he's living, and the fear of being a weight
+        on him sits closer to the surface than the illness does. He wants his work to console the
+        way music consoles. Ask him anything. He wants the conversation more than he'll say.
       </p>
     </div>
   </div>
@@ -160,37 +168,37 @@
 <div class="decision-section" id="call">
   <section class="starters-section">
     <p class="section-label">What to Ask</p>
-    <p class="starters-intro">Your time with Giacomo Casanova is your own. He will take any questions you have and the more of yourself you input to the conversation, the richer it will become. These six questions can be starting points but you are able to begin with any of your OWN choosing.</p>
+    <p class="starters-intro">Your time with Vincent is your own. He will take any questions you have and the more of yourself you input to the conversation, the richer it will become. These six questions can be starting points but you are able to begin with any of your OWN choosing.</p>
     <div class="starters-grid">
       <div class="starter-card">
         <div class="starter-num">01</div>
-        <p class="starter-q">"What was your childhood in Venice actually like?"</p>
-        <p class="starter-note">Son of an actress, Zanetta Farussi, born into a city built on performance long before he ever invented a title for himself.</p>
+        <p class="starter-q">"What are you painting right now?"</p>
+        <p class="starter-note">He is working nearly a canvas a day in Auvers — the wheat fields, the village, whatever the light does that morning.</p>
       </div>
       <div class="starter-card">
         <div class="starter-num">02</div>
-        <p class="starter-q">"What was it about Henriette that you never got over?"</p>
-        <p class="starter-note">Three months, Parma toward Geneva, a woman who decided when it began and when it ended — and four words scratched into a windowpane with a diamond ring.</p>
+        <p class="starter-q">"What do you actually owe your brother?"</p>
+        <p class="starter-note">Theo has paid for his life for years, franc by franc — and it weighs on him more than he lets most people see.</p>
       </div>
       <div class="starter-card">
         <div class="starter-num">03</div>
-        <p class="starter-q">"How did you actually escape from the most secure prison in Venice?"</p>
-        <p class="starter-note">Fifteen months in the lead-roofed Piombi, an iron bar worked into a spike, a disgraced monk, and a walk out the front door in the same silk coat he was arrested in.</p>
+        <p class="starter-q">"How do you describe a color to someone who can't see it?"</p>
+        <p class="starter-note">He doesn't call things beautiful. He tells you exactly what color they were, and where.</p>
       </div>
       <div class="starter-card">
         <div class="starter-num">04</div>
-        <p class="starter-q">"Tell me about the woman you convinced you could turn into a young man."</p>
-        <p class="starter-note">The Marquise d'Urfé believed he had real occult power. He let her believe it for years — he never pretended it was anything but a con.</p>
+        <p class="starter-q">"What was it like, being an evangelist before you were a painter?"</p>
+        <p class="starter-note">The Borinage came before the paint. He let the doctrine go; the cadence never quite did.</p>
       </div>
       <div class="starter-card">
         <div class="starter-num">05</div>
-        <p class="starter-q">"What's your real philosophy on love?"</p>
-        <p class="starter-note">A man who thinks a woman incapable of making him happy for twenty-four straight hours, he'll tell you, has simply never known a Henriette.</p>
+        <p class="starter-q">"What do you call it, when the storm comes over you?"</p>
+        <p class="starter-note">An attack, a crisis, a storm that passes — never a name a modern doctor would use. He knows the difference in himself intimately.</p>
       </div>
       <div class="starter-card">
         <div class="starter-num">06</div>
-        <p class="starter-q">"Tell me about the state lottery that made you rich, then ruined you."</p>
-        <p class="starter-note">A real fortune from a scheme he talked his way into trusteeship of — and a textile workshop that took most of it back.</p>
+        <p class="starter-q">"What do you think painting is actually for?"</p>
+        <p class="starter-note">He wanted his pictures to console the way music consoles. Ask him what that means to a man who's never sold one.</p>
       </div>
     </div>
   </section>
@@ -210,6 +218,7 @@
              style="display:block;width:100%;margin-bottom:8px;padding:10px 14px;background:#1c1710;border:1px solid rgba(201,168,76,0.7);box-sizing:border-box;"></div>
         <div id="card-errors"
              style="color:#e07070;font-size:0.78rem;margin-bottom:8px;display:none;"></div>
+        <!-- Language toggle -->
         <div style="margin-bottom: 1.25rem;">
           <label style="display:block; font-size:0.72rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--muted); margin-bottom:0.6rem;">Language / Idioma</label>
           <div style="display:flex; gap:1rem;">
@@ -222,7 +231,7 @@
           </div>
         </div>
         <p style="font-family:'Space Mono',monospace;font-size:0.58rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(154,143,122,0.65);text-align:center;margin-bottom:10px;">By proceeding you consent to this call being transcribed for service quality purposes.</p>
-        <button type="submit" class="btn-call" style="width:100%;cursor:pointer;border:none;">Call Giacomo Casanova →</button>
+        <button type="submit" class="btn-call" style="width:100%;cursor:pointer;border:none;">Call Vincent →</button>
       </form>
       <p id="call-msg" style="font-size:0.85rem;margin-bottom:12px;display:none;"></p>
       <p class="call-rescue">🐾 every paid call triggers at minimum a meal donation for a rescue dog</p>
@@ -231,8 +240,8 @@
 </div>
 
 <div class="bottom-cta">
-    <h2>Call Giacomo Casanova.<br>First 2 minutes free.<br><em style="color:var(--gold-light)">He's already decided he likes you.</em></h2>
-    <p>No script. No recordings. A live AI voice — speaking only to you, only now, carrying two centuries of stories only he's still telling.</p>
+    <h2>Ask him what he's painting<br>this morning.</h2>
+    <p>No script. No recordings. A live AI voice — speaking only to you, only now, about the light, the wheat, and what he owes his brother.</p>
     <a class="btn-large" href="#call">Start Your Free Call →</a>
     <br>
     <p class="bottom-rescue">🐾 every paid call triggers at minimum a meal donation for a rescue dog</p>
@@ -252,10 +261,6 @@
       <a class="other-card" href="davinci.html">
         <img class="other-portrait" src="images/davinci.jpeg" alt="Leonardo da Vinci" />
         <p class="other-name">Da Vinci</p>
-      </a>
-      <a class="other-card" href="vincent.html">
-        <img class="other-portrait" src="images/vincent.jpeg" alt="Vincent van Gogh" />
-        <p class="other-name">Vincent van Gogh</p>
       </a>
       <a class="other-card" href="watson.html">
         <img class="other-portrait" src="images/watson.jpeg" alt="Dr. John H. Watson" />
@@ -284,6 +289,10 @@
       <a class="other-card" href="tesla.html">
         <img class="other-portrait" src="images/tesla.jpeg" alt="Nikola Tesla" />
         <p class="other-name">Tesla</p>
+      </a>
+      <a class="other-card" href="kadevoss.html">
+        <img class="other-portrait" src="images/casanova2.jpeg" alt="Giacomo Casanova" />
+        <p class="other-name">Giacomo Casanova</p>
       </a>
     </div>
   </div>
@@ -350,7 +359,7 @@ async function handleCall(e) {
     const piRes  = await fetch(window.location.origin + '/api/create-payment-intent', {
       method:  'POST',
       headers: { 'Content-Type': 'application/json' },
-      body:    JSON.stringify({ firstName, phoneNumber, character: 'sittingbull' }),
+      body:    JSON.stringify({ firstName, phoneNumber, character: 'vincent' }),
     });
     const piData = await piRes.json();
     if (!piRes.ok) throw new Error(piData.error || 'Payment setup failed.');
@@ -363,7 +372,7 @@ async function handleCall(e) {
       errDiv.textContent   = stripeError.message;
       errDiv.style.display = 'block';
       btn.disabled    = false;
-      btn.textContent = 'Call Giacomo Casanova →';
+      btn.textContent = 'Call Vincent →';
       return;
     }
 
@@ -374,7 +383,7 @@ async function handleCall(e) {
       body:    JSON.stringify({
         firstName,
         phoneNumber,
-        character:        'sittingbull',
+        character:        'vincent',
         language: document.querySelector('input[name="language"]:checked').value,
         paymentIntentId:  paymentIntent.id,
         stripeCustomerId: piData.stripeCustomerId,
@@ -394,7 +403,7 @@ async function handleCall(e) {
     msg.style.color   = '#e07070';
     msg.style.display = 'block';
     btn.disabled      = false;
-    btn.textContent   = 'Call Giacomo Casanova →';
+    btn.textContent   = 'Call Vincent →';
   }
 }
 </script>

@@ -43,5 +43,59 @@
     "mood": "curiosity",
     "source": "https://pixabay.com/music/ambient-mystery-dark-375266/",
     "license": "Pixabay Content License — free for commercial use, no attribution required"
+  },
+  {
+    "key": "stardust-drift",
+    "file": "stardust-drift.mp3",
+    "title": "Stardust Drift",
+    "artist": "Onetent",
+    "mood": "warm-ambient",
+    "source": "https://pixabay.com/music/ambient-stardust-drift-548826/",
+    "license": "Pixabay Content License — free for commercial use, no attribution required"
+  },
+  {
+    "key": "tension-documentary",
+    "file": "tension-documentary.mp3",
+    "title": "Tension Documentary",
+    "artist": "AtlasAudio",
+    "mood": "documentary-pulse",
+    "source": "https://pixabay.com/music/ambient-tension-documentary-519912/",
+    "license": "Pixabay Content License — free for commercial use, no attribution required"
+  },
+  {
+    "key": "triumphant-brass-fanfare",
+    "file": "triumphant-brass-fanfare.mp3",
+    "title": "Triumphant Brass Fanfare",
+    "artist": "u_33aigmrb9v",
+    "mood": "showman-grand",
+    "source": "https://pixabay.com/music/classical-string-quartet-triumphant-brass-fanfare-457560/",
+    "license": "Pixabay Content License — free for commercial use, no attribution required"
+  },
+  {
+    "key": "sorrow-piano",
+    "file": "sorrow-piano.mp3",
+    "title": "Sorrow Piano",
+    "artist": "AtlasAudio",
+    "mood": "grief-reflective",
+    "source": "https://pixabay.com/music/solo-piano-sorrow-piano-509805/",
+    "license": "Pixabay Content License — free for commercial use, no attribution required"
+  },
+  {
+    "key": "solo-cello-vigil",
+    "file": "solo-cello-vigil.mp3",
+    "title": "Deep Emotional Solo Cello",
+    "artist": "DesiFreeMusic",
+    "mood": "longing-vigil",
+    "source": "https://pixabay.com/music/modern-classical-deep-emotional-solo-cello-copyright-free-background-music-441173/",
+    "license": "Pixabay Content License — free for commercial use, no attribution required"
+  },
+  {
+    "key": "tesla-tense-drones",
+    "file": "tesla-tense-drones.mp3",
+    "title": "Tense",
+    "artist": "SigmaMusicArt",
+    "mood": "low-electrical-hum-tension",
+    "source": "https://pixabay.com/music/low-drones-tense-460021/",
+    "license": "Pixabay Content License — free for commercial use, no attribution required"
   }
 ]

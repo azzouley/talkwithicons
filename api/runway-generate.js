@@ -5,14 +5,15 @@
 //
 // POST { action: 'submit', promptImage, promptText, ratio, duration } -> {taskId, estimatedCredits, ...}
 // GET  ?action=status&taskId=... -> {status, progress, output, ...}
-// GET  ?action=usage -> {creditsUsed, remaining, cap, period}
+// GET  ?action=usage -> {creditBalance, maxMonthlyCreditSpend, locallyTrackedSpendThisPeriod}
 
 const { checkAdminAuth } = require('./_db');
 const {
   estimateCredits,
   checkBudget,
+  getCreditBalance,
   getMonthlyCreditsUsed,
-  recordCreditsUsed,
+  recordCreditsOnce,
   submitImageToVideo,
   getTaskStatus,
   persistOutputToBlob,
@@ -30,12 +31,17 @@ module.exports = async function handler(req, res) {
 
   try {
     if (req.method === 'GET' && req.query.action === 'usage') {
+      // Real, authoritative account state — not a locally-modeled monthly
+      // reset. TWI is API-only (RUNWAY_API_KEY), billed separately from any
+      // Runway consumer plan; creditBalance is the number that actually runs
+      // out. maxMonthlyCreditSpend is a separate rate ceiling on the API
+      // tier, included for reference only.
+      const { creditBalance, maxMonthlyCreditSpend } = await getCreditBalance();
       const { period, creditsUsed } = await getMonthlyCreditsUsed();
       return res.status(200).json({
-        period,
-        creditsUsed,
-        remaining: 10000 - creditsUsed,
-        cap: 10000,
+        creditBalance,
+        maxMonthlyCreditSpend,
+        locallyTrackedSpendThisPeriod: { period, creditsUsed }, // our own submission history, informational only
       });
     }
 
@@ -46,8 +52,11 @@ module.exports = async function handler(req, res) {
 
       // Record actual spend once the task lands in a terminal state, using
       // Runway's own reported cost (authoritative, not the local estimate).
+      // Idempotent per task_id — safe even though this endpoint gets polled
+      // repeatedly while/after a task is SUCCEEDED (previously this line
+      // re-added the same task's cost to the ledger on every single poll).
       if (task.status === 'SUCCEEDED' && task.cost?.credits) {
-        await recordCreditsUsed(task.cost.credits);
+        await recordCreditsOnce(taskId, task.cost.credits);
       }
 
       // Runway's own output URL is a signed CloudFront link that expires.
@@ -107,7 +116,7 @@ module.exports = async function handler(req, res) {
       const budget = await checkBudget(estimated);
       if (!budget.allowed) {
         return res.status(429).json({
-          error: 'monthly Runway credit budget would be exceeded',
+          error: 'this generation would exceed the real remaining Runway API credit balance',
           estimatedCredits: estimated,
           ...budget,
         });

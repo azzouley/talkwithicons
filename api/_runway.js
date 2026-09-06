@@ -16,7 +16,23 @@ const { put } = require('@vercel/blob');
 const RUNWAY_BASE = 'https://api.dev.runwayml.com';
 const RUNWAY_VERSION = '2024-11-06';
 const CREDITS_PER_SECOND_GEN45 = 12; // derived from a real 5s clip costing 60 credits
-const MONTHLY_CREDIT_CAP = 10000; // the account's real maxMonthlyCreditSpend, confirmed via /v1/organization
+
+// NOTE on the two different Runway numbers, easy to conflate (and previously
+// conflated in this file — corrected 2026-09-04):
+//   - maxMonthlyCreditSpend: a RATE ceiling on the API account's tier (how much
+//     can be spent on credits in a rolling 30-day window; currently $100 =
+//     10,000 credits at Tier 1). This is NOT the same thing as a subscription
+//     plan and is not what limits production day-to-day right now.
+//   - creditBalance: the account's actual real remaining prepaid credits —
+//     this is the number that runs out. TWI is API-only (RUNWAY_API_KEY),
+//     billed separately from any Runway consumer monthly plan; the rate
+//     ceiling above is rarely the binding constraint, balance is.
+// checkBudget() below gates against live creditBalance, not a local
+// monthly-reset counter — a hardcoded local cap silently drifts from the
+// real account state (confirmed 2026-09-04: local ledger read 2,282 for
+// September while a real generation had already landed that was never
+// recorded, and the true remaining balance was 565 — nothing in the local
+// ledger would have caught that a real exhaustion was imminent).
 
 function runwayHeaders(extra) {
   const key = process.env.RUNWAY_API_KEY;
@@ -24,6 +40,21 @@ function runwayHeaders(extra) {
     Authorization: `Bearer ${key}`,
     'X-Runway-Version': RUNWAY_VERSION,
     ...extra,
+  };
+}
+
+async function getCreditBalance() {
+  const res = await fetch(`${RUNWAY_BASE}/v1/organization`, { headers: runwayHeaders() });
+  const data = await res.json();
+  if (!res.ok) {
+    const err = new Error(`Runway organization fetch failed: HTTP ${res.status} ${JSON.stringify(data).slice(0, 200)}`);
+    err.status = res.status;
+    err.data = data;
+    throw err;
+  }
+  return {
+    creditBalance: data.creditBalance,
+    maxMonthlyCreditSpend: data.tier?.maxMonthlyCreditSpend ?? null,
   };
 }
 
@@ -56,6 +87,36 @@ async function recordCreditsUsed(credits) {
   `;
 }
 
+async function ensureCreditEventsTable() {
+  await sql`
+    CREATE TABLE IF NOT EXISTS runway_credit_events (
+      task_id TEXT PRIMARY KEY,
+      credits INTEGER NOT NULL,
+      recorded_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+    )
+  `;
+}
+
+// Idempotent per-task recorder — safe to call on every status poll of a
+// SUCCEEDED task, or once at submission time, without double-counting.
+// This is what closes both known gaps: (1) a caller submitting a task and
+// never separately calling recordCreditsUsed, and (2) the pre-existing bug
+// where polling ?action=status on an already-succeeded task re-added its
+// cost to the ledger on every single poll.
+async function recordCreditsOnce(taskId, credits) {
+  if (!taskId || !credits) return false;
+  await ensureCreditEventsTable();
+  const { rows } = await sql`
+    INSERT INTO runway_credit_events (task_id, credits)
+    VALUES (${taskId}, ${credits})
+    ON CONFLICT (task_id) DO NOTHING
+    RETURNING task_id
+  `;
+  if (rows.length === 0) return false; // already recorded for this task
+  await recordCreditsUsed(credits);
+  return true;
+}
+
 // Local pre-flight estimate so a request can be blocked BEFORE calling Runway at
 // all, rather than after Runway has already committed the spend.
 function estimateCredits(durationSeconds) {
@@ -63,13 +124,12 @@ function estimateCredits(durationSeconds) {
 }
 
 async function checkBudget(estimatedCredits) {
-  const { creditsUsed } = await getMonthlyCreditsUsed();
-  const remaining = MONTHLY_CREDIT_CAP - creditsUsed;
+  const { creditBalance, maxMonthlyCreditSpend } = await getCreditBalance();
   return {
-    allowed: estimatedCredits <= remaining,
-    creditsUsed,
-    remaining,
-    cap: MONTHLY_CREDIT_CAP,
+    allowed: estimatedCredits <= creditBalance,
+    creditBalance,
+    remainingAfter: creditBalance - estimatedCredits,
+    maxMonthlyCreditSpend, // informational rate ceiling only, not the gate
   };
 }
 
@@ -91,6 +151,15 @@ async function submitImageToVideo({ promptImage, promptText, ratio, duration }) 
     err.status = res.status;
     err.data = data;
     throw err;
+  }
+  // Auto-record at submission time using Runway's own estimatedCost — closes
+  // the gap where a caller submits a task but forgets the separate manual
+  // recordCreditsUsed() call afterward (confirmed happening 2026-09-04: a
+  // real 108-credit generation went unrecorded in the local ledger). Uses
+  // the idempotent per-task recorder so this can't double-count against a
+  // later terminal-status recording of the same task's actual cost.
+  if (data.id && data.estimatedCost?.credits) {
+    await recordCreditsOnce(data.id, data.estimatedCost.credits).catch(() => {}); // best-effort; live balance check is the real gate, not this
   }
   return data; // {id, estimatedCost:{credits}}
 }
@@ -215,14 +284,15 @@ async function getGenerationByTaskId(taskId) {
 module.exports = {
   estimateCredits,
   checkBudget,
-  getMonthlyCreditsUsed,
+  getCreditBalance,
+  getMonthlyCreditsUsed, // kept: our own submission history, NOT a budget gate — see note above getCreditBalance()
   recordCreditsUsed,
+  recordCreditsOnce,
   submitImageToVideo,
   submitTextToImage,
   getTaskStatus,
   persistOutputToBlob,
   upsertGeneration,
   getGenerationByTaskId,
-  MONTHLY_CREDIT_CAP,
   CREDITS_PER_SECOND_GEN45,
 };

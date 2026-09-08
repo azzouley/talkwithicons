@@ -97,7 +97,13 @@
            style="width:100%;background:#0d0b09;border:1px solid #2a2318;color:#e8e0d0;padding:12px 14px;font-family:Georgia,serif;font-size:15px;display:block;margin-bottom:20px;">
 
     <label style="display:block;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#9e8c7a;margin-bottom:8px;font-family:'Space Mono',monospace;">Card</label>
-    <div id="card-element" style="background:#0d0b09;border:1px solid #2a2318;padding:13px 14px;margin-bottom:20px;"></div>
+    <div id="card-number-element" style="background:#0d0b09;border:1px solid #2a2318;padding:13px 14px;margin-bottom:8px;"></div>
+    <div style="display:flex;gap:8px;margin-bottom:20px;">
+      <div id="card-expiry-element" style="flex:1;min-width:0;background:#0d0b09;border:1px solid #2a2318;padding:13px 10px;box-sizing:border-box;"></div>
+      <div id="card-cvc-element" style="flex:1;min-width:0;background:#0d0b09;border:1px solid #2a2318;padding:13px 10px;box-sizing:border-box;"></div>
+      <input id="f-zip" type="text" placeholder="ZIP" inputmode="numeric" autocomplete="postal-code"
+             style="flex:1;min-width:0;background:#0d0b09;border:1px solid #2a2318;color:#e8e0d0;font-family:Georgia,serif;font-size:16px;padding:13px 10px;outline:none;box-sizing:border-box;" />
+    </div>
 
     <div style="padding:14px 16px;background:#0d0b09;border-left:2px solid #3a3020;font-size:13px;color:#9e8c7a;line-height:1.6;font-family:Georgia,serif;">
       Every gift includes a $0.50 donation to rescue dogs — split between Paws of War and Rochester Animal Services.
@@ -143,7 +149,7 @@
 
     let selectedSlug = null;
     let pkg          = null;
-    let stripe, cardElement;
+    let stripe, cardNumberElement, cardExpiryElement, cardCvcElement;
     let stripeReady  = false;
 
     function showTestModeBanner() {
@@ -183,22 +189,28 @@
         const elements = stripe.elements({
           fonts: [{ cssSrc: 'https://fonts.googleapis.com/css2?family=Space+Mono&display=swap' }],
         });
-        cardElement = elements.create('card', {
-          style: {
-            base: {
-              color: '#e8e0d0',
-              fontFamily: 'Georgia, serif',
-              fontSize: '16px',
-              '::placeholder': { color: '#5a4e3a' },
-              iconColor: '#9e8c7a',
-            },
-            invalid: { color: '#c0504a' },
+        const elementStyle = {
+          base: {
+            color: '#e8e0d0',
+            fontFamily: 'Georgia, serif',
+            fontSize: '16px',
+            '::placeholder': { color: '#5a4e3a' },
+            iconColor: '#9e8c7a',
           },
-        });
-        cardElement.mount('#card-element');
-        cardElement.on('change', evt => {
+          invalid: { color: '#c0504a' },
+        };
+        cardNumberElement = elements.create('cardNumber', { style: elementStyle });
+        cardExpiryElement = elements.create('cardExpiry', { style: elementStyle });
+        cardCvcElement    = elements.create('cardCvc',    { style: elementStyle });
+        cardNumberElement.mount('#card-number-element');
+        cardExpiryElement.mount('#card-expiry-element');
+        cardCvcElement.mount('#card-cvc-element');
+        const onCardChange = evt => {
           document.getElementById('error-msg').textContent = evt.error ? evt.error.message : '';
-        });
+        };
+        cardNumberElement.on('change', onCardChange);
+        cardExpiryElement.on('change', onCardChange);
+        cardCvcElement.on('change', onCardChange);
         stripeReady = true;
         updateSubmitBtn();
       } catch (err) {
@@ -262,7 +274,7 @@
         // Step 2: confirm with Stripe Elements
         const { error: stripeError, paymentIntent } = await stripe.confirmCardPayment(
           purchaseData.clientSecret,
-          { payment_method: { card: cardElement } }
+          { payment_method: { card: cardNumberElement, billing_details: { address: { postal_code: document.getElementById('f-zip').value.trim() } } } }
         );
         if (stripeError) {
           errorEl.textContent = stripeError.message;

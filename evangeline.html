@@ -355,8 +355,18 @@
           <label class="form-label" for="card-element">Card Details <span>(held, not charged until call ends)</span></label>
           <p class="call-hint" style="font-size:0.85em; opacity:1.0; margin-top:6px;">If your icon pauses in thought, say <strong style="font-size:1.5em; color:#0d0b08; background:#4fc7d6; padding:0.05em 0.5em; border-radius:5px; display:inline-block; line-height:1.4;">"yes"</strong> or <strong style="font-size:1.5em; color:#0d0b08; background:#4fc7d6; padding:0.05em 0.5em; border-radius:5px; display:inline-block; line-height:1.4;">"please continue"</strong> to invite them to go on.</p>
           <p class="call-hint" style="font-size:0.85em; margin-top:4px; color:#f5f0e8;">You never have to answer a question if you have other questions on your mind. The flow of the conversation is always up to you.</p>
-          <div id="card-element"
-               style="padding:14px 16px;background:#1c1710;border:1px solid rgba(201,168,76,0.5);color:#f5f0e8;font-family:'Space Mono',monospace;font-size:0.88rem;box-sizing:border-box;width:100%;"></div>
+          <div id="card-element" style="display:block;">
+            <div id="card-number-element"
+                 style="display:block;width:100%;margin-bottom:8px;padding:10px 14px;background:#1c1710;border:1px solid rgba(201,168,76,0.5);box-sizing:border-box;"></div>
+            <div style="display:flex;gap:8px;">
+              <div id="card-expiry-element"
+                   style="flex:1;min-width:0;padding:10px 8px;background:#1c1710;border:1px solid rgba(201,168,76,0.5);box-sizing:border-box;"></div>
+              <div id="card-cvc-element"
+                   style="flex:1;min-width:0;padding:10px 8px;background:#1c1710;border:1px solid rgba(201,168,76,0.5);box-sizing:border-box;"></div>
+              <input id="f-zip" type="text" placeholder="ZIP" inputmode="numeric" autocomplete="postal-code"
+                     style="flex:1;min-width:0;padding:10px 8px;background:#1c1710;border:1px solid rgba(201,168,76,0.5);color:#f5f0e8;font-family:'Space Mono',monospace;font-size:16px;outline:none;box-sizing:border-box;" />
+            </div>
+          </div>
           <div id="card-errors"
                style="color:#e07070;font-size:0.78rem;margin-top:6px;display:none;"></div>
         </div>
@@ -556,7 +566,7 @@
       return h.toString().padStart(2, '0') + ':' + min;
     }
 
-let stripe, cardElement;
+let stripe, cardNumberElement, cardExpiryElement, cardCvcElement;
 
 function toggleGiftMode() {
   const cardField  = document.getElementById('card-element').closest('.form-field');
@@ -597,18 +607,21 @@ async function initStripe() {
     const elements = stripe.elements({
       fonts: [{ cssSrc: 'https://fonts.googleapis.com/css2?family=Space+Mono&display=swap' }],
     });
-    cardElement = elements.create('card', {
-      style: {
-        base: {
-          color: '#f5f0e8',
-          fontFamily: '"Space Mono", monospace',
-          fontSize: '16px',
-          '::placeholder': { color: 'rgba(245,240,232,0.4)' },
-        },
-        invalid: { color: '#e07070' },
+    const elementStyle = {
+      base: {
+        color: '#f5f0e8',
+        fontFamily: '"Space Mono", monospace',
+        fontSize: '16px',
+        '::placeholder': { color: 'rgba(245,240,232,0.4)' },
       },
-    });
-    cardElement.mount('#card-element');
+      invalid: { color: '#e07070' },
+    };
+    cardNumberElement = elements.create('cardNumber', { style: elementStyle });
+    cardExpiryElement = elements.create('cardExpiry', { style: elementStyle });
+    cardCvcElement    = elements.create('cardCvc',    { style: elementStyle });
+    cardNumberElement.mount('#card-number-element');
+    cardExpiryElement.mount('#card-expiry-element');
+    cardCvcElement.mount('#card-cvc-element');
   } catch (err) {
     console.error('Stripe init error:', err.message);
   }
@@ -697,7 +710,7 @@ document.addEventListener('DOMContentLoaded', initStripe);
 
         const { error: stripeError, paymentIntent } = await stripe.confirmCardPayment(
           piData.clientSecret,
-          { payment_method: { card: cardElement, billing_details: { name } } }
+          { payment_method: { card: cardNumberElement, billing_details: { name, address: { postal_code: document.getElementById('f-zip').value.trim() } } } }
         );
         if (stripeError) {
           if (errDiv) { errDiv.textContent = stripeError.message; errDiv.style.display = 'block'; }

@@ -382,6 +382,32 @@ async function initStripe() {
 
 document.addEventListener('DOMContentLoaded', initStripe);
 
+function pollCallStatus(callId, msg) {
+  let elapsed = 0;
+  const maxSeconds = 180;
+  const intervalMs = 3000;
+  const poll = setInterval(async () => {
+    elapsed += intervalMs / 1000;
+    try {
+      const res = await fetch(window.location.origin + '/api/call-status?callId=' + encodeURIComponent(callId));
+      const data = await res.json();
+      if (res.ok && data.message) {
+        msg.textContent = data.message;
+        msg.style.color = data.phase === 'failed' ? '#e07070' : '#6dbf8a';
+      }
+      if (data.status === 'ended' || elapsed >= maxSeconds) {
+        clearInterval(poll);
+        if (elapsed >= maxSeconds && data.status !== 'ended') {
+          msg.textContent = 'Still trying to reach you — check your phone, or try calling again.';
+          msg.style.color = '#e07070';
+        }
+      }
+    } catch (err) {
+      // single poll network hiccup — try again next tick
+    }
+  }, intervalMs);
+}
+
 async function handleCall(e) {
   e.preventDefault();
   const form    = document.getElementById('call-form');
@@ -432,10 +458,11 @@ async function handleCall(e) {
     });
     const callData = await callRes.json();
     if (callRes.ok) {
-      msg.textContent   = 'Your call is connecting — pick up within 30 seconds.';
+      msg.textContent   = 'Dialing your phone...';
       msg.style.color   = '#6dbf8a';
       msg.style.display = 'block';
       btn.textContent   = 'Call Placed ✓';
+      if (callData.callId) pollCallStatus(callData.callId, msg);
     } else {
       throw new Error(callData.error || 'Something went wrong.');
     }

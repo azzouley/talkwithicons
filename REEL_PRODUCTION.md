@@ -1,9 +1,12 @@
-# Arthur Vance Reel Production — Reference
+# Reel Production — Reference (all characters)
 
-Read this before starting any reel work for Arthur Vance (or adapting the
-pattern for another character's reel series). Every rule below exists
-because skipping it already caused a real problem once. Don't re-learn
-these the hard way.
+Read this before starting any reel work for **any** character, not just
+the one it happens to have been written while working on. Every rule
+below exists because skipping it already caused a real problem once, on
+one character's reel or another's — the underlying pipeline (Runway,
+ffmpeg assembly, house style, Vapi CANON editing) is shared across the
+whole roster. Don't re-learn these the hard way on a different character
+just because the last incident happened to involve someone else.
 
 ---
 
@@ -18,21 +21,22 @@ these the hard way.
   `checkBudget`, `estimateCredits`, `getTaskStatus`, `persistOutputToBlob`.
 - **Cost: 12 credits per second, gen4.5 model.** 5s = 60 credits, 10s =
   120. Linear, no discount for longer clips.
-- **COST FLAG RULE (added 2026-09-11, do not skip):** before submitting
-  anything to Runway, sum the total credits for the *entire reel* (every
-  clip together, not one at a time). If the total clearly exceeds the
-  established per-reel norm (most reels have run 60-120 credits total;
-  150+ is a flag), **stop and tell the user the number before
-  submitting** — even if the brief itself specified the durations that
-  produce that total. A user specifying "10s" has not necessarily done
-  the credits math. Connecting duration → cost → "is this okay?" is this
-  assistant's job, the same way a headcount mismatch or a watermark gets
-  caught before it ships. This was missed once (a 300-credit, three-clip
-  reel went through with no pre-spend flag) and the user had to ask why
-  after the fact — don't repeat that.
+- **COST FLAG RULE (added 2026-09-11, do not skip, applies to every
+  character's reels):** before submitting anything to Runway, sum the
+  total credits for the *entire reel* (every clip together, not one at a
+  time). If the total clearly exceeds the established per-reel norm (most
+  reels across the roster have run 60-120 credits total; 150+ is a flag),
+  **stop and tell the user the number before submitting** — even if the
+  brief itself specified the durations that produce that total. A user
+  specifying "10s" has not necessarily done the credits math. Connecting
+  duration → cost → "is this okay?" is this assistant's job, the same way
+  a headcount mismatch or a watermark gets caught before it ships. This
+  was missed once (a 300-credit, three-clip reel went through with no
+  pre-spend flag) and the user had to ask why after the fact — don't
+  repeat that, on any character's reel.
 - No Runway spend of any kind, cheap or expensive, without an explicit
-  go-ahead from the user first. Every reel in this series has required
-  this, without exception.
+  go-ahead from the user first. Every reel across every character in this
+  project has required this, without exception.
 - The harness's own auto-mode classifier sometimes blocks the actual
   `submitImageToVideo`/`getTaskStatus` calls when run as
   `RUNWAY_API_KEY=... && node -e "..."` inline. Workaround: write the
@@ -117,46 +121,58 @@ these the hard way.
   of the text. Verify visually; don't trust a fixed y-offset that worked
   for a shorter caption on a different reel.
 - **No attribution overlay on ship-interior / interior scenes** (standing
-  rule since Villas-Boas) — attribution goes on field/exterior beats only
-  in this series.
+  rule since Villas-Boas, currently specific to Arthur Vance's reel
+  series — attribution goes on field/exterior beats only there). Apply
+  the same visual-collision check for any character/scene type where an
+  attribution or credit line might land near a long, multi-line caption.
 - Vertical canvas: 720×1280. House font: `Anton-Regular.ttf`. House
   caption style: black text, `white@0.92` box, `boxborderw=28`, positioned
   at `y=h*0.08`.
 
-## House end card (current standard)
+## House end card (shared structure, per-character content)
 
-Four lines, in order: "UFOs and Alien Encounters" (gold kicker) / "Call
-Arthur Vance." / "talkwithicons.com" (gold) / "Real conversations feed
-real rescue dogs." Block position: `(H - totalHeight) / 2 - 70` (shifted
-up from dead center).
+Every character's end card follows the same four-line pattern: a gold
+kicker line naming the genre/hook ("UFOs and Alien Encounters" for
+Vance), "Call [Character Name]." in black, "talkwithicons.com" in gold,
+then the rescue-dog line in black. Block position: `(H - totalHeight) / 2
+- 70` (shifted up from dead center) — reuse this positioning math
+regardless of character. Only the specific wording of the kicker/name
+changes per character.
 
 ## Music
 
 House library at `assets/music/`, licensed Pixabay tracks —
-`manifest.json` lists mood/artist per track. Vance reels have used
-`dark-tension` consistently since switching off `tension-documentary`
-(which is also used by Walter Hobbs's reels — shared mood-tag tracks
-across characters are normal by design, but check current usage before
-assuming a track is "free").
+`manifest.json` lists mood/artist per track. Tracks are not exclusive to
+one character — e.g. `tension-documentary` has been used by both Walter
+Hobbs's reels and an early Arthur Vance reel (later switched to
+`dark-tension` for Vance after the shared usage was flagged). Shared
+mood-tag tracks across characters are normal by design, but check current
+usage before assuming a specific track is "free" for a new character if
+distinctiveness matters for that character.
 
-## CANON / Vapi prompt editing (Arthur Vance, assistant `bc8ba6dd-a90f-41cc-aa08-ca208107f864`)
+## CANON / Vapi prompt editing (any character)
 
 - Vapi key: check this assistant's own memory first (cached before it was
-  ever a Vercel env var). Vercel's copy is `sensitive`-type, not
-  API-retrievable.
-- **Always GET the current prompt and back it up to `vapi-backup/` with a
-  descriptive, timestamped filename before any PATCH.** No exceptions.
-- Every CANON addition: find the correct chronological/thematic insertion
-  point — don't just append at the end. Convert the user's third-person
-  brief into the prompt's native second-person "you" address. PATCH, then
-  GET again and byte-compare the result to confirm the live prompt
-  matches exactly.
-- Behavioral rules (not case-file content) belong in the numbered
-  CRITICAL RULES block near the top of the prompt, not in a CANON
-  section.
-- Update `project_talkwithicons_arthur_vance.md` (this assistant's own
-  memory) after every change with the char-count delta and a one-line
-  description — it's the running history of everything in his prompt.
+  ever a Vercel env var, for at least one character's key already).
+  Vercel's copy is `sensitive`-type, not API-retrievable.
+- **Always GET the character's current prompt and back it up to
+  `vapi-backup/` with a descriptive, timestamped filename before any
+  PATCH.** No exceptions, for any character.
+- Every CANON/content addition: find the correct chronological/thematic
+  insertion point within that character's existing structure — don't
+  just append at the end. If the source brief is written in third person,
+  convert it into the prompt's native second-person "you" address to
+  match the character's existing voice. PATCH, then GET again and
+  byte-compare the result to confirm the live prompt matches exactly.
+- Behavioral rules (not case-file/lore content) belong in that
+  character's numbered CRITICAL RULES block near the top of the prompt,
+  not mixed into a CANON/lore section.
+- Update that character's own project memory file after every change with
+  the char-count delta and a one-line description — e.g.
+  `project_talkwithicons_arthur_vance.md` for Vance — so there's a running
+  history of everything in the prompt. Create an equivalent memory file
+  for any other character that doesn't have one yet, once its CANON starts
+  getting edited this way.
 
 ## Site copy discipline
 
@@ -175,8 +191,10 @@ assuming a track is "free").
 
 ## Deliverable format
 
-Every reel gets a spec file at `reel-specs/vance-reel-<name>.md`,
-documenting: sourcing, still-review results (pass/fail per criterion),
-motion prompts used, credits spent, build issues hit and how they were
-fixed, caption timing, visual treatment, and the final delivered Blob
-URL. See the existing files in that directory for the exact format.
+Every reel, for every character, gets a spec file at
+`reel-specs/<character>-reel-<name>.md` (e.g. `vance-reel-ariel-school.md`,
+`hobbs-reel-<name>.md`), documenting: sourcing, still-review results
+(pass/fail per criterion), motion prompts used, credits spent, build
+issues hit and how they were fixed, caption timing, visual treatment, and
+the final delivered Blob URL. See the existing `vance-reel-*.md` files in
+that directory for the exact format to follow for any new character.

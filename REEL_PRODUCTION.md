@@ -129,6 +129,47 @@ just because the last incident happened to involve someone else.
   caption style: black text, `white@0.92` box, `boxborderw=28`, positioned
   at `y=h*0.08`.
 
+## Before building anything: check the brief against the established series, not just against itself
+
+A brief can be internally detailed and consistent and still be
+*incomplete* relative to what every other reel in the series has. Before
+building, explicitly check the brief against these house defaults and
+flag any omission or deviation before starting, rather than assuming
+"the brief didn't mention it" means "skip it":
+- **Music.** Every reel gets a bed track under it by default. A brief
+  saying "no music sting" / "no whoosh" / "no sci-fi sound design" means
+  no dramatic musical *stinger* — it does not mean no music at all. If a
+  brief seems to call for total silence, confirm that's really intended
+  before building silent, since it breaks from every other reel.
+- **Portrait beat + end-card CTA.** Every reel ends on the character
+  portrait + the four-line end card (see below). If a brief's own
+  assembly/timing section doesn't mention these, that's very likely an
+  omission in the brief, not an instruction to skip them — flag it before
+  building rather than building exactly what's written and finding out
+  after delivery that the ending was missing.
+- **Narrative continuity, not just technical compliance.** A reel can
+  pass every technical check (resolution, motion-from-frame-one, no
+  faces) and still fail to tell the actual story if the caption beats
+  don't connect to each other. Before finalizing captions, read them
+  straight through as a caller would and check: does each beat follow
+  from the one before it, and does the reel actually depict/state the
+  case's central dramatic moment (not just its before-and-after)?
+- **Verify audio changes the same way video changes get verified.** After
+  any audio edit, pull an actual `mean_volume`/`max_volume` reading via
+  `ffmpeg -af volumedetect -f null -`. "Signal is technically present" is
+  not the same as "level is right" — a source track's own quiet
+  intro/build-up section can read as non-silent on a meter and still be
+  imperceptible as music in the mix. Sanity-check a source track's
+  loudness profile (`volumedetect` on different sections of the raw file)
+  before assuming one flat `volume=` multiplier is correct. If mixing
+  two audio sources with `amix`, its default `normalize=1` halves each
+  input's effective loudness — pass `normalize=0` and control levels
+  explicitly instead.
+
+See `reel-specs/INCIDENT-travis-walton.md` for the specific incident that
+produced this section — five rebuild-and-reupload cycles on one reel
+because these checks weren't done up front.
+
 ## House end card (shared structure, per-character content)
 
 Every character's end card follows the same four-line pattern: a gold

@@ -115,6 +115,15 @@ just because the last incident happened to involve someone else.
   is verified correct in isolation. Don't debug this forever: render each
   segment to its own intermediate file first, then do a simple final
   concat. More reliable, and much easier to debug when it breaks.
+- **Verify concat segments by frame count, not just `ffprobe` duration**,
+  whenever segments come from different sources (a Runway clip vs. a
+  locally-rendered freeze-frame, say). A Runway clip can come back at a
+  different native frame rate (e.g. 24fps) than a locally-rendered segment
+  (e.g. 25fps) — the concat's reported `duration` can still look plausible
+  even when the frame rates don't match, which is exactly the setup for
+  caption/video desync later. Check `ffprobe -count_frames -show_entries
+  stream=nb_read_frames,r_frame_rate` on every segment before concatenating,
+  and force a consistent `fps=` on any segment that doesn't match.
 - **Long captions + an attribution line.** Check how many lines a caption
   actually wraps to before placing an attribution box under it — a long
   caption can wrap to 4-6 lines and the attribution box will land on top

@@ -179,6 +179,7 @@
     .section-title { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 3vw, 2.6rem); font-weight: 700; text-align: center; color: #f0ebe0; margin-bottom: 0.75rem; line-height: 1.2; }
     .section-body { text-align: center; max-width: 550px; margin: 0 auto 3rem; font-size: 0.92rem; line-height: 1.8; color: rgba(240,235,224,0.5); }
     .gold-line { width: 48px; height: 2px; background: var(--gold); margin: 0 auto 2.5rem; }
+    #characters .section-title { color: #7a9b96; }
 
     /* CHARACTER GRID */
     .char-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(310px, 1fr)); gap: 1.25rem; max-width: 1300px; margin: 0 auto; }
@@ -187,6 +188,7 @@
     .char-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--gold); transform: scaleX(0); transition: transform 0.3s; z-index: 1; }
     .char-card:hover { transform: translateY(-3px); border-color: rgba(201,149,42,0.3); }
     .char-card:hover::before { transform: scaleX(1); }
+    .card-caption { display: block; background: none; color: #f5f0e8; font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 900; letter-spacing: 0.04em; text-transform: uppercase; text-align: center; padding: 0.75rem 0.5rem 0; white-space: nowrap; }
     .card-portrait {
       width: 100%; aspect-ratio: 1 / 1;
       background: linear-gradient(135deg, #1a1208 0%, #0d0a06 100%);
@@ -401,7 +403,7 @@
 
 <!-- RESCUE MISSION BANNER -->
 <div style="display:flex; justify-content:center; padding:1.5rem 2rem; background:#0d0a06;">
-  <div style="display:flex; align-items:center; gap:2rem; padding:2rem 2rem; border:2px solid #C9952A; background:#1a0f02; max-width:800px; width:100%;">
+  <div style="display:flex; align-items:center; gap:2rem; padding:2rem 2rem; border:2px solid #7a9b96; background:#1a0f02; max-width:800px; width:100%;">
     <img src="images/dogbowl.jpg" style="height:120px;width:120px;object-fit:cover;border-radius:8px;">
     <div style="flex:1; text-align:center;">
       <p style="font-size:0.6rem; letter-spacing:0.25em; text-transform:uppercase; color:#C9952A; margin-bottom:0.3rem;">🐾 Dog Rescue Mission</p>
@@ -422,6 +424,7 @@
 
       <a href="aela.html" class="card-anchor">
       <div class="char-card fade-in">
+        <div class="card-caption">COSMIC CONTACT</div>
         <div class="card-portrait"><img src="images/aela.jpeg" alt="Aela" style="width:100%;height:100%;object-fit:cover;object-position:center;display:block;"></div>
         <div class="card-body">
           <div class="card-num">Character 01</div>
@@ -436,6 +439,7 @@
 
       <a href="oswald.html" class="card-anchor">
       <div class="char-card fade-in">
+        <div class="card-caption">JFK THEORIST</div>
         <div class="card-portrait"><img src="images/walter-hobbs.jpeg" alt="Walter Hobbs" style="width:100%;height:100%;object-fit:cover;object-position:center;display:block;"></div>
         <div class="card-body">
           <div class="card-num">Character 02</div>
@@ -450,6 +454,7 @@
 
       <a href="davinci.html" class="card-anchor">
       <div class="char-card fade-in">
+        <div class="card-caption">THINKER</div>
         <div class="card-portrait"><img src="images/davinci.jpeg" alt="Leonardo da Vinci" style="width:100%;height:100%;object-fit:cover;object-position:center;display:block;"></div>
         <div class="card-body">
           <div class="card-num">Character 03</div>
@@ -464,6 +469,7 @@
 
       <a href="vincent.html" class="card-anchor">
       <div class="char-card fade-in">
+        <div class="card-caption">ARTIST</div>
         <div class="card-portrait"><img src="images/vincent.jpeg" alt="Vincent van Gogh" style="width:100%;height:100%;object-fit:cover;object-position:center;display:block;"></div>
         <div class="card-body">
           <div class="card-num">Character 04</div>
@@ -478,6 +484,7 @@
 
       <a href="watson.html" class="card-anchor">
       <div class="char-card fade-in">
+        <div class="card-caption">SLEUTH</div>
         <div class="card-portrait"><img src="images/watson.jpeg" alt="Dr. John H. Watson" style="width:100%;height:100%;object-fit:cover;object-position:center;display:block;"></div>
         <div class="card-body">
           <div class="card-num">Character 05</div>
@@ -492,6 +499,7 @@
 
       <a href="rocca.html" class="card-anchor">
       <div class="char-card fade-in">
+        <div class="card-caption">EXORCIST</div>
         <div class="card-portrait"><img src="images/rocca.jpeg" alt="Father Elia Rocca" style="width:100%;height:100%;object-fit:cover;object-position:center;display:block;"></div>
         <div class="card-body">
           <div class="card-num">Character 06</div>
@@ -506,6 +514,7 @@
 
       <a href="celeste.html" class="card-anchor">
       <div class="char-card fade-in">
+        <div class="card-caption">VAMPIRE</div>
         <div class="card-portrait"><img src="images/celeste.jpeg" alt="Céleste" style="width:100%;height:100%;object-fit:cover;object-position:center;display:block;"></div>
         <div class="card-body">
           <div class="card-num">Character 07</div>
@@ -520,6 +529,7 @@
 
       <a href="nostradamus.html" class="card-anchor">
       <div class="char-card fade-in">
+        <div class="card-caption">SOOTHSAYER</div>
         <div class="card-portrait"><img src="images/nostradamus.jpeg" alt="Nostradamus" style="width:100%;height:100%;object-fit:cover;object-position:center;display:block;"></div>
         <div class="card-body">
           <div class="card-num">Character 08</div>
@@ -534,6 +544,7 @@
 
       <a href="evangeline.html" class="card-anchor">
       <div class="char-card fade-in">
+        <div class="card-caption">ASTROLOGER</div>
         <div class="card-portrait"><img src="images/evangeline.jpeg" alt="Evangeline Adams" style="width:100%;height:100%;object-fit:cover;object-position:center;display:block;"></div>
         <div class="card-body">
           <div class="card-num">Character 09</div>
@@ -548,6 +559,7 @@
 
       <a href="houdini.html" class="card-anchor">
       <div class="char-card fade-in">
+        <div class="card-caption">ESCAPIST</div>
         <div class="card-portrait"><img src="images/houdini.jpeg" alt="Harry Houdini" style="width:100%;height:100%;object-fit:cover;object-position:center;display:block;"></div>
         <div class="card-body">
           <div class="card-num">Character 10</div>
@@ -562,6 +574,7 @@
 
       <a href="tesla.html" class="card-anchor">
       <div class="char-card fade-in">
+        <div class="card-caption">INVENTOR</div>
         <div class="card-portrait"><img src="images/tesla.jpeg" alt="Nikola Tesla" style="width:100%;height:100%;object-fit:cover;object-position:center;display:block;"></div>
         <div class="card-body">
           <div class="card-num">Character 11</div>
@@ -576,6 +589,7 @@
 
       <a href="kadevoss.html" class="card-anchor">
       <div class="char-card fade-in">
+        <div class="card-caption">UFOLOGIST</div>
         <div class="card-portrait"><img src="images/vance.jpeg" alt="Arthur Vance" style="width:100%;height:100%;object-fit:cover;object-position:center;display:block;"></div>
         <div class="card-body">
           <div class="card-num">Character 12</div>
@@ -637,7 +651,7 @@
     var ps=chart.series.push(new am4maps.MapPolygonSeries());
     ps.useGeodata=true;
     ps.mapPolygons.template.fill=am4core.color("#1c1710");
-    ps.mapPolygons.template.stroke=am4core.color("#c9a84c");
+    ps.mapPolygons.template.stroke=am4core.color("#7a9b96");
     ps.mapPolygons.template.strokeWidth=0.5;
     var is=chart.series.push(new am4maps.MapImageSeries());
     var it=is.mapImages.template;

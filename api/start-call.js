@@ -328,7 +328,7 @@ module.exports = async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(204).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
-  const { name: nameRaw, phoneNumber, birthDate, birthTime, birthCity, language, paymentIntentId, stripeCustomerId, giftCode } = req.body || {};
+  const { name: nameRaw, phoneNumber, birthDate, birthTime, birthCity, birthCountry, language, paymentIntentId, stripeCustomerId, giftCode } = req.body || {};
   const name = (nameRaw || '').trim();
   console.log('birthTime received:', birthTime, 'type:', typeof birthTime, 'length:', birthTime?.length);
   if (!name || !phoneNumber || !birthDate || !birthCity) {
@@ -422,9 +422,13 @@ module.exports = async function handler(req, res) {
     assistantId: VAPI_ASSISTANT_ID,
     assistantOverrides: {
       variableValues: {
-        callerName: name,
-        natalChart: natalSummary,
-        language:   lang,
+        callerName:    name,
+        natalChart:    natalSummary,
+        birthDate:     birthDate,
+        birthTime:     birthTime || '',
+        birthCity:     birthCity,
+        birthCountry:  birthCountry,
+        language:      lang,
       },
     },
     metadata: resolvedGiftCode ? { giftCode: resolvedGiftCode, language: lang } :

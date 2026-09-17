@@ -88,6 +88,25 @@ just because the last incident happened to involve someone else.
   source, or beam not already present in the source image, at any point
   from the first frame to the last."
 
+## Caption placement — check against the actual frame, not a fixed default
+
+- The house default caption position (`y=h*0.08`, top of frame) is only
+  safe when the top of frame is empty (sky, background). It is NOT safe
+  by default — check where each beat's subject(s) actually sit in frame
+  before burning in the caption, and move the box to a clear area (often
+  the bottom, over grass/floor/background) when a face falls in the
+  default zone.
+- This was missed on the Owatonna reel's beat 2 (trance): a standing
+  second woman's head sat right where the top caption box landed, and
+  her face was completely hidden behind it in every frame of that clip.
+  The other 3 beats in the same reel were fine because their subjects'
+  faces sat lower in frame — this is a per-beat check, not a
+  set-once-for-the-whole-reel setting.
+- Verify by rendering one captioned frame per beat (not just the raw
+  still) and looking at it — the raw pre-caption still passing the
+  "no real-person likeness" and "no watermark" checks does not confirm
+  the caption itself won't cover a face once burned in.
+
 ## Post-generation verification — every clip, every time
 
 - Full-clip check: start, middle, **and** end frames, minimum. A clip can
@@ -188,6 +207,22 @@ then the rescue-dog line in black. Block position: `(H - totalHeight) / 2
 - 70` (shifted up from dead center) — reuse this positioning math
 regardless of character. Only the specific wording of the kicker/name
 changes per character.
+
+**Music continues through the CTA/end card, always — never cut to
+silence before it.** This is a hard standing rule, not a per-reel
+judgment call: it was the practice on every reel before 2026-09-14, one
+session that day built a custom single-card CTA and cut the music to
+silence under it (reasoning: the card should "read as a stop"), and
+that silent-CTA choice got carried into two more reels before the user
+caught it and corrected it — "BEFORE TODAY, ALL THE REELS CONTINUED
+MUSIC OVER THE CTA. IT IS MUCH BETTER THAT WAY. A NEW CLAUDE SESSION
+SHOULD NOT CHANGE THAT." All three affected reels were rebuilt with the
+bed track running continuously through the end card, fading out only in
+the final ~1s of the whole video, not at the content/end-card boundary.
+If a brief's own visual language ("hard cut," "static, no motion," "stop
+not a continuation") seems to imply cutting the audio too, it doesn't —
+that language is about the *picture* only. Apply this on every future
+reel, any character, any end-card style.
 
 ## Music
 

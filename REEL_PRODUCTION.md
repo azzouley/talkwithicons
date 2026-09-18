@@ -106,6 +106,19 @@ just because the last incident happened to involve someone else.
   still) and looking at it — the raw pre-caption still passing the
   "no real-person likeness" and "no watermark" checks does not confirm
   the caption itself won't cover a face once burned in.
+- **The bar is real visual clearance, not "technically not touching."**
+  Caught on Owatonna beats 3 and 4 (2026-09-18, post-delivery): the top
+  caption box's bottom edge sat right at/against the subject's hairline
+  in full-body top-caption compositions — not a literal 100% overlap
+  like beat 2's original bug, but close enough to read as the caption
+  crowding/blocking the character on a normal viewing, and Ruby called
+  it out directly ("at least half of reel have the caption blocking
+  main part of character images"). An earlier automated audit had
+  passed this reel as "clean" using a stricter go/no-go overlap check
+  and missed it. Fix used: shorten the caption text and reduce fontsize
+  (~0.82x) to shrink the box, creating a real gap — not just nudging
+  position. When checking clearance, ask "would a normal viewer call
+  this crowded," not just "do the bounding boxes intersect."
 
 ## Post-generation verification — every clip, every time
 

@@ -89,6 +89,19 @@ spec).
 - Confirmed post-build: 720×1280, SAR 1:1, 24fps, faststart applied,
   `volumedetect` mean -16.7dB / max -2.1dB (present and unclipped, not
   silent).
+- **Second defect, caught 2026-09-18 (post-delivery, by Ruby directly):**
+  beats 3 (visitor) and 4 (jello) both had their top caption box's
+  bottom edge landing right at/against the subject's hairline — not a
+  full overlap like beat 2's original bug, but close enough to read as
+  the caption crowding/blocking the character. An automated audit had
+  passed this reel as "clean" using too narrow a check (literal overlap
+  only). Fixed by shortening both captions and reducing fontsize to
+  ~0.82x (shrinking the box, not repositioning — both beats are
+  full-body top-to-bottom compositions with no real clearance at the
+  bottom either). Re-verified across each clip's full duration and
+  again from the final concatenated file before re-uploading to the
+  same URL. See `REEL_PRODUCTION.md`'s Caption placement section for
+  the corrected standard this established.
 
 ## AUDIO
 Music: mystery-tension.mp3 (house library), continuous through the

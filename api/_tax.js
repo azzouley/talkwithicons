@@ -5,10 +5,18 @@
 // call-ended.js, and gift purchases in gift-purchase.js) routes through
 // calculateTax() before the PaymentIntent is created, so the charged
 // amount always includes correctly-calculated tax rather than the bare
-// pre-tax price. TAX_CODE matches the account's own Tax Settings default
-// (txcd_10000000, confirmed live via GET /v1/tax/settings on 2026-09-12)
-// — not guessed here, just reused, per instruction.
-const TAX_CODE = 'txcd_10000000';
+// pre-tax price. TAX_CODE is passed explicitly on every line item, so
+// it's this constant — not the account's Tax Settings default — that
+// actually determines every calculation's result.
+//
+// Was txcd_10000000 ("General - Electronically Supplied Services")
+// through 2026-09-21 — Stripe's own docs flag that code as not meant for
+// US sales and it doesn't carry state-level taxability distinctions,
+// which is why it came back exempt/$0 in every NY test. Corrected to
+// txcd_10105001 ("Artificial Intelligence as a Service (AIaaS) - Cloud
+// Based - Personal Use") on 2026-09-21 — matches this business exactly:
+// cloud-hosted, no downloadable component, consumer/personal use.
+const TAX_CODE = 'txcd_10105001';
 
 // This app only ever collects a bare ZIP (see the `f-zip` field on every
 // call/gift form) — no full address, no country selector. Stripe Tax

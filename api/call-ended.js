@@ -5,6 +5,7 @@
 
 const { sql, calcPerCallDonationCents, updateDonationLedger, getStripeSecretKey } = require('./_db');
 const { logCall } = require('./_log-call');
+const { calculateTax } = require('./_tax');
 
 const ASSISTANT_NAMES = {
   'b98cec95-47a4-455d-92c8-3a08aacb556d': 'Long John Silver',
@@ -142,8 +143,24 @@ module.exports = async function handler(req, res) {
         // charge regardless (the hold's cancel status doesn't block a new charge).
         await cancelHoldIfOpen(stripe, paymentIntentId);
 
+        // Tax: the customer's ZIP was collected client-side at the original
+        // $1 auth-hold's confirmation (see create-payment-intent.js's caller)
+        // and attached to the saved PaymentMethod's billing_details — this is
+        // an off_session server-initiated charge with no live customer
+        // session, so that saved PaymentMethod is the only source of location
+        // info available here. See api/_tax.js for the fallback if it's
+        // missing or malformed.
+        let postalCode = '';
+        try {
+          const pm = await stripe.paymentMethods.retrieve(paymentMethodId);
+          postalCode = pm.billing_details?.address?.postal_code || '';
+        } catch (pmErr) {
+          console.error('PaymentMethod retrieve error (tax lookup):', pmErr.message, { paymentMethodId });
+        }
+        const tax = await calculateTax(stripe, chargeAmount, postalCode, `call-${durationMins}min`);
+
         const charge = await stripe.paymentIntents.create({
-          amount:         chargeAmount,
+          amount:         tax.totalCents,
           currency:       'usd',
           customer:       stripeCustomerId || undefined,
           payment_method: paymentMethodId,
@@ -155,13 +172,20 @@ module.exports = async function handler(req, res) {
             callerName,
             durationMins:  String(durationMins),
             character:     characterName,
+            ...tax.metadata,
           },
         });
         converted    = true;
-        revenueCents = chargeAmount; // only counted as revenue once the charge actually succeeded
+        // Ledger/analytics revenue stays the pre-tax service amount — tax
+        // collected is a pass-through liability, not revenue. The actual
+        // amount charged to the card (tax.totalCents, includes tax when
+        // calculated) lives on the PaymentIntent itself via charge.amount
+        // and the tax_* metadata above, so it's fully auditable from Stripe.
+        revenueCents = chargeAmount;
 
         console.log(
-          `Stripe: charged $${(chargeAmount / 100).toFixed(2)} — ${charge.id}` +
+          `Stripe: charged $${(tax.totalCents / 100).toFixed(2)}` +
+          ` (base $${(chargeAmount / 100).toFixed(2)}${tax.ok ? ` + tax $${(tax.metadata.tax_amount_cents / 100).toFixed(2)}` : ', tax not calculated: ' + tax.metadata.tax_status_reason}) — ${charge.id}` +
           ` | ${durationMins} min | ${characterName} | ${callerPhone}`
         );
 

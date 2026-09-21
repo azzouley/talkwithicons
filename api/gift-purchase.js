@@ -3,6 +3,7 @@
 // Frontend confirms with Stripe Elements, then calls /api/gift-confirm.
 
 const { GIFT_PACKAGES, getStripeSecretKey } = require('./_db');
+const { calculateTax } = require('./_tax');
 
 async function getStripe() {
   const key = await getStripeSecretKey();
@@ -17,7 +18,7 @@ module.exports = async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(204).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'POST required' });
 
-  const { packageSlug, gifterName, gifterEmail, recipientEmail } = req.body || {};
+  const { packageSlug, gifterName, gifterEmail, recipientEmail, zip } = req.body || {};
 
   if (!packageSlug) return res.status(400).json({ error: 'packageSlug is required' });
 
@@ -28,8 +29,17 @@ module.exports = async function handler(req, res) {
 
   try {
     const stripe = await getStripe();
+    // Unlike the call flow, there's no saved PaymentMethod to fall back on
+    // yet — this is the first and only PaymentIntent for a gift purchase,
+    // and per the task's own requirement (tax must be baked into the
+    // charged amount, not added after the fact) the ZIP has to arrive in
+    // this same request, before Stripe confirmation. gift.html now sends
+    // it here in addition to attaching it to billing_details at confirm
+    // time, so it's on the PaymentMethod too for consistency/refund lookups.
+    const tax = await calculateTax(stripe, pkg.priceCents, zip, `gift-${packageSlug}`);
+
     const pi = await stripe.paymentIntents.create({
-      amount:        pkg.priceCents,
+      amount:        tax.totalCents,
       currency:      'usd',
       description:   `TalkWithIcons Gift — ${pkg.label}`,
       receipt_email: gifterEmail || undefined,
@@ -40,6 +50,7 @@ module.exports = async function handler(req, res) {
         gifterName,
         gifterEmail:    gifterEmail    || '',
         recipientEmail: recipientEmail || '',
+        ...tax.metadata,
       },
     });
 

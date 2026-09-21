@@ -258,10 +258,14 @@
 
       try {
         // Step 1: create PaymentIntent
+        // zip is read here (same field used again at confirm below) so the
+        // backend can calculate tax and set the correct amount before the
+        // PaymentIntent exists — it has to be created with the final
+        // tax-inclusive amount, not patched after the fact.
         const purchaseRes = await fetch('/api/gift-purchase', {
           method:  'POST',
           headers: { 'Content-Type': 'application/json' },
-          body:    JSON.stringify({ packageSlug: selectedSlug, gifterName, gifterEmail, recipientEmail }),
+          body:    JSON.stringify({ packageSlug: selectedSlug, gifterName, gifterEmail, recipientEmail, zip: document.getElementById('f-zip').value.trim() }),
         });
         const purchaseData = await purchaseRes.json();
         if (!purchaseRes.ok) {

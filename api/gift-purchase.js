@@ -38,11 +38,16 @@ module.exports = async function handler(req, res) {
     // time, so it's on the PaymentMethod too for consistency/refund lookups.
     const tax = await calculateTax(stripe, pkg.priceCents, zip, `gift-${packageSlug}`);
 
+    // payment_method_types: this frontend only ever collects a raw card via
+    // Stripe Elements (confirmCardPayment) — without this, the PaymentIntent
+    // defaults to automatic_payment_methods, which requires a return_url at
+    // confirm time even though this flow never redirects anywhere.
     const pi = await stripe.paymentIntents.create({
-      amount:        tax.totalCents,
-      currency:      'usd',
-      description:   `TalkWithIcons Gift — ${pkg.label}`,
-      receipt_email: gifterEmail || undefined,
+      amount:               tax.totalCents,
+      currency:             'usd',
+      payment_method_types: ['card'],
+      description:          `TalkWithIcons Gift — ${pkg.label}`,
+      receipt_email:        gifterEmail || undefined,
       metadata: {
         product:        'gift',
         packageSlug,

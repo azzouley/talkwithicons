@@ -38,12 +38,20 @@ module.exports = async function handler(req, res) {
     // $1 auth hold — captured only if the call is paid; cancelled for free calls.
     // setup_future_usage: 'off_session' saves the PM to the Customer after confirmation
     // so call-ended.js can charge the correct amount without user interaction.
+    // payment_method_types: this frontend only ever collects a raw card via
+    // Stripe Elements (confirmCardPayment, not the Payment Element) — without
+    // this, the PaymentIntent defaults to automatic_payment_methods, which
+    // can include redirect-based methods and makes Stripe require a
+    // return_url at confirm time even though this flow never redirects
+    // anywhere. Restricting to card here removes that requirement entirely
+    // instead of adding an unused return_url/landing page.
     const paymentIntent = await stripe.paymentIntents.create({
       amount: 100,
       currency: 'usd',
       customer: customer.id,
       capture_method: 'manual',
       setup_future_usage: 'off_session',
+      payment_method_types: ['card'],
       description: `TalkWithIcons — ${character} call auth`,
       metadata: { firstName, phoneNumber, character },
     });

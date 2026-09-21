@@ -160,12 +160,13 @@ module.exports = async function handler(req, res) {
         const tax = await calculateTax(stripe, chargeAmount, postalCode, `call-${durationMins}min`);
 
         const charge = await stripe.paymentIntents.create({
-          amount:         tax.totalCents,
-          currency:       'usd',
-          customer:       stripeCustomerId || undefined,
-          payment_method: paymentMethodId,
-          confirm:        true,
-          off_session:    true,
+          amount:               tax.totalCents,
+          currency:             'usd',
+          customer:             stripeCustomerId || undefined,
+          payment_method:       paymentMethodId,
+          payment_method_types: ['card'],
+          confirm:              true,
+          off_session:          true,
           description:    `TalkWithIcons — ${characterName} (${durationMins} min)`,
           metadata:       {
             callerPhone:   callerPhone || '',

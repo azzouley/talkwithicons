@@ -1,0 +1,642 @@
+<title>Reel Calendar</title>
+<meta name="description" content="22-reel Instagram posting schedule for TalkWithIcons — daily through Oct 6, then Mon/Wed/Fri via Buffer until the backlog runs out Oct 23. Every reel opens straight from a phone.">
+<style>
+  :root {
+    --dark: #0d0b08;
+    --dark2: #14110a;
+    --dark3: #1c1710;
+    --line: rgba(201,168,76,0.16);
+    --gold: #c9a84c;
+    --gold-light: #e8c96b;
+    --warm-white: #f2ece0;
+    --muted: #a99b7f;
+    --mystery: #9060c0;
+    --good: #6dbf8a;
+
+    --c-hobbs: #4fc7d6;
+    --c-houdini: #e8c96b;
+    --c-tesla: #7fb3ff;
+    --c-vance: #b085e0;
+    --c-vincent: #e0a94f;
+  }
+  @media (prefers-color-scheme: light) {
+    :root:not([data-theme="dark"]) {
+      --dark: #faf7f0;
+      --dark2: #ffffff;
+      --dark3: #f0ead9;
+      --line: rgba(154,120,40,0.22);
+      --gold: #9c7a1e;
+      --gold-light: #7a5f16;
+      --warm-white: #221c10;
+      --muted: #6b5f45;
+      --mystery: #6b3fa0;
+      --good: #157a45;
+      --c-hobbs: #0f7c8c;
+      --c-houdini: #8a6a12;
+      --c-tesla: #2a5fc7;
+      --c-vance: #6b3fa0;
+      --c-vincent: #9a6a10;
+    }
+  }
+  :root[data-theme="dark"] {
+    --dark: #0d0b08; --dark2: #14110a; --dark3: #1c1710;
+    --line: rgba(201,168,76,0.16); --gold: #c9a84c; --gold-light: #e8c96b;
+    --warm-white: #f2ece0; --muted: #a99b7f; --mystery: #9060c0; --good: #6dbf8a;
+    --c-hobbs: #4fc7d6; --c-houdini: #e8c96b; --c-tesla: #7fb3ff; --c-vance: #b085e0; --c-vincent: #e0a94f;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    background: var(--dark);
+    color: var(--warm-white);
+    font-family: 'Crimson Pro', Georgia, serif;
+    font-size: 17px;
+    line-height: 1.5;
+    padding: 40px 16px 64px;
+  }
+  .wrap { max-width: 760px; margin: 0 auto; }
+
+  h1 {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-weight: 900;
+    font-size: clamp(2rem, 6vw, 2.8rem);
+    letter-spacing: -0.01em;
+    margin: 0 0 6px;
+    color: var(--warm-white);
+  }
+  .eyebrow {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--mystery);
+    margin-bottom: 14px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .eyebrow::before { content: ''; width: 26px; height: 1px; background: var(--mystery); opacity: 0.6; }
+
+  .lede {
+    color: var(--muted);
+    font-size: 1.02rem;
+    max-width: 60ch;
+    margin: 0 0 10px;
+  }
+  .lede.small {
+    font-size: 0.88rem;
+    margin: 0 0 28px;
+  }
+  .lede.small b { color: var(--good); }
+
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+    margin-bottom: 34px;
+  }
+  .stat {
+    background: var(--dark2);
+    padding: 16px 18px;
+  }
+  .stat .n {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-weight: 900;
+    font-size: 1.7rem;
+    color: var(--gold-light);
+    line-height: 1;
+    margin-bottom: 6px;
+    font-variant-numeric: tabular-nums;
+  }
+  .stat .l {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.64rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .phase-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin: 36px 0 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .phase-label span:last-child { color: var(--muted); letter-spacing: 0.05em; }
+
+  ol.cal { list-style: none; margin: 0; padding: 0; }
+  .day {
+    display: grid;
+    grid-template-columns: 84px 4px 1fr;
+    gap: 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .day:last-child { border-bottom: none; }
+  .day .when {
+    padding: 14px 10px 14px 0;
+    font-family: 'Space Mono', monospace;
+  }
+  .day .when .date { font-size: 0.82rem; color: var(--warm-white); }
+  .day .when .dow { font-size: 0.66rem; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; }
+  .day .accent { background: var(--bar, var(--gold)); }
+  .day .content { padding: 14px 0 14px 16px; }
+
+  .row-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .day .who {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.66rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--bar, var(--gold));
+    margin-bottom: 3px;
+  }
+  .day .title {
+    font-size: 1.08rem;
+    font-weight: 600;
+    color: var(--warm-white);
+  }
+  .day .note {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--gold-light);
+    margin-top: 4px;
+    letter-spacing: 0.02em;
+  }
+
+  .open-btn {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--dark);
+    background: var(--bar, var(--gold));
+    padding: 7px 12px;
+    border-radius: 3px;
+    white-space: nowrap;
+  }
+  .open-btn:active { opacity: 0.8; }
+
+  .caption-block {
+    margin-top: 12px;
+    padding: 12px 14px;
+    background: var(--dark3);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+  }
+  .caption-block .cap-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+  }
+  .caption-block p {
+    margin: 0;
+    font-size: 0.94rem;
+    color: var(--warm-white);
+    white-space: pre-wrap;
+    line-height: 1.55;
+  }
+  .copy-btn {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.64rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--gold-light);
+    background: transparent;
+    border: 1px solid var(--line);
+    padding: 5px 10px;
+    border-radius: 3px;
+    cursor: pointer;
+    flex: 0 0 auto;
+  }
+  .copy-btn:active { opacity: 0.7; }
+  .copy-btn[data-copied="1"] { color: var(--good); border-color: var(--good); }
+
+  .hobbs   { --bar: var(--c-hobbs); }
+  .houdini { --bar: var(--c-houdini); }
+  .tesla   { --bar: var(--c-tesla); }
+  .vance   { --bar: var(--c-vance); }
+  .vincent { --bar: var(--c-vincent); }
+
+  .legend {
+    display: flex; flex-wrap: wrap; gap: 14px 20px;
+    margin-top: 34px; padding-top: 18px; border-top: 1px solid var(--line);
+    font-family: 'Space Mono', monospace; font-size: 0.72rem; color: var(--muted);
+  }
+  .legend .item { display: flex; align-items: center; gap: 7px; }
+  .legend .sw { width: 10px; height: 10px; border-radius: 50%; background: var(--sw); }
+
+  .phone-note {
+    margin-top: 40px;
+    padding: 18px 20px;
+    background: var(--dark2);
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--gold);
+  }
+  .phone-note h2 {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 1.15rem;
+    margin: 0 0 10px;
+    color: var(--gold-light);
+  }
+  .phone-note ol { margin: 0; padding-left: 20px; color: var(--warm-white); }
+  .phone-note li { margin-bottom: 8px; }
+  .phone-note li:last-child { margin-bottom: 0; }
+</style>
+
+<div class="wrap">
+  <p class="eyebrow">TalkWithIcons — Content Ops</p>
+  <h1>Reel Calendar</h1>
+  <p class="lede">22 finished reels across 5 characters, none posted yet. Daily through Oct&nbsp;6, then three a week once Buffer is connected.</p>
+  <p class="lede small"><b>Every reel below opens straight from your phone</b> — tap "Open" to load or download the video, no PC step required.</p>
+
+  <div class="stats">
+    <div class="stat"><div class="n">22</div><div class="l">reels, 5 characters</div></div>
+    <div class="stat"><div class="n">Sep 23</div><div class="l">first post</div></div>
+    <div class="stat"><div class="n">Oct 7</div><div class="l">connect buffer</div></div>
+    <div class="stat"><div class="n">Oct 23</div><div class="l">backlog runs out</div></div>
+  </div>
+
+  <div class="phase-label"><span>Phase 1 — daily, posted by hand</span><span>Sep 23 – Oct 6</span></div>
+  <ol class="cal">
+    <li class="day hobbs">
+      <div class="when"><div class="date">Sep 23</div><div class="dow">Wed</div></div><div class="accent"></div>
+      <div class="content">
+        <div class="row-top"><div><div class="who">Walter Hobbs</div><div class="title">Umbrella Man</div></div><a class="open-btn" target="_blank" rel="noopener" href="https://5mrqeih32vtf7mev.public.blob.vercel-storage.com/reels/day01-hobbs-umbrella-man.mp4">▶ Open</a></div>
+        <div class="caption-block">
+          <div class="cap-label"><span>Caption</span><button class="copy-btn" onclick="copyCaption(this,'cap-day01')">Copy</button></div>
+          <p id="cap-day01">The sky over Dallas was clear on November 22, 1963. One man in Dealey Plaza opened a black umbrella anyway, and he stood right where the shots began. Researchers have called him the Umbrella Man ever since. A man came forward in 1978 and explained himself to Congress, and the argument went on. Walter Hobbs was fifteen and standing on that grass. Ask him what he thinks.
+
+Talk with Walter at talkwithicons.com. Real conversations feed real rescue dogs.
+
+#JFK #JFKassassination #DealeyPlaza #UmbrellaMan #coldcase #history</p>
+        </div>
+      </div>
+    </li>
+    <li class="day houdini">
+      <div class="when"><div class="date">Sep 24</div><div class="dow">Thu</div></div><div class="accent"></div>
+      <div class="content">
+        <div class="row-top"><div><div class="who">Houdini</div><div class="title">The Vanishing Elephant</div></div><a class="open-btn" target="_blank" rel="noopener" href="https://5mrqeih32vtf7mev.public.blob.vercel-storage.com/reels/day02-houdini-vanishing-elephant.mp4">▶ Open</a></div>
+        <div class="caption-block">
+          <div class="cap-label"><span>Caption</span><button class="copy-btn" onclick="copyCaption(this,'cap-day02')">Copy</button></div>
+          <p id="cap-day02">New York, 1918. Houdini walked a full-grown elephant onto the Hippodrome stage and made it vanish in front of a packed house. People have argued about the method ever since, and he never confirmed it. He's willing to talk about it now.
+
+Call Harry Houdini at talkwithicons.com. Real conversations feed real rescue dogs.
+
+#Houdini #magic #illusion #history #escapeartist</p>
+        </div>
+      </div>
+    </li>
+    <li class="day hobbs">
+      <div class="when"><div class="date">Sep 25</div><div class="dow">Fri</div></div><div class="accent"></div>
+      <div class="content">
+        <div class="row-top"><div><div class="who">Walter Hobbs</div><div class="title">Fifteen</div></div><a class="open-btn" target="_blank" rel="noopener" href="https://5mrqeih32vtf7mev.public.blob.vercel-storage.com/reels/day03-hobbs-fifteen.mp4">▶ Open</a></div>
+        <div class="caption-block">
+          <div class="cap-label"><span>Caption</span><button class="copy-btn" onclick="copyCaption(this,'cap-day03')">Copy</button></div>
+          <p id="cap-day03">He was fifteen and picked a spot on the grass to watch the President go by. Then came the shots. Walter Hobbs has never agreed with anyone about how many he heard. The crowd went home that afternoon, and sixty years later part of him is still standing in Dealey Plaza.
+
+Call Walter at talkwithicons.com. Your conversation with him feeds a rescue dog.
+
+#JFK #JFKassassination #DealeyPlaza #November22 #history</p>
+        </div>
+      </div>
+    </li>
+    <li class="day houdini">
+      <div class="when"><div class="date">Sep 26</div><div class="dow">Sat</div></div><div class="accent"></div>
+      <div class="content">
+        <div class="row-top"><div><div class="who">Houdini</div><div class="title">Rohan</div></div><a class="open-btn" target="_blank" rel="noopener" href="https://5mrqeih32vtf7mev.public.blob.vercel-storage.com/reels/day04-houdini-rohan.mp4">▶ Open</a></div>
+        <div class="caption-block">
+          <div class="cap-label"><span>Caption</span><button class="copy-btn" onclick="copyCaption(this,'cap-day04')">Copy</button></div>
+          <p id="cap-day04">The police lieutenant locked Houdini's wrists and ankles, then locked the two sets to each other so tightly he had to be carried into the cabinet. In under two minutes Houdini walked back out holding every lock, with a joke about the price of scrap metal.
+
+Hear the rest from Houdini at talkwithicons.com. Your call with him feeds a rescue dog.
+
+#Houdini #escapeartist #magic #history</p>
+        </div>
+      </div>
+    </li>
+    <li class="day hobbs">
+      <div class="when"><div class="date">Sep 27</div><div class="dow">Sun</div></div><div class="accent"></div>
+      <div class="content">
+        <div class="row-top"><div><div class="who">Walter Hobbs</div><div class="title">Prayer Man</div></div><a class="open-btn" target="_blank" rel="noopener" href="https://5mrqeih32vtf7mev.public.blob.vercel-storage.com/reels/day05-hobbs-prayer-man.mp4">▶ Open</a></div>
+        <div class="caption-block">
+          <div class="cap-label"><span>Caption</span><button class="copy-btn" onclick="copyCaption(this,'cap-day05')">Copy</button></div>
+          <p id="cap-day05">A news camera kept rolling on Elm Street after the shots. Less than a minute later it caught someone standing in the doorway of the Book Depository. Researchers have called that figure Prayer Man for decades. Was it Oswald? Nobody has proven it either way. Walter Hobbs was a few hundred feet from that doorway, and he has his own opinion.
+
+Ask him at talkwithicons.com. Real conversations feed real rescue dogs.
+
+#JFK #PrayerMan #JFKassassination #DealeyPlaza #unsolved</p>
+        </div>
+      </div>
+    </li>
+    <li class="day vance">
+      <div class="when"><div class="date">Sep 28</div><div class="dow">Mon</div></div><div class="accent"></div>
+      <div class="content">
+        <div class="row-top"><div><div class="who">Arthur Vance</div><div class="title">Ariel School</div></div><a class="open-btn" target="_blank" rel="noopener" href="https://5mrqeih32vtf7mev.public.blob.vercel-storage.com/reels/vance-ariel-draft1.mp4">▶ Open</a></div>
+        <div class="caption-block">
+          <div class="cap-label"><span>Caption</span><button class="copy-btn" onclick="copyCaption(this,'cap-day06')">Copy</button></div>
+          <p id="cap-day06">Recess at the Ariel School in Ruwa, Zimbabwe, September 16, 1994. Sixty-two children described the same thing, many of them before they'd compared notes. When a BBC crew arrived days later, the kids were still shaken and their stories still matched. Arthur Vance has spent fifty years on cases like this one.
+
+Ask him what he makes of it at talkwithicons.com. Real conversations feed real rescue dogs.
+
+#UFO #UAP #ArielSchool #disclosure #unexplained</p>
+        </div>
+      </div>
+    </li>
+    <li class="day hobbs">
+      <div class="when"><div class="date">Sep 29</div><div class="dow">Tue</div></div><div class="accent"></div>
+      <div class="content">
+        <div class="row-top"><div><div class="who">Walter Hobbs</div><div class="title">Window</div></div><a class="open-btn" target="_blank" rel="noopener" href="https://5mrqeih32vtf7mev.public.blob.vercel-storage.com/reels/day07-hobbs-window.mp4">▶ Open</a></div>
+        <div class="caption-block">
+          <div class="cap-label"><span>Caption</span><button class="copy-btn" onclick="copyCaption(this,'cap-day07')">Copy</button></div>
+          <p id="cap-day07">Sixth floor, southeast corner. The official record puts everything at this window. Walter Hobbs spent sixty years on a different question, about what happened among the people standing in the plaza below it. He'll tell you where his research took him.
+
+Talk with Walter at talkwithicons.com. Your call with him feeds a rescue dog.
+
+#JFK #JFKassassination #TexasSchoolBookDepository #DealeyPlaza #history</p>
+        </div>
+      </div>
+    </li>
+    <li class="day houdini">
+      <div class="when"><div class="date">Sep 30</div><div class="dow">Wed</div></div><div class="accent"></div>
+      <div class="content">
+        <div class="row-top"><div><div class="who">Houdini</div><div class="title">Confession</div></div><a class="open-btn" target="_blank" rel="noopener" href="https://5mrqeih32vtf7mev.public.blob.vercel-storage.com/reels/day08-houdini-confession.mp4">▶ Open</a></div>
+        <div class="caption-block">
+          <div class="cap-label"><span>Caption</span><button class="copy-btn" onclick="copyCaption(this,'cap-day08')">Copy</button></div>
+          <p id="cap-day08">After his mother died in 1913, Houdini went looking for her through mediums. No sign came. He spent the rest of his life exposing the frauds, and one woman he caught told him her lies comforted grieving people. He knew exactly what he would have given for a good enough lie of his own.
+
+Talk with Houdini at talkwithicons.com. Real conversations feed real rescue dogs.
+
+#Houdini #spiritualism #seance #history</p>
+        </div>
+      </div>
+    </li>
+    <li class="day hobbs">
+      <div class="when"><div class="date">Oct 1</div><div class="dow">Thu</div></div><div class="accent"></div>
+      <div class="content">
+        <div class="row-top"><div><div class="who">Walter Hobbs</div><div class="title">Babushka</div></div><a class="open-btn" target="_blank" rel="noopener" href="https://5mrqeih32vtf7mev.public.blob.vercel-storage.com/reels/day09-hobbs-babushka.mp4">▶ Open</a></div>
+        <div class="caption-block">
+          <div class="cap-label"><span>Caption</span><button class="copy-btn" onclick="copyCaption(this,'cap-day09')">Copy</button></div>
+          <p id="cap-day09">A woman in a headscarf stood close to the motorcade, holding what looked like a camera. Researchers call her the Babushka Lady. She has never been identified. If she filmed that day, the footage hasn't surfaced in sixty years. Walter Hobbs remembers the crowd she stood in.
+
+Hear what he makes of her at talkwithicons.com. Real conversations feed real rescue dogs.
+
+#JFK #BabushkaLady #JFKassassination #DealeyPlaza #unsolved</p>
+        </div>
+      </div>
+    </li>
+    <li class="day tesla">
+      <div class="when"><div class="date">Oct 2</div><div class="dow">Fri</div></div><div class="accent"></div>
+      <div class="content">
+        <div class="row-top"><div><div class="who">Tesla</div><div class="title">Papers</div></div><a class="open-btn" target="_blank" rel="noopener" href="https://5mrqeih32vtf7mev.public.blob.vercel-storage.com/reels/day10-tesla-papers.mp4">▶ Open</a></div>
+        <div class="caption-block">
+          <div class="cap-label"><span>Caption</span><button class="copy-btn" onclick="copyCaption(this,'tesla-papers-caption')">Copy</button></div>
+          <p id="tesla-papers-caption">Nikola Tesla died alone in a New York hotel room in January 1943. Within hours, the government had moved to take his papers and belongings. His nephew arrived the next morning and suspected someone had already been through them. Some of that material stayed out of public reach for decades. What was in those trunks? He has never said.
+
+Ask Tesla at talkwithicons.com. Your conversation with him feeds a rescue dog.
+
+#Tesla #NikolaTesla #history #inventor #declassified</p>
+        </div>
+      </div>
+    </li>
+    <li class="day vance">
+      <div class="when"><div class="date">Oct 3</div><div class="dow">Sat</div></div><div class="accent"></div>
+      <div class="content">
+        <div class="row-top"><div><div class="who">Arthur Vance</div><div class="title">Villas-Boas</div></div><a class="open-btn" target="_blank" rel="noopener" href="https://5mrqeih32vtf7mev.public.blob.vercel-storage.com/reels/vance-vilasboas-draft1.mp4">▶ Open</a></div>
+        <div class="caption-block">
+          <div class="cap-label"><span>Caption</span><button class="copy-btn" onclick="copyCaption(this,'cap-day11')">Copy</button></div>
+          <p id="cap-day11">October 1957, rural Brazil. Antônio Villas-Boas was ploughing at night to avoid the heat when a light came down over his field. By his account his tractor died and he was taken aboard a craft, where beings drew his blood. He told the same story until he died in 1991. Arthur Vance calls it the case that came before anyone used the word abduction.
+
+Hear Vance on it at talkwithicons.com. Your conversation with him feeds a rescue dog.
+
+#UFO #UAP #abduction #VillasBoas #unexplained</p>
+        </div>
+      </div>
+    </li>
+    <li class="day vincent">
+      <div class="when"><div class="date">Oct 4</div><div class="dow">Sun</div></div><div class="accent"></div>
+      <div class="content">
+        <div class="row-top"><div><div class="who">Vincent van Gogh</div><div class="title">The Night with Gauguin</div></div><a class="open-btn" target="_blank" rel="noopener" href="https://5mrqeih32vtf7mev.public.blob.vercel-storage.com/reels/day12-vincent-gauguin-night.mp4">▶ Open</a></div>
+        <div class="caption-block">
+          <div class="cap-label"><span>Caption</span><button class="copy-btn" onclick="copyCaption(this,'cap-day12')">Copy</button></div>
+          <p id="cap-day12">Arles, December 1888. Vincent van Gogh and Paul Gauguin had shared the Yellow House for two months. On the night of December 23, Gauguin walked out. Vincent could never fully explain what followed, and when it passed, part of his ear was gone.
+
+He'll tell you what he remembers at talkwithicons.com. Your conversation with him feeds a rescue dog.
+
+#VanGogh #VincentVanGogh #Arles #Gauguin #arthistory</p>
+        </div>
+      </div>
+    </li>
+    <li class="day hobbs">
+      <div class="when"><div class="date">Oct 5</div><div class="dow">Mon</div></div><div class="accent"></div>
+      <div class="content">
+        <div class="row-top"><div><div class="who">Walter Hobbs</div><div class="title">I Don't Either</div></div><a class="open-btn" target="_blank" rel="noopener" href="https://5mrqeih32vtf7mev.public.blob.vercel-storage.com/reels/day13-hobbs-i-dont-either.mp4">▶ Open</a></div>
+        <div class="caption-block">
+          <div class="cap-label"><span>Caption</span><button class="copy-btn" onclick="copyCaption(this,'cap-day13')">Copy</button></div>
+          <p id="cap-day13">September 1964. The Warren Report was days from release when Senator Richard Russell, one of the commissioners, called President Johnson and said he didn't believe the single-bullet theory. Johnson's reply is on the tape: "I don't either." That recording stayed out of public view for decades. Russell signed the report.
+
+Ask Walter Hobbs what that call means at talkwithicons.com. Your conversation with him feeds a rescue dog.
+
+#JFK #WarrenCommission #JFKassassination #LBJ #history</p>
+        </div>
+      </div>
+    </li>
+    <li class="day houdini">
+      <div class="when"><div class="date">Oct 6</div><div class="dow">Tue</div></div><div class="accent"></div>
+      <div class="content">
+        <div class="row-top"><div><div class="who">Houdini</div><div class="title">The Code</div></div><a class="open-btn" target="_blank" rel="noopener" href="https://5mrqeih32vtf7mev.public.blob.vercel-storage.com/reels/day14-houdini-the-code.mp4">▶ Open</a></div>
+        <div class="caption-block">
+          <div class="cap-label"><span>Caption</span><button class="copy-btn" onclick="copyCaption(this,'cap-day14')">Copy</button></div>
+          <p id="cap-day14">Harry and Bess Houdini agreed on a secret code that only the two of them knew. Whoever died first would try to send it back through a medium, as real proof from the man who exposed every fake. He died on Halloween, 1926. Bess held a séance on Halloween for ten years, and the code never came.
+
+Ask Houdini about it at talkwithicons.com. Your conversation with him feeds a rescue dog.
+
+#Houdini #seance #Halloween #spiritualism #history</p>
+        </div>
+      </div>
+    </li>
+  </ol>
+
+  <div class="phase-label"><span>Phase 2 — Mon / Wed / Fri via Buffer</span><span>Oct 7 – Oct 23</span></div>
+  <ol class="cal">
+    <li class="day tesla">
+      <div class="when"><div class="date">Oct 7</div><div class="dow">Wed</div></div><div class="accent"></div>
+      <div class="content">
+        <div class="row-top"><div><div class="who">Tesla</div><div class="title">Radio</div><div class="note">earliest date to connect Buffer</div></div><a class="open-btn" target="_blank" rel="noopener" href="https://5mrqeih32vtf7mev.public.blob.vercel-storage.com/reels/day15-tesla-radio.mp4">▶ Open</a></div>
+        <div class="caption-block">
+          <div class="cap-label"><span>Caption</span><button class="copy-btn" onclick="copyCaption(this,'cap-day15')">Copy</button></div>
+          <p id="cap-day15">History books gave Marconi the credit for radio. In June 1943 the U.S. Supreme Court ruled that key Marconi patents had been anticipated by earlier work, some of it Tesla's. Tesla had died broke that January, five months before the decision. So who invented radio?
+
+Put the question to Tesla at talkwithicons.com. Real conversations feed real rescue dogs.
+
+#Tesla #NikolaTesla #radio #Marconi #history</p>
+        </div>
+      </div>
+    </li>
+    <li class="day vance">
+      <div class="when"><div class="date">Oct 9</div><div class="dow">Fri</div></div><div class="accent"></div>
+      <div class="content">
+        <div class="row-top"><div><div class="who">Arthur Vance</div><div class="title">Travis Walton</div></div><a class="open-btn" target="_blank" rel="noopener" href="https://5mrqeih32vtf7mev.public.blob.vercel-storage.com/reels/day16-vance-travis-walton.mp4">▶ Open</a></div>
+        <div class="caption-block">
+          <div class="cap-label"><span>Caption</span><button class="copy-btn" onclick="copyCaption(this,'cap-day16')">Copy</button></div>
+          <p id="cap-day16">Turkey Springs, Arizona — November 5, 1975. Six men had every reason to tell a simpler story about the seventh man who vanished from their crew that night. Fifty years later, none of them have. Arthur Vance has read every page of this file. talkwithicons.com — real conversations feed real rescue dogs.</p>
+        </div>
+      </div>
+    </li>
+    <li class="day vincent">
+      <div class="when"><div class="date">Oct 12</div><div class="dow">Mon</div></div><div class="accent"></div>
+      <div class="content">
+        <div class="row-top"><div><div class="who">Vincent van Gogh</div><div class="title">Halos</div></div><a class="open-btn" target="_blank" rel="noopener" href="https://5mrqeih32vtf7mev.public.blob.vercel-storage.com/reels/day17-vincent-halos.mp4">▶ Open</a></div>
+        <div class="caption-block">
+          <div class="cap-label"><span>Caption</span><button class="copy-btn" onclick="copyCaption(this,'cap-day17')">Copy</button></div>
+          <p id="cap-day17">Vincent van Gogh suffered attacks his doctors could not name. He is said to have licked his brushes, and his paints contained lead. One theory points to lead poisoning, another to migraine aura, and either could ring the world with halos of light. Those swirling skies may be what he actually saw.
+
+Ask Vincent at talkwithicons.com. Real conversations feed real rescue dogs.
+
+#VanGogh #StarryNight #VincentVanGogh #arthistory #art</p>
+        </div>
+      </div>
+    </li>
+    <li class="day hobbs">
+      <div class="when"><div class="date">Oct 14</div><div class="dow">Wed</div></div><div class="accent"></div>
+      <div class="content">
+        <div class="row-top"><div><div class="who">Walter Hobbs</div><div class="title">RFK Ballistics</div></div><a class="open-btn" target="_blank" rel="noopener" href="https://5mrqeih32vtf7mev.public.blob.vercel-storage.com/reels/day18-hobbs-rfk-ballistics.mp4">▶ Open</a></div>
+        <div class="caption-block">
+          <div class="cap-label"><span>Caption</span><button class="copy-btn" onclick="copyCaption(this,'rfk-caption')">Copy</button></div>
+          <p id="rfk-caption">Sirhan Sirhan's revolver held eight rounds. He had no chance to reload.
+
+Researcher Lisa Pease reexamined the police and FBI crime-scene photos and film from that pantry and counted evidence of at least twelve shots fired that night. The doorframes and ceiling panels carrying the extra bullet holes were destroyed by LAPD after the trial — before anyone outside the department could reexamine them.
+
+Some researchers call it the second Dallas.
+
+Walter Hobbs has spent sixty years on the Kennedy assassinations. Ask him what doesn't add up.
+
+talkwithicons.com — real conversations feed real rescue dogs.</p>
+        </div>
+      </div>
+    </li>
+    <li class="day houdini">
+      <div class="when"><div class="date">Oct 16</div><div class="dow">Fri</div></div><div class="accent"></div>
+      <div class="content">
+        <div class="row-top"><div><div class="who">Houdini</div><div class="title">Never Escape</div></div><a class="open-btn" target="_blank" rel="noopener" href="https://5mrqeih32vtf7mev.public.blob.vercel-storage.com/reels/day19-houdini-never-escape.mp4">▶ Open</a></div>
+        <div class="caption-block">
+          <div class="cap-label"><span>Caption</span><button class="copy-btn" onclick="copyCaption(this,'cap-day19')">Copy</button></div>
+          <p id="cap-day19">Straitjackets high above city streets, a locked milk can full of water. Houdini got out of every restraint the police forces of three continents handed him. He planned one more escape for after his death, a code sent back to his wife, and it never arrived.
+
+He's taking calls at talkwithicons.com. Real conversations feed real rescue dogs.
+
+#Houdini #escapeartist #magic #history</p>
+        </div>
+      </div>
+    </li>
+    <li class="day tesla">
+      <div class="when"><div class="date">Oct 19</div><div class="dow">Mon</div></div><div class="accent"></div>
+      <div class="content">
+        <div class="row-top"><div><div class="who">Tesla</div><div class="title">Wardenclyffe</div></div><a class="open-btn" target="_blank" rel="noopener" href="https://5mrqeih32vtf7mev.public.blob.vercel-storage.com/reels/day20-tesla-wardenclyffe.mp4">▶ Open</a></div>
+        <div class="caption-block">
+          <div class="cap-label"><span>Caption</span><button class="copy-btn" onclick="copyCaption(this,'cap-day20')">Copy</button></div>
+          <p id="cap-day20">Tesla began building Wardenclyffe on Long Island in 1901. He meant it to send power and messages through the air, worldwide. J.P. Morgan stopped funding it, and a line often attributed to him asks where you'd put the meter. By 1917 the tower had been torn down for scrap.
+
+Hear Tesla's side at talkwithicons.com. Your call with him feeds a rescue dog.
+
+#Tesla #Wardenclyffe #NikolaTesla #freeenergy #history</p>
+        </div>
+      </div>
+    </li>
+    <li class="day vance">
+      <div class="when"><div class="date">Oct 21</div><div class="dow">Wed</div></div><div class="accent"></div>
+      <div class="content">
+        <div class="row-top"><div><div class="who">Arthur Vance</div><div class="title">Owatonna</div></div><a class="open-btn" target="_blank" rel="noopener" href="https://5mrqeih32vtf7mev.public.blob.vercel-storage.com/reels/vance-owatonna-draft1.mp4">▶ Open</a></div>
+        <div class="caption-block">
+          <div class="cap-label"><span>Caption</span><button class="copy-btn" onclick="copyCaption(this,'cap-day21')">Copy</button></div>
+          <p id="cap-day21">Owatonna, Minnesota, 1966. Two women stood in a field watching lights the locals called little flashers. One dropped low, and one of the women fell to her knees speaking in a flat, metallic voice that wasn't hers. Months later a stranger calling himself Major Richard French came to the door. Offered a bowl of Jell-O, he tried to drink it.
+
+Arthur Vance has the whole file at talkwithicons.com. Real conversations feed real rescue dogs.
+
+#UFO #MenInBlack #UAP #unexplained #Minnesota</p>
+        </div>
+      </div>
+    </li>
+    <li class="day vincent">
+      <div class="when"><div class="date">Oct 23</div><div class="dow">Fri</div></div><div class="accent"></div>
+      <div class="content">
+        <div class="row-top"><div><div class="who">Vincent van Gogh</div><div class="title">Yellow</div><div class="note">backlog runs out here</div></div><a class="open-btn" target="_blank" rel="noopener" href="https://5mrqeih32vtf7mev.public.blob.vercel-storage.com/reels/day22-vincent-yellow.mp4">▶ Open</a></div>
+        <div class="caption-block">
+          <div class="cap-label"><span>Caption</span><button class="copy-btn" onclick="copyCaption(this,'cap-day22')">Copy</button></div>
+          <p id="cap-day22">One theory holds that his doctor treated his seizures with foxglove. Foxglove and absinthe can both tint vision yellow, and yellow took over his canvases, skies included. Was it a choice, or what Vincent van Gogh actually saw?
+
+Talk with Vincent at talkwithicons.com. Your conversation with him feeds a rescue dog.
+
+#VanGogh #VincentVanGogh #Sunflowers #arthistory #art</p>
+        </div>
+      </div>
+    </li>
+  </ol>
+
+  <div class="legend">
+    <div class="item"><span class="sw" style="--sw: var(--c-hobbs)"></span>Walter Hobbs · 7</div>
+    <div class="item"><span class="sw" style="--sw: var(--c-houdini)"></span>Houdini · 5</div>
+    <div class="item"><span class="sw" style="--sw: var(--c-tesla)"></span>Tesla · 3</div>
+    <div class="item"><span class="sw" style="--sw: var(--c-vance)"></span>Arthur Vance · 4</div>
+    <div class="item"><span class="sw" style="--sw: var(--c-vincent)"></span>Vincent van Gogh · 3</div>
+  </div>
+
+  <div class="phone-note">
+    <h2>Posting from a Blob link</h2>
+    <ol>
+      <li>Tap <b>▶ Open</b> on the day's row — the video opens (or starts downloading) right in your phone's browser.</li>
+      <li>Use your browser's download / save-video option to save it to your camera roll.</li>
+      <li>Instagram → + → Reel → pick it from your camera roll → paste the caption if one's provided above (RFK Ballistics), or describe the hook yourself → post.</li>
+    </ol>
+  </div>
+</div>
+
+<script>
+function copyCaption(btn, targetId) {
+  var text = document.getElementById(targetId).innerText;
+  function done(ok) {
+    btn.textContent = ok ? 'Copied' : 'Copy failed';
+    btn.dataset.copied = ok ? '1' : '0';
+    setTimeout(function () { btn.textContent = 'Copy'; btn.removeAttribute('data-copied'); }, 1800);
+  }
+  try {
+    navigator.clipboard.writeText(text).then(function () { done(true); }, function () { done(false); });
+  } catch (e) {
+    try {
+      var ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.focus(); ta.select();
+      var ok = document.execCommand('copy');
+      document.body.removeChild(ta);
+      done(ok);
+    } catch (e2) { done(false); }
+  }
+}
+</script>

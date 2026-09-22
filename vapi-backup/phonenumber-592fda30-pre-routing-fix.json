@@ -1,0 +1,12 @@
+{
+  "id": "592fda30-7a31-49e7-b793-eb1f569a7d9c",
+  "orgId": "9bb16bd5-a5f0-4e9e-8d0b-b742aef266ef",
+  "assistantId": "101718d5-fc95-462c-8ca8-a966aefed7b4",
+  "number": "+14632886610",
+  "createdAt": "2026-07-20T18:50:28.204Z",
+  "updatedAt": "2026-07-22T00:06:26.922Z",
+  "twilioAccountSid": "[REDACTED]",
+  "name": "Friday",
+  "provider": "twilio",
+  "status": "active"
+}

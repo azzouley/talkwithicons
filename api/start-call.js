@@ -460,3 +460,7 @@ module.exports = async function handler(req, res) {
     return res.status(500).json({ error: 'Internal server error' });
   }
 };
+
+// Exposed for scripts/test-call.js, which needs a real natal chart for
+// Evangeline's assistantOverrides without going through the HTTP handler.
+module.exports.buildNatalSummary = buildNatalSummary;

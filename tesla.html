@@ -252,6 +252,7 @@
         <button type="submit" class="btn-call" style="width:100%;cursor:pointer;border:none;">Call Tesla →</button>
       </form>
       <p id="call-msg" style="font-size:0.85rem;margin-bottom:12px;display:none;"></p>
+      <p id="call-followup-msg" style="font-size:0.85rem;margin-bottom:12px;color:var(--warm-white);display:none;">The questions on this page are yours to use at any point during your call, or ask anything of your own.</p>
       <p class="call-rescue">🐾 every paid call triggers at minimum a meal donation for a rescue dog</p>
     </div>
   </div>
@@ -393,6 +394,7 @@ async function handleCall(e) {
   const form    = document.getElementById('call-form');
   const btn     = form.querySelector('button[type="submit"]');
   const msg     = document.getElementById('call-msg');
+  const followup = document.getElementById('call-followup-msg');
   const errDiv  = document.getElementById('card-errors');
   const firstName   = document.getElementById('f-name').value.trim();
   const phoneNumber = document.getElementById('f-phone').value.trim();
@@ -400,6 +402,7 @@ async function handleCall(e) {
   btn.disabled     = true;
   btn.textContent  = 'Authorizing...';
   msg.style.display    = 'none';
+  followup.style.display = 'none';
   errDiv.style.display = 'none';
 
   try {
@@ -441,6 +444,7 @@ async function handleCall(e) {
       msg.textContent   = 'Dialing your phone...';
       msg.style.color   = '#6dbf8a';
       msg.style.display = 'block';
+      followup.style.display = 'block';
       btn.textContent   = 'Call Placed ✓';
       if (callData.callId) pollCallStatus(callData.callId, msg);
     } else {

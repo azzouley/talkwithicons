@@ -1,0 +1,12 @@
+{
+  "id": "f1715de0-2c12-462c-9f5b-5621bdf3e3ce",
+  "orgId": "9bb16bd5-a5f0-4e9e-8d0b-b742aef266ef",
+  "assistantId": "ae3e744a-ebb7-47f8-bfdb-35093f66f4b0",
+  "number": "+19182767181",
+  "createdAt": "2026-07-20T18:50:25.137Z",
+  "updatedAt": "2026-09-22T17:38:31.562Z",
+  "twilioAccountSid": "[REDACTED]",
+  "name": "Evangeline",
+  "provider": "twilio",
+  "status": "active"
+}

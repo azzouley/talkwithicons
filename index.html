@@ -777,10 +777,28 @@
   let mealsTarget = null;
   const counterEl = document.getElementById('meal-counter');
 
-  fetch(window.location.origin + '/api/meals-count')
-    .then(r => r.json())
-    .then(data => { mealsTarget = data.meals || 0; })
-    .catch(() => { mealsTarget = 0; });
+  function fetchMealsCount(isRetry) {
+    return fetch(window.location.origin + '/api/meals-count')
+      .then(r => r.json())
+      .then(data => { mealsTarget = data.meals || 0; })
+      .catch(err => {
+        // One retry before giving up — a transient DB/function cold-start
+        // shouldn't leave the count stuck at zero for the whole pageview.
+        if (!isRetry) return new Promise(r => setTimeout(r, 1500)).then(() => fetchMealsCount(true));
+        console.error('meals-count fetch failed twice:', err.message);
+        mealsTarget = 0;
+      })
+      .then(() => {
+        // Safety net: if the scroll-triggered animation hasn't run by the
+        // time the real count is known (observer never fired, page opened
+        // mid-scroll, etc.), just show the number directly rather than
+        // leaving the counter frozen on its "0" placeholder forever.
+        setTimeout(() => {
+          if (!counted) { counted = true; runCounterAnimation(); }
+        }, 3000);
+      });
+  }
+  fetchMealsCount(false);
 
   function runCounterAnimation() {
     const target = mealsTarget;

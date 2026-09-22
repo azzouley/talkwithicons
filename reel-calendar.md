@@ -42,7 +42,7 @@ open on a phone.
 | 7 | 2026-09-29 | Tue | Walter Hobbs | Window | https://5mrqeih32vtf7mev.public.blob.vercel-storage.com/reels/day07-hobbs-window.mp4 | `vapi-backup-response-limit/hobbs5-final-faded.mp4` | — |
 | 8 | 2026-09-30 | Wed | Houdini | Confession | https://5mrqeih32vtf7mev.public.blob.vercel-storage.com/reels/day08-houdini-confession.mp4 | `vapi-backup-response-limit/houdini3-final-v5.mp4` | — |
 | 9 | 2026-10-01 | Thu | Walter Hobbs | Babushka | https://5mrqeih32vtf7mev.public.blob.vercel-storage.com/reels/day09-hobbs-babushka.mp4 | `vapi-backup-response-limit/hobbs6-final-faded.mp4` | — |
-| 10 | 2026-10-02 | Fri | Tesla | Papers | https://5mrqeih32vtf7mev.public.blob.vercel-storage.com/reels/day10-tesla-papers.mp4 | `vapi-backup-response-limit/tesla1-final-v2.mp4` | — |
+| 10 | 2026-10-02 | Fri | Tesla | Papers | https://5mrqeih32vtf7mev.public.blob.vercel-storage.com/reels/day10-tesla-papers.mp4 | `vapi-backup-response-limit/tesla1-final-v2.mp4` | See `reel-specs/tesla-papers-caption.txt` (full text in the artifact, with a copy button) |
 | 11 | 2026-10-03 | Sat | Arthur Vance | Villas-Boas | https://5mrqeih32vtf7mev.public.blob.vercel-storage.com/reels/vance-vilasboas-draft1.mp4 | none (delivered to Blob directly — see `reel-specs/vance-reel-villas-boas-v2.md`) | — |
 | 12 | 2026-10-04 | Sun | Vincent van Gogh | The Night with Gauguin | https://5mrqeih32vtf7mev.public.blob.vercel-storage.com/reels/day12-vincent-gauguin-night.mp4 | `vapi-backup-response-limit/vincent-gauguinnight-FINAL3.mp4` | — |
 | 13 | 2026-10-05 | Mon | Walter Hobbs | I Don't Either | https://5mrqeih32vtf7mev.public.blob.vercel-storage.com/reels/day13-hobbs-i-dont-either.mp4 | `vapi-backup-response-limit/hobbs-idonteither-final.mp4` | — |

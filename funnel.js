@@ -1,5 +1,5 @@
 // funnel.js — shared call-form funnel tracking, loaded on every public page.
-// Sends form_started the first time a phone field gets focus, and
+// Sends form_started the first time a phone field gets focus or input, and
 // form_submitted when a form containing a phone field is submitted (or
 // payment.html's #startBtn is clicked). Each event fires at most once per
 // page view. Never blocks or alters the form's own handlers.
@@ -28,9 +28,13 @@
     } catch (e) {}
   }
 
-  document.addEventListener('focusin', function (e) {
-    if (e.target && e.target.matches && e.target.matches('input[type="tel"]')) track('form_started');
-  }, true);
+  // 'input' as well as 'focusin': browser autofill can fill the phone field
+  // without ever focusing it.
+  ['focusin', 'input'].forEach(function (type) {
+    document.addEventListener(type, function (e) {
+      if (e.target && e.target.matches && e.target.matches('input[type="tel"]')) track('form_started');
+    }, true);
+  });
 
   document.addEventListener('submit', function (e) {
     if (e.target && e.target.querySelector && e.target.querySelector('input[type="tel"]')) track('form_submitted');

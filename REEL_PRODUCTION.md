@@ -221,6 +221,15 @@ then the rescue-dog line in black. Block position: `(H - totalHeight) / 2
 regardless of character. Only the specific wording of the kicker/name
 changes per character.
 
+**CTA line (changed 2026-09-24): the gold line is no longer
+"talkwithicons.com".** If the card's headline already asks something
+("Ask him who he thinks it was."), the gold line is "Link in bio." If it
+doesn't ("Talk to Houdini.", "Call Arthur Vance."), it's "Ask him yourself.
+Link in bio." ("her" for Aela). Rocca: "Call Father Elia Rocca." headline +
+"Ask Father Rocca. Link in bio." Never put "Ask" in both lines. All 22
+unposted reels were converted in place; the posted Hobbs Umbrella Man and
+Houdini Vanishing Elephant keep the old URL line.
+
 **Music continues through the CTA/end card, always — never cut to
 silence before it.** This is a hard standing rule, not a per-reel
 judgment call: it was the practice on every reel before 2026-09-14, one

@@ -126,7 +126,7 @@ clear review.
 "Turkey Springs, Arizona — November 5, 1975. Six men had every reason to
 tell a simpler story about the seventh man who vanished from their crew
 that night. Fifty years later, none of them have. Arthur Vance has read
-every page of this file. talkwithicons.com — real conversations feed real
+every page of this file. Link in bio — real conversations feed real
 rescue dogs."
 (Register matches Ariel/Villas-Boas: plain, factual, names the unit and
 date, no atmospheric vagueness, no stock closers, points to Vance's page,
